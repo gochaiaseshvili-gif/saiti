@@ -24,8 +24,9 @@
     ],
     "modalBlocksOrder": [
       "modal-pricing",
-      "modal-specs",
+      "modal-tech-specs",
       "modal-gallery",
+      "modal-specs",
       "modal-video",
       "modal-chat",
       "modal-order"
