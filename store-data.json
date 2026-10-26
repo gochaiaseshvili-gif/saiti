@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793029498622,
+  "updatedAt": 1793029591921,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -76,11 +76,11 @@
       "oldPrice": 950,
       "newPrice": 850,
       "images": [
-        "",
-        "",
-        "",
-        "",
-        ""
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_1_1793029579152_mim0.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_2_1793029582081_uwbz.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_3_1793029585010_s1gy.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_4_1793029587554_lzus.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_5_1793029589834_9eb4.jpg"
       ],
       "description": "პროფესიონალური ორმაგი 12-დიუმიანი კარაოკე აკუსტიკური სისტემა ჩაშენებული DSP ექვალაიზერით, Reverb/Echo ეფექტებით და 2 მეტალის UHF უსადენო მიკროფონით. იდეალურია ღია და დახურული ღონისძიებებისთვის, რესტორნებისა და აგარაკისთვის.",
       "specs": [
@@ -468,11 +468,11 @@
   ],
   "imagesMap": {
     "stagemax-1200w": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_1_1793029579152_mim0.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_2_1793029582081_uwbz.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_3_1793029585010_s1gy.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_4_1793029587554_lzus.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/stagemax-1200w_slot_5_1793029589834_9eb4.jpg"
     ],
     "ecovolt-1200w-solar": [
       "/uploads/solar-1.jpg",
