@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>Volt & Vox — Karaoke Speakers & Solar Generators</title>
+    <title>იყიდება საინტერესო ნივთები — კარაოკე დინამიკები და სოლარ გენერატორები</title>
     <meta
       name="description"
       content="Mobile-first e-commerce storefront for commercial karaoke sound systems and portable LiFePO4 solar mini generators with instant WhatsApp, Viber, and Telegram ordering."
     />
-    <meta property="og:title" content="Volt & Vox — Karaoke Speakers & Solar Generators" />
+    <meta property="og:title" content="იყიდება საინტერესო ნივთები — კარაოკე დინამიკები და სოლარ გენერატორები" />
     <meta
       property="og:description"
       content="Mobile-first e-commerce storefront for commercial karaoke sound systems and portable LiFePO4 solar mini generators with instant WhatsApp, Viber, and Telegram ordering."
@@ -179,9 +179,9 @@
       <a
         href="#catalog"
         id="header-brand-name"
-        class="font-display text-lg sm:text-xl font-bold tracking-tight text-zinc-950 whitespace-nowrap shrink-0 theme-ring rounded"
+        class="font-display text-base sm:text-xl font-bold tracking-tight text-zinc-950 whitespace-nowrap shrink-0 theme-ring rounded"
       >
-        VOLT &amp; VOX
+        იყიდება საინტერესო ნივთები
       </a>
 
       <!-- Zone 2: 4 concise single-line navigation links -->
@@ -1034,7 +1034,7 @@
     <footer class="bg-white border-t border-zinc-200/80 mt-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
         <div class="flex items-center gap-2">
-          <span id="footer-brand-name" class="font-display font-bold text-zinc-900">VOLT &amp; VOX</span>
+          <span id="footer-brand-name" class="font-display font-bold text-zinc-900">იყიდება საინტერესო ნივთები</span>
           <span aria-hidden="true">·</span>
           <span id="footer-tagline-text">კომერციული აუდიო და სოლარ ენერგოსისტემები</span>
         </div>
@@ -3296,7 +3296,7 @@
     <script>
       (function () {
         const DEFAULT_SETTINGS = {
-          brandName: 'VOLT & VOX',
+          brandName: 'იყიდება საინტერესო ნივთები',
           contactName: 'გოჩა',
           phoneDigits: '995551588579',
           fbUrl: 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums',
@@ -5582,8 +5582,15 @@
             if (el && val !== undefined) el.href = val;
           };
 
-          safeSetTxt('header-brand-name', storeSettings.brandName || 'VOLT & VOX');
-          safeSetTxt('footer-brand-name', storeSettings.brandName || 'VOLT & VOX');
+          if (
+            !storeSettings.brandName ||
+            storeSettings.brandName === 'VOLT & VOX' ||
+            storeSettings.brandName === 'Volt & Vox'
+          ) {
+            storeSettings.brandName = 'იყიდება საინტერესო ნივთები';
+          }
+          safeSetTxt('header-brand-name', storeSettings.brandName || 'იყიდება საინტერესო ნივთები');
+          safeSetTxt('footer-brand-name', storeSettings.brandName || 'იყიდება საინტერესო ნივთები');
 
           safeSetHref('header-phone-link', telHref);
           safeSetTxt('header-phone-label', `${contactName} · ${displayPhone}`);
@@ -8458,7 +8465,7 @@
 
           ctx.fillStyle = '#ffffff';
           ctx.font = 'bold 34px sans-serif';
-          ctx.fillText(storeSettings.brandName || 'VOLT & VOX', 140, 65);
+          ctx.fillText(storeSettings.brandName || 'იყიდება საინტერესო ნივთები', 140, 65);
           ctx.fillStyle = '#a1a1aa';
           ctx.font = '22px sans-serif';
           ctx.fillText(
