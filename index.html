@@ -1498,10 +1498,10 @@
             id="modal-sec-tech-specs"
             data-modal-block="modal-tech-specs"
             data-block-label="ტექნიკური მახასიათებლების გრაფა"
-            class="movable-modal-block rounded-2xl bg-white border border-zinc-200/90 p-4 sm:p-5 shadow-sm"
+            class="movable-modal-block rounded-xl bg-white border border-zinc-200/90 p-2.5 sm:p-3 shadow-sm"
           >
-            <!-- Technical Specs Grid -->
-            <div id="modal-specs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+            <!-- Technical Specs Grid: 2 equal compact boxes per row -->
+            <div id="modal-specs-grid" class="grid grid-cols-2 gap-1.5 sm:gap-2"></div>
           </div>
 
           <!-- 3. PHOTOS: 5-IMAGE INTERACTIVE GALLERY -->
@@ -6805,9 +6805,9 @@
             .filter((s) => s && (s.label || s.value))
             .map(
               (spec) => `
-              <div class="p-2.5 rounded-xl bg-stone-50 border border-zinc-200/80">
-                <div class="text-[11px] text-zinc-500">${spec.label || ''}</div>
-                <div class="text-xs font-semibold text-zinc-900 font-mono-num mt-0.5">${spec.value || ''}</div>
+              <div class="px-2.5 py-1.5 rounded-lg bg-stone-50 border border-zinc-200/80 min-w-0">
+                <div class="text-[10px] leading-tight text-zinc-500 truncate">${spec.label || ''}</div>
+                <div class="text-[11px] sm:text-xs font-semibold text-zinc-900 font-mono-num leading-tight mt-0.5 truncate">${spec.value || ''}</div>
               </div>
             `
             )
