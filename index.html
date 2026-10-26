@@ -7179,8 +7179,12 @@
           return dataUrl;
         }
 
-        // Auto-save 5 images to the currently edited product in real time
+        // Auto-save 5 images to the currently edited (or newly started) product in real time
         function syncFormImagesToActiveProduct(extraOpts = {}) {
+          if (typeof autoSaveFormProductLive === 'function') {
+            autoSaveFormProductLive(Object.assign({ immediate: true }, extraOpts));
+            return;
+          }
           const existingId = fId.value.trim();
           if (!existingId) return;
           const prod = productsList.find((p) => p.id === existingId);
@@ -7528,32 +7532,17 @@
           switchCpTab('form');
         }
 
-        // Live auto-save when changing price inside the Edit Form
-        function handleLiveFormPriceChange() {
-          const existingId = fId.value.trim();
-          if (!existingId) return;
-          const prod = productsList.find((p) => p.id === existingId);
-          if (!prod) return;
-          const newOld = Number(fOldPrice.value);
-          const newSale = Number(fNewPrice.value);
-          if (newOld > 0) prod.oldPrice = newOld;
-          if (newSale > 0) prod.newPrice = newSale;
-          updateSingleProductCardInPlace(prod);
-          saveStateEverywhere();
-        }
-
-        fOldPrice.addEventListener('input', handleLiveFormPriceChange);
-        fNewPrice.addEventListener('input', handleLiveFormPriceChange);
-
-        document.getElementById('cp-clear-form-btn').addEventListener('click', resetProductForm);
-
-        // Save Product Function
-        function saveProductFromForm(shouldClosePanel) {
+        // Live auto-save when changing ANY field or uploading photos inside the Edit/Add Form (no Submit button click needed!)
+        function autoSaveFormProductLive(extraOpts = {}) {
+          let existingId = fId.value.trim();
           const nameVal = fName.value.trim();
-          if (!nameVal) {
-            showCpToast('გთხოვთ შეიყვანოთ პროდუქტის დასახელება');
-            fName.focus();
-            return;
+          const hasAnyPhoto = formFiveImages.some((u) => Boolean(u && u.trim()));
+
+          // If adding a brand-new product and the owner typed a name or uploaded a photo, auto-create its ID immediately
+          if (!existingId) {
+            if (!nameVal && !hasAnyPhoto) return;
+            existingId = 'prod-' + Date.now();
+            fId.value = existingId;
           }
 
           const specsCollected = [];
@@ -7567,51 +7556,69 @@
             }
           }
 
-          const catValue = fCategory.value;
+          const catValue = fCategory.value || 'karaoke';
           const customCatLabel = fCategoryLabel ? fCategoryLabel.value.trim() : '';
-          const existingId = fId.value.trim();
-          const targetId = existingId || 'prod-' + Date.now();
+          const displayName = nameVal || 'ახალი პროდუქტი';
 
-          const newProductObj = {
-            id: targetId,
+          const updatedProductObj = {
+            id: existingId,
             sku: fSku.value.trim() || 'VV-PRO',
             category: catValue,
             categoryLabel: customCatLabel || CATEGORY_LABELS[catValue] || 'პროდუქტი',
             badgeText: fBadge.value.trim() || 'აქცია',
-            name: nameVal,
+            name: displayName,
             shortMeta: fShortMeta.value.trim() || 'ოფიციალური გარანტია 24 თვე',
             oldPrice: Number(fOldPrice.value) || 0,
             newPrice: Number(fNewPrice.value) || 0,
             images: formFiveImages.slice(0, 5),
-            description: fDesc.value.trim() || nameVal,
+            description: fDesc.value.trim() || displayName,
             specs: specsCollected,
             youtubeId: extractYoutubeId(fYoutube.value),
             youtubeDuration: (fYtDuration && fYtDuration.value.trim()) || '08:45',
-            youtubeCaption: fYtCaption.value.trim() || nameVal,
+            youtubeCaption: fYtCaption.value.trim() || displayName,
             tiktokUrl: normalizeTiktokEmbedUrl(fTiktok.value),
-            tiktokCaption: fTtCaption.value.trim() || nameVal,
+            tiktokCaption: fTtCaption.value.trim() || displayName,
             instagramUrl: fInstagram ? normalizeInstagramEmbedUrl(fInstagram.value) : '',
-            instagramCaption: fIgCaption ? fIgCaption.value.trim() || nameVal : nameVal
+            instagramCaption: fIgCaption ? fIgCaption.value.trim() || displayName : displayName
           };
 
-          if (existingId) {
-            const idx = productsList.findIndex((p) => p.id === existingId);
-            if (idx !== -1) {
-              productsList[idx] = newProductObj;
-            } else {
-              productsList.unshift(newProductObj);
-            }
-            preserveScroll(() => renderProducts());
-            showCpToast('პროდუქტის 5 ფოტო და მონაცემები წარმატებით შეინახა!');
+          updatedProductObj.images.forEach((img, idx) => {
+            recordProductSlotInLocalBackup(existingId, idx, img || '');
+          });
+
+          const idx = productsList.findIndex((p) => p.id === existingId);
+          if (idx !== -1) {
+            productsList[idx] = updatedProductObj;
+            updateSingleProductCardInPlace(updatedProductObj);
           } else {
-            productsList.unshift(newProductObj);
+            productsList.unshift(updatedProductObj);
             preserveScroll(() => renderProducts());
-            showCpToast('ახალი პროდუქტი წარმატებით დაემატა საიტზე!');
-            resetProductForm();
           }
 
-          saveStateEverywhere({ immediate: true });
+          saveStateEverywhere(extraOpts);
+        }
 
+        cpProductForm.addEventListener('input', (e) => {
+          if (e.target.closest('[data-slot-file]')) return;
+          autoSaveFormProductLive();
+        });
+        cpProductForm.addEventListener('change', (e) => {
+          if (e.target.closest('[data-slot-file]')) return;
+          autoSaveFormProductLive();
+        });
+
+        document.getElementById('cp-clear-form-btn').addEventListener('click', resetProductForm);
+
+        // Save Product Function
+        function saveProductFromForm(shouldClosePanel) {
+          const nameVal = fName.value.trim();
+          if (!nameVal && !formFiveImages.some((u) => Boolean(u && u.trim()))) {
+            if (shouldClosePanel) closeControlPanel();
+            return;
+          }
+          autoSaveFormProductLive({ immediate: true });
+          preserveScroll(() => renderProducts());
+          showCpToast('პროდუქტის მონაცემები და ფოტოები ავტომატურად შენახულია!');
           if (shouldClosePanel) {
             closeControlPanel();
           }
@@ -8087,7 +8094,6 @@
           if (typeof renderAllChatWidgets === 'function') {
             renderAllChatWidgets();
           }
-          showCpToast('ყველა პარამეტრი, ტექსტი და ამინდის რეჟიმი წარმატებით შეინახა!');
         }
 
         const cpSetThemeColorInp = document.getElementById('cp-set-theme-color');
@@ -8097,11 +8103,23 @@
           });
         }
 
-        document.getElementById('cp-save-settings-btn').addEventListener('click', saveStoreSettings);
+        // Auto-save Store Settings in real time on every input/change (no Submit button click required!)
+        cpSettingsForm.addEventListener('input', () => {
+          saveStoreSettings();
+        });
+        cpSettingsForm.addEventListener('change', () => {
+          saveStoreSettings();
+        });
+
+        document.getElementById('cp-save-settings-btn').addEventListener('click', () => {
+          saveStoreSettings();
+          showCpToast('ყველა პარამეტრი, ტექსტი და ამინდის რეჟიმი წარმატებით შეინახა!');
+        });
         cpSettingsForm.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
             e.preventDefault();
             saveStoreSettings();
+            showCpToast('ყველა პარამეტრი ავტომატურად შენახულია!');
           }
         });
 
@@ -8134,6 +8152,7 @@
             }
             try {
               sessionStorage.setItem('vv_owner_unlocked', '1');
+              localStorage.setItem('vv_owner_unlocked', '1');
             } catch (e) {}
             setCustomerViewMode(false);
           }
@@ -9403,6 +9422,7 @@
           enterCustomerViewBtn.addEventListener('click', () => {
             try {
               sessionStorage.removeItem('vv_owner_unlocked');
+              localStorage.removeItem('vv_owner_unlocked');
             } catch (e) {}
             setCustomerViewMode(true);
             try {
@@ -9419,8 +9439,12 @@
             const adminParam = params.get('admin');
             if (adminParam === '8579' || adminParam === '1') {
               sessionStorage.setItem('vv_owner_unlocked', '1');
+              localStorage.setItem('vv_owner_unlocked', '1');
               setCustomerViewMode(false);
-            } else if (sessionStorage.getItem('vv_owner_unlocked') === '1') {
+            } else if (
+              sessionStorage.getItem('vv_owner_unlocked') === '1' ||
+              localStorage.getItem('vv_owner_unlocked') === '1'
+            ) {
               setCustomerViewMode(false);
             } else {
               setCustomerViewMode(true);
