@@ -1493,25 +1493,15 @@
             </div>
           </div>
 
-          <!-- 2. DIRECTLY ABOVE PHOTOS: სრული აღწერა და ტექნიკური მახასიათებლები -->
+          <!-- 2. DIRECTLY ABOVE PHOTOS: ტექნიკური მახასიათებლები -->
           <div
-            id="modal-sec-specs"
-            data-modal-block="modal-specs"
-            data-block-label="აღწერის და მახასიათებლების გრაფა"
-            class="movable-modal-block rounded-2xl bg-white border border-zinc-200/90 p-4 sm:p-6 space-y-4 shadow-sm"
+            id="modal-sec-tech-specs"
+            data-modal-block="modal-tech-specs"
+            data-block-label="ტექნიკური მახასიათებლების გრაფა"
+            class="movable-modal-block rounded-2xl bg-white border border-zinc-200/90 p-4 sm:p-5 shadow-sm"
           >
-            <div class="flex items-center gap-2 pb-2 border-b border-zinc-100">
-              <span class="w-2.5 h-2.5 rounded-full theme-bg shrink-0"></span>
-              <h3 id="modal-desc-heading" class="text-sm sm:text-base font-bold text-zinc-950">
-                აღწერა და ტექნიკური მახასიათებლები
-              </h3>
-            </div>
-
-            <!-- Full Description Paragraph -->
-            <p id="modal-product-desc" class="text-sm sm:text-base text-zinc-700 leading-relaxed"></p>
-
             <!-- Technical Specs Grid -->
-            <div id="modal-specs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 pt-1"></div>
+            <div id="modal-specs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
           </div>
 
           <!-- 3. PHOTOS: 5-IMAGE INTERACTIVE GALLERY -->
@@ -1582,6 +1572,24 @@
             <div id="modal-thumbnails-strip" class="grid grid-cols-5 gap-2 sm:gap-2.5" role="group" aria-label="პროდუქტის 5 ფოტოს გალერეა"></div>
 
             <div id="modal-sku-caption" class="text-xs font-mono-num text-zinc-500 text-center"></div>
+          </div>
+
+          <!-- 4. DIRECTLY UNDER PHOTOS: სრული აღწერა -->
+          <div
+            id="modal-sec-specs"
+            data-modal-block="modal-specs"
+            data-block-label="აღწერის გრაფა"
+            class="movable-modal-block rounded-2xl bg-white border border-zinc-200/90 p-4 sm:p-6 space-y-4 shadow-sm"
+          >
+            <div class="flex items-center gap-2 pb-2 border-b border-zinc-100">
+              <span class="w-2.5 h-2.5 rounded-full theme-bg shrink-0"></span>
+              <h3 id="modal-desc-heading" class="text-sm sm:text-base font-bold text-zinc-950">
+                აღწერა და ტექნიკური მახასიათებლები
+              </h3>
+            </div>
+
+            <!-- Full Description Paragraph -->
+            <p id="modal-product-desc" class="text-sm sm:text-base text-zinc-700 leading-relaxed"></p>
           </div>
 
           <!-- 4. THEN VIDEO REVIEW SECTION (COMPACT YOUTUBE, TIKTOK & INSTAGRAM CARDS) -->
@@ -3436,7 +3444,7 @@
           weatherMode: 'off',
           weatherIntensity: 65,
           homeBlocksOrder: ['fb-banner', 'catalog-header', 'product-grid', 'service-standards'],
-          modalBlocksOrder: ['modal-pricing', 'modal-specs', 'modal-gallery', 'modal-video', 'modal-chat', 'modal-order'],
+          modalBlocksOrder: ['modal-pricing', 'modal-tech-specs', 'modal-gallery', 'modal-specs', 'modal-video', 'modal-chat', 'modal-order'],
           serviceCardsOrder: ['serv-1', 'serv-2', 'serv-3'],
           blockOffsets: {},
           navCatalog: 'კატალოგი',
@@ -10755,14 +10763,9 @@
               storeSettings.modalBlocksOrder.push(key);
             }
           });
-          if (!storeSettings._specsAboveGalleryV1) {
-            const gIdx = storeSettings.modalBlocksOrder.indexOf('modal-gallery');
-            const sIdx = storeSettings.modalBlocksOrder.indexOf('modal-specs');
-            if (gIdx !== -1 && sIdx !== -1 && gIdx < sIdx) {
-              storeSettings.modalBlocksOrder.splice(sIdx, 1);
-              storeSettings.modalBlocksOrder.splice(gIdx, 0, 'modal-specs');
-            }
-            storeSettings._specsAboveGalleryV1 = true;
+          if (!storeSettings._techSpecsOnlyAboveGalleryV1) {
+            storeSettings.modalBlocksOrder = ['modal-pricing', 'modal-tech-specs', 'modal-gallery', 'modal-specs', 'modal-video', 'modal-chat', 'modal-order'];
+            storeSettings._techSpecsOnlyAboveGalleryV1 = true;
           }
 
           if (!Array.isArray(storeSettings.serviceCardsOrder) || storeSettings.serviceCardsOrder.length === 0) {
