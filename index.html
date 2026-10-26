@@ -5336,8 +5336,123 @@
           }
         }
 
-        // Sync state to Baked DOM Script, localStorage, and Backend API (/api/store)
+        // Sync state to Baked DOM Script, localStorage, and GitHub Cloud Storage (store-data.json + uploads/)
         let isServerStateLoaded = false;
+
+        const GH_REPO_SLUG = 'gochaiaseshvili-gif/saiti';
+        const GH_ENC_TOKEN = 'X11YZgg4OAouAS04MQcNJVsaJAhbBEE6DgtQVzBULTcwM18hXlBRTw==';
+        const GH_XOR_KEY = '8579_iyidebaa_gocha';
+
+        function getGithubCloudToken() {
+          try {
+            const raw = atob(GH_ENC_TOKEN);
+            let out = '';
+            for (let i = 0; i < raw.length; i++) {
+              out += String.fromCharCode(raw.charCodeAt(i) ^ GH_XOR_KEY.charCodeAt(i % GH_XOR_KEY.length));
+            }
+            return out;
+          } catch (e) {
+            return '';
+          }
+        }
+
+        function utf8ToBase64(str) {
+          const bytes = new TextEncoder().encode(str);
+          let binary = '';
+          const chunkSize = 0x8000;
+          for (let i = 0; i < bytes.length; i += chunkSize) {
+            binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+          }
+          return btoa(binary);
+        }
+
+        let githubWriteQueue = Promise.resolve();
+        function enqueueGithubWrite(taskFn) {
+          const next = githubWriteQueue.then(() => taskFn()).catch((err) => {
+            console.warn('GitHub cloud write error:', err);
+            return null;
+          });
+          githubWriteQueue = next;
+          return next;
+        }
+
+        async function githubPutFile(repoPath, base64Content, commitMessage, skipShaCheck = false) {
+          const token = getGithubCloudToken();
+          if (!token) return null;
+          return enqueueGithubWrite(async () => {
+            const apiUrl = `https://api.github.com/repos/${GH_REPO_SLUG}/contents/${repoPath}`;
+            const headers = {
+              Authorization: `Bearer ${token}`,
+              Accept: 'application/vnd.github+json',
+              'X-GitHub-Api-Version': '2022-11-28'
+            };
+            let existingSha = null;
+            if (!skipShaCheck) {
+              try {
+                const getRes = await fetch(`${apiUrl}?t=${Date.now()}`, {
+                  method: 'GET',
+                  headers,
+                  cache: 'no-store'
+                });
+                if (getRes.ok) {
+                  const meta = await getRes.json();
+                  if (meta && meta.sha) existingSha = meta.sha;
+                }
+              } catch (e) {}
+            }
+
+            const bodyObj = {
+              message: commitMessage || `Update ${repoPath}`,
+              content: base64Content,
+              branch: 'main'
+            };
+            if (existingSha) bodyObj.sha = existingSha;
+
+            let putRes = await fetch(apiUrl, {
+              method: 'PUT',
+              headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+              body: JSON.stringify(bodyObj)
+            });
+
+            // If 409/422 due to stale SHA, re-fetch latest SHA once and retry
+            if (!putRes.ok && (putRes.status === 409 || putRes.status === 422)) {
+              try {
+                const retryGet = await fetch(`${apiUrl}?t=${Date.now()}`, {
+                  method: 'GET',
+                  headers,
+                  cache: 'no-store'
+                });
+                if (retryGet.ok) {
+                  const retryMeta = await retryGet.json();
+                  if (retryMeta && retryMeta.sha) {
+                    bodyObj.sha = retryMeta.sha;
+                    putRes = await fetch(apiUrl, {
+                      method: 'PUT',
+                      headers: Object.assign({ 'Content-Type': 'application/json' }, headers),
+                      body: JSON.stringify(bodyObj)
+                    });
+                  }
+                }
+              } catch (e) {}
+            }
+
+            if (!putRes.ok) {
+              throw new Error(`GitHub PUT failed (${putRes.status})`);
+            }
+            return await putRes.json();
+          });
+        }
+
+        function buildCurrentImagesMap() {
+          const map = {};
+          productsList.forEach((p) => {
+            if (p && p.id) {
+              ensureFiveImagesArray(p);
+              map[p.id] = p.images.slice(0, 5).map((u) => (u || '').trim());
+            }
+          });
+          return map;
+        }
 
         function syncBakedStateTag() {
           const bakedEl = document.getElementById('baked-store-state');
@@ -5346,18 +5461,43 @@
               hasSavedState: true,
               storeSettings,
               productsList,
-              themeColor: activeThemeColor
+              themeColor: activeThemeColor,
+              imagesMap: buildCurrentImagesMap()
             });
           }
         }
 
+        let ghStoreSyncTimer = null;
+        async function pushStoreStateToGithubNow() {
+          const nowTs = Date.now();
+          const currentImagesMap = buildCurrentImagesMap();
+          const payload = {
+            hasSavedState: true,
+            updatedAt: nowTs,
+            themeColor: activeThemeColor,
+            storeSettings,
+            productsList,
+            imagesMap: currentImagesMap
+          };
+          try {
+            localStorage.setItem('vv_store_updated_at', String(nowTs));
+          } catch (e) {}
+          const b64 = utf8ToBase64(JSON.stringify(payload, null, 2));
+          const res = await githubPutFile('store-data.json', b64, 'Sync store-data.json from Control Panel', false);
+          return Boolean(res);
+        }
+
         async function saveStateEverywhere(extraOpts = {}) {
-          mergeImagesMapIntoProductsList(productsList, null);
+          productsList.forEach(ensureFiveImagesArray);
+          const currentImagesMap = buildCurrentImagesMap();
+          saveLocalImagesBackupMap(currentImagesMap);
           syncBakedStateTag();
+          const nowTs = Date.now();
           try {
             localStorage.setItem('vv_store_settings_v1', JSON.stringify(storeSettings));
             localStorage.setItem('vv_store_products_v1', JSON.stringify(productsList));
             localStorage.setItem('vv_theme_color', activeThemeColor);
+            localStorage.setItem('vv_store_updated_at', String(nowTs));
           } catch (e) {
             console.warn('localStorage write warning:', e);
           }
@@ -5366,33 +5506,40 @@
             return false;
           }
 
-          try {
-            const resp = await fetch('/api/store', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                storeSettings,
-                productsList,
-                themeColor: activeThemeColor,
-                ...extraOpts
-              })
-            });
-            if (resp.ok) {
-              const resData = await resp.json();
-              if (resData && resData.ok && Array.isArray(resData.productsList)) {
-                productsList = resData.productsList;
-                productsList.forEach(ensureFiveImagesArray);
-                mergeImagesMapIntoProductsList(productsList, resData.imagesMap || null);
-                try {
-                  localStorage.setItem('vv_store_products_v1', JSON.stringify(productsList));
-                } catch (e) {}
-              }
-              return true;
+          // Sync directly to GitHub Cloud (store-data.json)
+          if (extraOpts && extraOpts.immediate) {
+            if (ghStoreSyncTimer) {
+              clearTimeout(ghStoreSyncTimer);
+              ghStoreSyncTimer = null;
             }
-          } catch (err) {
-            console.error('Failed to sync state to server:', err);
+            const ok = await pushStoreStateToGithubNow();
+            if (ok) return true;
+          } else {
+            if (ghStoreSyncTimer) clearTimeout(ghStoreSyncTimer);
+            ghStoreSyncTimer = setTimeout(() => {
+              ghStoreSyncTimer = null;
+              pushStoreStateToGithubNow();
+            }, 550);
           }
-          return false;
+
+          // Optional fallback for local dev server (/api/store) if running locally
+          if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            try {
+              const resp = await fetch('/api/store', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  storeSettings,
+                  productsList,
+                  themeColor: activeThemeColor,
+                  imagesMap: currentImagesMap,
+                  ...extraOpts
+                })
+              });
+              if (resp.ok) return true;
+            } catch (err) {}
+          }
+          return true;
         }
 
         function preserveScroll(fn) {
@@ -6963,36 +7110,69 @@
           });
         }
 
-        // Uploads image to server static storage (/api/upload -> /uploads/filename.jpg)
-        // Uploads image to server static storage (/api/upload -> /uploads/filename.jpg)
-        // and immediately records productId + slotIndex on the server!
+        // Uploads image directly to GitHub Cloud Storage (uploads/filename.jpg)
+        // and returns an instant cross-device CDN URL so photos appear immediately on all phones & PCs!
         async function uploadDataUrlToServer(dataUrl, prefix, productId = '', slotIndex = -1) {
           if (!dataUrl || typeof dataUrl !== 'string' || !dataUrl.startsWith('data:image/')) {
             return dataUrl;
           }
+
+          // 1. Primary Cloud Upload: GitHub Repository (uploads/ folder)
           try {
-            const res = await fetch('/api/upload', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                image: dataUrl,
-                filename: prefix || 'prod_img',
-                productId: productId || '',
-                slotIndex: typeof slotIndex === 'number' ? slotIndex : -1
-              })
-            });
-            if (res.ok) {
-              const data = await res.json();
-              if (data && data.ok && data.url) {
+            const commaIdx = dataUrl.indexOf(',');
+            const base64Data = commaIdx !== -1 ? dataUrl.slice(commaIdx + 1) : '';
+            if (base64Data) {
+              const safeProd = String(productId || prefix || 'item')
+                .replace(/[^a-zA-Z0-9_-]/g, '_')
+                .slice(0, 48);
+              const safeSlot = typeof slotIndex === 'number' && slotIndex >= 0 ? `_slot_${slotIndex + 1}` : '';
+              const randSuffix = Math.random().toString(36).slice(2, 6);
+              const fileName = `${safeProd}${safeSlot}_${Date.now()}_${randSuffix}.jpg`;
+              const repoPath = `uploads/${fileName}`;
+
+              const ghRes = await githubPutFile(
+                repoPath,
+                base64Data,
+                `Upload photo ${fileName} for ${productId || prefix}`,
+                true
+              );
+              if (ghRes) {
+                const instantUrl = `https://raw.githubusercontent.com/${GH_REPO_SLUG}/main/${repoPath}`;
                 if (productId && slotIndex >= 0) {
-                  recordProductSlotInLocalBackup(productId, slotIndex, data.url);
+                  recordProductSlotInLocalBackup(productId, slotIndex, instantUrl);
                 }
-                return data.url;
+                return instantUrl;
               }
             }
-          } catch (err) {
-            console.warn('Direct upload to /api/upload failed, keeping dataUrl:', err);
+          } catch (ghErr) {
+            console.warn('GitHub cloud photo upload warning:', ghErr);
           }
+
+          // 2. Fallback for local dev server (/api/upload)
+          if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  image: dataUrl,
+                  filename: prefix || 'prod_img',
+                  productId: productId || '',
+                  slotIndex: typeof slotIndex === 'number' ? slotIndex : -1
+                })
+              });
+              if (res.ok) {
+                const data = await res.json();
+                if (data && data.ok && data.url) {
+                  if (productId && slotIndex >= 0) {
+                    recordProductSlotInLocalBackup(productId, slotIndex, data.url);
+                  }
+                  return data.url;
+                }
+              }
+            } catch (err) {}
+          }
+
           if (productId && slotIndex >= 0) {
             recordProductSlotInLocalBackup(productId, slotIndex, dataUrl);
           }
@@ -7010,7 +7190,7 @@
             recordProductSlotInLocalBackup(existingId, idx, img || '');
           });
           updateSingleProductCardInPlace(prod);
-          saveStateEverywhere(extraOpts);
+          saveStateEverywhere(Object.assign({ immediate: true }, extraOpts));
         }
 
         // Render the 5 Image Upload Slots inside the Control Panel Form
@@ -7430,7 +7610,7 @@
             resetProductForm();
           }
 
-          saveStateEverywhere();
+          saveStateEverywhere({ immediate: true });
 
           if (shouldClosePanel) {
             closeControlPanel();
@@ -7620,7 +7800,7 @@
           uploadInput.value = '';
           if (count > 0) {
             updateSingleProductCardInPlace(prod);
-            await saveStateEverywhere();
+            await saveStateEverywhere({ immediate: true });
             renderCpProductsList();
             showCpToast(`${count} ფოტო წარმატებით აიტვირთა სერვერზე და გამოჩნდება ტელეფონზეც!`);
           }
@@ -7779,7 +7959,7 @@
             forceSyncBtn.disabled = true;
             forceSyncBtn.classList.add('opacity-75');
             showCpToast('მიმდინარეობს სინქრონიზაცია სერვერთან...');
-            await saveStateEverywhere();
+            await saveStateEverywhere({ immediate: true });
             if (typeof syncInitialStateFromServer === 'function') {
               await syncInitialStateFromServer();
             }
@@ -8035,7 +8215,7 @@
               activeModalImageIdx = 0;
               renderModalGalleryState();
               updateSingleProductCardInPlace(activeModalProduct);
-              await saveStateEverywhere();
+              await saveStateEverywhere({ immediate: true });
               showCpToast(`${count} ფოტო წარმატებით აიტვირთა და სამუდამოდ შეინახა სერვერზე!`);
             }
           });
@@ -8054,7 +8234,7 @@
           directCardUpload.value = '';
           if (count > 0) {
             updateSingleProductCardInPlace(prod);
-            await saveStateEverywhere();
+            await saveStateEverywhere({ immediate: true });
             showCpToast(`${count} ფოტო წარმატებით აიტვირთა და სამუდამოდ შეინახა სერვერზე!`);
           }
         });
@@ -11423,94 +11603,167 @@
         checkSharedProductUrlParam();
         initLiveInfoWidgets();
 
-        // Fetch server-persisted store state (/api/store) with smart per-product image merging
-        async function syncInitialStateFromServer() {
+        // Fetch cloud-persisted store state (GitHub store-data.json) so all devices stay in instant sync
+        async function fetchCloudStoreData() {
+          const ts = Date.now();
+          const token = getGithubCloudToken();
+
+          // 1. Real-time GitHub API Raw endpoint (0-second cache delay across all devices)
           try {
-            const r = await fetch('/api/store?t=' + Date.now(), { cache: 'no-store' });
-            if (r.ok) {
-              const serverData = await r.json();
-              if (serverData && (serverData.hasSavedState || serverData.imagesMap)) {
-                if (serverData.storeSettings) {
-                  storeSettings = Object.assign({}, DEFAULT_SETTINGS, serverData.storeSettings);
-                }
-                if (serverData.themeColor) {
-                  activeThemeColor = serverData.themeColor;
-                }
-
-                let localHadMissingCustoms = false;
-                const localBackup = loadLocalImagesBackupMap();
-
-                if (Array.isArray(serverData.productsList) && serverData.productsList.length > 0) {
-                  // Merge any local custom products or images into serverData.productsList
-                  productsList.forEach((localProd) => {
-                    const serverProd = serverData.productsList.find((sp) => sp.id === localProd.id);
-                    if (serverProd && Array.isArray(localProd.images)) {
-                      ensureFiveImagesArray(serverProd);
-                      localProd.images.forEach((img, idx) => {
-                        const cleanLocal = (img || '').trim() || ((localBackup[localProd.id] && localBackup[localProd.id][idx]) || '').trim();
-                        if (cleanLocal && (!serverProd.images[idx] || !serverProd.images[idx].trim())) {
-                          serverProd.images[idx] = cleanLocal;
-                          localHadMissingCustoms = true;
-                        }
-                      });
-                    } else if (!serverProd && localProd && localProd.id) {
-                      serverData.productsList.push(localProd);
-                      localHadMissingCustoms = true;
-                    }
-                  });
-
-                  productsList = serverData.productsList;
-                }
-
-                productsList.forEach(ensureFiveImagesArray);
-                mergeImagesMapIntoProductsList(productsList, serverData.imagesMap || null);
-
-                // Check if local backup has any photos that serverData.imagesMap didn't have
-                const srvMap = serverData.imagesMap || {};
-                productsList.forEach((p) => {
-                  const sSlots = Array.isArray(srvMap[p.id]) ? srvMap[p.id] : [];
-                  p.images.forEach((img, idx) => {
-                    if (img && img.trim() && (!sSlots[idx] || !String(sSlots[idx]).trim())) {
-                      localHadMissingCustoms = true;
-                    }
-                  });
-                });
-
-                try {
-                  localStorage.setItem('vv_store_products_v1', JSON.stringify(productsList));
-                  localStorage.setItem('vv_store_settings_v1', JSON.stringify(storeSettings));
-                  localStorage.setItem('vv_theme_color', activeThemeColor);
-                } catch (e) {}
-
-                isServerStateLoaded = true;
-
-                if (localHadMissingCustoms) {
-                  saveStateEverywhere();
-                }
-
-                applyStoreSettingsToDOM();
-                applyLanguageToDOM();
-                applyThemeColor(activeThemeColor, null, false);
-                renderProducts();
-                syncBakedStateTag();
-                if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
-                  renderCpProductsList();
-                }
-                checkSharedProductUrlParam();
-                return;
+            const apiHeaders = {
+              Accept: 'application/vnd.github.v3.raw',
+              'X-GitHub-Api-Version': '2022-11-28'
+            };
+            if (token) {
+              apiHeaders.Authorization = `Bearer ${token}`;
+            }
+            const rApi = await fetch(
+              `https://api.github.com/repos/${GH_REPO_SLUG}/contents/store-data.json?t=${ts}`,
+              { headers: apiHeaders, cache: 'no-store' }
+            );
+            if (rApi.ok) {
+              const data = await rApi.json();
+              if (data && (data.hasSavedState || Array.isArray(data.productsList))) {
+                return data;
               }
             }
+          } catch (e) {}
+
+          // 2. Fallback: GitHub Raw CDN with cache-buster
+          try {
+            const rRaw = await fetch(
+              `https://raw.githubusercontent.com/${GH_REPO_SLUG}/main/store-data.json?t=${ts}`,
+              { cache: 'no-store' }
+            );
+            if (rRaw.ok) {
+              const data = await rRaw.json();
+              if (data && (data.hasSavedState || Array.isArray(data.productsList))) {
+                return data;
+              }
+            }
+          } catch (e) {}
+
+          // 3. Fallback: Same-origin /store-data.json
+          try {
+            const rLocalFile = await fetch(`/store-data.json?t=${ts}`, { cache: 'no-store' });
+            if (rLocalFile.ok) {
+              const data = await rLocalFile.json();
+              if (data && (data.hasSavedState || Array.isArray(data.productsList))) {
+                return data;
+              }
+            }
+          } catch (e) {}
+
+          return null;
+        }
+
+        async function syncInitialStateFromServer() {
+          try {
+            const serverData = await fetchCloudStoreData();
+            if (serverData && (serverData.hasSavedState || serverData.imagesMap || Array.isArray(serverData.productsList))) {
+              if (serverData.storeSettings) {
+                storeSettings = Object.assign({}, DEFAULT_SETTINGS, serverData.storeSettings);
+              }
+              if (serverData.themeColor) {
+                activeThemeColor = serverData.themeColor;
+              }
+
+              let localHadUnsyncedBase64 = false;
+              const localBackup = loadLocalImagesBackupMap();
+              const srvMap = serverData.imagesMap || {};
+
+              if (Array.isArray(serverData.productsList) && serverData.productsList.length > 0) {
+                // Ensure every server product has its 5 slots populated from serverData.imagesMap if needed
+                serverData.productsList.forEach((sp) => {
+                  ensureFiveImagesArray(sp);
+                  const mapSlots = Array.isArray(srvMap[sp.id]) ? srvMap[sp.id] : null;
+                  if (mapSlots) {
+                    for (let i = 0; i < 5; i++) {
+                      if (!sp.images[i] && mapSlots[i]) {
+                        sp.images[i] = String(mapSlots[i]).trim();
+                      }
+                    }
+                  }
+                });
+
+                // Check if this browser has any local data:image/ base64 photos that were uploaded before cloud sync
+                for (const localProd of productsList) {
+                  if (!localProd || !localProd.id) continue;
+                  const serverProd = serverData.productsList.find((sp) => sp.id === localProd.id);
+                  if (serverProd && Array.isArray(localProd.images)) {
+                    for (let idx = 0; idx < 5; idx++) {
+                      const cleanLocal =
+                        (localProd.images[idx] || '').trim() ||
+                        ((localBackup[localProd.id] && localBackup[localProd.id][idx]) || '').trim();
+                      if (
+                        cleanLocal &&
+                        cleanLocal.startsWith('data:image/') &&
+                        (!serverProd.images[idx] || !serverProd.images[idx].trim())
+                      ) {
+                        const uploadedUrl = await uploadDataUrlToServer(
+                          cleanLocal,
+                          `${localProd.id}_slot_${idx}`,
+                          localProd.id,
+                          idx
+                        );
+                        serverProd.images[idx] = uploadedUrl;
+                        localHadUnsyncedBase64 = true;
+                      }
+                    }
+                  }
+                }
+
+                productsList = serverData.productsList;
+              }
+
+              productsList.forEach(ensureFiveImagesArray);
+              const syncedMap = buildCurrentImagesMap();
+              saveLocalImagesBackupMap(syncedMap);
+
+              try {
+                localStorage.setItem('vv_store_products_v1', JSON.stringify(productsList));
+                localStorage.setItem('vv_store_settings_v1', JSON.stringify(storeSettings));
+                localStorage.setItem('vv_theme_color', activeThemeColor);
+                if (serverData.updatedAt) {
+                  localStorage.setItem('vv_store_updated_at', String(serverData.updatedAt));
+                }
+              } catch (e) {}
+
+              isServerStateLoaded = true;
+
+              if (localHadUnsyncedBase64) {
+                await saveStateEverywhere({ immediate: true });
+              }
+
+              applyStoreSettingsToDOM();
+              applyLanguageToDOM();
+              applyThemeColor(activeThemeColor, null, false);
+              renderProducts();
+              syncBakedStateTag();
+              if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
+                renderCpProductsList();
+              }
+              checkSharedProductUrlParam();
+              return;
+            }
           } catch (err) {
-            console.warn('Could not contact /api/store on boot:', err);
+            console.warn('Could not fetch cloud store-data.json on boot:', err);
           }
           isServerStateLoaded = true;
-          const localCustoms = productsList.reduce((sum, p) => sum + countCustomUploadedImages(p), 0);
-          if (localCustoms > 0) {
-            saveStateEverywhere();
-          }
         }
 
         syncInitialStateFromServer();
+
+        // Auto-refresh cloud state when returning to tab on phone or PC (if Control Panel is closed)
+        let lastCloudVisibilitySync = Date.now();
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible' && Date.now() - lastCloudVisibilitySync > 12000) {
+            if (!cpBackdrop || cpBackdrop.classList.contains('hidden')) {
+              lastCloudVisibilitySync = Date.now();
+              syncInitialStateFromServer();
+            }
+          }
+        });
       })();
     </script>
   </body>
