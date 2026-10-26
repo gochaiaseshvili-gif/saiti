@@ -36,6 +36,12 @@
         --theme-primary-text-on: #ffffff;
       }
 
+      html,
+      body {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+
       body {
         font-family: 'Plus Jakarta Sans', 'Noto Sans Georgian', sans-serif;
         background-color: #fafaf9;
@@ -126,14 +132,13 @@
       body.customer-view-mode #modal-edit-product-btn,
       body.customer-view-mode #home-chat-role-seller,
       body.customer-view-mode #modal-chat-role-seller,
-      body.customer-view-mode #footer-admin-btn,
       body.customer-view-mode #enter-customer-view-btn {
         display: none !important;
       }
     </style>
   </head>
 
-  <body class="min-h-screen flex flex-col bg-stone-50 text-zinc-900 selection:bg-amber-500 selection:text-white">
+  <body class="customer-view-mode min-h-screen flex flex-col bg-stone-50 text-zinc-900 selection:bg-amber-500 selection:text-white">
     <!-- ======================================================================================== -->
     <!-- AMBIENT WEATHER EFFECTS OVERLAY (☀️ მზე · 🌧️ წვიმა · ❄️ თოვლი) — pointer-events: none -->
     <!-- ======================================================================================== -->
@@ -173,19 +178,19 @@
       <canvas id="weather-canvas" class="w-full h-full block pointer-events-none"></canvas>
     </div>
 
-    <!-- TOP BAR CONTRACT: Strictly 1 row, 3 zones separated by gap-8 (<= 56px height to honor 15% mobile sticky cap) -->
-    <header class="sticky top-0 z-30 h-14 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-8">
+    <!-- TOP BAR CONTRACT: Fully responsive across mobile, tablet & desktop with zero horizontal overflow -->
+    <header class="sticky top-0 z-30 min-h-[56px] py-1.5 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-3 sm:px-6 lg:px-8 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
       <!-- Zone 1: Single text element Brand Wordmark -->
       <a
         href="#catalog"
         id="header-brand-name"
-        class="font-display text-base sm:text-xl font-bold tracking-tight text-zinc-950 whitespace-nowrap shrink-0 theme-ring rounded"
+        class="font-display text-sm sm:text-lg lg:text-xl font-bold tracking-tight text-zinc-950 leading-tight shrink-0 theme-ring rounded"
       >
         იყიდება საინტერესო ნივთები
       </a>
 
       <!-- Zone 2: 4 concise single-line navigation links -->
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-zinc-600" aria-label="მთავარი ნავიგაცია">
+      <nav class="hidden xl:flex items-center gap-5 text-sm font-medium text-zinc-600" aria-label="მთავარი ნავიგაცია">
         <a id="nav-link-catalog" href="#catalog" data-nav-cat="all" class="hover:text-zinc-950 hover:underline underline-offset-4 whitespace-nowrap shrink-0 py-1">
           კატალოგი
         </a>
@@ -201,7 +206,7 @@
       </nav>
 
       <!-- Zone 3: Language Switcher Toggle + Click-to-Call Primary Action -->
-      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div class="flex flex-wrap items-center justify-end gap-1.5 sm:gap-2.5 ml-auto">
         <!-- Language Switcher Component (ქართული / English / Русский) -->
         <div
           class="inline-flex items-center bg-stone-100 p-0.5 rounded-xl border border-zinc-200/90 text-xs font-bold"
@@ -211,28 +216,28 @@
           <button
             id="lang-btn-ka"
             type="button"
-            class="lang-switch-btn min-h-[36px] px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 fast-transition"
+            class="lang-switch-btn min-h-[34px] sm:min-h-[36px] px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1 fast-transition"
             title="ქართული ენა"
           >
-            <span class="text-sm">🇬🇪</span>
+            <span class="text-xs sm:text-sm">🇬🇪</span>
             <span class="font-bold">ქარ</span>
           </button>
           <button
             id="lang-btn-en"
             type="button"
-            class="lang-switch-btn min-h-[36px] px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 fast-transition"
+            class="lang-switch-btn min-h-[34px] sm:min-h-[36px] px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1 fast-transition"
             title="English language"
           >
-            <span class="text-sm">🇬🇧</span>
+            <span class="text-xs sm:text-sm">🇬🇧</span>
             <span class="font-bold">ENG</span>
           </button>
           <button
             id="lang-btn-ru"
             type="button"
-            class="lang-switch-btn min-h-[36px] px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1.5 fast-transition"
+            class="lang-switch-btn min-h-[34px] sm:min-h-[36px] px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-bold flex items-center gap-1 fast-transition"
             title="Русский язык"
           >
-            <span class="text-sm">🇷🇺</span>
+            <span class="text-xs sm:text-sm">🇷🇺</span>
             <span class="font-bold">РУС</span>
           </button>
         </div>
@@ -241,7 +246,7 @@
         <button
           id="header-wishlist-btn"
           type="button"
-          class="min-h-[40px] px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200/90 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+          class="min-h-[36px] sm:min-h-[40px] px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200/90 text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
           title="რჩეული პროდუქტები"
           aria-label="რჩეული პროდუქტები"
         >
@@ -258,7 +263,7 @@
         <a
           id="header-phone-link"
           href="tel:+995551588579"
-          class="theme-bg min-h-[40px] px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 theme-ring"
+          class="theme-bg min-h-[36px] sm:min-h-[40px] px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 sm:gap-2 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 theme-ring"
           aria-label="დარეკვა ნომერზე +995 551 58 85 79"
         >
           <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -283,8 +288,7 @@
             <div class="flex items-center gap-2 bg-zinc-900/90 px-3 py-1.5 rounded-xl border border-zinc-800/90 shadow-inner">
               <span class="text-base sm:text-lg">📅</span>
               <div class="leading-tight">
-                <span id="live-weekday" class="font-extrabold text-amber-400 capitalize">...</span>,
-                <span id="live-date" class="font-semibold text-zinc-200">...</span>
+                <span id="live-weekday" class="font-extrabold text-amber-400 capitalize">...</span><span>, </span><span id="live-date" class="font-semibold text-zinc-200">...</span>
               </div>
             </div>
 
@@ -1155,40 +1159,40 @@
               <button
                 id="modal-wishlist-btn"
                 type="button"
-                class="min-h-[42px] px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
+                class="min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
                 title="რჩეულებში დამატება / ამოშლა"
               >
                 <svg id="modal-wishlist-icon" class="w-4 h-4 text-rose-600 shrink-0" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
-                <span id="modal-wishlist-btn-text">რჩეულებში</span>
+                <span id="modal-wishlist-btn-text" class="hidden sm:inline">რჩეულებში</span>
               </button>
 
               <!-- 1-Click Screenshot Button inside Product Page Top Bar -->
               <button
                 id="modal-screenshot-btn"
                 type="button"
-                class="min-h-[42px] px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
+                class="min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
                 title="ერთი დაჭერით გადაუღეთ სრული სქრინშოტი პროდუქტს ფოტოებით და ნომრით"
               >
                 <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                   <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                <span id="modal-screenshot-btn-text">სქრინშოტი</span>
+                <span id="modal-screenshot-btn-text" class="hidden sm:inline">სქრინშოტი</span>
               </button>
 
               <!-- Share Button inside Product Page Top Bar -->
               <button
                 id="modal-share-btn"
                 type="button"
-                class="min-h-[42px] px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
+                class="min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
                 title="პროდუქტის გაზიარება"
               >
                 <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                 </svg>
-                <span id="modal-share-btn-text">გაზიარება</span>
+                <span id="modal-share-btn-text" class="hidden sm:inline">გაზიარება</span>
               </button>
 
               <!-- Direct 1-Click 5-Photo Multi-Upload inside Product Page -->
@@ -3288,9 +3292,8 @@
     <!-- Baked Store State Script Tag (Automatically updated so Downloaded HTML keeps all custom prices, 5 photos & products) -->
     <script id="baked-store-state" type="application/json">{}</script>
 
-    <!-- Keep Vite entry module mounted cleanly so local Tailwind v4 build also compiles -->
+    <!-- Keep root element hidden -->
     <div id="root" class="hidden"></div>
-    <script type="module" src="/src/main.tsx"></script>
 
     <!-- VANILLA JAVASCRIPT APPLICATION, 5-PHOTO GALLERY & CONTROL PANEL ENGINE -->
     <script>
@@ -7740,7 +7743,23 @@
           resetProductForm();
           openControlPanel('form');
         });
-        footerAdminBtn.addEventListener('click', () => openControlPanel('list'));
+        const OWNER_PIN = '8579';
+
+        footerAdminBtn.addEventListener('click', () => {
+          if (document.body.classList.contains('customer-view-mode')) {
+            const entered = window.prompt('მფლობელის რეჟიმში შესასვლელად შეიყვანეთ პინ-კოდი:');
+            if (entered === null) return;
+            if (entered.trim() !== OWNER_PIN) {
+              window.alert('პინ-კოდი არასწორია!');
+              return;
+            }
+            try {
+              sessionStorage.setItem('vv_owner_unlocked', '1');
+            } catch (e) {}
+            setCustomerViewMode(false);
+          }
+          openControlPanel('list');
+        });
         closeCpBtn.addEventListener('click', closeControlPanel);
         cpBackdrop.addEventListener('click', (e) => {
           if (e.target === cpBackdrop) closeControlPanel();
@@ -8877,10 +8896,13 @@
         const enterCustomerViewBtn = document.getElementById('enter-customer-view-btn');
         if (enterCustomerViewBtn) {
           enterCustomerViewBtn.addEventListener('click', () => {
+            try {
+              sessionStorage.removeItem('vv_owner_unlocked');
+            } catch (e) {}
             setCustomerViewMode(true);
             try {
               const url = new URL(window.location.href);
-              url.searchParams.set('view', 'customer');
+              url.searchParams.delete('admin');
               window.history.replaceState({}, '', url.toString());
             } catch (e) {}
           });
@@ -8889,8 +8911,13 @@
         function checkSharedProductUrlParam() {
           try {
             const params = new URLSearchParams(window.location.search);
-            const viewParam = params.get('view') || params.get('mode') || params.get('client');
-            if (viewParam === 'customer' || viewParam === 'client' || viewParam === '1') {
+            const adminParam = params.get('admin');
+            if (adminParam === '8579' || adminParam === '1') {
+              sessionStorage.setItem('vv_owner_unlocked', '1');
+              setCustomerViewMode(false);
+            } else if (sessionStorage.getItem('vv_owner_unlocked') === '1') {
+              setCustomerViewMode(false);
+            } else {
               setCustomerViewMode(true);
             }
             const sharedProdId = params.get('product');
@@ -9686,11 +9713,20 @@
           });
         }
 
+        let wsEverConnected = false;
         function connectChatWebSocket() {
           try {
+            const host = window.location.hostname || '';
+            if (host.endsWith('github.io') || host === 'iyidebaa.ge' || host === 'www.iyidebaa.ge') {
+              return;
+            }
             const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${proto}//${window.location.host}/ws-chat`;
             const ws = new WebSocket(wsUrl);
+
+            ws.addEventListener('open', () => {
+              wsEverConnected = true;
+            });
 
             ws.addEventListener('message', (event) => {
               try {
@@ -9764,7 +9800,9 @@
             });
 
             ws.addEventListener('close', () => {
-              setTimeout(connectChatWebSocket, 3500);
+              if (wsEverConnected) {
+                setTimeout(connectChatWebSocket, 3500);
+              }
             });
           } catch (e) {}
         }
@@ -9799,10 +9837,12 @@
 
           const w = weatherCanvas.width || window.innerWidth;
           const h = weatherCanvas.height || window.innerHeight;
+          const isMobile = w < 768;
+          const mobileScale = isMobile ? 0.45 : 1;
           const factor = Math.max(0.15, Math.min(1, activeWeatherIntensity / 100));
 
           if (activeWeatherMode === 'snow') {
-            const count = Math.round(45 + factor * 140);
+            const count = Math.round((45 + factor * 140) * mobileScale);
             for (let i = 0; i < count; i++) {
               weatherParticles.push({
                 x: Math.random() * w,
@@ -9817,7 +9857,7 @@
               });
             }
           } else if (activeWeatherMode === 'rain') {
-            const count = Math.round(60 + factor * 180);
+            const count = Math.round((60 + factor * 180) * mobileScale);
             for (let i = 0; i < count; i++) {
               weatherParticles.push({
                 x: Math.random() * w,
@@ -9830,7 +9870,7 @@
               });
             }
           } else if (activeWeatherMode === 'sun') {
-            const count = Math.round(25 + factor * 55);
+            const count = Math.round((25 + factor * 55) * mobileScale);
             for (let i = 0; i < count; i++) {
               weatherParticles.push({
                 x: Math.random() * w,
@@ -9928,26 +9968,14 @@
               if (p.x > w + 12) p.x = -10;
               if (p.x < -12) p.x = w + 10;
 
-              // Draw crisp snowflake with soft frosty halo so it is visible on light & dark backgrounds
-              ctx.save();
+              // Fast GPU-friendly snowflake rendering (no per-frame gradient allocations)
               ctx.beginPath();
-              const grad = ctx.createRadialGradient(p.x, p.y, 0.5, p.x, p.y, p.r * 1.4);
-              grad.addColorStop(0, `rgba(255, 255, 255, ${p.alpha})`);
-              grad.addColorStop(0.65, `rgba(224, 242, 254, ${p.alpha * 0.85})`);
-              grad.addColorStop(1, `rgba(56, 189, 248, 0)`);
-              ctx.fillStyle = grad;
-              ctx.arc(p.x, p.y, p.r * 1.4, 0, Math.PI * 2);
-              ctx.fill();
-
-              // Subtle outline for visibility against white cards
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, p.r * 0.75, 0, Math.PI * 2);
+              ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
               ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
               ctx.fill();
               ctx.lineWidth = 0.7;
               ctx.strokeStyle = `rgba(125, 211, 252, ${p.alpha * 0.65})`;
               ctx.stroke();
-              ctx.restore();
             }
           } else if (activeWeatherMode === 'rain') {
             ctx.save();
@@ -10011,14 +10039,9 @@
               }
 
               const pulseAlpha = p.alpha * (0.65 + 0.35 * Math.sin(p.phase));
-              const grad = ctx.createRadialGradient(p.x, p.y, 0.5, p.x, p.y, p.r * 2.2);
-              grad.addColorStop(0, `rgba(254, 240, 138, ${pulseAlpha})`);
-              grad.addColorStop(0.5, `rgba(251, 191, 36, ${pulseAlpha * 0.65})`);
-              grad.addColorStop(1, 'rgba(245, 158, 11, 0)');
-
               ctx.beginPath();
-              ctx.fillStyle = grad;
-              ctx.arc(p.x, p.y, p.r * 2.2, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(251, 191, 36, ${pulseAlpha * 0.75})`;
+              ctx.arc(p.x, p.y, p.r * 1.4, 0, Math.PI * 2);
               ctx.fill();
             }
           }
