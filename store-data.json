@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793018900000,
+  "updatedAt": 1793127387352,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -63,9 +63,62 @@
     "heroDiscount": "სეზონური აქცია -30%-მდე",
     "heroWarranty": "ოფიციალური გარანტია 24 თვე",
     "heroTitle": "პროფესიონალური კარაოკე აკუსტიკა და პორტატული სოლარ გენერატორები",
-    "heroSubtitle": "მძლავრი ავტონომიური ჟღერადობა ღონისძიებებისთვის, აგარაკისა და კომერციული სივრცეებისთვის — LiFePO4 მზის სადგურებთან ერთად უწყვეტი 220V ენერგიისთვის ნებისმიერ გარემოში."
+    "heroSubtitle": "მძლავრი ავტონომიური ჟღერადობა ღონისძიებებისთვის, აგარაკისა და კომერციული სივრცეებისთვის — LiFePO4 მზის სადგურებთან ერთად უწყვეტი 220V ენერგიისთვის ნებისმიერ გარემოში.",
+    "_techSpecsOnlyAboveGalleryV1": true
   },
   "productsList": [
+    {
+      "id": "prod-1793127387296",
+      "sku": "PRO-1000",
+      "category": "karaoke",
+      "categoryLabel": "კარაოკე სისტემა",
+      "badgeText": "აქცია",
+      "name": "ახალი პროდუქტი",
+      "shortMeta": "ოფიციალური გარანტია 24 თვე",
+      "oldPrice": 0,
+      "newPrice": 0,
+      "images": [
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793127375408_6735.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793127378552_46w2.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793127380658_v8l3.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793127383292_b67s.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_5_1793127385372_6bow.jpg"
+      ],
+      "description": "ახალი პროდუქტი",
+      "specs": [
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "—"
+        },
+        {
+          "label": "ელემენტი / ტევადობა",
+          "value": "—"
+        },
+        {
+          "label": "კომპლექტაცია",
+          "value": "—"
+        },
+        {
+          "label": "ავტონომიური მუშაობა",
+          "value": "—"
+        },
+        {
+          "label": "პორტები და კავშირი",
+          "value": "—"
+        },
+        {
+          "label": "წონა და გარანტია",
+          "value": "—"
+        }
+      ],
+      "youtubeId": "M7lc1UVf-VE",
+      "youtubeDuration": "08:45",
+      "youtubeCaption": "ახალი პროდუქტი",
+      "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
+      "tiktokCaption": "ახალი პროდუქტი",
+      "instagramUrl": "https://www.instagram.com/p/C-DefaultReel/embed",
+      "instagramCaption": "ახალი პროდუქტი"
+    },
     {
       "id": "stagemax-1200w",
       "sku": "1200W PRO",
@@ -76,15 +129,39 @@
       "shortMeta": "1200W · 2× UHF მიკროფონი · 14 სთ ელემენტი",
       "oldPrice": 1490,
       "newPrice": 1090,
-      "images": ["", "", "", "", ""],
+      "images": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "description": "პროფესიონალური ორმაგი 12-დიუმიანი კარაოკე აკუსტიკური სისტემა ჩაშენებული DSP ექვალაიზერით, Reverb/Echo ეფექტებით და 2 მეტალის UHF უსადენო მიკროფონით. იდეალურია ღია და დახურული ღონისძიებებისთვის, რესტორნებისა და აგარაკისთვის.",
       "specs": [
-        { "label": "სიმძლავრე ვატი", "value": "1200W (600W RMS)" },
-        { "label": "დინამიკის ზომა", "value": "2 × 12\" Woofer + Tweeter" },
-        { "label": "მიკროფონები", "value": "2 × UHF მეტალის უსადენო" },
-        { "label": "ავტონომიური მუშაობა", "value": "12–14 საათი (Li-Ion)" },
-        { "label": "კავშირი", "value": "Bluetooth 5.3, USB, AUX, Guitar" },
-        { "label": "წონა და ტრანსპორტირება", "value": "18.4 კგ · გორგოლაჭებით" }
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "1200W (600W RMS)"
+        },
+        {
+          "label": "დინამიკის ზომა",
+          "value": "2 × 12\" Woofer + Tweeter"
+        },
+        {
+          "label": "მიკროფონები",
+          "value": "2 × UHF მეტალის უსადენო"
+        },
+        {
+          "label": "ავტონომიური მუშაობა",
+          "value": "12–14 საათი (Li-Ion)"
+        },
+        {
+          "label": "კავშირი",
+          "value": "Bluetooth 5.3, USB, AUX, Guitar"
+        },
+        {
+          "label": "წონა და ტრანსპორტირება",
+          "value": "18.4 კგ · გორგოლაჭებით"
+        }
       ],
       "youtubeId": "M7lc1UVf-VE",
       "youtubeDuration": "09:15",
@@ -111,12 +188,30 @@
       ],
       "description": "უახლესი თაობის LiFePO4 პორტატული ენერგოსადგური სუფთა სინუსოიდური (Pure Sine Wave) 220V ინვერტორით. ამუშავებს აუდიო აპარატურას, განათებას, მაცივარს, ტელევიზორს, ლეპტოპებს და ელექტრო ხელსაწყოებს. იტენება 0-დან 80%-მდე 55 წუთში.",
       "specs": [
-        { "label": "სიმძლავრე ვატი", "value": "1200W (2400W პიკი)" },
-        { "label": "ელემენტის ტევადობა", "value": "1024Wh LiFePO4" },
-        { "label": "რესურსი", "value": "3500+ დამუხტვის ციკლი" },
-        { "label": "გამოსასვლელი პორტები", "value": "2× 220V AC, 2× USB-C 100W" },
-        { "label": "მზის პანელით დატენვა", "value": "MPPT კონტროლერი 400W-მდე" },
-        { "label": "წონა", "value": "11.5 კგ" }
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "1200W (2400W პიკი)"
+        },
+        {
+          "label": "ელემენტის ტევადობა",
+          "value": "1024Wh LiFePO4"
+        },
+        {
+          "label": "რესურსი",
+          "value": "3500+ დამუხტვის ციკლი"
+        },
+        {
+          "label": "გამოსასვლელი პორტები",
+          "value": "2× 220V AC, 2× USB-C 100W"
+        },
+        {
+          "label": "მზის პანელით დატენვა",
+          "value": "MPPT კონტროლერი 400W-მდე"
+        },
+        {
+          "label": "წონა",
+          "value": "11.5 კგ"
+        }
       ],
       "youtubeId": "aqz-KE-bpKQ",
       "youtubeDuration": "11:20",
@@ -134,15 +229,39 @@
       "shortMeta": "800W სიმძლავრე · 2× მიკროფონი · TWS სტერეო",
       "oldPrice": 980,
       "newPrice": 740,
-      "images": ["", "", "", "", ""],
+      "images": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "description": "კომპაქტური და უაღრესად მძლავრი 800W კარაოკე დინამიკი ღრმა ბასით და სუფთა ვოკალური ჟღერადობით. მოყვება 2 უსადენო მიკროფონი ხმის სიხშირის რეგულირებით და დისტანციური მართვის პულტი.",
       "specs": [
-        { "label": "სიმძლავრე ვატი", "value": "800W (400W RMS)" },
-        { "label": "აკუსტიკური დრაივერი", "value": "12\" Subwoofer + Horn" },
-        { "label": "მიკროფონები", "value": "2 × უსადენო ეკრანიანი" },
-        { "label": "მუშაობის დრო", "value": "10–12 საათი" },
-        { "label": "ფუნქციები", "value": "Vocal Cut, Echo, TWS 2 დინამიკი" },
-        { "label": "წონა", "value": "12.2 კგ" }
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "800W (400W RMS)"
+        },
+        {
+          "label": "აკუსტიკური დრაივერი",
+          "value": "12\" Subwoofer + Horn"
+        },
+        {
+          "label": "მიკროფონები",
+          "value": "2 × უსადენო ეკრანიანი"
+        },
+        {
+          "label": "მუშაობის დრო",
+          "value": "10–12 საათი"
+        },
+        {
+          "label": "ფუნქციები",
+          "value": "Vocal Cut, Echo, TWS 2 დინამიკი"
+        },
+        {
+          "label": "წონა",
+          "value": "12.2 კგ"
+        }
       ],
       "youtubeId": "M7lc1UVf-VE",
       "youtubeDuration": "06:48",
@@ -169,12 +288,30 @@
       ],
       "description": "სრული პორტატული სოლარ კომპლექტი კემპინგისთვის, საველე სამუშაოებისა და საგანგებო სარეზერვო კვებისთვის. კომპლექტში შედის 600W გენერატორი და წყალგამძლე IP67 100W მონოკრისტალური დასაკეცი მზის პანელი.",
       "specs": [
-        { "label": "გენერატორის სიმძლავრე", "value": "600W Pure Sine Wave" },
-        { "label": "ტევადობა", "value": "512Wh LiFePO4" },
-        { "label": "მზის პანელი კომპლექტში", "value": "100W დასაკეცი მონოკრისტალური" },
-        { "label": "სრული დატენვა მზით", "value": "4.5 – 5.5 საათი" },
-        { "label": "პორტები", "value": "2× 220V, 2× USB-A, 1× USB-C 60W" },
-        { "label": "წონა", "value": "6.4 კგ (სადგური)" }
+        {
+          "label": "გენერატორის სიმძლავრე",
+          "value": "600W Pure Sine Wave"
+        },
+        {
+          "label": "ტევადობა",
+          "value": "512Wh LiFePO4"
+        },
+        {
+          "label": "მზის პანელი კომპლექტში",
+          "value": "100W დასაკეცი მონოკრისტალური"
+        },
+        {
+          "label": "სრული დატენვა მზით",
+          "value": "4.5 – 5.5 საათი"
+        },
+        {
+          "label": "პორტები",
+          "value": "2× 220V, 2× USB-A, 1× USB-C 60W"
+        },
+        {
+          "label": "წონა",
+          "value": "6.4 კგ (სადგური)"
+        }
       ],
       "youtubeId": "aqz-KE-bpKQ",
       "youtubeDuration": "08:12",
@@ -192,15 +329,39 @@
       "shortMeta": "1500W Bi-Amp · 15\" სუბვუფერი · 126 dB SPL",
       "oldPrice": 1890,
       "newPrice": 1450,
-      "images": ["", "", "", "", ""],
+      "images": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "description": "უმაღლესი კლასის კომერციული აკუსტიკური ტაუერი 15-დიუმიანი სუბვუფერით, 4-არხიანი პროფესიონალური მიქშერით, გიტარის პორტით და 2 შორი მოქმედების (60 მ) UHF უსადენო მიკროფონით.",
       "specs": [
-        { "label": "სიმძლავრე ვატი", "value": "1500W (Bi-Amp Class D)" },
-        { "label": "აკუსტიკური წნევა", "value": "126 dB SPL მაქსიმუმი" },
-        { "label": "დრაივერები", "value": "15\" Sub + 6.5\" Mid + Horn" },
-        { "label": "მიკროფონები", "value": "2 × Pro UHF 50 სიხშირით" },
-        { "label": "ელემენტის რესურსი", "value": "10 სთ + 220V პირდაპირი კვება" },
-        { "label": "წონა", "value": "22.8 კგ" }
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "1500W (Bi-Amp Class D)"
+        },
+        {
+          "label": "აკუსტიკური წნევა",
+          "value": "126 dB SPL მაქსიმუმი"
+        },
+        {
+          "label": "დრაივერები",
+          "value": "15\" Sub + 6.5\" Mid + Horn"
+        },
+        {
+          "label": "მიკროფონები",
+          "value": "2 × Pro UHF 50 სიხშირით"
+        },
+        {
+          "label": "ელემენტის რესურსი",
+          "value": "10 სთ + 220V პირდაპირი კვება"
+        },
+        {
+          "label": "წონა",
+          "value": "22.8 კგ"
+        }
       ],
       "youtubeId": "M7lc1UVf-VE",
       "youtubeDuration": "10:05",
@@ -227,12 +388,30 @@
       ],
       "description": "მსუბუქი და საიმედო მინი ენერგოსადგური როუტერის, ლეპტოპის, ტელეფონების, დრონების, კარაოკე დინამიკის და LED განათების უწყვეტი კვებისთვის. აღჭურვილია 220V როზეტით და 3-რეჟიმიანი პროჟექტორით.",
       "specs": [
-        { "label": "სიმძლავრე ვატი", "value": "300W AC 220V (600W პიკი)" },
-        { "label": "ტევადობა", "value": "296Wh (80,000 mAh)" },
-        { "label": "სწრაფი დატენვა", "value": "USB-C PD 100W ორმხრივი" },
-        { "label": "დატენვის მეთოდები", "value": "220V ქსელი, მანქანა 12V, მზის პანელი" },
-        { "label": "ჩაშენებული განათება", "value": "4W LED პროჟექტორი + SOS" },
-        { "label": "წონა", "value": "3.2 კგ" }
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "300W AC 220V (600W პიკი)"
+        },
+        {
+          "label": "ტევადობა",
+          "value": "296Wh (80,000 mAh)"
+        },
+        {
+          "label": "სწრაფი დატენვა",
+          "value": "USB-C PD 100W ორმხრივი"
+        },
+        {
+          "label": "დატენვის მეთოდები",
+          "value": "220V ქსელი, მანქანა 12V, მზის პანელი"
+        },
+        {
+          "label": "ჩაშენებული განათება",
+          "value": "4W LED პროჟექტორი + SOS"
+        },
+        {
+          "label": "წონა",
+          "value": "3.2 კგ"
+        }
       ],
       "youtubeId": "aqz-KE-bpKQ",
       "youtubeDuration": "05:54",
@@ -250,15 +429,39 @@
       "shortMeta": "500W სიმძლავრე · IPX5 დაცვა · 16 სთ ელემენტი",
       "oldPrice": 650,
       "newPrice": 460,
-      "images": ["", "", "", "", ""],
+      "images": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "description": "ადვილად გადასატანი კარაოკე დინამიკი მხრის ქამრით, წყლის შხეფებისგან IPX5 დაცვით და 2 დატენვადი უსადენო მიკროფონით. იდეალურია პიკნიკისთვის, დაბადების დღეებისა და საოჯახო შეკრებებისთვის.",
       "specs": [
-        { "label": "სიმძლავრე ვატი", "value": "500W (250W RMS)" },
-        { "label": "დინამიკები", "value": "2 × 8\" Woofer + 2 Tweeter" },
-        { "label": "მიკროფონები", "value": "2 × უსადენო Type-C დატენვით" },
-        { "label": "ავტონომიურობა", "value": "16 საათამდე" },
-        { "label": "კორპუსის დაცვა", "value": "IPX5 ნესტგამძლე" },
-        { "label": "წონა", "value": "6.8 კგ" }
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": "500W (250W RMS)"
+        },
+        {
+          "label": "დინამიკები",
+          "value": "2 × 8\" Woofer + 2 Tweeter"
+        },
+        {
+          "label": "მიკროფონები",
+          "value": "2 × უსადენო Type-C დატენვით"
+        },
+        {
+          "label": "ავტონომიურობა",
+          "value": "16 საათამდე"
+        },
+        {
+          "label": "კორპუსის დაცვა",
+          "value": "IPX5 ნესტგამძლე"
+        },
+        {
+          "label": "წონა",
+          "value": "6.8 კგ"
+        }
       ],
       "youtubeId": "M7lc1UVf-VE",
       "youtubeDuration": "06:15",
@@ -276,15 +479,39 @@
       "shortMeta": "1200W აკუსტიკა + 600W სოლარ გენერატორი + 100W პანელი",
       "oldPrice": 2540,
       "newPrice": 1790,
-      "images": ["", "", "", "", ""],
+      "images": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
       "description": "სრული ენერგო-დამოუკიდებელი აუდიო და ელექტრო კომპლექტი: StageMax 1200W კარაოკე სისტემა (2 UHF მიკროფონით) + SunCore 600W LiFePO4 გენერატორი + 100W დასაკეცი მზის პანელი. უზრუნველყოფს 36+ საათიან უწყვეტ მუსიკასა და განათებას.",
       "specs": [
-        { "label": "კარაოკე სისტემა", "value": "StageMax 1200W + 2 UHF Mic" },
-        { "label": "სოლარ გენერატორი", "value": "SunCore 600W / 512Wh LiFePO4" },
-        { "label": "მზის პანელი", "value": "100W დასაკეცი მონოკრისტალური" },
-        { "label": "ჯამური ავტონომია", "value": "36+ საათი უწყვეტი მუშაობა" },
-        { "label": "საგარანტიო ვადა", "value": "24 თვე სრულ კომპლექტზე" },
-        { "label": "მიწოდება", "value": "უფასო საკურიერო მთელ საქართველოში" }
+        {
+          "label": "კარაოკე სისტემა",
+          "value": "StageMax 1200W + 2 UHF Mic"
+        },
+        {
+          "label": "სოლარ გენერატორი",
+          "value": "SunCore 600W / 512Wh LiFePO4"
+        },
+        {
+          "label": "მზის პანელი",
+          "value": "100W დასაკეცი მონოკრისტალური"
+        },
+        {
+          "label": "ჯამური ავტონომია",
+          "value": "36+ საათი უწყვეტი მუშაობა"
+        },
+        {
+          "label": "საგარანტიო ვადა",
+          "value": "24 თვე სრულ კომპლექტზე"
+        },
+        {
+          "label": "მიწოდება",
+          "value": "უფასო საკურიერო მთელ საქართველოში"
+        }
       ],
       "youtubeId": "aqz-KE-bpKQ",
       "youtubeDuration": "12:40",
@@ -294,7 +521,20 @@
     }
   ],
   "imagesMap": {
-    "stagemax-1200w": ["", "", "", "", ""],
+    "prod-1793127387296": [
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793127375408_6735.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793127378552_46w2.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793127380658_v8l3.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793127383292_b67s.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_5_1793127385372_6bow.jpg"
+    ],
+    "stagemax-1200w": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "ecovolt-1200w-solar": [
       "/uploads/solar-1.jpg",
       "/uploads/solar-2.jpg",
@@ -302,7 +542,13 @@
       "/uploads/solar-4.jpg",
       "/uploads/solar-5.jpg"
     ],
-    "voxmaster-800w": ["", "", "", "", ""],
+    "voxmaster-800w": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "suncore-mini-600w": [
       "/uploads/solar-1.jpg",
       "/uploads/solar-2.jpg",
@@ -310,7 +556,13 @@
       "/uploads/solar-4.jpg",
       "/uploads/solar-5.jpg"
     ],
-    "acousticpro-titan-1500w": ["", "", "", "", ""],
+    "acousticpro-titan-1500w": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
     "nomadpower-300w": [
       "/uploads/solar-1.jpg",
       "/uploads/solar-2.jpg",
@@ -318,7 +570,19 @@
       "/uploads/solar-4.jpg",
       "/uploads/solar-5.jpg"
     ],
-    "streetbeat-500w": ["", "", "", "", ""],
-    "offgrid-event-combo": ["", "", "", "", ""]
+    "streetbeat-500w": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    "offgrid-event-combo": [
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
   }
 }
