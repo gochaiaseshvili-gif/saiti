@@ -1,111 +1,95 @@
 <!DOCTYPE html>
-<html lang="ka" class="dark">
+<html lang="ka">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iyidebaa.ge - ონლაინ მაღაზია</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: { 50: '#f0fdf4', 500: '#22c55e', 600: '#16a34a', 700: '#15803d' }
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iyidebaa.ge - ონლაინ მაღაზია</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen flex flex-col font-sans selection:bg-green-500 selection:text-white">
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
 
-  <!-- ჰედერი და ჩამოსაშლელი ენების მენიუ -->
-  <header class="sticky top-0 z-50 bg-gray-900/90 backdrop-blur-md border-b border-gray-800 px-4 py-3 shadow-xl">
-    <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <a href="#" class="text-2xl font-black bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">iyidebaa.ge</a>
-      </div>
-      
-      <div class="flex items-center space-x-3">
-        <!-- მართვის პანელის ღილაკი -->
-        <button onclick="toggleAdminPanel()" class="bg-gray-800 hover:bg-gray-700 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center space-x-2 transition-all">
-          <i class="fa-solid fa-gear"></i>
-          <span class="hidden sm:inline">მართვის პანელი</span>
-        </button>
+    <!-- ჰედერი -->
+    <header class="bg-gray-800 border-b border-gray-700 px-4 py-3 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl font-black text-green-400">iyidebaa.ge</span>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <!-- მართვის პანელის ღილაკი -->
+                <button onclick="toggleAdminPanel()" class="bg-gray-700 hover:bg-gray-600 text-green-400 border border-green-500/30 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center space-x-2 transition-all">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>მართვის პანელი</span>
+                </button>
 
-        <!-- ჩამოსაშლელი ენების მენიუ -->
-        <div class="language-dropdown-container">
-          <select id="languageSelect" onchange="changeLanguage(this.value)" class="bg-gray-800/90 text-white border border-gray-700 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer backdrop-blur-md shadow-sm">
-            <option value="ka" class="bg-gray-900 text-white">ქართული (GE)</option>
-            <option value="en" class="bg-gray-900 text-white">English (EN)</option>
-            <option value="ru" class="bg-gray-900 text-white">Русский (RU)</option>
-          </select>
+                <!-- ძველი ენების ღილაკები -->
+                <div id="language-buttons" class="flex space-x-1">
+                    <button onclick="setLanguage('ka')" class="px-2.5 py-1 text-xs rounded bg-green-600 text-white font-bold">GE</button>
+                    <button onclick="setLanguage('en')" class="px-2.5 py-1 text-xs rounded bg-gray-700 text-gray-300">EN</button>
+                    <button onclick="setLanguage('ru')" class="px-2.5 py-1 text-xs rounded bg-gray-700 text-gray-300">RU</button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- მთავარი კონტენტი -->
-  <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full">
-    
-    <!-- ჰერო ბანერი -->
-    <section class="mb-8 p-6 sm:p-8 rounded-2xl bg-gradient-to-r from-green-900/50 via-emerald-900/40 to-gray-900 border border-green-500/30 shadow-2xl relative overflow-hidden">
-      <div class="relative z-10">
-        <span class="px-3 py-1 text-xs font-semibold bg-green-500/20 text-green-400 rounded-full border border-green-500/30">სეზონური აქცია & საუკეთესო არჩევანი</span>
-        <h1 class="text-3xl sm:text-5xl font-extrabold mt-3 mb-3 text-white tracking-tight">ყველაფერი შენი სახლისა და ბიზნესისთვის</h1>
-        <p class="text-gray-300 text-sm sm:text-base max-w-2xl">აღმოაჩინე უმაღლესი ხარისხის პროდუქტები, კარაოკე სისტემები, უსაფრთხოების კამერები და სოლარული გენერატორები ადგილზე მიწოდებით.</p>
-      </div>
-    </section>
+    <!-- მთავარი კონტენტი -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-6 w-full">
+        
+        <!-- ბანერი -->
+        <section class="mb-8 p-6 rounded-2xl bg-gray-800 border border-gray-700 shadow-lg">
+            <h1 class="text-3xl font-extrabold mb-2 text-white">საუკეთესო პროდუქტები ადგილზე მიწოდებით</h1>
+            <p class="text-gray-400 text-sm">აირჩიეთ სასურველი პროდუქტი და შეუკვეთეთ მარტივად.</p>
+        </section>
 
-    <!-- პროდუქტების სექცია -->
-    <section id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- პროდუქტის კარტა -->
-      <div class="bg-gradient-to-b from-gray-900/95 to-gray-900/70 border border-gray-800 rounded-2xl p-4 shadow-xl hover:border-green-500/50 transition-all duration-300 flex flex-col justify-between">
-        <div>
-          <div class="relative h-56 rounded-xl overflow-hidden bg-gray-800 mb-4 border border-gray-700/50">
-            <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80" alt="პროდუქტი" class="w-full h-full object-cover">
-          </div>
-          <h3 class="text-lg font-bold text-white mb-1">კარაოკე სისტემა / პროდუქტი</h3>
-          <p class="text-green-400 font-extrabold text-xl mb-4">₾250</p>
-        </div>
-        <div class="space-y-2">
-          <button onclick="openProductModal(1)" class="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-semibold py-2.5 px-4 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center space-x-2">
-            <i class="fa-solid fa-eye"></i>
-            <span>დეტალურად ნახვა (ფოტოები & ვიდეო)</span>
-          </button>
-          <div class="grid grid-cols-3 gap-2">
-            <a href="https://wa.me/" target="_blank" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 py-2 rounded-xl text-center text-xs font-semibold flex items-center justify-center space-x-1">
-              <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
-            </a>
-            <a href="viber://chat?number=" class="bg-purple-600/20 hover:bg-purple-600/30 text-purple-400 border border-purple-500/30 py-2 rounded-xl text-center text-xs font-semibold flex items-center justify-center space-x-1">
-              <i class="fa-brands fa-viber"></i> <span>Viber</span>
-            </a>
-            <a href="https://t.me/" target="_blank" class="bg-sky-600/20 hover:bg-sky-600/30 text-sky-400 border border-sky-500/30 py-2 rounded-xl text-center text-xs font-semibold flex items-center justify-center space-x-1">
-              <i class="fa-brands fa-telegram"></i> <span>Telegram</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+        <!-- პროდუქტების ბადე -->
+        <section id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- პროდუქტის კარტა -->
+            <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 shadow-lg flex flex-col justify-between">
+                <div>
+                    <div class="h-48 rounded-lg overflow-hidden bg-gray-700 mb-4">
+                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80" alt="პროდუქტი" class="w-full h-full object-cover">
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-1">კარაოკე სისტემა / პროდუქტი</h3>
+                    <p class="text-green-400 font-bold text-lg mb-4">₾250</p>
+                </div>
+                <div class="space-y-2">
+                    <button onclick="openProductModal(1)" class="w-full bg-green-600 hover:bg-green-500 text-white font-semibold py-2 px-4 rounded-lg transition-all text-sm flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>დეტალურად ნახვა</span>
+                    </button>
+                    <div class="grid grid-cols-3 gap-2">
+                        <a href="https://wa.me/" target="_blank" class="bg-emerald-700/30 text-emerald-400 border border-emerald-500/30 py-1.5 rounded text-center text-xs font-semibold flex items-center justify-center space-x-1">
+                            <i class="fa-brands fa-whatsapp"></i> <span>WhatsApp</span>
+                        </a>
+                        <a href="viber://chat?number=" class="bg-purple-700/30 text-purple-400 border border-purple-500/30 py-1.5 rounded text-center text-xs font-semibold flex items-center justify-center space-x-1">
+                            <i class="fa-brands fa-viber"></i> <span>Viber</span>
+                        </a>
+                        <a href="https://t.me/" target="_blank" class="bg-sky-700/30 text-sky-400 border border-sky-500/30 py-1.5 rounded text-center text-xs font-semibold flex items-center justify-center space-x-1">
+                            <i class="fa-brands fa-telegram"></i> <span>Telegram</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-  <!-- ფუტერი -->
-  <footer class="bg-gray-900 border-t border-gray-800 py-6 text-center text-sm text-gray-400 mt-auto">
-    <p>&copy; 2026 iyidebaa.ge — ყველა უფლება დაცულია.</p>
-  </footer>
+    <!-- ფუტერი -->
+    <footer class="bg-gray-800 border-t border-gray-700 py-4 text-center text-sm text-gray-400 mt-auto">
+        <p>&copy; 2026 iyidebaa.ge — ყველა უფლება დაცულია.</p>
+    </footer>
 
-  <script>
-    function changeLanguage(lang) {
-      console.log('Language changed to:', lang);
-    }
-    function openProductModal(id) {
-      console.log('Opening product modal:', id);
-    }
-    function toggleAdminPanel() {
-      alert('მართვის პანელის გახსნა');
-    }
-  </script>
+    <!-- სკრიპტები -->
+    <script>
+        function setLanguage(lang) {
+            console.log('Language:', lang);
+        }
+        function openProductModal(id) {
+            console.log('Product modal:', id);
+        }
+        function toggleAdminPanel() {
+            alert('მართვის პანელის გახსნა');
+        }
+    </script>
 </body>
 </html>
