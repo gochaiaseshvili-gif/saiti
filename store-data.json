@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793200197284,
+  "updatedAt": 1793200212465,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -185,7 +185,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე სისტემა",
       "badgeText": "საუკეთესო ფასი",
-      "name": "VoxMaster Arena 800W პორტატული კარაოკე სისტემა DSP მიქშერით",
+      "name": "",
       "shortMeta": "800W სიმძლავრე · 2× მიკროფონი · TWS სტერეო",
       "oldPrice": 980,
       "newPrice": 740,
@@ -226,9 +226,11 @@
       "youtubeId": "",
       "youtubeDuration": "06:48",
       "youtubeCaption": "VoxMaster 800W ვოკალის და ბასის დეტალური მიმოხილვა",
-      "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
+      "tiktokUrl": "",
       "tiktokCaption": "VoxMaster 800W კარაოკე საღამოს ტესტი",
-      "closedFields": {}
+      "closedFields": {},
+      "facebookUrl": "",
+      "instagramUrl": ""
     },
     {
       "id": "suncore-mini-600w",
