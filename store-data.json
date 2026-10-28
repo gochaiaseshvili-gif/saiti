@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793209327806,
+  "updatedAt": 1793209397300,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -84,11 +84,11 @@
       "oldPrice": 0,
       "newPrice": 0,
       "images": [
-        "",
-        "",
-        "",
-        "",
-        ""
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_1_1793209385119_acq5.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_2_1793209388095_rxzo.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_3_1793209390496_vnc0.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_4_1793209392849_4xq3.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_5_1793209394998_xm5h.jpg"
       ],
       "description": "",
       "specs": [
@@ -724,11 +724,11 @@
   ],
   "imagesMap": {
     "prod-1793204691133": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_1_1793209385119_acq5.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_2_1793209388095_rxzo.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_3_1793209390496_vnc0.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_4_1793209392849_4xq3.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_5_1793209394998_xm5h.jpg"
     ],
     "prod-1793202793642": [
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793202780604_u60a.jpg",
