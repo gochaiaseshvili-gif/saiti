@@ -1436,18 +1436,9 @@
                 <div class="text-xs font-extrabold text-zinc-800">⚙️ 6 ტექნიკური მახასიათებელი:</div>
                 <div id="mie-specs-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-zinc-100">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-2 border-t border-zinc-100">
                   <div>
-                    <label for="mie-youtube" class="block text-[11px] font-bold text-zinc-600 mb-1">YouTube ვიდეოს ლინკი:</label>
-                    <input
-                      id="mie-youtube"
-                      type="text"
-                      placeholder="https://www.youtube.com/watch?v=..."
-                      class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs text-zinc-900"
-                    />
-                  </div>
-                  <div>
-                    <label for="mie-tiktok" class="block text-[11px] font-bold text-zinc-600 mb-1">TikTok ვიდეოს ლინკი:</label>
+                    <label for="mie-tiktok" class="block text-[11px] font-bold text-zinc-700 mb-1">1. TikTok ვიდეოს ლინკი:</label>
                     <input
                       id="mie-tiktok"
                       type="text"
@@ -1456,7 +1447,25 @@
                     />
                   </div>
                   <div>
-                    <label for="mie-instagram" class="block text-[11px] font-bold text-zinc-600 mb-1">Instagram ვიდეოს ლინკი:</label>
+                    <label for="mie-facebook" class="block text-[11px] font-bold text-[#1877F2] mb-1">2. Facebook ვიდეოს ლინკი:</label>
+                    <input
+                      id="mie-facebook"
+                      type="text"
+                      placeholder="https://www.facebook.com/reel/..."
+                      class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-blue-300 bg-blue-50/40 focus:bg-white text-xs text-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label for="mie-youtube" class="block text-[11px] font-bold text-red-600 mb-1">3. YouTube ვიდეოს ლინკი:</label>
+                    <input
+                      id="mie-youtube"
+                      type="text"
+                      placeholder="https://www.youtube.com/watch?v=..."
+                      class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs text-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label for="mie-instagram" class="block text-[11px] font-bold text-pink-600 mb-1">4. Instagram ვიდეოს ლინკი:</label>
                     <input
                       id="mie-instagram"
                       type="text"
@@ -1818,64 +1827,161 @@
             <p id="modal-product-desc" class="text-sm sm:text-base text-zinc-700 leading-relaxed"></p>
           </div>
 
-          <!-- 4. THEN VIDEO REVIEW SECTION (COMPACT YOUTUBE, TIKTOK & INSTAGRAM CARDS) -->
+          <!-- 4. THEN VIDEO REVIEW SECTION (COMPACT TIKTOK, FACEBOOK, YOUTUBE & INSTAGRAM CARDS) -->
           <div
             id="modal-sec-video"
             data-modal-block="modal-video"
             data-block-label="ვიდეო მიმოხილვის გრაფა"
-            class="movable-modal-block rounded-2xl bg-stone-50 border border-zinc-200/90 p-3.5 sm:p-5 space-y-3.5"
+            class="movable-modal-block rounded-2xl bg-stone-50 border border-zinc-200/90 p-3 sm:p-4 space-y-3"
           >
-            <div class="flex flex-wrap items-center justify-between gap-2 pb-1 border-b border-zinc-200/80">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-zinc-200/80">
               <div class="flex items-center gap-2">
                 <span class="w-2.5 h-2.5 rounded-full theme-bg shrink-0"></span>
                 <h3 id="modal-video-section-title" class="text-xs sm:text-sm font-bold text-zinc-950">
-                  ვიდეო მიმოხილვა (YouTube, TikTok &amp; Instagram)
+                  ვიდეო მიმოხილვა (TikTok, Facebook, YouTube &amp; Instagram)
                 </h3>
               </div>
               <div class="flex flex-wrap items-center gap-1 p-1 bg-white rounded-xl border border-zinc-200/80">
                 <button
                   type="button"
                   id="video-tab-both"
-                  class="video-tab-btn min-h-[30px] px-2.5 py-0.5 rounded-lg text-[11px] font-semibold theme-bg whitespace-nowrap"
+                  class="video-tab-btn min-h-[28px] px-2 py-0.5 rounded-lg text-[11px] font-semibold theme-bg whitespace-nowrap cursor-pointer"
                 >
                   <span id="modal-video-all-label">ყველა</span>
                 </button>
                 <button
                   type="button"
-                  id="video-tab-youtube"
-                  class="video-tab-btn min-h-[30px] px-2.5 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap"
-                >
-                  YouTube
-                </button>
-                <button
-                  type="button"
                   id="video-tab-tiktok"
-                  class="video-tab-btn min-h-[30px] px-2.5 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap"
+                  class="video-tab-btn min-h-[28px] px-2 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap cursor-pointer"
                 >
                   TikTok
                 </button>
                 <button
                   type="button"
+                  id="video-tab-facebook"
+                  class="video-tab-btn min-h-[28px] px-2 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap cursor-pointer"
+                >
+                  Facebook
+                </button>
+                <button
+                  type="button"
+                  id="video-tab-youtube"
+                  class="video-tab-btn min-h-[28px] px-2 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap cursor-pointer"
+                >
+                  YouTube
+                </button>
+                <button
+                  type="button"
                   id="video-tab-instagram"
-                  class="video-tab-btn min-h-[30px] px-2.5 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap"
+                  class="video-tab-btn min-h-[28px] px-2 py-0.5 rounded-lg text-[11px] font-semibold text-zinc-600 hover:text-zinc-900 whitespace-nowrap cursor-pointer"
                 >
                   Instagram
                 </button>
               </div>
             </div>
 
-            <!-- Compact Video Review Cards: slightly smaller & proportional -->
-            <div id="video-reviews-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              <!-- YouTube Player Card (Compact) -->
-              <div id="youtube-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-3 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[11px]">
-                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                    <span id="modal-yt-test-label">YouTube ტესტი</span>
+            <!-- Compact 4-Column Video Review Cards: 1. TikTok, 2. Facebook, 3. YouTube, 4. Instagram -->
+            <div id="video-reviews-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              <!-- 1. TikTok Player Card (Compact) -->
+              <div id="tiktok-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
+                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 shrink-0"></span>
+                    <span id="modal-tt-test-label" class="truncate">TikTok ვიდეო</span>
                   </span>
-                  <span id="modal-yt-duration" class="font-mono-num text-zinc-400">08:42</span>
+                  <span class="font-mono-num text-zinc-400 text-[10px] shrink-0">@iyidebaiyide</span>
                 </div>
-                <div class="relative w-full aspect-[16/10] sm:h-[185px] bg-zinc-900">
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1">
+                  <iframe
+                    id="modal-tiktok-iframe"
+                    class="w-full h-full rounded"
+                    src=""
+                    title="TikTok video review player"
+                    loading="lazy"
+                    allow="encrypted-media;"
+                  ></iframe>
+                </div>
+                <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
+                  <span id="modal-tt-caption" class="truncate">TikTok დემონსტრაცია</span>
+                  <a
+                    id="modal-tt-external"
+                    href="https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-cyan-400 hover:underline whitespace-nowrap ml-1.5 font-bold shrink-0"
+                  >
+                    TikTok ↗
+                  </a>
+                </div>
+              </div>
+
+              <!-- 2. Facebook Video / Reel Card (Compact) -->
+              <div id="facebook-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
+                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
+                    <span class="w-2 h-2 rounded-full bg-[#1877F2] shrink-0"></span>
+                    <span id="modal-fb-test-label" class="truncate">Facebook ვიდეო</span>
+                  </span>
+                  <span class="font-mono-num text-blue-400 text-[10px] shrink-0">Facebook</span>
+                </div>
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1 flex items-center justify-center overflow-hidden">
+                  <iframe
+                    id="modal-facebook-iframe"
+                    class="w-full h-full rounded bg-black hidden"
+                    src=""
+                    title="Facebook video review player"
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                  <a
+                    id="modal-facebook-fallback"
+                    href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full h-full rounded bg-gradient-to-br from-[#1877F2]/30 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
+                  >
+                    <img
+                      id="modal-fb-fallback-img"
+                      src=""
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 fast-transition pointer-events-none"
+                    />
+                    <span class="relative z-10 w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-lg group-hover:scale-110 fast-transition">
+                      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                      </svg>
+                    </span>
+                    <span class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/80 px-2.5 py-0.5 rounded-full border border-blue-400/40">
+                      Facebook-ზე ნახვა ↗
+                    </span>
+                  </a>
+                </div>
+                <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
+                  <span id="modal-fb-caption" class="truncate">Facebook გვერდი / ვიდეო</span>
+                  <a
+                    id="modal-fb-external"
+                    href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-[#4599FF] hover:underline whitespace-nowrap ml-1.5 font-bold shrink-0"
+                  >
+                    Facebook ↗
+                  </a>
+                </div>
+              </div>
+
+              <!-- 3. YouTube Player Card (Compact) -->
+              <div id="youtube-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
+                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
+                    <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
+                    <span id="modal-yt-test-label" class="truncate">YouTube ტესტი</span>
+                  </span>
+                  <span id="modal-yt-duration" class="font-mono-num text-zinc-400 text-[10px] shrink-0">08:42</span>
+                </div>
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900">
                   <iframe
                     id="modal-youtube-iframe"
                     class="w-full h-full"
@@ -1886,63 +1992,30 @@
                     allowfullscreen
                   ></iframe>
                 </div>
-                <div class="px-3 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[11px] text-zinc-400">
+                <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
                   <span id="modal-yt-caption" class="truncate">ვიდეო მიმოხილვა</span>
                   <a
                     id="modal-yt-external"
                     href="https://www.youtube.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-amber-400 hover:underline whitespace-nowrap ml-2 font-semibold"
+                    class="text-amber-400 hover:underline whitespace-nowrap ml-1.5 font-bold shrink-0"
                   >
                     YouTube ↗
                   </a>
                 </div>
               </div>
 
-              <!-- TikTok Player Card (Compact) -->
-              <div id="tiktok-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-3 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[11px]">
-                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-                    <span id="modal-tt-test-label">TikTok ლაივ-ტესტი</span>
-                  </span>
-                  <span class="font-mono-num text-zinc-400">@iyidebaiyide</span>
-                </div>
-                <div class="relative w-full aspect-[16/10] sm:h-[185px] bg-zinc-900 p-1">
-                  <iframe
-                    id="modal-tiktok-iframe"
-                    class="w-full h-full rounded"
-                    src=""
-                    title="TikTok video review player"
-                    loading="lazy"
-                    allow="encrypted-media;"
-                  ></iframe>
-                </div>
-                <div class="px-3 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[11px] text-zinc-400">
-                  <span id="modal-tt-caption" class="truncate">TikTok დემონსტრაცია</span>
-                  <a
-                    id="modal-tt-external"
-                    href="https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-amber-400 hover:underline whitespace-nowrap ml-2 font-semibold"
-                  >
-                    TikTok ↗
-                  </a>
-                </div>
-              </div>
-
-              <!-- Instagram Player Card (Compact) -->
+              <!-- 4. Instagram Player Card (Compact) -->
               <div id="instagram-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-3 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[11px]">
-                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-pink-500"></span>
-                    <span id="modal-ig-test-label">Instagram ვიდეო / Reel მიმოხილვა</span>
+                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                  <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
+                    <span class="w-2 h-2 rounded-full bg-pink-500 shrink-0"></span>
+                    <span id="modal-ig-test-label" class="truncate">Instagram ვიდეო</span>
                   </span>
-                  <span class="font-mono-num text-zinc-400">@iyideba_saintereso_nivtebi</span>
+                  <span class="font-mono-num text-zinc-400 text-[10px] shrink-0">Instagram</span>
                 </div>
-                <div class="relative w-full aspect-[16/10] sm:h-[185px] bg-zinc-900 p-1">
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1">
                   <iframe
                     id="modal-instagram-iframe"
                     class="w-full h-full rounded bg-white"
@@ -1952,14 +2025,14 @@
                     allow="encrypted-media;"
                   ></iframe>
                 </div>
-                <div class="px-3 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[11px] text-zinc-400">
+                <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
                   <span id="modal-ig-caption" class="truncate">Instagram დემონსტრაცია</span>
                   <a
                     id="modal-ig-external"
                     href="https://www.instagram.com/iyideba_saintereso_nivtebi/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-pink-400 hover:underline whitespace-nowrap ml-2 font-semibold"
+                    class="text-pink-400 hover:underline whitespace-nowrap ml-1.5 font-bold shrink-0"
                   >
                     Instagram ↗
                   </a>
@@ -3099,68 +3172,86 @@
               <div id="cp-five-images-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3"></div>
             </div>
 
-            <!-- YouTube, TikTok & Instagram Video Links (Directly under the 5 images in the Admin Panel) -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 rounded-2xl bg-stone-50 border border-zinc-200/90">
+            <!-- TikTok, Facebook, YouTube & Instagram Video Links (Directly under the 5 images in the Admin Panel) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 p-4 rounded-2xl bg-stone-50 border border-zinc-200/90">
               <div class="space-y-1.5">
-                <label for="cp-prod-youtube" class="block text-xs font-semibold text-zinc-800">
-                  YouTube ვიდეო მიმოხილვის ბმული ან ID
+                <label for="cp-prod-tiktok" class="block text-xs font-semibold text-zinc-800">
+                  1. TikTok ვიდეოს ბმული
+                </label>
+                <input
+                  id="cp-prod-tiktok"
+                  type="text"
+                  placeholder="მაგ: https://www.tiktok.com/@user/video/..."
+                  class="w-full min-h-[42px] px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                />
+                <input
+                  id="cp-prod-tt-caption"
+                  type="text"
+                  placeholder="TikTok ვიდეოს სათაური (არასავალდებულო)"
+                  class="w-full min-h-[36px] px-2.5 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                />
+              </div>
+
+              <div class="space-y-1.5">
+                <label for="cp-prod-facebook" class="block text-xs font-semibold text-[#1877F2]">
+                  2. Facebook ვიდეოს / Reel-ის ბმული
+                </label>
+                <input
+                  id="cp-prod-facebook"
+                  type="text"
+                  placeholder="მაგ: https://www.facebook.com/reel/..."
+                  class="w-full min-h-[42px] px-3 py-2 rounded-xl border border-blue-300 bg-white text-xs focus:outline-none focus:border-[#1877F2]"
+                />
+                <input
+                  id="cp-prod-fb-caption"
+                  type="text"
+                  placeholder="Facebook ვიდეოს სათაური (არასავალდებულო)"
+                  class="w-full min-h-[36px] px-2.5 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                />
+              </div>
+
+              <div class="space-y-1.5">
+                <label for="cp-prod-youtube" class="block text-xs font-semibold text-red-600">
+                  3. YouTube ვიდეოს ბმული ან ID
                 </label>
                 <input
                   id="cp-prod-youtube"
                   type="text"
                   placeholder="მაგ: https://www.youtube.com/watch?v=M7lc1UVf-VE"
-                  class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                  class="w-full min-h-[42px] px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs focus:outline-none focus:border-zinc-900"
                 />
                 <div class="grid grid-cols-3 gap-1.5">
                   <input
                     id="cp-prod-yt-caption"
                     type="text"
-                    placeholder="YouTube ვიდეოს სათაური"
-                    class="col-span-2 w-full min-h-[38px] px-3 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                    placeholder="YouTube სათაური"
+                    class="col-span-2 w-full min-h-[36px] px-2.5 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
                   />
                   <input
                     id="cp-prod-yt-duration"
                     type="text"
                     placeholder="08:45"
                     title="ვიდეოს ხანგრძლივობა"
-                    class="col-span-1 w-full min-h-[38px] px-2.5 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs font-mono-num focus:outline-none focus:border-zinc-900"
+                    class="col-span-1 w-full min-h-[36px] px-2 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs font-mono-num focus:outline-none focus:border-zinc-900"
                   />
                 </div>
               </div>
 
               <div class="space-y-1.5">
-                <label for="cp-prod-tiktok" class="block text-xs font-semibold text-zinc-800">
-                  TikTok ვიდეოს ბმული ან Embed URL
-                </label>
-                <input
-                  id="cp-prod-tiktok"
-                  type="text"
-                  placeholder="მაგ: https://www.tiktok.com/@user/video/7234567890123456789"
-                  class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs focus:outline-none focus:border-zinc-900"
-                />
-                <input
-                  id="cp-prod-tt-caption"
-                  type="text"
-                  placeholder="TikTok ვიდეოს სათაური (არასავალდებულო)"
-                  class="w-full min-h-[38px] px-3 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
-                />
-              </div>
-
-              <div class="space-y-1.5">
-                <label for="cp-prod-instagram" class="block text-xs font-semibold text-zinc-800">
-                  Instagram ვიდეოს / Reel-ის ბმული
+                <label for="cp-prod-instagram" class="block text-xs font-semibold text-pink-600">
+                  4. Instagram ვიდეოს / Reel-ის ბმული
                 </label>
                 <input
                   id="cp-prod-instagram"
                   type="text"
-                  placeholder="მაგ: https://www.instagram.com/reel/C5xyz123/"
-                  class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                  placeholder="მაგ: https://www.instagram.com/reel/..."
+                  class="w-full min-h-[42px] px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs focus:outline-none focus:border-zinc-900"
                 />
                 <input
                   id="cp-prod-ig-caption"
                   type="text"
                   placeholder="Instagram ვიდეოს სათაური (არასავალდებულო)"
-                  class="w-full min-h-[38px] px-3 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
+                  class="w-full min-h-[36px] px-2.5 py-1.5 rounded-xl border border-zinc-200 bg-white text-xs focus:outline-none focus:border-zinc-900"
                 />
               </div>
             </div>
@@ -4293,11 +4384,12 @@
             modalInstallmentBtn: 'განვადებით შეძენა',
             modalCardBtn: 'ბარათით გადახდა',
             modalCallGocha: '{name} • დარეკვა',
-            modalVideoTitle: 'ვიდეო მიმოხილვა (YouTube, TikTok & Instagram)',
+            modalVideoTitle: 'ვიდეო მიმოხილვა (TikTok, Facebook, YouTube & Instagram)',
             modalVideoAll: 'ყველა',
             modalYtLabel: 'YouTube ტესტი',
-            modalTtLabel: 'TikTok ლაივ-ტესტი',
-            modalIgLabel: 'Instagram ვიდეო / Reel მიმოხილვა',
+            modalTtLabel: 'TikTok ვიდეო',
+            modalFbLabel: 'Facebook ვიდეო',
+            modalIgLabel: 'Instagram ვიდეო',
             modalDescHeading: 'აღწერა და ტექნიკური მახასიათებლები',
             shareTitle: 'გაზიარება',
             shareCopyLink: 'ბმულის კოპირება',
@@ -4453,11 +4545,12 @@
             modalInstallmentBtn: 'Order with Installment',
             modalCardBtn: 'Pay with Card',
             modalCallGocha: '{name} • Call',
-            modalVideoTitle: 'Video Review (YouTube, TikTok & Instagram)',
+            modalVideoTitle: 'Video Review (TikTok, Facebook, YouTube & Instagram)',
             modalVideoAll: 'All',
             modalYtLabel: 'YouTube Test',
-            modalTtLabel: 'TikTok Live Test',
-            modalIgLabel: 'Instagram Video / Reel Review',
+            modalTtLabel: 'TikTok Video',
+            modalFbLabel: 'Facebook Video',
+            modalIgLabel: 'Instagram Video',
             modalDescHeading: 'Description & Technical Specifications',
             shareTitle: 'Share',
             shareCopyLink: 'Copy Link',
@@ -4613,11 +4706,12 @@
             modalInstallmentBtn: 'Купить в рассрочку',
             modalCardBtn: 'Оплата картой',
             modalCallGocha: '{name} • Позвонить',
-            modalVideoTitle: 'Видеообзор (YouTube, TikTok и Instagram)',
+            modalVideoTitle: 'Видеообзор (TikTok, Facebook, YouTube и Instagram)',
             modalVideoAll: 'Все',
             modalYtLabel: 'Тест на YouTube',
-            modalTtLabel: 'Live-тест в TikTok',
-            modalIgLabel: 'Видео / Reel в Instagram',
+            modalTtLabel: 'Видео TikTok',
+            modalFbLabel: 'Видео Facebook',
+            modalIgLabel: 'Видео Instagram',
             modalDescHeading: 'Описание и технические характеристики',
             shareTitle: 'Поделиться',
             shareCopyLink: 'Скопировать ссылку',
@@ -5838,6 +5932,11 @@
         const modalTiktokIframe = document.getElementById('modal-tiktok-iframe');
         const modalTtCaption = document.getElementById('modal-tt-caption');
         const modalTtExternal = document.getElementById('modal-tt-external');
+        const modalFacebookIframe = document.getElementById('modal-facebook-iframe');
+        const modalFacebookFallback = document.getElementById('modal-facebook-fallback');
+        const modalFbFallbackImg = document.getElementById('modal-fb-fallback-img');
+        const modalFbCaption = document.getElementById('modal-fb-caption');
+        const modalFbExternal = document.getElementById('modal-fb-external');
         const modalInstagramIframe = document.getElementById('modal-instagram-iframe');
         const modalIgCaption = document.getElementById('modal-ig-caption');
         const modalIgExternal = document.getElementById('modal-ig-external');
@@ -5914,6 +6013,42 @@
             return `https://www.instagram.com/reel/${match[1]}/embed`;
           }
           return trimmed;
+        }
+
+        function extractCleanFacebookUrl(input) {
+          if (!input) return '';
+          let trimmed = String(input).trim();
+          const srcMatch = trimmed.match(/src=["']([^"']+)["']/i);
+          if (srcMatch && srcMatch[1]) {
+            trimmed = srcMatch[1];
+          }
+          if (trimmed.includes('facebook.com/plugins/video.php')) {
+            try {
+              const u = new URL(trimmed);
+              const hrefParam = u.searchParams.get('href');
+              if (hrefParam) return decodeURIComponent(hrefParam);
+            } catch (e) {}
+          }
+          return trimmed;
+        }
+
+        function normalizeFacebookEmbedUrl(input) {
+          if (!input) return '';
+          const trimmed = String(input).trim();
+          if (!trimmed) return '';
+          const srcMatch = trimmed.match(/src=["']([^"']+)["']/i);
+          if (srcMatch && srcMatch[1]) {
+            return srcMatch[1];
+          }
+          if (trimmed.includes('facebook.com/plugins/video.php')) {
+            return trimmed;
+          }
+          // Only embed if it looks like a Facebook video, reel, watch, or share/v, share/r link
+          const isVideoLink = /facebook\.com\/(?:watch|reel|share\/[vr]|.*\/videos\/)|fb\.watch\//i.test(trimmed);
+          if (!isVideoLink) {
+            return '';
+          }
+          return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(trimmed)}&show_text=false&width=500`;
         }
 
         function applyLanguageToDOM() {
@@ -6016,6 +6151,7 @@
           setTxt('modal-video-all-label', strings.modalVideoAll);
           setTxt('modal-yt-test-label', strings.modalYtLabel);
           setTxt('modal-tt-test-label', strings.modalTtLabel);
+          setTxt('modal-fb-test-label', strings.modalFbLabel || 'Facebook ვიდეო');
           setTxt('modal-ig-test-label', strings.modalIgLabel);
           setTxt('modal-desc-heading', strings.modalDescHeading);
 
@@ -7221,6 +7357,32 @@
           if (modalTopIgLink) modalTopIgLink.href = igModalHref;
           if (modalBottomIgBtn) modalBottomIgBtn.href = igModalHref;
 
+          const fbEmbedSrc = normalizeFacebookEmbedUrl(rawProduct.facebookUrl);
+          const cleanFbUrl = extractCleanFacebookUrl(rawProduct.facebookUrl);
+          const targetFbHref =
+            cleanFbUrl && cleanFbUrl.startsWith('http') ? cleanFbUrl : fbPageHref;
+          if (modalFacebookIframe && modalFacebookFallback) {
+            if (fbEmbedSrc) {
+              modalFacebookIframe.src = fbEmbedSrc;
+              modalFacebookIframe.classList.remove('hidden');
+              modalFacebookFallback.classList.add('hidden');
+            } else {
+              modalFacebookIframe.src = '';
+              modalFacebookIframe.classList.add('hidden');
+              modalFacebookFallback.classList.remove('hidden');
+              modalFacebookFallback.href = targetFbHref;
+              if (modalFbFallbackImg) {
+                modalFbFallbackImg.src = getProductImageSrc(rawProduct, activeThemeColor);
+              }
+            }
+          }
+          if (modalFbCaption) {
+            modalFbCaption.textContent = product.facebookCaption || product.name;
+          }
+          if (modalFbExternal) {
+            modalFbExternal.href = targetFbHref;
+          }
+
           if (modalInstagramIframe) {
             modalInstagramIframe.src = normalizeInstagramEmbedUrl(rawProduct.instagramUrl);
           }
@@ -7274,6 +7436,7 @@
           document.body.classList.remove('overflow-hidden');
           modalYoutubeIframe.src = '';
           modalTiktokIframe.src = '';
+          if (modalFacebookIframe) modalFacebookIframe.src = '';
           if (modalInstagramIframe) modalInstagramIframe.src = '';
           activeModalProduct = null;
           try {
@@ -7325,6 +7488,8 @@
         const fYtCaption = document.getElementById('cp-prod-yt-caption');
         const fTiktok = document.getElementById('cp-prod-tiktok');
         const fTtCaption = document.getElementById('cp-prod-tt-caption');
+        const fFacebook = document.getElementById('cp-prod-facebook');
+        const fFbCaption = document.getElementById('cp-prod-fb-caption');
         const fInstagram = document.getElementById('cp-prod-instagram');
         const fIgCaption = document.getElementById('cp-prod-ig-caption');
 
@@ -7765,6 +7930,8 @@
           fYtCaption.value = '';
           fTiktok.value = 'https://www.tiktok.com/embed/v2/7234567890123456789';
           fTtCaption.value = '';
+          if (fFacebook) fFacebook.value = '';
+          if (fFbCaption) fFbCaption.value = '';
           if (fInstagram) fInstagram.value = 'https://www.instagram.com/p/C-DefaultReel/embed';
           if (fIgCaption) fIgCaption.value = '';
           formFiveImages = ['', '', '', '', ''];
@@ -7797,6 +7964,8 @@
           fYtCaption.value = prod.youtubeCaption || '';
           fTiktok.value = prod.tiktokUrl || '';
           fTtCaption.value = prod.tiktokCaption || '';
+          if (fFacebook) fFacebook.value = prod.facebookUrl || '';
+          if (fFbCaption) fFbCaption.value = prod.facebookCaption || '';
           if (fInstagram) fInstagram.value = prod.instagramUrl || '';
           if (fIgCaption) fIgCaption.value = prod.instagramCaption || '';
 
@@ -7852,6 +8021,8 @@
             youtubeCaption: fYtCaption.value.trim() || displayName,
             tiktokUrl: normalizeTiktokEmbedUrl(fTiktok.value),
             tiktokCaption: fTtCaption.value.trim() || displayName,
+            facebookUrl: fFacebook ? fFacebook.value.trim() : '',
+            facebookCaption: fFbCaption ? fFbCaption.value.trim() || displayName : displayName,
             instagramUrl: fInstagram ? normalizeInstagramEmbedUrl(fInstagram.value) : '',
             instagramCaption: fIgCaption ? fIgCaption.value.trim() || displayName : displayName
           };
@@ -8605,6 +8776,7 @@
         const mieSpecsContainer = document.getElementById('mie-specs-container');
         const mieYoutubeInput = document.getElementById('mie-youtube');
         const mieTiktokInput = document.getElementById('mie-tiktok');
+        const mieFacebookInput = document.getElementById('mie-facebook');
         const mieInstagramInput = document.getElementById('mie-instagram');
         const mieSaveDoneBtn = document.getElementById('mie-save-done-btn');
         const mieOpenFullCpBtn = document.getElementById('mie-open-full-cp-btn');
@@ -8668,6 +8840,7 @@
             mieYoutubeInput.value = prod.youtubeId ? `https://www.youtube.com/watch?v=${extractYoutubeId(prod.youtubeId)}` : '';
           }
           if (mieTiktokInput) mieTiktokInput.value = prod.tiktokUrl || '';
+          if (mieFacebookInput) mieFacebookInput.value = prod.facebookUrl || '';
           if (mieInstagramInput) mieInstagramInput.value = prod.instagramUrl || '';
 
           if (mieSpecsContainer) {
@@ -8732,6 +8905,50 @@
               .join('');
           }
 
+          const ytId = extractYoutubeId(prod.youtubeId);
+          if (modalYoutubeIframe) {
+            const newYtSrc = `https://www.youtube.com/embed/${ytId}?rel=0`;
+            if (modalYoutubeIframe.src !== newYtSrc) modalYoutubeIframe.src = newYtSrc;
+          }
+          if (modalYtCaption) modalYtCaption.textContent = product.youtubeCaption || product.name;
+          if (modalYtExternal) modalYtExternal.href = `https://www.youtube.com/watch?v=${ytId}`;
+
+          if (modalTiktokIframe) {
+            const newTtSrc = normalizeTiktokEmbedUrl(prod.tiktokUrl);
+            if (modalTiktokIframe.src !== newTtSrc) modalTiktokIframe.src = newTtSrc;
+          }
+          if (modalTtCaption) modalTtCaption.textContent = product.tiktokCaption || product.name;
+
+          const fbPageHref = String(
+            storeSettings.fbUrl || 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums'
+          ).trim() || 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums';
+          const fbEmbedSrc = normalizeFacebookEmbedUrl(prod.facebookUrl);
+          const cleanFbUrl = extractCleanFacebookUrl(prod.facebookUrl);
+          const targetFbHref = cleanFbUrl && cleanFbUrl.startsWith('http') ? cleanFbUrl : fbPageHref;
+          if (modalFacebookIframe && modalFacebookFallback) {
+            if (fbEmbedSrc) {
+              if (modalFacebookIframe.src !== fbEmbedSrc) modalFacebookIframe.src = fbEmbedSrc;
+              modalFacebookIframe.classList.remove('hidden');
+              modalFacebookFallback.classList.add('hidden');
+            } else {
+              modalFacebookIframe.src = '';
+              modalFacebookIframe.classList.add('hidden');
+              modalFacebookFallback.classList.remove('hidden');
+              modalFacebookFallback.href = targetFbHref;
+              if (modalFbFallbackImg) {
+                modalFbFallbackImg.src = getProductImageSrc(prod, activeThemeColor);
+              }
+            }
+          }
+          if (modalFbCaption) modalFbCaption.textContent = product.facebookCaption || product.name;
+          if (modalFbExternal) modalFbExternal.href = targetFbHref;
+
+          if (modalInstagramIframe) {
+            const newIgSrc = normalizeInstagramEmbedUrl(prod.instagramUrl);
+            if (modalInstagramIframe.src !== newIgSrc) modalInstagramIframe.src = newIgSrc;
+          }
+          if (modalIgCaption) modalIgCaption.textContent = product.instagramCaption || product.name;
+
           renderModalGalleryState();
         }
 
@@ -8771,6 +8988,9 @@
           }
           if (mieTiktokInput && mieTiktokInput.value.trim()) {
             prod.tiktokUrl = normalizeTiktokEmbedUrl(mieTiktokInput.value.trim());
+          }
+          if (mieFacebookInput) {
+            prod.facebookUrl = mieFacebookInput.value.trim();
           }
           if (mieInstagramInput && mieInstagramInput.value.trim()) {
             prod.instagramUrl = normalizeInstagramEmbedUrl(mieInstagramInput.value.trim());
@@ -10105,65 +10325,82 @@
           }
         });
 
-        // Video Review Tabs inside Modal (YouTube, TikTok & Instagram)
+        // Video Review Tabs inside Modal (1. TikTok, 2. Facebook, 3. YouTube, 4. Instagram)
         const videoTabBoth = document.getElementById('video-tab-both');
-        const videoTabYoutube = document.getElementById('video-tab-youtube');
         const videoTabTiktok = document.getElementById('video-tab-tiktok');
+        const videoTabFacebook = document.getElementById('video-tab-facebook');
+        const videoTabYoutube = document.getElementById('video-tab-youtube');
         const videoTabInstagram = document.getElementById('video-tab-instagram');
-        const youtubeCard = document.getElementById('youtube-review-card');
         const tiktokCard = document.getElementById('tiktok-review-card');
+        const facebookCard = document.getElementById('facebook-review-card');
+        const youtubeCard = document.getElementById('youtube-review-card');
         const instagramCard = document.getElementById('instagram-review-card');
         const videoReviewsGrid = document.getElementById('video-reviews-grid');
 
         function setVideoTab(mode) {
-          [videoTabBoth, videoTabYoutube, videoTabTiktok, videoTabInstagram].forEach((btn) => {
+          [videoTabBoth, videoTabTiktok, videoTabFacebook, videoTabYoutube, videoTabInstagram].forEach((btn) => {
             if (!btn) return;
             btn.classList.remove('theme-bg');
             btn.classList.add('text-zinc-600');
           });
 
           if (mode === 'both') {
-            videoTabBoth.classList.add('theme-bg');
-            videoTabBoth.classList.remove('text-zinc-600');
-            youtubeCard.classList.remove('hidden');
-            tiktokCard.classList.remove('hidden');
-            if (instagramCard) {
-              instagramCard.classList.remove('hidden');
-              instagramCard.classList.remove('sm:col-span-2');
+            if (videoTabBoth) {
+              videoTabBoth.classList.add('theme-bg');
+              videoTabBoth.classList.remove('text-zinc-600');
             }
-            videoReviewsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3';
-          } else if (mode === 'youtube') {
-            videoTabYoutube.classList.add('theme-bg');
-            videoTabYoutube.classList.remove('text-zinc-600');
-            youtubeCard.classList.remove('hidden');
-            tiktokCard.classList.add('hidden');
-            if (instagramCard) instagramCard.classList.add('hidden');
-            videoReviewsGrid.className = 'grid grid-cols-1 max-w-lg mx-auto gap-3';
+            if (tiktokCard) tiktokCard.classList.remove('hidden');
+            if (facebookCard) facebookCard.classList.remove('hidden');
+            if (youtubeCard) youtubeCard.classList.remove('hidden');
+            if (instagramCard) instagramCard.classList.remove('hidden');
+            videoReviewsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5';
           } else if (mode === 'tiktok') {
-            videoTabTiktok.classList.add('theme-bg');
-            videoTabTiktok.classList.remove('text-zinc-600');
-            youtubeCard.classList.add('hidden');
-            tiktokCard.classList.remove('hidden');
+            if (videoTabTiktok) {
+              videoTabTiktok.classList.add('theme-bg');
+              videoTabTiktok.classList.remove('text-zinc-600');
+            }
+            if (tiktokCard) tiktokCard.classList.remove('hidden');
+            if (facebookCard) facebookCard.classList.add('hidden');
+            if (youtubeCard) youtubeCard.classList.add('hidden');
             if (instagramCard) instagramCard.classList.add('hidden');
-            videoReviewsGrid.className = 'grid grid-cols-1 max-w-lg mx-auto gap-3';
+            videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
+          } else if (mode === 'facebook') {
+            if (videoTabFacebook) {
+              videoTabFacebook.classList.add('theme-bg');
+              videoTabFacebook.classList.remove('text-zinc-600');
+            }
+            if (tiktokCard) tiktokCard.classList.add('hidden');
+            if (facebookCard) facebookCard.classList.remove('hidden');
+            if (youtubeCard) youtubeCard.classList.add('hidden');
+            if (instagramCard) instagramCard.classList.add('hidden');
+            videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
+          } else if (mode === 'youtube') {
+            if (videoTabYoutube) {
+              videoTabYoutube.classList.add('theme-bg');
+              videoTabYoutube.classList.remove('text-zinc-600');
+            }
+            if (tiktokCard) tiktokCard.classList.add('hidden');
+            if (facebookCard) facebookCard.classList.add('hidden');
+            if (youtubeCard) youtubeCard.classList.remove('hidden');
+            if (instagramCard) instagramCard.classList.add('hidden');
+            videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
           } else if (mode === 'instagram') {
             if (videoTabInstagram) {
               videoTabInstagram.classList.add('theme-bg');
               videoTabInstagram.classList.remove('text-zinc-600');
             }
-            youtubeCard.classList.add('hidden');
-            tiktokCard.classList.add('hidden');
-            if (instagramCard) {
-              instagramCard.classList.remove('hidden');
-              instagramCard.classList.remove('sm:col-span-2');
-            }
-            videoReviewsGrid.className = 'grid grid-cols-1 max-w-lg mx-auto gap-3';
+            if (tiktokCard) tiktokCard.classList.add('hidden');
+            if (facebookCard) facebookCard.classList.add('hidden');
+            if (youtubeCard) youtubeCard.classList.add('hidden');
+            if (instagramCard) instagramCard.classList.remove('hidden');
+            videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
           }
         }
 
-        videoTabBoth.addEventListener('click', () => setVideoTab('both'));
-        videoTabYoutube.addEventListener('click', () => setVideoTab('youtube'));
-        videoTabTiktok.addEventListener('click', () => setVideoTab('tiktok'));
+        if (videoTabBoth) videoTabBoth.addEventListener('click', () => setVideoTab('both'));
+        if (videoTabTiktok) videoTabTiktok.addEventListener('click', () => setVideoTab('tiktok'));
+        if (videoTabFacebook) videoTabFacebook.addEventListener('click', () => setVideoTab('facebook'));
+        if (videoTabYoutube) videoTabYoutube.addEventListener('click', () => setVideoTab('youtube'));
         if (videoTabInstagram) {
           videoTabInstagram.addEventListener('click', () => setVideoTab('instagram'));
         }
