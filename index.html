@@ -1058,14 +1058,22 @@
     </main>
 
     <!-- CLEAN FOOTER -->
-    <footer class="bg-white border-t border-zinc-200/80 mt-8">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
-        <div class="flex items-center gap-2">
+    <footer class="bg-white border-t border-zinc-200/80 mt-8 pb-24 sm:pb-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-zinc-500">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button
+            id="footer-admin-btn"
+            type="button"
+            class="min-h-[40px] px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer shrink-0"
+          >
+            <span>⚙️</span>
+            <span id="footer-admin-btn-label">მართვის პანელი</span>
+          </button>
           <span id="footer-brand-name" class="font-display font-bold text-zinc-900">იყიდება საინტერესო ნივთები</span>
           <span aria-hidden="true">•</span>
           <span id="footer-tagline-text">კომერციული აუდიო და სოლარ ენერგოსისტემები</span>
         </div>
-        <div class="flex flex-wrap items-center justify-center gap-4">
+        <div class="flex flex-wrap items-center justify-start sm:justify-center gap-3 sm:gap-4">
           <a
             id="footer-fb-link"
             href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
@@ -1139,10 +1147,6 @@
           <a id="footer-tg-link" href="https://t.me/+995551588579" target="_blank" rel="noopener noreferrer" class="hover:text-zinc-900 hover:underline">
             Telegram
           </a>
-          <span aria-hidden="true">•</span>
-          <button id="footer-admin-btn" type="button" class="text-zinc-900 font-semibold hover:underline">
-            მართვის პანელი
-          </button>
         </div>
       </div>
     </footer>
@@ -1221,7 +1225,7 @@
               <!-- Direct 1-Click 5-Photo Multi-Upload inside Product Page -->
               <label
                 id="modal-direct-5photo-label"
-                class="theme-bg min-h-[42px] px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.96] fast-transition whitespace-nowrap"
+                class="theme-bg min-h-[42px] px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.96] fast-transition whitespace-nowrap relative"
                 title="ერთი გახსნით მონიშნეთ 5 ფოტო და ატვირთეთ ერთდროულად"
               >
                 <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -1229,7 +1233,7 @@
                 </svg>
                 <span id="modal-upload-5photo-text-desktop" class="hidden md:inline">5 ფოტოს ატვირთვა</span>
                 <span id="modal-upload-5photo-text-mobile" class="md:hidden">5 ფოტო</span>
-                <input id="modal-direct-5photo-input" type="file" accept="image/*" multiple class="hidden" />
+                <input id="modal-direct-5photo-input" type="file" accept="image/*" multiple class="sr-only" />
               </label>
 
               <button
@@ -1273,7 +1277,7 @@
         </div>
 
         <!-- Full-Page Product Content Container (Movable Sections) -->
-        <div id="modal-movable-sections-container" class="max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6 flex-1">
+        <div id="modal-movable-sections-container" class="max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 pb-28 sm:pb-16 space-y-6 flex-1">
           <!-- 1. TOP HEADER: Product Title & Dual Pricing Display with Contact Banner & Screenshot/Share -->
           <div
             id="modal-sec-pricing"
@@ -2077,6 +2081,18 @@
                 <span id="modal-bottom-phone-label">გოჩა • დარეკვა</span>
               </a>
             </div>
+
+            <!-- Left-aligned Admin Control Panel Quick Entry inside Product Detail Page -->
+            <div class="pt-3 border-t border-zinc-200/80 flex items-center justify-start">
+              <button
+                id="modal-footer-admin-btn"
+                type="button"
+                class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer"
+              >
+                <span>⚙️</span>
+                <span>მართვის პანელი (ფოტოების დამატება)</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -2639,26 +2655,38 @@
     </div>
 
     <!-- ======================================================================================== -->
-    <!-- FLOATING BOTTOM-RIGHT QUICK CONTACT WIDGET (WhatsApp + 1-Tap Call on Mobile & Desktop) -->
+    <!-- FLOATING BOTTOM-RIGHT QUICK CONTACT WIDGET (უკან + WhatsApp + 1-Tap Call on Mobile & Desktop) -->
     <!-- ======================================================================================== -->
     <div
       id="floating-quick-contact"
-      class="fixed bottom-4 right-3.5 sm:right-5 z-40 flex items-center gap-2"
-      aria-label="სწრაფი კონტაქტი"
+      class="fixed bottom-2.5 right-2 sm:bottom-4 sm:right-4 z-[55] flex items-center justify-end gap-1.5 sm:gap-2 max-w-[96vw]"
+      aria-label="სწრაფი კონტაქტი და უკან დაბრუნება"
     >
+      <button
+        id="floating-back-btn"
+        type="button"
+        class="min-h-[40px] sm:min-h-[44px] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-amber-400 hover:bg-amber-300 text-zinc-950 text-xs sm:text-sm font-extrabold flex items-center gap-1 shadow-lg border border-amber-600/30 active:scale-95 fast-transition cursor-pointer shrink-0"
+        title="უკან დაბრუნება"
+      >
+        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span id="floating-back-label">უკან</span>
+      </button>
+
       <a
         id="floating-wa-btn"
         href="https://wa.me/995551588579?text=გამარჯობა,%20მინდა%20კონსულტაცია%20პროდუქტზე"
         target="_blank"
         rel="noopener noreferrer"
-        class="min-h-[44px] px-3.5 py-2 rounded-full bg-[#25D366] hover:bg-[#1ebe57] text-white text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-lg border border-white/25 active:scale-95 fast-transition"
+        class="min-h-[40px] sm:min-h-[44px] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-[#25D366] hover:bg-[#1ebe57] text-white text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-lg border border-white/25 active:scale-95 fast-transition shrink-0"
         title="WhatsApp-ში მიწერა"
       >
         <span class="relative flex h-2 w-2">
           <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
           <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
         </span>
-        <svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24">
+        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-current shrink-0" viewBox="0 0 24 24">
           <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.124.556 4.119 1.528 5.847l-1.528 5.581 5.714-1.499c1.693.903 3.621 1.419 5.672 1.419 6.627 0 12-5.373 12-12s-5.373-11.348-11.386-11.348z" />
         </svg>
         <span>WhatsApp</span>
@@ -2667,7 +2695,7 @@
       <a
         id="floating-call-btn"
         href="tel:+995551588579"
-        class="min-h-[44px] px-3.5 py-2 rounded-full bg-zinc-950 hover:bg-zinc-800 text-white text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-lg border border-amber-400/50 active:scale-95 fast-transition"
+        class="min-h-[40px] sm:min-h-[44px] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-zinc-950 hover:bg-zinc-800 text-white text-xs sm:text-sm font-extrabold flex items-center gap-1 shadow-lg border border-amber-400/50 active:scale-95 fast-transition shrink-0"
         title="პირდაპირი ზარი გოჩასთან"
       >
         <span class="text-amber-400">📞</span>
@@ -2680,7 +2708,7 @@
     <!-- ======================================================================================== -->
     <div
       id="control-panel-backdrop"
-      class="fixed inset-0 z-50 hidden bg-black/65 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
+      class="fixed inset-0 z-[80] hidden bg-black/65 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="control-panel-title"
@@ -2838,12 +2866,12 @@
 
                 <div class="flex items-center gap-2 shrink-0">
                   <!-- Multi-File Upload Button (Up to 5 Photos at Once) -->
-                  <label class="theme-bg min-h-[48px] px-5 py-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-[0.98] fast-transition whitespace-nowrap">
+                  <label class="theme-bg min-h-[48px] px-5 py-3 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-[0.98] fast-transition whitespace-nowrap relative">
                     <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                     </svg>
                     <span>5 ფოტოს ერთდროულად მონიშვნა</span>
-                    <input id="cp-multi-img-input" type="file" accept="image/*" multiple class="hidden" />
+                    <input id="cp-multi-img-input" type="file" accept="image/*" multiple class="sr-only" />
                   </label>
 
                   <button
@@ -5749,7 +5777,8 @@
 
           // Footer
           setTxt('footer-tagline-text', strings.footerTagline);
-          setTxt('footer-admin-btn', strings.footerAdmin);
+          setTxt('footer-admin-btn-label', strings.footerAdmin);
+          setTxt('floating-back-label', strings.modalBackArrow || 'უკან');
 
           // Modal static labels
           setTxt('back-to-home-left-text', strings.modalBackToCatalog);
@@ -7000,12 +7029,25 @@
             setVideoTab('both');
           }
 
+          const wasAlreadyOpen = !modalBackdrop.classList.contains('hidden');
           modalBackdrop.classList.remove('hidden');
-          modalBackdrop.scrollTop = 0;
+          if (!wasAlreadyOpen) {
+            modalBackdrop.scrollTop = 0;
+          }
           document.body.classList.add('overflow-hidden');
           if (typeof renderAllChatWidgets === 'function') {
             renderAllChatWidgets();
           }
+
+          // Persist open product page in sessionStorage and URL so refreshing stays on this product page!
+          try {
+            sessionStorage.setItem('vv_open_product_id', productId);
+            const url = new URL(window.location.href);
+            if (url.searchParams.get('product') !== productId) {
+              url.searchParams.set('product', productId);
+              window.history.replaceState({ productId }, '', url.toString());
+            }
+          } catch (e) {}
         }
 
         function closeProductModal() {
@@ -7015,6 +7057,15 @@
           modalTiktokIframe.src = '';
           if (modalInstagramIframe) modalInstagramIframe.src = '';
           activeModalProduct = null;
+          try {
+            sessionStorage.removeItem('vv_open_product_id');
+            sessionStorage.removeItem('vv_modal_scroll_y');
+            const url = new URL(window.location.href);
+            if (url.searchParams.has('product')) {
+              url.searchParams.delete('product');
+              window.history.replaceState({}, '', url.toString());
+            }
+          } catch (e) {}
           window.scrollTo({ top: savedWindowScrollY, behavior: 'instant' });
         }
 
@@ -7243,12 +7294,12 @@
 
                 <!-- Upload File Button for Slot i (Also supports selecting up to 5 files at once!) -->
                 <div class="space-y-1.5">
-                  <label class="w-full min-h-[38px] px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300/80 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] fast-transition">
-                    <svg class="w-3.5 h-3.5 text-zinc-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <label class="w-full min-h-[42px] px-2.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300/80 text-xs font-bold flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.98] fast-transition relative">
+                    <svg class="w-4 h-4 text-zinc-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                     </svg>
                     <span>ფოტო #${i + 1} (ან 5-ვე)</span>
-                    <input type="file" accept="image/*" multiple data-slot-file="${i}" class="hidden" />
+                    <input type="file" accept="image/*" multiple data-slot-file="${i}" class="sr-only" />
                   </label>
 
                   <!-- Direct URL Input for Slot i -->
@@ -7766,14 +7817,14 @@
                       </div>
 
                       <label
-                        class="theme-bg min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95 fast-transition"
+                        class="theme-bg min-h-[40px] px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap shadow-sm flex items-center gap-1.5 cursor-pointer active:scale-95 fast-transition relative"
                         title="ერთი გახსნით მონიშნეთ 5 ფოტო და ატვირთეთ ერთდროულად"
                       >
                         <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                         </svg>
                         <span>5 ფოტო</span>
-                        <input type="file" accept="image/*" multiple data-cp-list-upload="${prod.id}" class="hidden" />
+                        <input type="file" accept="image/*" multiple data-cp-list-upload="${prod.id}" class="sr-only" />
                       </label>
 
                       <button
@@ -8127,16 +8178,72 @@
           }
         });
 
+        const floatingQuickContactEl = document.getElementById('floating-quick-contact');
+        const floatingBackBtn = document.getElementById('floating-back-btn');
+        const modalFooterAdminBtn = document.getElementById('modal-footer-admin-btn');
+
         // Open / Close Control Panel Modal
         function openControlPanel(initialTab = 'list') {
           savedWindowScrollY = window.scrollY;
           cpBackdrop.classList.remove('hidden');
+          if (floatingQuickContactEl) floatingQuickContactEl.classList.add('hidden');
           switchCpTab(initialTab);
         }
 
         function closeControlPanel() {
           cpBackdrop.classList.add('hidden');
+          if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
           window.scrollTo({ top: savedWindowScrollY, behavior: 'instant' });
+        }
+
+        if (floatingBackBtn) {
+          floatingBackBtn.addEventListener('click', () => {
+            if (lightboxModalBackdrop && !lightboxModalBackdrop.classList.contains('hidden')) {
+              closeLightbox();
+              return;
+            }
+            if (typeof shareModalBackdrop !== 'undefined' && shareModalBackdrop && !shareModalBackdrop.classList.contains('hidden')) {
+              closeShareModal();
+              return;
+            }
+            if (typeof screenshotModalBackdrop !== 'undefined' && screenshotModalBackdrop && !screenshotModalBackdrop.classList.contains('hidden')) {
+              closeScreenshotModal();
+              return;
+            }
+            if (typeof quickOrderBackdrop !== 'undefined' && quickOrderBackdrop && !quickOrderBackdrop.classList.contains('hidden')) {
+              closeQuickOrderModal();
+              return;
+            }
+            const wlBackdrop = document.getElementById('wishlist-modal-backdrop');
+            if (wlBackdrop && !wlBackdrop.classList.contains('hidden')) {
+              wlBackdrop.classList.add('hidden');
+              return;
+            }
+            if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
+              closeControlPanel();
+              return;
+            }
+            if (modalBackdrop && !modalBackdrop.classList.contains('hidden')) {
+              closeProductModal();
+              return;
+            }
+            if (activeCategory !== 'all' || (searchQuery && searchQuery.trim().length > 0)) {
+              if (searchInput) searchInput.value = '';
+              searchQuery = '';
+              if (clearSearchBtn) {
+                clearSearchBtn.classList.add('hidden');
+                clearSearchBtn.classList.remove('flex');
+              }
+              setCategoryFilter('all');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+              return;
+            }
+            if (window.scrollY > 120) {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (window.history.length > 1) {
+              window.history.back();
+            }
+          });
         }
 
         openCpBtn.addEventListener('click', () => openControlPanel('list'));
@@ -8150,13 +8257,18 @@
         const ownerPinInput = document.getElementById('owner-pin-input');
         const ownerPinError = document.getElementById('owner-pin-error');
         const ownerPinCloseBtn = document.getElementById('owner-pin-close-btn');
+        let pendingPinEditProductId = null;
 
         if (ownerPinCloseBtn && ownerPinModal) {
           ownerPinCloseBtn.addEventListener('click', () => {
             ownerPinModal.classList.add('hidden');
+            if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
           });
           ownerPinModal.addEventListener('click', (e) => {
-            if (e.target === ownerPinModal) ownerPinModal.classList.add('hidden');
+            if (e.target === ownerPinModal) {
+              ownerPinModal.classList.add('hidden');
+              if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
+            }
           });
         }
 
@@ -8176,22 +8288,44 @@
               sessionStorage.removeItem('vv_forced_customer_preview');
             } catch (err) {}
             setCustomerViewMode(false);
-            openControlPanel('list');
+            if (pendingPinEditProductId) {
+              const prodIdToEdit = pendingPinEditProductId;
+              pendingPinEditProductId = null;
+              openControlPanel('form');
+              loadProductIntoForm(prodIdToEdit);
+            } else {
+              openControlPanel('list');
+            }
           });
         }
 
-        footerAdminBtn.addEventListener('click', () => {
+        function triggerAdminAccess(productIdToEdit = null) {
           if (document.body.classList.contains('customer-view-mode')) {
             if (ownerPinModal && ownerPinInput) {
+              pendingPinEditProductId = productIdToEdit || null;
               if (ownerPinError) ownerPinError.classList.add('hidden');
               ownerPinInput.value = '';
               ownerPinModal.classList.remove('hidden');
+              if (floatingQuickContactEl) floatingQuickContactEl.classList.add('hidden');
               setTimeout(() => ownerPinInput.focus(), 50);
               return;
             }
           }
-          openControlPanel('list');
-        });
+          if (productIdToEdit) {
+            openControlPanel('form');
+            loadProductIntoForm(productIdToEdit);
+          } else {
+            openControlPanel('list');
+          }
+        }
+
+        footerAdminBtn.addEventListener('click', () => triggerAdminAccess(null));
+        if (modalFooterAdminBtn) {
+          modalFooterAdminBtn.addEventListener('click', () => {
+            const currentProdId = activeModalProduct ? activeModalProduct.id : null;
+            triggerAdminAccess(currentProdId);
+          });
+        }
 
         const syncLiveIyidebaaBtn = document.getElementById('sync-live-iyidebaa-btn');
         const syncLiveIyidebaaLabel = document.getElementById('sync-live-iyidebaa-label');
@@ -8221,11 +8355,7 @@
         modalEditProductBtn.addEventListener('click', () => {
           if (!activeModalProduct) return;
           const idToEdit = activeModalProduct.id;
-          modalBackdrop.classList.add('hidden');
-          modalYoutubeIframe.src = '';
-          modalTiktokIframe.src = '';
-          activeModalProduct = null;
-          cpBackdrop.classList.remove('hidden');
+          openControlPanel('form');
           loadProductIntoForm(idToEdit);
         });
 
@@ -8253,7 +8383,7 @@
           showCpToast('მზა HTML ფაილი თქვენი ფოტოებით და ფასებით ჩამოიტვირთა!');
         });
 
-        function setCategoryFilter(category) {
+        function setCategoryFilter(category, skipUrlUpdate = false) {
           preserveScroll(() => {
             activeCategory = category;
             document.querySelectorAll('.category-tab-btn').forEach((btn) => {
@@ -8269,6 +8399,18 @@
               }
             });
             renderProducts();
+            if (!skipUrlUpdate) {
+              try {
+                sessionStorage.setItem('vv_active_category', category);
+                const url = new URL(window.location.href);
+                if (category && category !== 'all') {
+                  url.searchParams.set('category', category);
+                } else {
+                  url.searchParams.delete('category');
+                }
+                window.history.replaceState({}, '', url.toString());
+              } catch (e) {}
+            }
           });
         }
 
@@ -9489,6 +9631,21 @@
           });
         }
 
+        // Save scroll position inside product detail modal and window so refresh stays at exact spot
+        if (modalBackdrop) {
+          modalBackdrop.addEventListener(
+            'scroll',
+            () => {
+              if (!modalBackdrop.classList.contains('hidden')) {
+                try {
+                  sessionStorage.setItem('vv_modal_scroll_y', String(Math.round(modalBackdrop.scrollTop)));
+                } catch (e) {}
+              }
+            },
+            { passive: true }
+          );
+        }
+
         function checkSharedProductUrlParam() {
           try {
             const params = new URLSearchParams(window.location.search);
@@ -9513,9 +9670,25 @@
             } else {
               setCustomerViewMode(true);
             }
-            const sharedProdId = params.get('product');
+
+            // Restore active category filter across page refresh
+            const savedCat = params.get('category') || sessionStorage.getItem('vv_active_category');
+            if (
+              savedCat &&
+              ['all', 'karaoke', 'solar', 'bundle', 'wishlist'].includes(savedCat) &&
+              savedCat !== activeCategory
+            ) {
+              setCategoryFilter(savedCat, true);
+            }
+
+            // Restore open product page across page refresh (URL ?product=... or sessionStorage)
+            const sharedProdId = params.get('product') || sessionStorage.getItem('vv_open_product_id');
             if (sharedProdId && productsList.some((p) => p.id === sharedProdId)) {
+              const savedModalScroll = Number(sessionStorage.getItem('vv_modal_scroll_y')) || 0;
               openProductModal(sharedProdId);
+              if (savedModalScroll > 0 && modalBackdrop) {
+                modalBackdrop.scrollTop = savedModalScroll;
+              }
             }
           } catch (e) {}
         }
