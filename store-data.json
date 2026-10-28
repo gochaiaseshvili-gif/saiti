@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793197544196,
+  "updatedAt": 1793200197284,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -190,11 +190,11 @@
       "oldPrice": 980,
       "newPrice": 740,
       "images": [
-        "",
-        "",
-        "",
-        "",
-        ""
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_1_1793200184981_6w2h.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_2_1793200187286_21wh.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_3_1793200190290_30l7.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_4_1793200192761_aqp6.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_5_1793200195109_uwra.jpg"
       ],
       "description": "კომპაქტური და უაღრესად მძლავრი 800W კარაოკე დინამიკი ღრმა ბასით და სუფთა ვოკალური ჟღერადობით. მოყვება 2 უსადენო მიკროფონი ხმის სიხშირის რეგულირებით და დისტანციური მართვის პულტი.",
       "specs": [
@@ -510,11 +510,11 @@
       "/uploads/solar-5.jpg"
     ],
     "voxmaster-800w": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_1_1793200184981_6w2h.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_2_1793200187286_21wh.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_3_1793200190290_30l7.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_4_1793200192761_aqp6.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/voxmaster-800w_slot_5_1793200195109_uwra.jpg"
     ],
     "suncore-mini-600w": [
       "/uploads/solar-1.jpg",
