@@ -6451,13 +6451,13 @@
                         <label
                           data-direct-card-upload-label="true"
                           title="${currentLang === 'en' ? 'Select up to 5 photos to upload at once' : currentLang === 'ru' ? 'Выберите до 5 фото для одновременной загрузки' : 'ერთი გახსნით მონიშნეთ 5 ფოტო და ატვირთეთ ერთდროულად'}"
-                          class="min-h-[36px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-bold flex items-center gap-1 shadow-sm cursor-pointer active:scale-95 fast-transition"
+                          class="min-h-[36px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-bold flex items-center gap-1 shadow-sm cursor-pointer active:scale-95 fast-transition relative"
                         >
                           <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                           </svg>
                           <span class="card-photo-count-el">${photoBtnLabel}</span>
-                          <input type="file" accept="image/*" multiple data-direct-card-upload="${rawProduct.id}" class="hidden" />
+                          <input type="file" accept="image/*" multiple data-direct-card-upload="${rawProduct.id}" class="sr-only" />
                         </label>
 
                         <button
