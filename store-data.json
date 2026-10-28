@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793204708868,
+  "updatedAt": 1793204733406,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -84,7 +84,7 @@
       "oldPrice": 0,
       "newPrice": 0,
       "images": [
-        "https://drive.google.com/file/d/1UEDxOL6yf4jUFEOrKbYbVspmzvWDOKcJ1Q/view?usp=drivesdk",
+        "",
         "",
         "",
         "",
@@ -117,7 +117,9 @@
           "value": ""
         }
       ],
-      "closedFields": {},
+      "closedFields": {
+        "photo_0": true
+      },
       "youtubeId": "",
       "youtubeDuration": "08:45",
       "youtubeCaption": "ახალი პროდუქტი",
@@ -724,7 +726,7 @@
   ],
   "imagesMap": {
     "prod-1793204691133": [
-      "https://drive.google.com/file/d/1UEDxOL6yf4jUFEOrKbYbVspmzvWDOKcJ1Q/view?usp=drivesdk",
+      "",
       "",
       "",
       "",
