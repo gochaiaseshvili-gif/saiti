@@ -7212,7 +7212,6 @@
         let hasPushedProductHistoryEntry = false;
         let hasPushedLightboxHistoryEntry = false;
         let hasPushedCpHistoryEntry = false;
-        let isInternalHistoryBack = false;
 
         function openLightbox(initialIdx = 0) {
           if (!activeModalProduct) return;
@@ -7235,8 +7234,7 @@
           }
         }
 
-        function closeLightbox(opts = {}) {
-          const fromPopState = Boolean(opts && opts.fromPopState === true);
+        function closeLightbox() {
           if (lightboxModalBackdrop) {
             lightboxModalBackdrop.classList.add('hidden');
           }
@@ -7246,17 +7244,14 @@
           } else {
             document.body.classList.remove('overflow-hidden');
           }
-          if (fromPopState) {
-            hasPushedLightboxHistoryEntry = false;
-          } else if (hasPushedLightboxHistoryEntry) {
-            hasPushedLightboxHistoryEntry = false;
-            try {
-              isInternalHistoryBack = true;
-              window.history.back();
-            } catch (e) {
-              isInternalHistoryBack = false;
+          hasPushedLightboxHistoryEntry = false;
+          try {
+            if (activeModalProduct) {
+              const url = new URL(window.location.href);
+              url.searchParams.set('product', activeModalProduct.id);
+              window.history.replaceState({ view: 'product', productId: activeModalProduct.id }, '', url.toString());
             }
-          }
+          } catch (e) {}
         }
 
         function lightboxNext() {
@@ -7538,8 +7533,7 @@
           } catch (e) {}
         }
 
-        function closeProductModal(opts = {}) {
-          const fromPopState = Boolean(opts && opts.fromPopState === true);
+        function closeProductModal() {
           const inlineEditorEl = document.getElementById('modal-inline-editor-panel');
           if (inlineEditorEl && !inlineEditorEl.classList.contains('hidden')) {
             if (typeof applyInlineProductEditorChanges === 'function' && activeModalProduct) {
@@ -7560,37 +7554,13 @@
           if (modalFacebookIframe) modalFacebookIframe.src = '';
           if (modalInstagramIframe) modalInstagramIframe.src = '';
           activeModalProduct = null;
+          hasPushedProductHistoryEntry = false;
           try {
             sessionStorage.removeItem('vv_open_product_id');
             sessionStorage.removeItem('vv_modal_scroll_y');
-            if (fromPopState) {
-              hasPushedProductHistoryEntry = false;
-              const url = new URL(window.location.href);
-              if (url.searchParams.has('product')) {
-                url.searchParams.delete('product');
-                window.history.replaceState({ view: 'home' }, '', url.toString());
-              }
-            } else if (hasPushedProductHistoryEntry) {
-              hasPushedProductHistoryEntry = false;
-              isInternalHistoryBack = true;
-              window.history.back();
-              setTimeout(() => {
-                isInternalHistoryBack = false;
-                try {
-                  const checkUrl = new URL(window.location.href);
-                  if (checkUrl.searchParams.has('product')) {
-                    checkUrl.searchParams.delete('product');
-                    window.history.replaceState({ view: 'home' }, '', checkUrl.toString());
-                  }
-                } catch (err) {}
-              }, 80);
-            } else {
-              const url = new URL(window.location.href);
-              if (url.searchParams.has('product')) {
-                url.searchParams.delete('product');
-                window.history.replaceState({ view: 'home' }, '', url.toString());
-              }
-            }
+            const url = new URL(window.location.href);
+            url.searchParams.delete('product');
+            window.history.replaceState({ view: 'home' }, '', url.toString());
           } catch (e) {}
           window.scrollTo({ top: savedWindowScrollY, behavior: 'instant' });
         }
@@ -8750,21 +8720,10 @@
           }
         }
 
-        function closeControlPanel(opts = {}) {
-          const fromPopState = Boolean(opts && opts.fromPopState === true);
+        function closeControlPanel() {
           cpBackdrop.classList.add('hidden');
           if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
-          if (fromPopState) {
-            hasPushedCpHistoryEntry = false;
-          } else if (hasPushedCpHistoryEntry) {
-            hasPushedCpHistoryEntry = false;
-            try {
-              isInternalHistoryBack = true;
-              window.history.back();
-            } catch (e) {
-              isInternalHistoryBack = false;
-            }
-          }
+          hasPushedCpHistoryEntry = false;
           if (!modalBackdrop || modalBackdrop.classList.contains('hidden')) {
             window.scrollTo({ top: savedWindowScrollY, behavior: 'instant' });
           }
@@ -8812,11 +8771,7 @@
               window.scrollTo({ top: 0, behavior: 'smooth' });
               return;
             }
-            if (window.scrollY > 120) {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (window.history.length > 1) {
-              window.history.back();
-            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           });
         }
 
@@ -9515,6 +9470,7 @@
         });
 
         function setCategoryFilter(category, skipUrlUpdate = false) {
+          const prevCat = activeCategory;
           preserveScroll(() => {
             activeCategory = category;
             document.querySelectorAll('.category-tab-btn').forEach((btn) => {
@@ -9536,10 +9492,18 @@
                 const url = new URL(window.location.href);
                 if (category && category !== 'all') {
                   url.searchParams.set('category', category);
+                  if (prevCat === 'all') {
+                    const baseHomeUrl = new URL(window.location.href);
+                    baseHomeUrl.searchParams.delete('category');
+                    window.history.replaceState({ view: 'home' }, '', baseHomeUrl.toString());
+                    window.history.pushState({ view: 'category', category }, '', url.toString());
+                  } else {
+                    window.history.replaceState({ view: 'category', category }, '', url.toString());
+                  }
                 } else {
                   url.searchParams.delete('category');
+                  window.history.replaceState({ view: 'home' }, '', url.toString());
                 }
-                window.history.replaceState({}, '', url.toString());
               } catch (e) {}
             }
           });
@@ -10843,14 +10807,20 @@
 
         // Handle Phone Hardware Back Button & Desktop Browser Back/Forward Button (popstate)
         window.addEventListener('popstate', (e) => {
-          if (isInternalHistoryBack) {
-            isInternalHistoryBack = false;
-            return;
-          }
-
           // 1. If Lightbox fullscreen photo is open, close Lightbox first and stay on Product Page
           if (lightboxModalBackdrop && !lightboxModalBackdrop.classList.contains('hidden')) {
-            closeLightbox({ fromPopState: true });
+            closeLightbox();
+            if (activeModalProduct) {
+              try {
+                const homeUrl = new URL(window.location.href);
+                homeUrl.searchParams.delete('product');
+                const prodUrl = new URL(window.location.href);
+                prodUrl.searchParams.set('product', activeModalProduct.id);
+                window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
+                window.history.pushState({ view: 'product', productId: activeModalProduct.id }, '', prodUrl.toString());
+                hasPushedProductHistoryEntry = true;
+              } catch (err) {}
+            }
             return;
           }
 
@@ -10879,13 +10849,13 @@
 
           // 3. If Control Panel is open, close Control Panel
           if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
-            closeControlPanel({ fromPopState: true });
+            closeControlPanel();
             return;
           }
 
           // 4. If Product Page (#product-modal-backdrop) is open, close it and return to Main Catalog
           if (modalBackdrop && !modalBackdrop.classList.contains('hidden')) {
-            closeProductModal({ fromPopState: true });
+            closeProductModal();
             return;
           }
 
