@@ -1,7 +1,7 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793195746422,
-  "themeColor": "#d97706",
+  "updatedAt": 1793197132489,
+  "themeColor": "#06db1e",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
     "contactName": "გოჩა",
@@ -16,6 +16,12 @@
     "igHandle": "https://www.instagram.com/iyideba_saintereso_nivtebi/",
     "weatherMode": "off",
     "weatherIntensity": 65,
+    "pageBgColor": "#fafaf9",
+    "cardBgColor": "#ffffff",
+    "headerBgColor": "#ffffff",
+    "priceTextColor": "",
+    "titleTextColor": "#09090b",
+    "cardFrameStyle": "default",
     "homeBlocksOrder": [
       "fb-banner",
       "catalog-header",
