@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793204735567,
+  "updatedAt": 1793204787437,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -84,7 +84,7 @@
       "oldPrice": 0,
       "newPrice": 0,
       "images": [
-        "",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_1_1793204784638_jzqw.jpg",
         "",
         "",
         "",
@@ -724,7 +724,7 @@
   ],
   "imagesMap": {
     "prod-1793204691133": [
-      "",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod-1793204691133_slot_1_1793204784638_jzqw.jpg",
       "",
       "",
       "",
