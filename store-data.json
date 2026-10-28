@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793195648467,
+  "updatedAt": 1793195671217,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -329,7 +329,8 @@
       "closedFields": {
         "sku": true,
         "instagram": true,
-        "youtube": true
+        "youtube": true,
+        "facebook": true
       }
     },
     {
