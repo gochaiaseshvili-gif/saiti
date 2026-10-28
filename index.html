@@ -7289,6 +7289,54 @@
           });
         }
 
+        function applyExtendedColorSettings(shouldSave = false) {
+          const root = document.documentElement;
+          const pageBg = storeSettings.pageBgColor || '#fafaf9';
+          const cardBg = storeSettings.cardBgColor || '#ffffff';
+          const headerBg = storeSettings.headerBgColor || '#ffffff';
+          const priceCol = storeSettings.priceTextColor || activeThemeColor || '#d97706';
+          const titleCol = storeSettings.titleTextColor || '#09090b';
+          const frameStyle = storeSettings.cardFrameStyle || 'default';
+
+          root.style.setProperty('--site-page-bg', pageBg);
+          root.style.setProperty('--site-card-bg', cardBg);
+          root.style.setProperty('--site-header-bg', headerBg);
+          root.style.setProperty('--site-price-color', priceCol);
+          root.style.setProperty('--site-title-color', titleCol);
+          document.body.setAttribute('data-card-frame', frameStyle);
+
+          const setPickerAndHex = (pickerId, hexId, miePickerId, val) => {
+            const pEl = document.getElementById(pickerId);
+            if (pEl && val) pEl.value = val;
+            const hEl = document.getElementById(hexId);
+            if (hEl && val) hEl.textContent = String(val).toUpperCase();
+            const mEl = document.getElementById(miePickerId);
+            if (mEl && val) mEl.value = val;
+          };
+
+          setPickerAndHex('custom-color-picker', 'active-hex-readout', 'mie-color-primary', activeThemeColor);
+          setPickerAndHex('custom-page-bg-picker', 'page-bg-hex-readout', 'mie-color-page-bg', pageBg);
+          setPickerAndHex('custom-card-bg-picker', 'card-bg-hex-readout', 'mie-color-card-bg', cardBg);
+          setPickerAndHex('custom-header-bg-picker', 'header-bg-hex-readout', 'mie-color-header-bg', headerBg);
+          setPickerAndHex('custom-price-color-picker', 'price-color-hex-readout', 'mie-color-price', priceCol);
+          setPickerAndHex('custom-title-color-picker', 'title-color-hex-readout', 'mie-color-title', titleCol);
+
+          document.querySelectorAll('.card-frame-style-btn').forEach((btn) => {
+            const bStyle = btn.getAttribute('data-card-frame-btn');
+            if (bStyle === frameStyle) {
+              btn.classList.add('border-zinc-900', 'bg-stone-100', 'ring-2', 'ring-amber-400/50');
+              btn.classList.remove('border-zinc-200', 'bg-white');
+            } else {
+              btn.classList.remove('border-zinc-900', 'bg-stone-100', 'ring-2', 'ring-amber-400/50');
+              btn.classList.add('border-zinc-200', 'bg-white');
+            }
+          });
+
+          if (shouldSave) {
+            saveStateEverywhere();
+          }
+        }
+
         function applyThemeColor(hex, hoverHex, shouldSave = true) {
           preserveScroll(() => {
             activeThemeColor = hex;
@@ -7301,21 +7349,25 @@
             root.style.setProperty('--theme-primary-soft', `rgba(${r}, ${g}, ${b}, 0.12)`);
             root.style.setProperty('--theme-primary-border', `rgba(${r}, ${g}, ${b}, 0.35)`);
 
-            customColorPicker.value = activeThemeColor;
-            activeHexReadout.textContent = activeThemeColor.toUpperCase();
+            if (customColorPicker) customColorPicker.value = activeThemeColor;
+            if (activeHexReadout) activeHexReadout.textContent = activeThemeColor.toUpperCase();
             const cpSetThemeColor = document.getElementById('cp-set-theme-color');
             if (cpSetThemeColor) cpSetThemeColor.value = activeThemeColor;
+            const cpSetThemeHex = document.getElementById('cp-set-theme-hex');
+            if (cpSetThemeHex) cpSetThemeHex.textContent = activeThemeColor.toUpperCase();
 
             document.querySelectorAll('.theme-preset-btn').forEach((btn) => {
               const btnHex = btn.getAttribute('data-theme-color');
               if (btnHex && btnHex.toLowerCase() === activeThemeColor.toLowerCase()) {
-                btn.classList.add('border-zinc-900', 'bg-stone-100');
+                btn.classList.add('border-zinc-900', 'bg-stone-100', 'ring-2', 'ring-amber-400/50');
                 btn.classList.remove('border-zinc-200');
               } else {
-                btn.classList.remove('border-zinc-900', 'bg-stone-100');
+                btn.classList.remove('border-zinc-900', 'bg-stone-100', 'ring-2', 'ring-amber-400/50');
                 btn.classList.add('border-zinc-200');
               }
             });
+
+            applyExtendedColorSettings(false);
 
             if (heroShowcaseImg) {
               heroShowcaseImg.src = createHeroComboSvg(activeThemeColor, 0);
@@ -11585,13 +11637,14 @@
           preserveScroll(() => renderProducts());
         });
 
-        // Theme Customization Panel
+        // Theme & Full Site Color Customization Panel
         themeToggleBtn.addEventListener('click', () => {
           const isHidden = themePanel.classList.contains('hidden');
           if (isHidden) {
             themePanel.classList.remove('hidden');
             themeToggleBtn.setAttribute('aria-expanded', 'true');
             themeChevron.style.transform = 'rotate(180deg)';
+            applyExtendedColorSettings(false);
           } else {
             themePanel.classList.add('hidden');
             themeToggleBtn.setAttribute('aria-expanded', 'false');
@@ -11599,16 +11652,120 @@
           }
         });
 
+        const closeThemePanelBtn = document.getElementById('close-theme-panel-btn');
+        if (closeThemePanelBtn) {
+          closeThemePanelBtn.addEventListener('click', () => {
+            themePanel.classList.add('hidden');
+            themeToggleBtn.setAttribute('aria-expanded', 'false');
+            themeChevron.style.transform = 'rotate(0deg)';
+          });
+        }
+
+        function resetAllSiteColorsToDefault() {
+          storeSettings.pageBgColor = '#fafaf9';
+          storeSettings.cardBgColor = '#ffffff';
+          storeSettings.headerBgColor = '#ffffff';
+          storeSettings.priceTextColor = '#d97706';
+          storeSettings.titleTextColor = '#09090b';
+          storeSettings.cardFrameStyle = 'default';
+          applyThemeColor('#d97706', '#b45309', true);
+          showWishlistToast('🎨 საწყისი ფერები აღდგენილია!');
+        }
+
+        const resetAllColorsBtn = document.getElementById('reset-all-colors-btn');
+        if (resetAllColorsBtn) {
+          resetAllColorsBtn.addEventListener('click', resetAllSiteColorsToDefault);
+        }
+        const mieResetColorsBtn = document.getElementById('mie-reset-colors-btn');
+        if (mieResetColorsBtn) {
+          mieResetColorsBtn.addEventListener('click', resetAllSiteColorsToDefault);
+        }
+
         document.querySelectorAll('.theme-preset-btn').forEach((btn) => {
           btn.addEventListener('click', () => {
             const hex = btn.getAttribute('data-theme-color');
             const hoverHex = btn.getAttribute('data-theme-hover');
+            const pageBg = btn.getAttribute('data-preset-page-bg');
+            const cardBg = btn.getAttribute('data-preset-card-bg');
+            const headerBg = btn.getAttribute('data-preset-header-bg');
+            const priceCol = btn.getAttribute('data-preset-price-color');
+            const titleCol = btn.getAttribute('data-preset-title-color');
+            const frame = btn.getAttribute('data-preset-frame');
+            if (pageBg) storeSettings.pageBgColor = pageBg;
+            if (cardBg) storeSettings.cardBgColor = cardBg;
+            if (headerBg) storeSettings.headerBgColor = headerBg;
+            if (priceCol) storeSettings.priceTextColor = priceCol;
+            if (titleCol) storeSettings.titleTextColor = titleCol;
+            if (frame) storeSettings.cardFrameStyle = frame;
             applyThemeColor(hex, hoverHex, true);
           });
         });
 
         customColorPicker.addEventListener('input', (e) => {
+          storeSettings.priceTextColor = e.target.value;
           applyThemeColor(e.target.value, null, true);
+        });
+
+        const bindZoneColorPicker = (pickerId, settingKey) => {
+          const el = document.getElementById(pickerId);
+          if (!el) return;
+          el.addEventListener('input', (e) => {
+            if (settingKey === 'primary') {
+              storeSettings.priceTextColor = e.target.value;
+              applyThemeColor(e.target.value, null, true);
+            } else {
+              storeSettings[settingKey] = e.target.value;
+              applyExtendedColorSettings(true);
+            }
+          });
+        };
+
+        bindZoneColorPicker('custom-page-bg-picker', 'pageBgColor');
+        bindZoneColorPicker('custom-card-bg-picker', 'cardBgColor');
+        bindZoneColorPicker('custom-header-bg-picker', 'headerBgColor');
+        bindZoneColorPicker('custom-price-color-picker', 'priceTextColor');
+        bindZoneColorPicker('custom-title-color-picker', 'titleTextColor');
+
+        bindZoneColorPicker('mie-color-primary', 'primary');
+        bindZoneColorPicker('mie-color-page-bg', 'pageBgColor');
+        bindZoneColorPicker('mie-color-card-bg', 'cardBgColor');
+        bindZoneColorPicker('mie-color-header-bg', 'headerBgColor');
+        bindZoneColorPicker('mie-color-price', 'priceTextColor');
+        bindZoneColorPicker('mie-color-title', 'titleTextColor');
+
+        document.querySelectorAll('[data-quick-color-target]').forEach((swatchBtn) => {
+          swatchBtn.addEventListener('click', () => {
+            const target = swatchBtn.getAttribute('data-quick-color-target');
+            const hex = swatchBtn.getAttribute('data-quick-color-hex');
+            if (!target || !hex) return;
+            if (target === 'primary') {
+              storeSettings.priceTextColor = hex;
+              applyThemeColor(hex, null, true);
+            } else if (target === 'pageBg') {
+              storeSettings.pageBgColor = hex;
+              applyExtendedColorSettings(true);
+            } else if (target === 'cardBg') {
+              storeSettings.cardBgColor = hex;
+              applyExtendedColorSettings(true);
+            } else if (target === 'headerBg') {
+              storeSettings.headerBgColor = hex;
+              applyExtendedColorSettings(true);
+            } else if (target === 'priceColor') {
+              storeSettings.priceTextColor = hex;
+              applyExtendedColorSettings(true);
+            } else if (target === 'titleColor') {
+              storeSettings.titleTextColor = hex;
+              applyExtendedColorSettings(true);
+            }
+          });
+        });
+
+        document.querySelectorAll('[data-card-frame-btn]').forEach((fBtn) => {
+          fBtn.addEventListener('click', () => {
+            const style = fBtn.getAttribute('data-card-frame-btn') || 'default';
+            storeSettings.cardFrameStyle = style;
+            applyExtendedColorSettings(true);
+          });
         });
 
         function setCustomerViewMode(enabled) {
