@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793188282261,
+  "updatedAt": 1793188418809,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -179,7 +179,7 @@
       "name": "EcoVolt Pro 1200W / 1024Wh პორტატული სოლარ გენერატორი",
       "shortMeta": "1200W 220V · 1024Wh LiFePO4 · 3500+ ციკლი",
       "oldPrice": 1850,
-      "newPrice": 1390,
+      "newPrice": 2,
       "images": [
         "/uploads/solar-1.jpg",
         "/uploads/solar-2.jpg",
@@ -218,7 +218,8 @@
       "youtubeDuration": "11:20",
       "youtubeCaption": "EcoVolt 1200W სრული დატვირთვის და მზის პანელით დატენვის ტესტი",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
-      "tiktokCaption": "როგორ ამუშავებს EcoVolt 1200W აგარაკის ტექნიკას"
+      "tiktokCaption": "როგორ ამუშავებს EcoVolt 1200W აგარაკის ტექნიკას",
+      "facebookUrl": ""
     },
     {
       "id": "voxmaster-800w",
