@@ -8897,6 +8897,108 @@
           mieFiveSlotsGrid.innerHTML = cardsHtml.join('');
         }
 
+        function updateModalAllFourVideos(prod, localizedProd) {
+          if (!prod) return;
+          const product = localizedProd || getLocalizedProduct(prod, currentLang);
+          const previewImgSrc = getProductImageSrc(prod, activeThemeColor);
+
+          // 1. TikTok Card Setup
+          const rawTtSetting = String(
+            storeSettings.tiktokHandle || 'https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc'
+          ).trim();
+          const defaultTtHref = rawTtSetting.startsWith('http')
+            ? rawTtSetting
+            : `https://www.tiktok.com/${rawTtSetting.startsWith('@') ? rawTtSetting : '@' + rawTtSetting}`;
+          const cleanTtUrl = extractCleanTiktokUrl(prod.tiktokUrl);
+          const hasCustomTt = Boolean(cleanTtUrl && cleanTtUrl.startsWith('http'));
+          const targetTtHref = hasCustomTt ? cleanTtUrl : defaultTtHref;
+
+          if (modalTiktokIframe) {
+            modalTiktokIframe.src = '';
+            modalTiktokIframe.classList.add('hidden');
+          }
+          if (modalTiktokFallback) {
+            modalTiktokFallback.classList.remove('hidden');
+            modalTiktokFallback.href = targetTtHref;
+          }
+          if (modalTtFallbackImg) {
+            modalTtFallbackImg.src = previewImgSrc;
+          }
+          if (modalTtFallbackBadge) {
+            modalTtFallbackBadge.textContent = hasCustomTt ? '▶ ვიდეოს ჩართვა TikTok-ზე ↗' : '▶ TikTok გვერდზე ნახვა ↗';
+          }
+          if (modalTtHeaderLink) modalTtHeaderLink.href = targetTtHref;
+          if (modalTtExternal) modalTtExternal.href = targetTtHref;
+          if (modalTtCaption) modalTtCaption.textContent = product.tiktokCaption || product.name;
+
+          // 2. Facebook Card Setup
+          const defaultFbHref = String(
+            storeSettings.fbUrl || 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums'
+          ).trim() || 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums';
+          const cleanFbUrl = extractCleanFacebookUrl(prod.facebookUrl);
+          const hasCustomFb = Boolean(cleanFbUrl && cleanFbUrl.startsWith('http'));
+          const targetFbHref = hasCustomFb ? cleanFbUrl : defaultFbHref;
+
+          if (modalFacebookIframe) {
+            modalFacebookIframe.src = '';
+            modalFacebookIframe.classList.add('hidden');
+          }
+          if (modalFacebookFallback) {
+            modalFacebookFallback.classList.remove('hidden');
+            modalFacebookFallback.href = targetFbHref;
+          }
+          if (modalFbFallbackImg) {
+            modalFbFallbackImg.src = previewImgSrc;
+          }
+          if (modalFbFallbackBadge) {
+            modalFbFallbackBadge.textContent = hasCustomFb ? '▶ ვიდეოს ჩართვა Facebook-ზე ↗' : '▶ Facebook გვერდზე ნახვა ↗';
+          }
+          if (modalFbHeaderLink) modalFbHeaderLink.href = targetFbHref;
+          if (modalFbExternal) modalFbExternal.href = targetFbHref;
+          if (modalFbCaption) modalFbCaption.textContent = product.facebookCaption || product.name;
+
+          // 3. YouTube Card Setup
+          const ytId = extractYoutubeId(prod.youtubeId);
+          const targetYtHref = `https://www.youtube.com/watch?v=${ytId}`;
+          if (modalYoutubeIframe) {
+            const newYtSrc = `https://www.youtube.com/embed/${ytId}?rel=0`;
+            if (modalYoutubeIframe.src !== newYtSrc) modalYoutubeIframe.src = newYtSrc;
+          }
+          if (modalYtDuration) modalYtDuration.textContent = prod.youtubeDuration || '08:45';
+          if (modalYtCaption) modalYtCaption.textContent = product.youtubeCaption || product.name;
+          if (modalYtHeaderLink) modalYtHeaderLink.href = targetYtHref;
+          if (modalYtExternal) modalYtExternal.href = targetYtHref;
+
+          // 4. Instagram Card Setup
+          const rawIgSetting = String(
+            storeSettings.igHandle || 'https://www.instagram.com/iyideba_saintereso_nivtebi/'
+          ).trim();
+          const defaultIgHref = rawIgSetting.startsWith('http')
+            ? rawIgSetting
+            : `https://www.instagram.com/${rawIgSetting.replace(/^@/, '')}`;
+          const cleanIgUrl = extractCleanInstagramUrl(prod.instagramUrl);
+          const hasCustomIg = Boolean(cleanIgUrl && cleanIgUrl.startsWith('http'));
+          const targetIgHref = hasCustomIg ? cleanIgUrl : defaultIgHref;
+
+          if (modalInstagramIframe) {
+            modalInstagramIframe.src = '';
+            modalInstagramIframe.classList.add('hidden');
+          }
+          if (modalInstagramFallback) {
+            modalInstagramFallback.classList.remove('hidden');
+            modalInstagramFallback.href = targetIgHref;
+          }
+          if (modalIgFallbackImg) {
+            modalIgFallbackImg.src = previewImgSrc;
+          }
+          if (modalIgFallbackBadge) {
+            modalIgFallbackBadge.textContent = hasCustomIg ? '▶ ვიდეოს ჩართვა Instagram-ზე ↗' : '▶ Instagram გვერდზე ნახვა ↗';
+          }
+          if (modalIgHeaderLink) modalIgHeaderLink.href = targetIgHref;
+          if (modalIgExternal) modalIgExternal.href = targetIgHref;
+          if (modalIgCaption) modalIgCaption.textContent = product.instagramCaption || product.name;
+        }
+
         function populateInlineProductEditor(prod) {
           if (!prod || !modalInlineEditorPanel) return;
           ensureFiveImagesArray(prod);
@@ -8911,9 +9013,9 @@
           if (mieYoutubeInput) {
             mieYoutubeInput.value = prod.youtubeId ? `https://www.youtube.com/watch?v=${extractYoutubeId(prod.youtubeId)}` : '';
           }
-          if (mieTiktokInput) mieTiktokInput.value = prod.tiktokUrl || '';
-          if (mieFacebookInput) mieFacebookInput.value = prod.facebookUrl || '';
-          if (mieInstagramInput) mieInstagramInput.value = prod.instagramUrl || '';
+          if (mieTiktokInput) mieTiktokInput.value = extractCleanTiktokUrl(prod.tiktokUrl);
+          if (mieFacebookInput) mieFacebookInput.value = extractCleanFacebookUrl(prod.facebookUrl);
+          if (mieInstagramInput) mieInstagramInput.value = extractCleanInstagramUrl(prod.instagramUrl);
 
           if (mieSpecsContainer) {
             const specsArray = Array.isArray(prod.specs) ? prod.specs : [];
@@ -8977,50 +9079,7 @@
               .join('');
           }
 
-          const ytId = extractYoutubeId(prod.youtubeId);
-          if (modalYoutubeIframe) {
-            const newYtSrc = `https://www.youtube.com/embed/${ytId}?rel=0`;
-            if (modalYoutubeIframe.src !== newYtSrc) modalYoutubeIframe.src = newYtSrc;
-          }
-          if (modalYtCaption) modalYtCaption.textContent = product.youtubeCaption || product.name;
-          if (modalYtExternal) modalYtExternal.href = `https://www.youtube.com/watch?v=${ytId}`;
-
-          if (modalTiktokIframe) {
-            const newTtSrc = normalizeTiktokEmbedUrl(prod.tiktokUrl);
-            if (modalTiktokIframe.src !== newTtSrc) modalTiktokIframe.src = newTtSrc;
-          }
-          if (modalTtCaption) modalTtCaption.textContent = product.tiktokCaption || product.name;
-
-          const fbPageHref = String(
-            storeSettings.fbUrl || 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums'
-          ).trim() || 'https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums';
-          const fbEmbedSrc = normalizeFacebookEmbedUrl(prod.facebookUrl);
-          const cleanFbUrl = extractCleanFacebookUrl(prod.facebookUrl);
-          const targetFbHref = cleanFbUrl && cleanFbUrl.startsWith('http') ? cleanFbUrl : fbPageHref;
-          if (modalFacebookIframe && modalFacebookFallback) {
-            if (fbEmbedSrc) {
-              if (modalFacebookIframe.src !== fbEmbedSrc) modalFacebookIframe.src = fbEmbedSrc;
-              modalFacebookIframe.classList.remove('hidden');
-              modalFacebookFallback.classList.add('hidden');
-            } else {
-              modalFacebookIframe.src = '';
-              modalFacebookIframe.classList.add('hidden');
-              modalFacebookFallback.classList.remove('hidden');
-              modalFacebookFallback.href = targetFbHref;
-              if (modalFbFallbackImg) {
-                modalFbFallbackImg.src = getProductImageSrc(prod, activeThemeColor);
-              }
-            }
-          }
-          if (modalFbCaption) modalFbCaption.textContent = product.facebookCaption || product.name;
-          if (modalFbExternal) modalFbExternal.href = targetFbHref;
-
-          if (modalInstagramIframe) {
-            const newIgSrc = normalizeInstagramEmbedUrl(prod.instagramUrl);
-            if (modalInstagramIframe.src !== newIgSrc) modalInstagramIframe.src = newIgSrc;
-          }
-          if (modalIgCaption) modalIgCaption.textContent = product.instagramCaption || product.name;
-
+          updateModalAllFourVideos(prod, product);
           renderModalGalleryState();
         }
 
@@ -9055,17 +9114,17 @@
             prod.specs = specsCollected;
           }
 
-          if (mieYoutubeInput && mieYoutubeInput.value.trim()) {
-            prod.youtubeId = extractYoutubeId(mieYoutubeInput.value.trim());
+          if (mieYoutubeInput) {
+            prod.youtubeId = mieYoutubeInput.value.trim() ? extractYoutubeId(mieYoutubeInput.value.trim()) : 'M7lc1UVf-VE';
           }
-          if (mieTiktokInput && mieTiktokInput.value.trim()) {
-            prod.tiktokUrl = normalizeTiktokEmbedUrl(mieTiktokInput.value.trim());
+          if (mieTiktokInput) {
+            prod.tiktokUrl = extractCleanTiktokUrl(mieTiktokInput.value);
           }
           if (mieFacebookInput) {
-            prod.facebookUrl = mieFacebookInput.value.trim();
+            prod.facebookUrl = extractCleanFacebookUrl(mieFacebookInput.value);
           }
-          if (mieInstagramInput && mieInstagramInput.value.trim()) {
-            prod.instagramUrl = normalizeInstagramEmbedUrl(mieInstagramInput.value.trim());
+          if (mieInstagramInput) {
+            prod.instagramUrl = extractCleanInstagramUrl(mieInstagramInput.value);
           }
 
           // Clear stale auto-translations if the owner updated Georgian text so the new Georgian text shows everywhere
@@ -9169,7 +9228,32 @@
           });
         }
 
+        [mieTiktokInput, mieFacebookInput, mieYoutubeInput, mieInstagramInput].forEach((videoInp) => {
+          if (!videoInp) return;
+          videoInp.addEventListener('paste', (e) => {
+            const pasted = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+            if (pasted && pasted.trim()) {
+              e.preventDefault();
+              videoInp.value = extractNewestUrlFromText(pasted) || pasted.trim();
+              applyInlineProductEditorChanges({ immediate: true });
+              showWishlistToast('✅ ვიდეოს ლინკი ჩაისვა და შეინახა!');
+            }
+          });
+        });
+
         if (modalInlineEditorPanel) {
+          modalInlineEditorPanel.addEventListener('click', (e) => {
+            const clearVideoBtn = e.target.closest('[data-clear-video-input]');
+            if (clearVideoBtn) {
+              const targetId = clearVideoBtn.getAttribute('data-clear-video-input');
+              const inp = document.getElementById(targetId);
+              if (inp) {
+                inp.value = '';
+                applyInlineProductEditorChanges({ immediate: true });
+                inp.focus();
+              }
+            }
+          });
           modalInlineEditorPanel.addEventListener('input', (e) => {
             if (e.target.closest('[data-mie-slot-file]') || e.target === mieMultiPhotoInput) return;
             applyInlineProductEditorChanges();
