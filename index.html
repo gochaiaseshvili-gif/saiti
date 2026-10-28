@@ -23480,17 +23480,26 @@
         });
       })();
     </script>
-<!-- მთავარ გვერდზე დაბრუნების მცურავი ღილაკი -->
-<a href="/" class="fixed bottom-20 left-4 z-50 flex items-center gap-2 bg-white text-gray-800 px-4 py-3 rounded-full shadow-xl border border-gray-200 active:scale-95 transition-transform">
+<!-- უკან გასვლის მცურავი ღილაკი -->
+<a href="/" id="backButton" class="fixed bottom-20 left-4 z-50 hidden items-center gap-2 bg-white text-gray-800 px-4 py-3 rounded-full shadow-xl border border-gray-200 active:scale-95 transition-transform">
     <svg class="w-5 h-5 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
     </svg>
-    <span class="font-medium">უკანგასვლა</span>
+    <span class="font-medium">უკან</span>
 </a>
-  </body>
-</html>
+
+<script>
+    // ვამოწმებთ მისამართს: თუ არ არის მთავარი გვერდი, მაშინ გამოჩნდეს
+    const currentPath = window.location.pathname;
+    const isHome = currentPath === '/' || currentPath === '/index.html' || currentPath === '' || currentPath.endsWith('index.html');
+    
+    if (!isHome) {
+        const btn = document.getElementById('backButton');
+        if (btn) {
+            btn.classList.remove('hidden');
+            btn.classList.add('flex');
+        }
+    }
 </script>
-
-
   </body>
 </html>
