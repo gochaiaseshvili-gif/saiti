@@ -7980,14 +7980,14 @@
           fSku.value = 'PRO-1000';
           fShortMeta.value = '';
           fDesc.value = '';
-          fYoutube.value = 'https://www.youtube.com/watch?v=M7lc1UVf-VE';
+          fYoutube.value = '';
           if (fYtDuration) fYtDuration.value = '08:45';
           fYtCaption.value = '';
-          fTiktok.value = 'https://www.tiktok.com/embed/v2/7234567890123456789';
+          fTiktok.value = '';
           fTtCaption.value = '';
           if (fFacebook) fFacebook.value = '';
           if (fFbCaption) fFbCaption.value = '';
-          if (fInstagram) fInstagram.value = 'https://www.instagram.com/p/C-DefaultReel/embed';
+          if (fInstagram) fInstagram.value = '';
           if (fIgCaption) fIgCaption.value = '';
           formFiveImages = ['', '', '', '', ''];
 
@@ -8017,11 +8017,11 @@
           fYoutube.value = prod.youtubeId ? `https://www.youtube.com/watch?v=${extractYoutubeId(prod.youtubeId)}` : '';
           if (fYtDuration) fYtDuration.value = prod.youtubeDuration || '08:45';
           fYtCaption.value = prod.youtubeCaption || '';
-          fTiktok.value = prod.tiktokUrl || '';
+          fTiktok.value = extractCleanTiktokUrl(prod.tiktokUrl);
           fTtCaption.value = prod.tiktokCaption || '';
-          if (fFacebook) fFacebook.value = prod.facebookUrl || '';
+          if (fFacebook) fFacebook.value = extractCleanFacebookUrl(prod.facebookUrl);
           if (fFbCaption) fFbCaption.value = prod.facebookCaption || '';
-          if (fInstagram) fInstagram.value = prod.instagramUrl || '';
+          if (fInstagram) fInstagram.value = extractCleanInstagramUrl(prod.instagramUrl);
           if (fIgCaption) fIgCaption.value = prod.instagramCaption || '';
 
           document.getElementById('cp-form-heading').textContent = `პროდუქტის და 5 ფოტოს რედაქტირება: ${prod.name}`;
@@ -8074,11 +8074,11 @@
             youtubeId: extractYoutubeId(fYoutube.value),
             youtubeDuration: (fYtDuration && fYtDuration.value.trim()) || '08:45',
             youtubeCaption: fYtCaption.value.trim() || displayName,
-            tiktokUrl: normalizeTiktokEmbedUrl(fTiktok.value),
+            tiktokUrl: extractCleanTiktokUrl(fTiktok.value),
             tiktokCaption: fTtCaption.value.trim() || displayName,
-            facebookUrl: fFacebook ? fFacebook.value.trim() : '',
+            facebookUrl: fFacebook ? extractCleanFacebookUrl(fFacebook.value) : '',
             facebookCaption: fFbCaption ? fFbCaption.value.trim() || displayName : displayName,
-            instagramUrl: fInstagram ? normalizeInstagramEmbedUrl(fInstagram.value) : '',
+            instagramUrl: fInstagram ? extractCleanInstagramUrl(fInstagram.value) : '',
             instagramCaption: fIgCaption ? fIgCaption.value.trim() || displayName : displayName
           };
 
@@ -8095,8 +8095,25 @@
             preserveScroll(() => renderProducts());
           }
 
+          if (activeModalProduct && activeModalProduct.id === existingId) {
+            activeModalProduct = updatedProductObj;
+            refreshOpenProductModalView(updatedProductObj);
+          }
+
           saveStateEverywhere(extraOpts);
         }
+
+        [fTiktok, fFacebook, fYoutube, fInstagram].forEach((videoInp) => {
+          if (!videoInp) return;
+          videoInp.addEventListener('paste', (e) => {
+            const pasted = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+            if (pasted && pasted.trim()) {
+              e.preventDefault();
+              videoInp.value = extractNewestUrlFromText(pasted) || pasted.trim();
+              autoSaveFormProductLive({ immediate: true });
+            }
+          });
+        });
 
         cpProductForm.addEventListener('input', (e) => {
           if (e.target.closest('[data-slot-file]')) return;
