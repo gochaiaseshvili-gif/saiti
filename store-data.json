@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793186587139,
+  "updatedAt": 1793186587845,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -75,7 +75,7 @@
       "badgeText": "აქცია",
       "name": "ახალი პროდუქტი",
       "shortMeta": "ოფიციალური გარანტია 24 თვე",
-      "oldPrice": 22,
+      "oldPrice": 220,
       "newPrice": 0,
       "images": [
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793127375408_6735.jpg",
