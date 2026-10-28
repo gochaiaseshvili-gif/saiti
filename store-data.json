@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793194176293,
+  "updatedAt": 1793194197874,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -119,58 +119,6 @@
       "instagramUrl": "",
       "instagramCaption": "ახალი პროდუქტი",
       "facebookUrl": "https://www.facebook.com/share/v/19awNHgcYH/"
-    },
-    {
-      "id": "stagemax-1200w",
-      "sku": "1200W PRO",
-      "category": "karaoke",
-      "categoryLabel": "კარაოკე სისტემა",
-      "badgeText": "ბესტსელერი",
-      "name": "StageMax Pro 1200W Dual-12\" კომერციული კარაოკე დინამიკი",
-      "shortMeta": "1200W · 2× UHF მიკროფონი · 14 სთ ელემენტი",
-      "oldPrice": 1490,
-      "newPrice": 1090,
-      "images": [
-        "",
-        "",
-        "",
-        "",
-        ""
-      ],
-      "description": "პროფესიონალური ორმაგი 12-დიუმიანი კარაოკე აკუსტიკური სისტემა ჩაშენებული DSP ექვალაიზერით, Reverb/Echo ეფექტებით და 2 მეტალის UHF უსადენო მიკროფონით. იდეალურია ღია და დახურული ღონისძიებებისთვის, რესტორნებისა და აგარაკისთვის.",
-      "specs": [
-        {
-          "label": "სიმძლავრე ვატი",
-          "value": "1200W (600W RMS)"
-        },
-        {
-          "label": "დინამიკის ზომა",
-          "value": "2 × 12\" Woofer + Tweeter"
-        },
-        {
-          "label": "მიკროფონები",
-          "value": "2 × UHF მეტალის უსადენო"
-        },
-        {
-          "label": "ავტონომიური მუშაობა",
-          "value": "12–14 საათი (Li-Ion)"
-        },
-        {
-          "label": "კავშირი",
-          "value": "Bluetooth 5.3, USB, AUX, Guitar"
-        },
-        {
-          "label": "წონა და ტრანსპორტირება",
-          "value": "18.4 კგ · გორგოლაჭებით"
-        }
-      ],
-      "youtubeId": "",
-      "youtubeDuration": "09:15",
-      "youtubeCaption": "StageMax 1200W ხმის სიმძლავრის და მიკროფონების ტესტი",
-      "tiktokUrl": "",
-      "tiktokCaption": "ღია სივრცეში 1200W კარაოკე დინამიკის დემონსტრაცია",
-      "facebookUrl": "",
-      "instagramUrl": ""
     },
     {
       "id": "ecovolt-1200w-solar",
@@ -531,13 +479,6 @@
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793127380658_v8l3.jpg",
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793127383292_b67s.jpg",
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_5_1793127385372_6bow.jpg"
-    ],
-    "stagemax-1200w": [
-      "",
-      "",
-      "",
-      "",
-      ""
     ],
     "ecovolt-1200w-solar": [
       "/uploads/solar-1.jpg",
