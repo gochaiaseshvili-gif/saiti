@@ -23480,19 +23480,14 @@
         });
       })();
     </script>
-  <!-- Back Arrow Button IMMEDIATELY to the left of the Close Button -->
-              <button
-                id="back-arrow-near-close-btn"
-                type="button"
-                class="min-h-[42px] px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-zinc-900 border border-amber-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
-                aria-label="უკან საწყის გვერდზე დაბრუნება"
-                title="უკან დაბრუნება ახალი არჩევანისთვის"
-              >
-                <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span id="back-arrow-near-close-text">უკან</span>
-              </button>
+  <div class="mt-6 flex justify-start">
+    <button type="button" onclick="history.back()" class="min-h-[42px] px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-zinc-900 border border-amber-300 flex items-center gap-2 shadow-sm transition-colors cursor-pointer">
+        <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        <span class="font-medium">უკან</span>
+    </button>
+</div>
 
   </body>
 </html>
