@@ -64,6 +64,11 @@
         --theme-primary-soft: rgba(217, 119, 6, 0.12);
         --theme-primary-border: rgba(217, 119, 6, 0.32);
         --theme-primary-text-on: #ffffff;
+        --site-page-bg: #fafaf9;
+        --site-card-bg: #ffffff;
+        --site-header-bg: rgba(255, 255, 255, 0.96);
+        --site-price-color: #d97706;
+        --site-title-color: #09090b;
       }
 
       html,
@@ -74,10 +79,52 @@
 
       body {
         font-family: 'Plus Jakarta Sans', 'Noto Sans Georgian', sans-serif;
-        background-color: #fafaf9;
+        background-color: var(--site-page-bg) !important;
         color: #18181b;
         -webkit-tap-highlight-color: transparent;
         overflow-anchor: none;
+      }
+
+      header.sticky {
+        background-color: var(--site-header-bg) !important;
+      }
+
+      .product-card,
+      .movable-service-card {
+        background-color: var(--site-card-bg) !important;
+      }
+
+      .card-new-price-el,
+      #modal-new-price,
+      #qo-product-price {
+        color: var(--site-price-color) !important;
+      }
+
+      .card-title-el,
+      #catalog-heading-title,
+      #modal-product-title,
+      #header-brand-name,
+      #serv-1-title,
+      #serv-2-title,
+      #serv-3-title {
+        color: var(--site-title-color) !important;
+      }
+
+      body[data-card-frame="accent-border"] .product-card,
+      body[data-card-frame="accent-border"] .movable-service-card {
+        border: 2px solid var(--theme-primary-border) !important;
+      }
+
+      body[data-card-frame="gold-glow"] .product-card,
+      body[data-card-frame="gold-glow"] .movable-service-card {
+        border: 2px solid #f59e0b !important;
+        box-shadow: 0 8px 26px -4px rgba(245, 158, 11, 0.28) !important;
+      }
+
+      body[data-card-frame="neon-shadow"] .product-card,
+      body[data-card-frame="neon-shadow"] .movable-service-card {
+        border: 2px solid var(--theme-primary) !important;
+        box-shadow: 0 10px 30px -5px var(--theme-primary-border) !important;
       }
 
       .font-display {
@@ -677,10 +724,10 @@
               type="button"
               aria-expanded="false"
               aria-controls="theme-customizer-panel"
-              class="min-h-[44px] px-3.5 py-2 rounded-xl border theme-border theme-bg-soft text-xs font-semibold text-zinc-900 flex items-center gap-2 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 theme-ring"
+              class="min-h-[44px] px-3.5 py-2 rounded-xl border-2 theme-border theme-bg-soft text-xs font-extrabold text-zinc-900 flex items-center gap-2 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 theme-ring cursor-pointer shadow-xs"
             >
-              <span class="w-3.5 h-3.5 rounded-full theme-bg inline-block shrink-0 shadow-inner"></span>
-              <span>თემის ფერი</span>
+              <span class="w-4 h-4 rounded-full theme-bg inline-block shrink-0 shadow-inner"></span>
+              <span>🎨 ფერების მენიუ</span>
               <svg id="theme-chevron" class="w-3.5 h-3.5 text-zinc-500 fast-transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
@@ -823,90 +870,430 @@
           </div>
         </div>
 
-        <!-- Collapsible Theme Customization Panel -->
+        <!-- Collapsible Theme & Full Color Customization Panel -->
         <div
           id="theme-customizer-panel"
-          class="hidden rounded-2xl bg-stone-50 border border-zinc-200/90 p-4 space-y-3"
+          class="hidden rounded-2xl bg-gradient-to-br from-amber-50/90 via-white to-stone-50 border-2 theme-border p-4 sm:p-5 space-y-4 shadow-lg"
           role="region"
-          aria-label="საიტის ფერის მართვის პანელი"
+          aria-label="საიტის ფერების და ლამაზი გაფორმების მართვის მენიუ"
         >
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-zinc-200/80">
             <div>
-              <h2 class="text-sm font-semibold text-zinc-900">მაღაზიის თემის ფერის პერსონალიზაცია (Theme Customizer)</h2>
-              <p class="text-xs text-zinc-500">
-                აირჩიეთ სასურველი აქცენტის ფერი — ფასდაკლებული ფასები, ღილაკები და აქტიური ფილტრები მყისიერად განახლდება.
+              <h2 class="text-sm sm:text-base font-extrabold text-zinc-950 flex items-center gap-2">
+                <span>🎨</span>
+                <span>საიტის ფერების და ლამაზი გაფორმების მენიუ</span>
+              </h2>
+              <p class="text-xs text-zinc-600">
+                შეარჩიეთ მზა ფერთა თემა 1 დაჭერით ან ცალ-ცალკე შეცვალეთ ღილაკების, უკანა ფონის, პროდუქტის უჯრების, ზედა ზოლის, ფასების და სათაურების ფერები.
               </p>
             </div>
-            <div class="flex items-center gap-2">
-              <label for="custom-color-picker" class="text-xs font-medium text-zinc-600 whitespace-nowrap">საკუთარი ფერი:</label>
-              <input
-                id="custom-color-picker"
-                type="color"
-                value="#d97706"
-                class="w-10 h-10 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5"
-                aria-label="აირჩიეთ ნებისმიერი ფერი"
-              />
-              <span id="active-hex-readout" class="font-mono-num text-xs font-semibold text-zinc-700 bg-white px-2.5 py-1.5 rounded-lg border border-zinc-200">
-                #D97706
-              </span>
+            <div class="flex items-center gap-2 self-start sm:self-auto shrink-0">
+              <button
+                type="button"
+                id="reset-all-colors-btn"
+                class="min-h-[38px] px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold flex items-center gap-1 cursor-pointer active:scale-95 fast-transition"
+                title="საწყის ფერებზე დაბრუნება"
+              >
+                <span>🔄</span>
+                <span>საწყისი ფერები</span>
+              </button>
+              <button
+                type="button"
+                id="close-theme-panel-btn"
+                class="min-h-[38px] px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold cursor-pointer active:scale-95 fast-transition"
+              >
+                ✕ დახურვა
+              </button>
             </div>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 pt-1" id="theme-presets-container">
-            <button
-              type="button"
-              data-theme-color="#d97706"
-              data-theme-hover="#b45309"
-              class="theme-preset-btn min-h-[44px] px-3 py-2 rounded-xl border border-zinc-300 bg-white hover:bg-zinc-50 flex items-center gap-2.5 text-xs font-semibold text-zinc-800 active:scale-[0.98] fast-transition whitespace-nowrap"
-            >
-              <span class="w-4 h-4 rounded-full bg-[#d97706] shrink-0"></span>
-              <span class="truncate">Solar Amber</span>
-            </button>
-            <button
-              type="button"
-              data-theme-color="#e11d48"
-              data-theme-hover="#be123c"
-              class="theme-preset-btn min-h-[44px] px-3 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center gap-2.5 text-xs font-semibold text-zinc-800 active:scale-[0.98] fast-transition whitespace-nowrap"
-            >
-              <span class="w-4 h-4 rounded-full bg-[#e11d48] shrink-0"></span>
-              <span class="truncate">Stage Crimson</span>
-            </button>
-            <button
-              type="button"
-              data-theme-color="#2563eb"
-              data-theme-hover="#1d4ed8"
-              class="theme-preset-btn min-h-[44px] px-3 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center gap-2.5 text-xs font-semibold text-zinc-800 active:scale-[0.98] fast-transition whitespace-nowrap"
-            >
-              <span class="w-4 h-4 rounded-full bg-[#2563eb] shrink-0"></span>
-              <span class="truncate">Volt Cobalt</span>
-            </button>
-            <button
-              type="button"
-              data-theme-color="#059669"
-              data-theme-hover="#047857"
-              class="theme-preset-btn min-h-[44px] px-3 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center gap-2.5 text-xs font-semibold text-zinc-800 active:scale-[0.98] fast-transition whitespace-nowrap"
-            >
-              <span class="w-4 h-4 rounded-full bg-[#059669] shrink-0"></span>
-              <span class="truncate">Eco Emerald</span>
-            </button>
-            <button
-              type="button"
-              data-theme-color="#ea580c"
-              data-theme-hover="#c2410c"
-              class="theme-preset-btn min-h-[44px] px-3 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center gap-2.5 text-xs font-semibold text-zinc-800 active:scale-[0.98] fast-transition whitespace-nowrap"
-            >
-              <span class="w-4 h-4 rounded-full bg-[#ea580c] shrink-0"></span>
-              <span class="truncate">Acoustic Copper</span>
-            </button>
-            <button
-              type="button"
-              data-theme-color="#7c3aed"
-              data-theme-hover="#6d28d9"
-              class="theme-preset-btn min-h-[44px] px-3 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-zinc-50 flex items-center gap-2.5 text-xs font-semibold text-zinc-800 active:scale-[0.98] fast-transition whitespace-nowrap"
-            >
-              <span class="w-4 h-4 rounded-full bg-[#7c3aed] shrink-0"></span>
-              <span class="truncate">Studio Violet</span>
-            </button>
+          <!-- 1. 12 Ready-Made Complete Site Color Palettes -->
+          <div class="space-y-2">
+            <div class="text-xs font-extrabold text-zinc-800">1. მზა ფერთა კომბინაციები (1 დაჭერით მთლიანი საიტის გაფორმება):</div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2" id="theme-presets-container">
+              <button
+                type="button"
+                data-theme-color="#d97706"
+                data-theme-hover="#b45309"
+                data-preset-page-bg="#fafaf9"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#d97706"
+                data-preset-title-color="#09090b"
+                data-preset-frame="default"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-300 bg-white hover:bg-amber-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#d97706] shrink-0 ring-2 ring-amber-200"></span>
+                <span class="truncate">☀️ ოქროსფერი მზე</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#e11d48"
+                data-theme-hover="#be123c"
+                data-preset-page-bg="#fff1f2"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#e11d48"
+                data-preset-title-color="#09090b"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-rose-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#e11d48] shrink-0 ring-2 ring-rose-200"></span>
+                <span class="truncate">🔴 სცენის წითელი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#2563eb"
+                data-theme-hover="#1d4ed8"
+                data-preset-page-bg="#f0f7ff"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#2563eb"
+                data-preset-title-color="#0f172a"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-blue-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#2563eb] shrink-0 ring-2 ring-blue-200"></span>
+                <span class="truncate">🔵 სამეფო ლურჯი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#059669"
+                data-theme-hover="#047857"
+                data-preset-page-bg="#f0fdf4"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#059669"
+                data-preset-title-color="#064e3b"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-emerald-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#059669] shrink-0 ring-2 ring-emerald-200"></span>
+                <span class="truncate">🟢 ზურმუხტისფერი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#7c3aed"
+                data-theme-hover="#6d28d9"
+                data-preset-page-bg="#f5f3ff"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#7c3aed"
+                data-preset-title-color="#1e1b4b"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-violet-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#7c3aed] shrink-0 ring-2 ring-violet-200"></span>
+                <span class="truncate">🟣 სტუდიური იისფერი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#ea580c"
+                data-theme-hover="#c2410c"
+                data-preset-page-bg="#fff7ed"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#ea580c"
+                data-preset-title-color="#1c1917"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-orange-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#ea580c] shrink-0 ring-2 ring-orange-200"></span>
+                <span class="truncate">🟠 თბილი სპილენძი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#0891b2"
+                data-theme-hover="#0e7490"
+                data-preset-page-bg="#ecfeff"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#0891b2"
+                data-preset-title-color="#083344"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-cyan-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#0891b2] shrink-0 ring-2 ring-cyan-200"></span>
+                <span class="truncate">💎 ფირუზისფერი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#db2777"
+                data-theme-hover="#be185d"
+                data-preset-page-bg="#fdf2f8"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#db2777"
+                data-preset-title-color="#500724"
+                data-preset-frame="accent-border"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-pink-50/60 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#db2777] shrink-0 ring-2 ring-pink-200"></span>
+                <span class="truncate">🌸 ვარდისფერი ოქრო</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#b45309"
+                data-theme-hover="#92400e"
+                data-preset-page-bg="#fefce8"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#fffbeb"
+                data-preset-price-color="#d97706"
+                data-preset-title-color="#1c1917"
+                data-preset-frame="gold-glow"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-amber-50 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#f59e0b] shrink-0 ring-2 ring-yellow-300"></span>
+                <span class="truncate">👑 VIP ოქროსფერი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#4f46e5"
+                data-theme-hover="#4338ca"
+                data-preset-page-bg="#eef2ff"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#4f46e5"
+                data-preset-title-color="#1e1b4b"
+                data-preset-frame="neon-shadow"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-indigo-50 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#4f46e5] shrink-0 ring-2 ring-indigo-200"></span>
+                <span class="truncate">⚡ ელექტრო ინდიგო</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#0d9488"
+                data-theme-hover="#0f766e"
+                data-preset-page-bg="#f5f5f4"
+                data-preset-card-bg="#fafaf9"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#0f766e"
+                data-preset-title-color="#18181b"
+                data-preset-frame="default"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-teal-50 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#0d9488] shrink-0 ring-2 ring-teal-200"></span>
+                <span class="truncate">🌿 მშვიდი ზურმუხტი</span>
+              </button>
+
+              <button
+                type="button"
+                data-theme-color="#dc2626"
+                data-theme-hover="#b91c1c"
+                data-preset-page-bg="#fef2f2"
+                data-preset-card-bg="#ffffff"
+                data-preset-header-bg="#ffffff"
+                data-preset-price-color="#dc2626"
+                data-preset-title-color="#09090b"
+                data-preset-frame="gold-glow"
+                class="theme-preset-btn min-h-[42px] px-2.5 py-2 rounded-xl border border-zinc-200 bg-white hover:bg-red-50 flex items-center gap-2 text-xs font-bold text-zinc-900 active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="w-4 h-4 rounded-full bg-[#dc2626] shrink-0 ring-2 ring-red-200"></span>
+                <span class="truncate">🔥 აქციის რუბინი</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. 6 Individual Zone Color Pickers + Quick Swatches -->
+          <div class="space-y-2 pt-2 border-t border-zinc-200/80">
+            <div class="text-xs font-extrabold text-zinc-800">2. საიტის თითოეული ნაწილის ფერის ცალ-ცალკე კორექცია:</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <!-- Picker 1: Primary Accent & Buttons -->
+              <div class="p-3 rounded-xl bg-white border border-zinc-200 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="custom-color-picker" class="text-xs font-extrabold text-zinc-900">1. ღილაკების და აქცენტის ფერი:</label>
+                  <span id="active-hex-readout" class="font-mono-num text-[11px] font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#D97706</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    id="custom-color-picker"
+                    type="color"
+                    value="#d97706"
+                    class="w-11 h-9 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                    aria-label="ღილაკების და აქცენტის ფერი"
+                  />
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-quick-color-target="primary" data-quick-color-hex="#d97706" class="w-6 h-6 rounded-full bg-[#d97706] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="ოქროსფერი"></button>
+                    <button type="button" data-quick-color-target="primary" data-quick-color-hex="#e11d48" class="w-6 h-6 rounded-full bg-[#e11d48] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="წითელი"></button>
+                    <button type="button" data-quick-color-target="primary" data-quick-color-hex="#2563eb" class="w-6 h-6 rounded-full bg-[#2563eb] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="ლურჯი"></button>
+                    <button type="button" data-quick-color-target="primary" data-quick-color-hex="#059669" class="w-6 h-6 rounded-full bg-[#059669] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მწვანე"></button>
+                    <button type="button" data-quick-color-target="primary" data-quick-color-hex="#7c3aed" class="w-6 h-6 rounded-full bg-[#7c3aed] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="იისფერი"></button>
+                    <button type="button" data-quick-color-target="primary" data-quick-color-hex="#ea580c" class="w-6 h-6 rounded-full bg-[#ea580c] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="ნარინჯისფერი"></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Picker 2: Page Background Color -->
+              <div class="p-3 rounded-xl bg-white border border-zinc-200 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="custom-page-bg-picker" class="text-xs font-extrabold text-zinc-900">2. საიტის უკანა ფონის ფერი:</label>
+                  <span id="page-bg-hex-readout" class="font-mono-num text-[11px] font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#FAFAF9</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    id="custom-page-bg-picker"
+                    type="color"
+                    value="#fafaf9"
+                    class="w-11 h-9 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                    aria-label="საიტის უკანა ფონის ფერი"
+                  />
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-quick-color-target="pageBg" data-quick-color-hex="#fafaf9" class="w-6 h-6 rounded-full bg-[#fafaf9] border border-zinc-400 cursor-pointer hover:scale-110 fast-transition" title="სტანდარტული ღია"></button>
+                    <button type="button" data-quick-color-target="pageBg" data-quick-color-hex="#ffffff" class="w-6 h-6 rounded-full bg-[#ffffff] border border-zinc-400 cursor-pointer hover:scale-110 fast-transition" title="ქათქათა თეთრი"></button>
+                    <button type="button" data-quick-color-target="pageBg" data-quick-color-hex="#fefce8" class="w-6 h-6 rounded-full bg-[#fefce8] border border-amber-300 cursor-pointer hover:scale-110 fast-transition" title="თბილი ოქროსფერი კრემი"></button>
+                    <button type="button" data-quick-color-target="pageBg" data-quick-color-hex="#f0f9ff" class="w-6 h-6 rounded-full bg-[#f0f9ff] border border-sky-300 cursor-pointer hover:scale-110 fast-transition" title="ღია ცისფერი"></button>
+                    <button type="button" data-quick-color-target="pageBg" data-quick-color-hex="#f0fdf4" class="w-6 h-6 rounded-full bg-[#f0fdf4] border border-emerald-300 cursor-pointer hover:scale-110 fast-transition" title="ღია მწვანე"></button>
+                    <button type="button" data-quick-color-target="pageBg" data-quick-color-hex="#fdf2f8" class="w-6 h-6 rounded-full bg-[#fdf2f8] border border-pink-300 cursor-pointer hover:scale-110 fast-transition" title="ღია ვარდისფერი"></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Picker 3: Product Card Background Color -->
+              <div class="p-3 rounded-xl bg-white border border-zinc-200 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="custom-card-bg-picker" class="text-xs font-extrabold text-zinc-900">3. პროდუქტის უჯრების ფონი:</label>
+                  <span id="card-bg-hex-readout" class="font-mono-num text-[11px] font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#FFFFFF</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    id="custom-card-bg-picker"
+                    type="color"
+                    value="#ffffff"
+                    class="w-11 h-9 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                    aria-label="პროდუქტის უჯრების ფონი"
+                  />
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-quick-color-target="cardBg" data-quick-color-hex="#ffffff" class="w-6 h-6 rounded-full bg-[#ffffff] border border-zinc-400 cursor-pointer hover:scale-110 fast-transition" title="თეთრი"></button>
+                    <button type="button" data-quick-color-target="cardBg" data-quick-color-hex="#fafaf9" class="w-6 h-6 rounded-full bg-[#fafaf9] border border-zinc-400 cursor-pointer hover:scale-110 fast-transition" title="რბილი კრემისფერი"></button>
+                    <button type="button" data-quick-color-target="cardBg" data-quick-color-hex="#fffbeb" class="w-6 h-6 rounded-full bg-[#fffbeb] border border-amber-300 cursor-pointer hover:scale-110 fast-transition" title="ოქროსფერი ელფერი"></button>
+                    <button type="button" data-quick-color-target="cardBg" data-quick-color-hex="#f0f9ff" class="w-6 h-6 rounded-full bg-[#f0f9ff] border border-sky-300 cursor-pointer hover:scale-110 fast-transition" title="ცისფერი ელფერი"></button>
+                    <button type="button" data-quick-color-target="cardBg" data-quick-color-hex="#f0fdf4" class="w-6 h-6 rounded-full bg-[#f0fdf4] border border-emerald-300 cursor-pointer hover:scale-110 fast-transition" title="მწვანე ელფერი"></button>
+                    <button type="button" data-quick-color-target="cardBg" data-quick-color-hex="#fff1f2" class="w-6 h-6 rounded-full bg-[#fff1f2] border border-rose-300 cursor-pointer hover:scale-110 fast-transition" title="ვარდისფერი ელფერი"></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Picker 4: Top Header Bar Background Color -->
+              <div class="p-3 rounded-xl bg-white border border-zinc-200 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="custom-header-bg-picker" class="text-xs font-extrabold text-zinc-900">4. ზედა ზოლის (ჰედერის) ფერი:</label>
+                  <span id="header-bg-hex-readout" class="font-mono-num text-[11px] font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#FFFFFF</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    id="custom-header-bg-picker"
+                    type="color"
+                    value="#ffffff"
+                    class="w-11 h-9 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                    aria-label="ზედა ზოლის ფერი"
+                  />
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-quick-color-target="headerBg" data-quick-color-hex="#ffffff" class="w-6 h-6 rounded-full bg-[#ffffff] border border-zinc-400 cursor-pointer hover:scale-110 fast-transition" title="თეთრი"></button>
+                    <button type="button" data-quick-color-target="headerBg" data-quick-color-hex="#fffbeb" class="w-6 h-6 rounded-full bg-[#fffbeb] border border-amber-300 cursor-pointer hover:scale-110 fast-transition" title="ოქროსფერი"></button>
+                    <button type="button" data-quick-color-target="headerBg" data-quick-color-hex="#eff6ff" class="w-6 h-6 rounded-full bg-[#eff6ff] border border-blue-300 cursor-pointer hover:scale-110 fast-transition" title="ცისფერი"></button>
+                    <button type="button" data-quick-color-target="headerBg" data-quick-color-hex="#ecfdf5" class="w-6 h-6 rounded-full bg-[#ecfdf5] border border-emerald-300 cursor-pointer hover:scale-110 fast-transition" title="მწვანე"></button>
+                    <button type="button" data-quick-color-target="headerBg" data-quick-color-hex="#fff1f2" class="w-6 h-6 rounded-full bg-[#fff1f2] border border-rose-300 cursor-pointer hover:scale-110 fast-transition" title="ვარდისფერი"></button>
+                    <button type="button" data-quick-color-target="headerBg" data-quick-color-hex="#f5f3ff" class="w-6 h-6 rounded-full bg-[#f5f3ff] border border-violet-300 cursor-pointer hover:scale-110 fast-transition" title="იისფერი"></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Picker 5: Sale Price Color -->
+              <div class="p-3 rounded-xl bg-white border border-zinc-200 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="custom-price-color-picker" class="text-xs font-extrabold text-zinc-900">5. აქციის ფასის ფერი (₾):</label>
+                  <span id="price-color-hex-readout" class="font-mono-num text-[11px] font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#D97706</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    id="custom-price-color-picker"
+                    type="color"
+                    value="#d97706"
+                    class="w-11 h-9 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                    aria-label="აქციის ფასის ფერი"
+                  />
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-quick-color-target="priceColor" data-quick-color-hex="#d97706" class="w-6 h-6 rounded-full bg-[#d97706] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="ოქროსფერი"></button>
+                    <button type="button" data-quick-color-target="priceColor" data-quick-color-hex="#dc2626" class="w-6 h-6 rounded-full bg-[#dc2626] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მკვეთრი წითელი"></button>
+                    <button type="button" data-quick-color-target="priceColor" data-quick-color-hex="#059669" class="w-6 h-6 rounded-full bg-[#059669] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მწვანე"></button>
+                    <button type="button" data-quick-color-target="priceColor" data-quick-color-hex="#2563eb" class="w-6 h-6 rounded-full bg-[#2563eb] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="ლურჯი"></button>
+                    <button type="button" data-quick-color-target="priceColor" data-quick-color-hex="#7c3aed" class="w-6 h-6 rounded-full bg-[#7c3aed] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="იისფერი"></button>
+                    <button type="button" data-quick-color-target="priceColor" data-quick-color-hex="#09090b" class="w-6 h-6 rounded-full bg-[#09090b] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="შავი"></button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Picker 6: Titles & Headings Text Color -->
+              <div class="p-3 rounded-xl bg-white border border-zinc-200 space-y-2 shadow-2xs">
+                <div class="flex items-center justify-between gap-2">
+                  <label for="custom-title-color-picker" class="text-xs font-extrabold text-zinc-900">6. სათაურების და სახელების ფერი:</label>
+                  <span id="title-color-hex-readout" class="font-mono-num text-[11px] font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#09090B</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <input
+                    id="custom-title-color-picker"
+                    type="color"
+                    value="#09090b"
+                    class="w-11 h-9 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                    aria-label="სათაურების და სახელების ფერი"
+                  />
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" data-quick-color-target="titleColor" data-quick-color-hex="#09090b" class="w-6 h-6 rounded-full bg-[#09090b] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მუქი შავი"></button>
+                    <button type="button" data-quick-color-target="titleColor" data-quick-color-hex="#1e3a8a" class="w-6 h-6 rounded-full bg-[#1e3a8a] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მუქი ლურჯი"></button>
+                    <button type="button" data-quick-color-target="titleColor" data-quick-color-hex="#064e3b" class="w-6 h-6 rounded-full bg-[#064e3b] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მუქი ზურმუხტი"></button>
+                    <button type="button" data-quick-color-target="titleColor" data-quick-color-hex="#7c2d12" class="w-6 h-6 rounded-full bg-[#7c2d12] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მუქი ყავისფერი"></button>
+                    <button type="button" data-quick-color-target="titleColor" data-quick-color-hex="#581c87" class="w-6 h-6 rounded-full bg-[#581c87] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მუქი იისფერი"></button>
+                    <button type="button" data-quick-color-target="titleColor" data-quick-color-hex="#881337" class="w-6 h-6 rounded-full bg-[#881337] border border-zinc-300 cursor-pointer hover:scale-110 fast-transition" title="მუქი შინდისფერი"></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Product Card Border & Glow Decoration Style -->
+          <div class="space-y-2 pt-2 border-t border-zinc-200/80">
+            <div class="text-xs font-extrabold text-zinc-800">3. პროდუქტის უჯრების ჩარჩოს და განათების სტილი:</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <button
+                type="button"
+                data-card-frame-btn="default"
+                class="card-frame-style-btn min-h-[40px] px-3 py-2 rounded-xl border border-zinc-900 bg-stone-100 text-xs font-bold text-zinc-900 cursor-pointer active:scale-95 fast-transition"
+              >
+                ⬜ სტანდარტული ჩარჩო
+              </button>
+              <button
+                type="button"
+                data-card-frame-btn="accent-border"
+                class="card-frame-style-btn min-h-[40px] px-3 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-zinc-800 cursor-pointer active:scale-95 fast-transition"
+              >
+                🎨 ფერადი კონტური
+              </button>
+              <button
+                type="button"
+                data-card-frame-btn="gold-glow"
+                class="card-frame-style-btn min-h-[40px] px-3 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-amber-800 cursor-pointer active:scale-95 fast-transition"
+              >
+                👑 ოქროსფერი ნათება (VIP)
+              </button>
+              <button
+                type="button"
+                data-card-frame-btn="neon-shadow"
+                class="card-frame-style-btn min-h-[40px] px-3 py-2 rounded-xl border border-zinc-200 bg-white text-xs font-bold text-indigo-800 cursor-pointer active:scale-95 fast-transition"
+              >
+                ✨ 3D ნათება და ჩრდილი
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1622,6 +2009,49 @@
                       <button type="button" data-mie-open-field="instagram" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <!-- 3.5 Direct Site Color & Decoration Quick Bar inside Product Editor -->
+              <div class="p-3.5 rounded-2xl bg-white border border-amber-200 space-y-2.5">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                  <div class="text-xs font-extrabold text-zinc-900 flex items-center gap-1.5">
+                    <span>🎨</span>
+                    <span>საიტის ფერების და გაფორმების კორექცია (პირდაპირ აქედან):</span>
+                  </div>
+                  <button
+                    type="button"
+                    id="mie-reset-colors-btn"
+                    class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[10px] font-extrabold cursor-pointer"
+                  >
+                    🔄 საწყის ფერებზე დაბრუნება
+                  </button>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                  <label class="p-2 rounded-xl bg-stone-50 border border-zinc-200 flex items-center gap-2 cursor-pointer">
+                    <input id="mie-color-primary" type="color" value="#d97706" class="w-8 h-8 rounded border border-zinc-300 bg-white p-0.5 cursor-pointer shrink-0" />
+                    <span class="text-[11px] font-bold text-zinc-800 leading-tight">1. ღილაკების ფერი</span>
+                  </label>
+                  <label class="p-2 rounded-xl bg-stone-50 border border-zinc-200 flex items-center gap-2 cursor-pointer">
+                    <input id="mie-color-page-bg" type="color" value="#fafaf9" class="w-8 h-8 rounded border border-zinc-300 bg-white p-0.5 cursor-pointer shrink-0" />
+                    <span class="text-[11px] font-bold text-zinc-800 leading-tight">2. საიტის ფონი</span>
+                  </label>
+                  <label class="p-2 rounded-xl bg-stone-50 border border-zinc-200 flex items-center gap-2 cursor-pointer">
+                    <input id="mie-color-card-bg" type="color" value="#ffffff" class="w-8 h-8 rounded border border-zinc-300 bg-white p-0.5 cursor-pointer shrink-0" />
+                    <span class="text-[11px] font-bold text-zinc-800 leading-tight">3. უჯრების ფონი</span>
+                  </label>
+                  <label class="p-2 rounded-xl bg-stone-50 border border-zinc-200 flex items-center gap-2 cursor-pointer">
+                    <input id="mie-color-header-bg" type="color" value="#ffffff" class="w-8 h-8 rounded border border-zinc-300 bg-white p-0.5 cursor-pointer shrink-0" />
+                    <span class="text-[11px] font-bold text-zinc-800 leading-tight">4. ზედა ზოლი</span>
+                  </label>
+                  <label class="p-2 rounded-xl bg-stone-50 border border-zinc-200 flex items-center gap-2 cursor-pointer">
+                    <input id="mie-color-price" type="color" value="#d97706" class="w-8 h-8 rounded border border-zinc-300 bg-white p-0.5 cursor-pointer shrink-0" />
+                    <span class="text-[11px] font-bold text-zinc-800 leading-tight">5. ფასის ფერი</span>
+                  </label>
+                  <label class="p-2 rounded-xl bg-stone-50 border border-zinc-200 flex items-center gap-2 cursor-pointer">
+                    <input id="mie-color-title" type="color" value="#09090b" class="w-8 h-8 rounded border border-zinc-300 bg-white p-0.5 cursor-pointer shrink-0" />
+                    <span class="text-[11px] font-bold text-zinc-800 leading-tight">6. სათაურის ფერი</span>
+                  </label>
                 </div>
               </div>
 
@@ -4051,6 +4481,12 @@
           igHandle: 'https://www.instagram.com/iyideba_saintereso_nivtebi/',
           weatherMode: 'off',
           weatherIntensity: 65,
+          pageBgColor: '#fafaf9',
+          cardBgColor: '#ffffff',
+          headerBgColor: '#ffffff',
+          priceTextColor: '',
+          titleTextColor: '#09090b',
+          cardFrameStyle: 'default',
           homeBlocksOrder: ['fb-banner', 'catalog-header', 'product-grid', 'service-standards'],
           modalBlocksOrder: ['modal-pricing', 'modal-tech-specs', 'modal-gallery', 'modal-specs', 'modal-video', 'modal-chat', 'modal-order'],
           serviceCardsOrder: ['serv-1', 'serv-2', 'serv-3'],
