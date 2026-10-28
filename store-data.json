@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793202212128,
+  "updatedAt": 1793202373524,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -296,11 +296,11 @@
       "oldPrice": 1890,
       "newPrice": 1450,
       "images": [
-        "",
-        "",
-        "",
-        "",
-        ""
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_1_1793202360167_d26k.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_2_1793202362654_2075.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_3_1793202365512_jfya.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_4_1793202367833_j1e1.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_5_1793202370819_yqeg.jpg"
       ],
       "description": "უმაღლესი კლასის კომერციული აკუსტიკური ტაუერი 15-დიუმიანი სუბვუფერით, 4-არხიანი პროფესიონალური მიქშერით, გიტარის პორტით და 2 შორი მოქმედების (60 მ) UHF უსადენო მიკროფონით.",
       "specs": [
@@ -532,11 +532,11 @@
       "/uploads/solar-5.jpg"
     ],
     "acousticpro-titan-1500w": [
-      "",
-      "",
-      "",
-      "",
-      ""
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_1_1793202360167_d26k.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_2_1793202362654_2075.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_3_1793202365512_jfya.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_4_1793202367833_j1e1.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/acousticpro-titan-1500w_slot_5_1793202370819_yqeg.jpg"
     ],
     "nomadpower-300w": [
       "/uploads/solar-1.jpg",
