@@ -4270,7 +4270,7 @@
             cardContactLabel: 'საკონტაქტო:',
             cardScreenshotBtn: 'სქრინშოტი',
             cardShareBtn: 'გაზიარება',
-            cardEditBtn: 'ჩასწორება',
+            cardEditBtn: 'ცვლილების შეტანა',
             cardUpload5Photos: '5 ფოტოს ატვირთვა',
             cardPhotosCount: '{count}/5 ფოტო +',
             cardFivePhotosBadge: '5 ფოტო',
@@ -4280,7 +4280,7 @@
             modalScreenshotBtn: 'სქრინშოტი',
             modalShareBtn: 'გაზიარება',
             modalUploadPhotosBtn: '5 ფოტოს ატვირთვა',
-            modalEditBtn: 'ჩასწორება',
+            modalEditBtn: 'ცვლილების შეტანა',
             modalSalePriceLabel: 'აქციის ფასი:',
             modalOldPriceLabel: 'ძველი ფასი:',
             modalDiscountLabel: 'ფასდაკლება:',
@@ -7250,6 +7250,12 @@
             renderAllChatWidgets();
           }
 
+          // If the inline editor panel is currently visible, refresh its fields for this product
+          const inlineEditorEl = document.getElementById('modal-inline-editor-panel');
+          if (inlineEditorEl && !inlineEditorEl.classList.contains('hidden') && typeof populateInlineProductEditor === 'function') {
+            populateInlineProductEditor(rawProduct);
+          }
+
           // Persist open product page in sessionStorage and URL so refreshing stays on this product page!
           try {
             sessionStorage.setItem('vv_open_product_id', productId);
@@ -7262,6 +7268,8 @@
         }
 
         function closeProductModal() {
+          const inlineEditorEl = document.getElementById('modal-inline-editor-panel');
+          if (inlineEditorEl) inlineEditorEl.classList.add('hidden');
           modalBackdrop.classList.add('hidden');
           document.body.classList.remove('overflow-hidden');
           modalYoutubeIframe.src = '';
@@ -8469,15 +8477,18 @@
         const ownerPinError = document.getElementById('owner-pin-error');
         const ownerPinCloseBtn = document.getElementById('owner-pin-close-btn');
         let pendingPinEditProductId = null;
+        let pendingPinInlineEdit = false;
 
         if (ownerPinCloseBtn && ownerPinModal) {
           ownerPinCloseBtn.addEventListener('click', () => {
             ownerPinModal.classList.add('hidden');
+            pendingPinInlineEdit = false;
             if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
           });
           ownerPinModal.addEventListener('click', (e) => {
             if (e.target === ownerPinModal) {
               ownerPinModal.classList.add('hidden');
+              pendingPinInlineEdit = false;
               if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
             }
           });
@@ -8493,12 +8504,19 @@
             }
             if (ownerPinError) ownerPinError.classList.add('hidden');
             if (ownerPinModal) ownerPinModal.classList.add('hidden');
+            if (floatingQuickContactEl) floatingQuickContactEl.classList.remove('hidden');
             try {
               sessionStorage.setItem('vv_owner_unlocked', '1');
               localStorage.setItem('vv_owner_unlocked', '1');
               sessionStorage.removeItem('vv_forced_customer_preview');
             } catch (err) {}
             setCustomerViewMode(false);
+            if (pendingPinInlineEdit && activeModalProduct) {
+              pendingPinInlineEdit = false;
+              pendingPinEditProductId = null;
+              openInlineProductEditor();
+              return;
+            }
             if (pendingPinEditProductId) {
               const prodIdToEdit = pendingPinEditProductId;
               pendingPinEditProductId = null;
@@ -8514,6 +8532,7 @@
           if (document.body.classList.contains('customer-view-mode')) {
             if (ownerPinModal && ownerPinInput) {
               pendingPinEditProductId = productIdToEdit || null;
+              pendingPinInlineEdit = false;
               if (ownerPinError) ownerPinError.classList.add('hidden');
               ownerPinInput.value = '';
               ownerPinModal.classList.remove('hidden');
@@ -8533,8 +8552,11 @@
         footerAdminBtn.addEventListener('click', () => triggerAdminAccess(null));
         if (modalFooterAdminBtn) {
           modalFooterAdminBtn.addEventListener('click', () => {
-            const currentProdId = activeModalProduct ? activeModalProduct.id : null;
-            triggerAdminAccess(currentProdId);
+            if (activeModalProduct) {
+              triggerInlineProductEdit();
+            } else {
+              triggerAdminAccess(null);
+            }
           });
         }
 
@@ -8563,12 +8585,422 @@
           if (e.target === cpBackdrop) closeControlPanel();
         });
 
-        modalEditProductBtn.addEventListener('click', () => {
+        // =========================================================================
+        // IN-PAGE DIRECT PRODUCT EDITOR INSIDE PRODUCT MODAL (#modal-inline-editor-panel)
+        // =========================================================================
+        const modalInlineEditorPanel = document.getElementById('modal-inline-editor-panel');
+        const modalInlineEditBtn = document.getElementById('modal-inline-edit-btn');
+        const mieCloseBtn = document.getElementById('mie-close-btn');
+        const mieMultiPhotoInput = document.getElementById('mie-multi-photo-input');
+        const mieClearAllPhotosBtn = document.getElementById('mie-clear-all-photos-btn');
+        const mieFiveSlotsGrid = document.getElementById('mie-five-slots-grid');
+        const mieNameInput = document.getElementById('mie-name');
+        const mieNewPriceInput = document.getElementById('mie-new-price');
+        const mieOldPriceInput = document.getElementById('mie-old-price');
+        const mieShortMetaInput = document.getElementById('mie-short-meta');
+        const mieCategorySelect = document.getElementById('mie-category');
+        const mieBadgeInput = document.getElementById('mie-badge');
+        const mieSkuInput = document.getElementById('mie-sku');
+        const mieDescInput = document.getElementById('mie-desc');
+        const mieSpecsContainer = document.getElementById('mie-specs-container');
+        const mieYoutubeInput = document.getElementById('mie-youtube');
+        const mieTiktokInput = document.getElementById('mie-tiktok');
+        const mieInstagramInput = document.getElementById('mie-instagram');
+        const mieSaveDoneBtn = document.getElementById('mie-save-done-btn');
+        const mieOpenFullCpBtn = document.getElementById('mie-open-full-cp-btn');
+        const mieDeleteProdBtn = document.getElementById('mie-delete-prod-btn');
+
+        function renderMieFiveSlots(prod) {
+          if (!mieFiveSlotsGrid || !prod) return;
+          ensureFiveImagesArray(prod);
+          const cardsHtml = [];
+          for (let i = 0; i < 5; i++) {
+            const rawImg = prod.images[i] || '';
+            const hasCustom = Boolean(rawImg && rawImg.trim().length > 0);
+            const previewSrc = getProductSlotImageSrc(prod, i, activeThemeColor);
+            cardsHtml.push(`
+              <div class="p-2 rounded-xl bg-white border ${
+                i === 0 ? 'border-amber-500 ring-1 ring-amber-500/30' : 'border-zinc-200'
+              } flex flex-col justify-between gap-1.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="text-[11px] font-extrabold text-zinc-900">${i === 0 ? '#1 მთავარი' : `ფოტო #${i + 1}`}</span>
+                  <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                    hasCustom ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-100 text-zinc-500'
+                  }">${hasCustom ? 'ატვირთულია' : 'ცარიელი'}</span>
+                </div>
+                <div class="relative aspect-[4/3] w-full rounded-lg bg-stone-100 border border-zinc-200/80 flex items-center justify-center overflow-hidden p-1">
+                  <img src="${previewSrc}" alt="ფოტო ${i + 1}" referrerPolicy="no-referrer" class="w-full h-full object-contain rounded" />
+                </div>
+                <label class="w-full min-h-[36px] px-2 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-extrabold flex items-center justify-center gap-1 cursor-pointer active:scale-[0.98] fast-transition relative">
+                  <span>📷 შეცვლა #${i + 1}</span>
+                  <input type="file" accept="image/*" multiple data-mie-slot-file="${i}" class="sr-only" />
+                </label>
+                <div class="flex items-center justify-between gap-1">
+                  ${
+                    i > 0 && hasCustom
+                      ? `<button type="button" data-mie-slot-main="${i}" class="text-[10px] font-bold text-amber-700 hover:underline">მთავარად</button>`
+                      : `<span></span>`
+                  }
+                  ${
+                    hasCustom
+                      ? `<button type="button" data-mie-slot-clear="${i}" class="text-[10px] font-bold text-rose-600 hover:underline">წაშლა</button>`
+                      : ''
+                  }
+                </div>
+              </div>
+            `);
+          }
+          mieFiveSlotsGrid.innerHTML = cardsHtml.join('');
+        }
+
+        function populateInlineProductEditor(prod) {
+          if (!prod || !modalInlineEditorPanel) return;
+          ensureFiveImagesArray(prod);
+          if (mieNameInput) mieNameInput.value = prod.name || '';
+          if (mieNewPriceInput) mieNewPriceInput.value = prod.newPrice != null ? prod.newPrice : '';
+          if (mieOldPriceInput) mieOldPriceInput.value = prod.oldPrice != null ? prod.oldPrice : '';
+          if (mieShortMetaInput) mieShortMetaInput.value = prod.shortMeta || '';
+          if (mieCategorySelect) mieCategorySelect.value = prod.category || 'karaoke';
+          if (mieBadgeInput) mieBadgeInput.value = prod.badgeText || '';
+          if (mieSkuInput) mieSkuInput.value = prod.sku || '';
+          if (mieDescInput) mieDescInput.value = prod.description || '';
+          if (mieYoutubeInput) {
+            mieYoutubeInput.value = prod.youtubeId ? `https://www.youtube.com/watch?v=${extractYoutubeId(prod.youtubeId)}` : '';
+          }
+          if (mieTiktokInput) mieTiktokInput.value = prod.tiktokUrl || '';
+          if (mieInstagramInput) mieInstagramInput.value = prod.instagramUrl || '';
+
+          if (mieSpecsContainer) {
+            const specsArray = Array.isArray(prod.specs) ? prod.specs : [];
+            const rows = [];
+            for (let i = 0; i < 6; i++) {
+              const item = specsArray[i] || { label: DEFAULT_SPEC_LABELS[i] || `პარამეტრი ${i + 1}`, value: '' };
+              rows.push(`
+                <div class="grid grid-cols-5 gap-1.5 bg-white p-1.5 rounded-xl border border-zinc-200/90">
+                  <input
+                    type="text"
+                    data-mie-spec-label="${i}"
+                    value="${(item.label || '').replace(/"/g, '&quot;')}"
+                    placeholder="მახასიათებელი ${i + 1}"
+                    class="col-span-2 min-h-[36px] px-2 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-semibold text-zinc-800"
+                  />
+                  <input
+                    type="text"
+                    data-mie-spec-value="${i}"
+                    value="${(item.value || '').replace(/"/g, '&quot;')}"
+                    placeholder="მნიშვნელობა"
+                    class="col-span-3 min-h-[36px] px-2 py-1 rounded-lg border border-zinc-300 bg-white text-xs font-bold text-zinc-900 font-mono-num"
+                  />
+                </div>
+              `);
+            }
+            mieSpecsContainer.innerHTML = rows.join('');
+          }
+
+          renderMieFiveSlots(prod);
+        }
+
+        function refreshOpenProductModalView(prod) {
+          if (!prod || !activeModalProduct || prod.id !== activeModalProduct.id) return;
+          const product = getLocalizedProduct(prod, currentLang);
+          const savings = Math.max(0, Number(prod.oldPrice) - Number(prod.newPrice));
+          const warrantyLabel = currentLang === 'en'
+            ? `${product.categoryLabel} • Code: ${prod.sku} • Official 24-Month Warranty`
+            : currentLang === 'ru'
+            ? `${product.categoryLabel} • Код: ${prod.sku} • Официальная гарантия 24 месяца`
+            : `${product.categoryLabel} • კოდი: ${prod.sku} • ოფიციალური გარანტია 24 თვე`;
+          if (modalCategoryMeta) modalCategoryMeta.textContent = warrantyLabel;
+          if (modalSkuCaption) modalSkuCaption.textContent = `${product.shortMeta}`;
+          if (modalProductTitle) modalProductTitle.textContent = product.name;
+          if (modalNewPrice) modalNewPrice.textContent = formatGel(prod.newPrice);
+          if (modalOldPrice) modalOldPrice.textContent = formatGel(prod.oldPrice);
+          if (modalSavings) modalSavings.textContent = `-${formatGel(savings)}`;
+          if (modalProductDesc) modalProductDesc.textContent = product.description;
+
+          const specsArr = Array.isArray(product.specs) ? product.specs : [];
+          if (modalSpecsGrid) {
+            modalSpecsGrid.innerHTML = specsArr
+              .filter((s) => s && (s.label || s.value))
+              .map(
+                (spec) => `
+                <div class="px-2.5 py-1.5 rounded-lg bg-stone-50 border border-zinc-200/80 min-w-0">
+                  <div class="text-[10px] leading-tight text-zinc-500 truncate">${spec.label || ''}</div>
+                  <div class="text-[11px] sm:text-xs font-semibold text-zinc-900 font-mono-num leading-tight mt-0.5 truncate">${spec.value || ''}</div>
+                </div>
+              `
+              )
+              .join('');
+          }
+
+          renderModalGalleryState();
+        }
+
+        function applyInlineProductEditorChanges(extraOpts = {}) {
           if (!activeModalProduct) return;
-          const idToEdit = activeModalProduct.id;
-          openControlPanel('form');
-          loadProductIntoForm(idToEdit);
+          const prod = activeModalProduct;
+          ensureFiveImagesArray(prod);
+
+          const nameVal = mieNameInput ? mieNameInput.value.trim() : prod.name;
+          const catValue = mieCategorySelect ? mieCategorySelect.value || 'karaoke' : prod.category;
+          prod.name = nameVal || prod.name || 'ახალი პროდუქტი';
+          prod.newPrice = mieNewPriceInput ? Number(mieNewPriceInput.value) || 0 : prod.newPrice;
+          prod.oldPrice = mieOldPriceInput ? Number(mieOldPriceInput.value) || 0 : prod.oldPrice;
+          prod.shortMeta = mieShortMetaInput ? mieShortMetaInput.value.trim() || 'ოფიციალური გარანტია 24 თვე' : prod.shortMeta;
+          prod.category = catValue;
+          prod.categoryLabel = CATEGORY_LABELS[catValue] || prod.categoryLabel || 'პროდუქტი';
+          prod.badgeText = mieBadgeInput ? mieBadgeInput.value.trim() || 'აქცია' : prod.badgeText;
+          prod.sku = mieSkuInput ? mieSkuInput.value.trim() || 'VV-PRO' : prod.sku;
+          prod.description = mieDescInput ? mieDescInput.value.trim() || prod.name : prod.description;
+
+          if (mieSpecsContainer) {
+            const specsCollected = [];
+            for (let i = 0; i < 6; i++) {
+              const lblEl = mieSpecsContainer.querySelector(`[data-mie-spec-label="${i}"]`);
+              const valEl = mieSpecsContainer.querySelector(`[data-mie-spec-value="${i}"]`);
+              const label = lblEl ? lblEl.value.trim() : '';
+              const value = valEl ? valEl.value.trim() : '';
+              if (label || value) {
+                specsCollected.push({ label: label || `პარამეტრი ${i + 1}`, value: value || '—' });
+              }
+            }
+            prod.specs = specsCollected;
+          }
+
+          if (mieYoutubeInput && mieYoutubeInput.value.trim()) {
+            prod.youtubeId = extractYoutubeId(mieYoutubeInput.value.trim());
+          }
+          if (mieTiktokInput && mieTiktokInput.value.trim()) {
+            prod.tiktokUrl = normalizeTiktokEmbedUrl(mieTiktokInput.value.trim());
+          }
+          if (mieInstagramInput && mieInstagramInput.value.trim()) {
+            prod.instagramUrl = normalizeInstagramEmbedUrl(mieInstagramInput.value.trim());
+          }
+
+          // Clear stale auto-translations if the owner updated Georgian text so the new Georgian text shows everywhere
+          if (prod.i18n) {
+            delete prod.i18n;
+          }
+
+          prod.images.forEach((img, idx) => {
+            recordProductSlotInLocalBackup(prod.id, idx, img || '');
+          });
+
+          refreshOpenProductModalView(prod);
+          updateSingleProductCardInPlace(prod);
+          saveStateEverywhere(extraOpts);
+        }
+
+        function openInlineProductEditor() {
+          if (!activeModalProduct || !modalInlineEditorPanel) return;
+          populateInlineProductEditor(activeModalProduct);
+          modalInlineEditorPanel.classList.remove('hidden');
+          setTimeout(() => {
+            modalInlineEditorPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 60);
+        }
+
+        function closeInlineProductEditor() {
+          if (!modalInlineEditorPanel) return;
+          modalInlineEditorPanel.classList.add('hidden');
+        }
+
+        function triggerInlineProductEdit() {
+          if (!activeModalProduct) return;
+          if (document.body.classList.contains('customer-view-mode')) {
+            if (ownerPinModal && ownerPinInput) {
+              pendingPinInlineEdit = true;
+              pendingPinEditProductId = activeModalProduct.id;
+              if (ownerPinError) ownerPinError.classList.add('hidden');
+              ownerPinInput.value = '';
+              ownerPinModal.classList.remove('hidden');
+              if (floatingQuickContactEl) floatingQuickContactEl.classList.add('hidden');
+              setTimeout(() => ownerPinInput.focus(), 50);
+              return;
+            }
+          }
+          if (modalInlineEditorPanel && !modalInlineEditorPanel.classList.contains('hidden')) {
+            modalInlineEditorPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          } else {
+            openInlineProductEditor();
+          }
+        }
+
+        modalEditProductBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          triggerInlineProductEdit();
         });
+
+        if (modalInlineEditBtn) {
+          modalInlineEditBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            triggerInlineProductEdit();
+          });
+        }
+
+        if (mieCloseBtn) {
+          mieCloseBtn.addEventListener('click', () => {
+            applyInlineProductEditorChanges({ immediate: true });
+            closeInlineProductEditor();
+          });
+        }
+
+        if (mieSaveDoneBtn) {
+          mieSaveDoneBtn.addEventListener('click', async () => {
+            applyInlineProductEditorChanges({ immediate: true });
+            closeInlineProductEditor();
+            showWishlistToast('✅ ცვლილებები შენახულია და აისახა საიტზე!');
+            try {
+              await fetch('/api/sync-github', { method: 'POST' });
+            } catch (e) {}
+          });
+        }
+
+        if (mieOpenFullCpBtn) {
+          mieOpenFullCpBtn.addEventListener('click', () => {
+            if (!activeModalProduct) return;
+            const idToEdit = activeModalProduct.id;
+            openControlPanel('form');
+            loadProductIntoForm(idToEdit);
+          });
+        }
+
+        if (mieDeleteProdBtn) {
+          mieDeleteProdBtn.addEventListener('click', () => {
+            if (!activeModalProduct) return;
+            const idToDelete = activeModalProduct.id;
+            const prodName = activeModalProduct.name || '';
+            productsList = productsList.filter((p) => p.id !== idToDelete);
+            closeProductModal();
+            preserveScroll(() => renderProducts());
+            saveStateEverywhere({ immediate: true });
+            showWishlistToast(`🗑️ წაიშალა: ${prodName}`);
+          });
+        }
+
+        if (modalInlineEditorPanel) {
+          modalInlineEditorPanel.addEventListener('input', (e) => {
+            if (e.target.closest('[data-mie-slot-file]') || e.target === mieMultiPhotoInput) return;
+            applyInlineProductEditorChanges();
+          });
+          modalInlineEditorPanel.addEventListener('change', (e) => {
+            if (e.target.closest('[data-mie-slot-file]') || e.target === mieMultiPhotoInput) return;
+            applyInlineProductEditorChanges({ immediate: true });
+          });
+        }
+
+        if (mieMultiPhotoInput) {
+          mieMultiPhotoInput.addEventListener('change', async (e) => {
+            if (!activeModalProduct) return;
+            const files = Array.from(e.target.files || []).slice(0, 5);
+            if (files.length === 0) return;
+            ensureFiveImagesArray(activeModalProduct);
+            let startSlot = 0;
+            if (files.length === 1) {
+              const emptyIdx = activeModalProduct.images.findIndex((x) => !x || x.length === 0);
+              if (emptyIdx !== -1) startSlot = emptyIdx;
+            }
+            const count = await processAndInsertMultipleFiles(
+              activeModalProduct.images,
+              files,
+              startSlot,
+              activeModalProduct.id
+            );
+            mieMultiPhotoInput.value = '';
+            if (count > 0) {
+              activeModalImageIdx = startSlot;
+              renderMieFiveSlots(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              await saveStateEverywhere({ immediate: true });
+              showWishlistToast(`✅ ${count} ფოტო აიტვირთა და შეინახა!`);
+            }
+          });
+        }
+
+        if (mieClearAllPhotosBtn) {
+          mieClearAllPhotosBtn.addEventListener('click', async () => {
+            if (!activeModalProduct) return;
+            activeModalProduct.images = ['', '', '', '', ''];
+            for (let i = 0; i < 5; i++) {
+              recordProductSlotInLocalBackup(activeModalProduct.id, i, '');
+            }
+            renderMieFiveSlots(activeModalProduct);
+            refreshOpenProductModalView(activeModalProduct);
+            updateSingleProductCardInPlace(activeModalProduct);
+            await saveStateEverywhere({
+              immediate: true,
+              forceClearProductId: activeModalProduct.id,
+              forceClearSlot: -1
+            });
+            showWishlistToast('ყველა ატვირთული ფოტო გასუფთავდა.');
+          });
+        }
+
+        if (mieFiveSlotsGrid) {
+          mieFiveSlotsGrid.addEventListener('change', async (e) => {
+            const fileInput = e.target.closest('[data-mie-slot-file]');
+            if (!fileInput || !activeModalProduct) return;
+            const slotIdx = Number(fileInput.getAttribute('data-mie-slot-file')) || 0;
+            const files = fileInput.files;
+            if (!files || files.length === 0) return;
+            ensureFiveImagesArray(activeModalProduct);
+            const startAt = files.length >= 5 ? 0 : slotIdx;
+            const count = await processAndInsertMultipleFiles(
+              activeModalProduct.images,
+              files,
+              startAt,
+              activeModalProduct.id
+            );
+            fileInput.value = '';
+            if (count > 0) {
+              activeModalImageIdx = startAt;
+              renderMieFiveSlots(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              await saveStateEverywhere({ immediate: true });
+              showWishlistToast(`✅ სურათი #${slotIdx + 1} განახლდა და შეინახა!`);
+            }
+          });
+
+          mieFiveSlotsGrid.addEventListener('click', async (e) => {
+            if (!activeModalProduct) return;
+            ensureFiveImagesArray(activeModalProduct);
+
+            const clearBtn = e.target.closest('[data-mie-slot-clear]');
+            if (clearBtn) {
+              const slotIdx = Number(clearBtn.getAttribute('data-mie-slot-clear'));
+              activeModalProduct.images[slotIdx] = '';
+              recordProductSlotInLocalBackup(activeModalProduct.id, slotIdx, '');
+              renderMieFiveSlots(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              await saveStateEverywhere({
+                immediate: true,
+                forceClearProductId: activeModalProduct.id,
+                forceClearSlot: slotIdx
+              });
+              showWishlistToast(`სურათი #${slotIdx + 1} წაიშალა.`);
+              return;
+            }
+
+            const mainBtn = e.target.closest('[data-mie-slot-main]');
+            if (mainBtn) {
+              const slotIdx = Number(mainBtn.getAttribute('data-mie-slot-main'));
+              const temp = activeModalProduct.images[0];
+              activeModalProduct.images[0] = activeModalProduct.images[slotIdx];
+              activeModalProduct.images[slotIdx] = temp;
+              activeModalProduct.images.forEach((img, idx) => {
+                recordProductSlotInLocalBackup(activeModalProduct.id, idx, img || '');
+              });
+              activeModalImageIdx = 0;
+              renderMieFiveSlots(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              await saveStateEverywhere({ immediate: true });
+              showWishlistToast('მთავარი სურათი (#1) განახლდა!');
+            }
+          });
+        }
 
         // Download Standalone Single-File HTML with Owner's 5 Photos & Custom Data Baked In
         document.getElementById('download-single-html-btn').addEventListener('click', () => {
@@ -8726,8 +9158,8 @@
           if (quickEditBtn) {
             e.stopPropagation();
             const prodId = quickEditBtn.getAttribute('data-quick-edit-id');
-            openControlPanel('form');
-            loadProductIntoForm(prodId);
+            openProductModal(prodId);
+            openInlineProductEditor();
             return;
           }
           const card = e.target.closest('[data-product-id]');
