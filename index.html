@@ -6897,26 +6897,6 @@
         function updateSingleProductCardInPlace(product) {
           preserveScroll(() => renderProducts());
         }
-            const isWishlisted = wishlistIds.has(product.id);
-            wlBtn.className = `wishlist-toggle-btn absolute top-3 left-3 z-10 w-9 h-9 rounded-xl ${
-              isWishlisted
-                ? 'bg-white text-rose-600 shadow-md ring-2 ring-rose-500/50'
-                : 'bg-white/90 hover:bg-white text-zinc-600 hover:text-rose-600 shadow-sm'
-            } flex items-center justify-center fast-transition cursor-pointer active:scale-90`;
-            wlBtn.title = isWishlisted ? strings.wishlistRemoveTip : strings.wishlistAddTip;
-            wlBtn.setAttribute('aria-label', isWishlisted ? strings.wishlistRemoveTip : strings.wishlistAddTip);
-            const svgEl = wlBtn.querySelector('svg');
-            if (svgEl) {
-              if (isWishlisted) {
-                svgEl.classList.remove('fill-none', 'stroke-current');
-                svgEl.classList.add('fill-rose-600', 'text-rose-600');
-              } else {
-                svgEl.classList.remove('fill-rose-600', 'text-rose-600');
-                svgEl.classList.add('fill-none', 'stroke-current');
-              }
-            }
-          }
-        }
 
         // Render Product Cards Grid
         function renderProducts() {
@@ -9662,6 +9642,12 @@
                 if (Array.isArray(activeModalProduct.specs) && activeModalProduct.specs[sIdx]) {
                   activeModalProduct.specs[sIdx].value = '';
                 }
+              } else if (fieldKey.startsWith('photo_')) {
+                const pIdx = Number(fieldKey.split('_')[1]);
+                if (Array.isArray(activeModalProduct.images) && pIdx >= 0 && pIdx < 5) {
+                  activeModalProduct.images[pIdx] = '';
+                  recordProductSlotInLocalBackup(activeModalProduct.id, pIdx, '');
+                }
               }
 
               populateInlineProductEditor(activeModalProduct);
@@ -9862,6 +9848,9 @@
             if (clearBtn) {
               const slotIdx = Number(clearBtn.getAttribute('data-mie-slot-clear'));
               activeModalProduct.images[slotIdx] = '';
+              if (activeModalProduct.closedFields) {
+                activeModalProduct.closedFields[`photo_${slotIdx}`] = true;
+              }
               recordProductSlotInLocalBackup(activeModalProduct.id, slotIdx, '');
               renderMieFiveSlots(activeModalProduct);
               refreshOpenProductModalView(activeModalProduct);
@@ -9871,7 +9860,7 @@
                 forceClearProductId: activeModalProduct.id,
                 forceClearSlot: slotIdx
               });
-              showWishlistToast(`სურათი #${slotIdx + 1} წაიშალა.`);
+              showWishlistToast(`🗑️ ფოტო #${slotIdx + 1} წაიშალა და უჯრა დაიხურა.`);
               return;
             }
 
@@ -13567,8 +13556,24 @@
 
         async function syncInitialStateFromServer() {
           try {
+            // Do not overwrite while inline product editor or control panel is actively open
+            if (
+              (modalInlineEditorPanel && !modalInlineEditorPanel.classList.contains('hidden')) ||
+              (cpBackdrop && !cpBackdrop.classList.contains('hidden'))
+            ) {
+              isServerStateLoaded = true;
+              return;
+            }
             const serverData = await fetchCloudStoreData();
             if (serverData && (serverData.hasSavedState || serverData.imagesMap || Array.isArray(serverData.productsList))) {
+              const localUpdatedAt = Number(localStorage.getItem('vv_store_updated_at') || 0);
+              const serverUpdatedAt = Number(serverData.updatedAt || 0);
+              // If this browser just saved newer edits locally within the last 2 minutes, keep local state & push to cloud
+              if (localUpdatedAt > 0 && serverUpdatedAt > 0 && localUpdatedAt > serverUpdatedAt + 1000) {
+                isServerStateLoaded = true;
+                pushStoreStateToGithubNow();
+                return;
+              }
               if (serverData.storeSettings) {
                 storeSettings = Object.assign({}, DEFAULT_SETTINGS, serverData.storeSettings);
               }
@@ -13587,7 +13592,7 @@
                   const mapSlots = Array.isArray(srvMap[sp.id]) ? srvMap[sp.id] : null;
                   if (mapSlots) {
                     for (let i = 0; i < 5; i++) {
-                      if (!sp.images[i] && mapSlots[i]) {
+                      if (!sp.images[i] && mapSlots[i] && !(sp.closedFields && sp.closedFields[`photo_${i}`])) {
                         sp.images[i] = String(mapSlots[i]).trim();
                       }
                     }
@@ -13599,6 +13604,10 @@
                   if (!localProd || !localProd.id) continue;
                   const serverProd = serverData.productsList.find((sp) => sp.id === localProd.id);
                   if (serverProd && Array.isArray(localProd.images)) {
+                    // Preserve local closedFields if local product has them
+                    if (localProd.closedFields && typeof localProd.closedFields === 'object') {
+                      serverProd.closedFields = Object.assign({}, serverProd.closedFields || {}, localProd.closedFields);
+                    }
                     for (let idx = 0; idx < 5; idx++) {
                       const cleanLocal =
                         (localProd.images[idx] || '').trim() ||
@@ -13662,11 +13671,13 @@
 
         syncInitialStateFromServer();
 
-        // Auto-refresh cloud state when returning to tab on phone or PC (if Control Panel is closed)
+        // Auto-refresh cloud state when returning to tab on phone or PC (if Control Panel and Inline Editor are closed)
         let lastCloudVisibilitySync = Date.now();
         document.addEventListener('visibilitychange', () => {
           if (document.visibilityState === 'visible' && Date.now() - lastCloudVisibilitySync > 12000) {
-            if (!cpBackdrop || cpBackdrop.classList.contains('hidden')) {
+            const isCpHidden = !cpBackdrop || cpBackdrop.classList.contains('hidden');
+            const isMieHidden = !modalInlineEditorPanel || modalInlineEditorPanel.classList.contains('hidden');
+            if (isCpHidden && isMieHidden) {
               lastCloudVisibilitySync = Date.now();
               syncInitialStateFromServer();
             }
