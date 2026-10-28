@@ -1438,38 +1438,50 @@
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-2 border-t border-zinc-100">
                   <div>
-                    <label for="mie-tiktok" class="block text-[11px] font-bold text-zinc-700 mb-1">1. TikTok ვიდეოს ლინკი:</label>
+                    <div class="flex items-center justify-between mb-1">
+                      <label for="mie-tiktok" class="block text-[11px] font-bold text-zinc-900">1. TikTok ვიდეოს ლინკი:</label>
+                      <button type="button" data-clear-video-input="mie-tiktok" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ გასუფთავება</button>
+                    </div>
                     <input
                       id="mie-tiktok"
-                      type="text"
-                      placeholder="https://www.tiktok.com/..."
+                      type="url"
+                      placeholder="ჩასვით TikTok ვიდეოს ლინკი..."
                       class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs text-zinc-900"
                     />
                   </div>
                   <div>
-                    <label for="mie-facebook" class="block text-[11px] font-bold text-[#1877F2] mb-1">2. Facebook ვიდეოს ლინკი:</label>
+                    <div class="flex items-center justify-between mb-1">
+                      <label for="mie-facebook" class="block text-[11px] font-bold text-[#1877F2]">2. Facebook ვიდეოს ლინკი:</label>
+                      <button type="button" data-clear-video-input="mie-facebook" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ გასუფთავება</button>
+                    </div>
                     <input
                       id="mie-facebook"
-                      type="text"
-                      placeholder="https://www.facebook.com/reel/..."
+                      type="url"
+                      placeholder="ჩასვით Facebook ვიდეოს ლინკი..."
                       class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-blue-300 bg-blue-50/40 focus:bg-white text-xs text-zinc-900"
                     />
                   </div>
                   <div>
-                    <label for="mie-youtube" class="block text-[11px] font-bold text-red-600 mb-1">3. YouTube ვიდეოს ლინკი:</label>
+                    <div class="flex items-center justify-between mb-1">
+                      <label for="mie-youtube" class="block text-[11px] font-bold text-red-600">3. YouTube ვიდეოს ლინკი:</label>
+                      <button type="button" data-clear-video-input="mie-youtube" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ გასუფთავება</button>
+                    </div>
                     <input
                       id="mie-youtube"
-                      type="text"
-                      placeholder="https://www.youtube.com/watch?v=..."
+                      type="url"
+                      placeholder="ჩასვით YouTube ვიდეოს ლინკი..."
                       class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs text-zinc-900"
                     />
                   </div>
                   <div>
-                    <label for="mie-instagram" class="block text-[11px] font-bold text-pink-600 mb-1">4. Instagram ვიდეოს ლინკი:</label>
+                    <div class="flex items-center justify-between mb-1">
+                      <label for="mie-instagram" class="block text-[11px] font-bold text-pink-600">4. Instagram ვიდეოს ლინკი:</label>
+                      <button type="button" data-clear-video-input="mie-instagram" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ გასუფთავება</button>
+                    </div>
                     <input
                       id="mie-instagram"
-                      type="text"
-                      placeholder="https://www.instagram.com/reel/..."
+                      type="url"
+                      placeholder="ჩასვით Instagram ვიდეოს ლინკი..."
                       class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs text-zinc-900"
                     />
                   </div>
@@ -1882,24 +1894,53 @@
 
             <!-- Compact 4-Column Video Review Cards: 1. TikTok, 2. Facebook, 3. YouTube, 4. Instagram -->
             <div id="video-reviews-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-              <!-- 1. TikTok Player Card (Compact) -->
+              <!-- 1. TikTok Player Card (Compact & 100% Clickable) -->
               <div id="tiktok-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                <a
+                  id="modal-tt-header-link"
+                  href="https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px] hover:bg-zinc-900 fast-transition"
+                >
                   <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
                     <span class="w-2 h-2 rounded-full bg-cyan-400 shrink-0"></span>
                     <span id="modal-tt-test-label" class="truncate">TikTok ვიდეო</span>
                   </span>
-                  <span class="font-mono-num text-zinc-400 text-[10px] shrink-0">@iyidebaiyide</span>
-                </div>
-                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1">
+                  <span class="font-mono-num text-cyan-400 text-[10px] shrink-0 font-bold">გახსნა ↗</span>
+                </a>
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1 flex items-center justify-center overflow-hidden">
                   <iframe
                     id="modal-tiktok-iframe"
-                    class="w-full h-full rounded"
+                    class="w-full h-full rounded hidden"
                     src=""
                     title="TikTok video review player"
                     loading="lazy"
                     allow="encrypted-media;"
                   ></iframe>
+                  <a
+                    id="modal-tiktok-fallback"
+                    href="https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full h-full rounded bg-gradient-to-br from-cyan-500/25 via-zinc-900 to-pink-500/25 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
+                  >
+                    <img
+                      id="modal-tt-fallback-img"
+                      src=""
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      class="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 fast-transition pointer-events-none"
+                    />
+                    <span class="relative z-10 w-10 h-10 rounded-full bg-zinc-950/90 border-2 border-cyan-400 text-white flex items-center justify-center shadow-lg group-hover:scale-110 fast-transition">
+                      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                      </svg>
+                    </span>
+                    <span id="modal-tt-fallback-badge" class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/85 px-2.5 py-0.5 rounded-full border border-cyan-400/50">
+                      ▶ TikTok-ზე ჩართვა ↗
+                    </span>
+                  </a>
                 </div>
                 <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
                   <span id="modal-tt-caption" class="truncate">TikTok დემონსტრაცია</span>
@@ -1915,15 +1956,21 @@
                 </div>
               </div>
 
-              <!-- 2. Facebook Video / Reel Card (Compact) -->
+              <!-- 2. Facebook Video / Reel Card (Compact & 100% Clickable) -->
               <div id="facebook-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                <a
+                  id="modal-fb-header-link"
+                  href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px] hover:bg-zinc-900 fast-transition"
+                >
                   <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
                     <span class="w-2 h-2 rounded-full bg-[#1877F2] shrink-0"></span>
                     <span id="modal-fb-test-label" class="truncate">Facebook ვიდეო</span>
                   </span>
-                  <span class="font-mono-num text-blue-400 text-[10px] shrink-0">Facebook</span>
-                </div>
+                  <span class="font-mono-num text-[#4599FF] text-[10px] shrink-0 font-bold">გახსნა ↗</span>
+                </a>
                 <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1 flex items-center justify-center overflow-hidden">
                   <iframe
                     id="modal-facebook-iframe"
@@ -1939,22 +1986,22 @@
                     href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="w-full h-full rounded bg-gradient-to-br from-[#1877F2]/30 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
+                    class="w-full h-full rounded bg-gradient-to-br from-[#1877F2]/35 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
                   >
                     <img
                       id="modal-fb-fallback-img"
                       src=""
                       alt=""
                       referrerPolicy="no-referrer"
-                      class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:scale-105 fast-transition pointer-events-none"
+                      class="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 fast-transition pointer-events-none"
                     />
                     <span class="relative z-10 w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-lg group-hover:scale-110 fast-transition">
                       <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
                         <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                       </svg>
                     </span>
-                    <span class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/80 px-2.5 py-0.5 rounded-full border border-blue-400/40">
-                      Facebook-ზე ნახვა ↗
+                    <span id="modal-fb-fallback-badge" class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/85 px-2.5 py-0.5 rounded-full border border-blue-400/50">
+                      ▶ Facebook-ზე ჩართვა ↗
                     </span>
                   </a>
                 </div>
@@ -1974,13 +2021,19 @@
 
               <!-- 3. YouTube Player Card (Compact) -->
               <div id="youtube-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                <a
+                  id="modal-yt-header-link"
+                  href="https://www.youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px] hover:bg-zinc-900 fast-transition"
+                >
                   <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
                     <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
                     <span id="modal-yt-test-label" class="truncate">YouTube ტესტი</span>
                   </span>
                   <span id="modal-yt-duration" class="font-mono-num text-zinc-400 text-[10px] shrink-0">08:42</span>
-                </div>
+                </a>
                 <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900">
                   <iframe
                     id="modal-youtube-iframe"
@@ -2006,24 +2059,53 @@
                 </div>
               </div>
 
-              <!-- 4. Instagram Player Card (Compact) -->
+              <!-- 4. Instagram Player Card (Compact & 100% Clickable) -->
               <div id="instagram-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
-                <div class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px]">
+                <a
+                  id="modal-ig-header-link"
+                  href="https://www.instagram.com/iyideba_saintereso_nivtebi/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px] hover:bg-zinc-900 fast-transition"
+                >
                   <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
                     <span class="w-2 h-2 rounded-full bg-pink-500 shrink-0"></span>
                     <span id="modal-ig-test-label" class="truncate">Instagram ვიდეო</span>
                   </span>
-                  <span class="font-mono-num text-zinc-400 text-[10px] shrink-0">Instagram</span>
-                </div>
-                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1">
+                  <span class="font-mono-num text-pink-400 text-[10px] shrink-0 font-bold">გახსნა ↗</span>
+                </a>
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1 flex items-center justify-center overflow-hidden">
                   <iframe
                     id="modal-instagram-iframe"
-                    class="w-full h-full rounded bg-white"
+                    class="w-full h-full rounded bg-white hidden"
                     src=""
                     title="Instagram video review player"
                     loading="lazy"
                     allow="encrypted-media;"
                   ></iframe>
+                  <a
+                    id="modal-instagram-fallback"
+                    href="https://www.instagram.com/iyideba_saintereso_nivtebi/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full h-full rounded bg-gradient-to-br from-pink-500/30 via-zinc-900 to-amber-500/25 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
+                  >
+                    <img
+                      id="modal-ig-fallback-img"
+                      src=""
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      class="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 fast-transition pointer-events-none"
+                    />
+                    <span class="relative z-10 w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500 via-pink-500 to-purple-600 text-white flex items-center justify-center shadow-lg group-hover:scale-110 fast-transition">
+                      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                      </svg>
+                    </span>
+                    <span id="modal-ig-fallback-badge" class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/85 px-2.5 py-0.5 rounded-full border border-pink-400/50">
+                      ▶ Instagram-ზე ჩართვა ↗
+                    </span>
+                  </a>
                 </div>
                 <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
                   <span id="modal-ig-caption" class="truncate">Instagram დემონსტრაცია</span>
