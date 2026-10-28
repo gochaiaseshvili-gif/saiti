@@ -1163,29 +1163,30 @@
         class="bg-white w-full min-h-screen flex flex-col"
       >
         <!-- Sticky Full-Page Top Navigation Bar -->
-        <div class="sticky top-0 z-30 px-4 sm:px-6 py-3 border-b border-zinc-200 bg-white/95 backdrop-blur-md shrink-0">
-          <div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5 min-w-0">
+        <div class="sticky top-0 z-30 px-2.5 sm:px-6 py-2.5 sm:py-3 border-b border-zinc-200 bg-white/95 backdrop-blur-md shrink-0">
+          <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-1.5 sm:gap-2">
+            <div class="flex items-center gap-2 min-w-0">
               <button
                 id="back-to-home-left-btn"
                 type="button"
-                class="min-h-[42px] px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-900 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition shrink-0 cursor-pointer"
+                class="min-h-[40px] sm:min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300/80 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition shrink-0 cursor-pointer"
                 title="საწყის გვერდზე დაბრუნება"
               >
                 <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
                 <span id="back-to-home-left-text" class="hidden sm:inline">მთავარ გვერდზე</span>
+                <span class="sm:hidden">უკან</span>
               </button>
-              <div id="modal-category-meta" class="text-xs text-zinc-500 truncate"></div>
+              <div id="modal-category-meta" class="hidden md:block text-xs text-zinc-500 truncate"></div>
             </div>
 
-            <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <div class="flex flex-wrap items-center justify-end gap-1 sm:gap-2 shrink-0 ml-auto">
               <!-- Wishlist Heart Button inside Product Page Top Bar -->
               <button
                 id="modal-wishlist-btn"
                 type="button"
-                class="min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
+                class="min-h-[40px] sm:min-h-[42px] px-2 sm:px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
                 title="რჩეულებში დამატება / ამოშლა"
               >
                 <svg id="modal-wishlist-icon" class="w-4 h-4 text-rose-600 shrink-0" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1198,7 +1199,7 @@
               <button
                 id="modal-screenshot-btn"
                 type="button"
-                class="min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
+                class="min-h-[40px] sm:min-h-[42px] px-2 sm:px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
                 title="ერთი დაჭერით გადაუღეთ სრული სქრინშოტი პროდუქტს ფოტოებით და ნომრით"
               >
                 <svg class="w-4 h-4 text-emerald-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -1212,7 +1213,7 @@
               <button
                 id="modal-share-btn"
                 type="button"
-                class="min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap"
+                class="min-h-[40px] sm:min-h-[42px] px-2 sm:px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
                 title="პროდუქტის გაზიარება"
               >
                 <svg class="w-4 h-4 text-blue-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -1224,7 +1225,7 @@
               <!-- Direct 1-Click 5-Photo Multi-Upload inside Product Page -->
               <label
                 id="modal-direct-5photo-label"
-                class="theme-bg min-h-[42px] px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.96] fast-transition whitespace-nowrap relative"
+                class="theme-bg min-h-[40px] sm:min-h-[42px] px-2.5 sm:px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-[0.96] fast-transition whitespace-nowrap relative"
                 title="ერთი გახსნით მონიშნეთ 5 ფოტო და ატვირთეთ ერთდროულად"
               >
                 <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -1238,20 +1239,20 @@
               <button
                 id="modal-edit-product-btn"
                 type="button"
-                class="min-h-[42px] px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border border-amber-400/50 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.96] fast-transition cursor-pointer whitespace-nowrap"
+                class="min-h-[40px] sm:min-h-[42px] px-2.5 sm:px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white border border-amber-400/50 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.96] fast-transition cursor-pointer whitespace-nowrap"
                 title="ამ პროდუქტში ცვლილების შეტანა პირდაპირ აქვე"
               >
                 <svg class="w-4 h-4 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
-                <span id="modal-edit-text">ცვლილების შეტანა</span>
+                <span id="modal-edit-text" class="hidden sm:inline">ცვლილების შეტანა</span>
               </button>
 
               <!-- Back Arrow Button IMMEDIATELY to the left of the Close Button -->
               <button
                 id="back-arrow-near-close-btn"
                 type="button"
-                class="min-h-[42px] px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-zinc-900 border border-amber-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
+                class="min-h-[40px] sm:min-h-[42px] px-2.5 sm:px-3 rounded-xl bg-amber-100 hover:bg-amber-200 text-zinc-900 border border-amber-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition whitespace-nowrap cursor-pointer"
                 aria-label="უკან საწყის გვერდზე დაბრუნება"
                 title="უკან დაბრუნება ახალი არჩევანისთვის"
               >
@@ -1264,7 +1265,7 @@
               <button
                 id="close-modal-btn"
                 type="button"
-                class="min-h-[42px] min-w-[42px] rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 flex items-center justify-center active:scale-[0.96] fast-transition cursor-pointer"
+                class="min-h-[40px] min-w-[40px] sm:min-h-[42px] sm:min-w-[42px] rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 flex items-center justify-center active:scale-[0.96] fast-transition cursor-pointer"
                 aria-label="გვერდის დახურვა"
                 title="დახურვა"
               >
@@ -7212,6 +7213,7 @@
         let hasPushedProductHistoryEntry = false;
         let hasPushedLightboxHistoryEntry = false;
         let hasPushedCpHistoryEntry = false;
+        let needsGestureHistoryReinforce = false;
 
         function openLightbox(initialIdx = 0) {
           if (!activeModalProduct) return;
@@ -7511,6 +7513,7 @@
 
             if (fromPopState) {
               hasPushedProductHistoryEntry = true;
+              needsGestureHistoryReinforce = false;
             } else if (isInitialRestore) {
               if (!hasPushedProductHistoryEntry) {
                 const homeUrl = new URL(window.location.href);
@@ -7518,6 +7521,7 @@
                 window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
                 window.history.pushState({ view: 'product', productId }, '', url.toString());
                 hasPushedProductHistoryEntry = true;
+                needsGestureHistoryReinforce = true;
               } else {
                 window.history.replaceState({ view: 'product', productId }, '', url.toString());
               }
@@ -7527,6 +7531,7 @@
               window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
               window.history.pushState({ view: 'product', productId }, '', url.toString());
               hasPushedProductHistoryEntry = true;
+              needsGestureHistoryReinforce = false;
             } else {
               window.history.replaceState({ view: 'product', productId }, '', url.toString());
             }
@@ -7555,6 +7560,7 @@
           if (modalInstagramIframe) modalInstagramIframe.src = '';
           activeModalProduct = null;
           hasPushedProductHistoryEntry = false;
+          needsGestureHistoryReinforce = false;
           try {
             sessionStorage.removeItem('vv_open_product_id');
             sessionStorage.removeItem('vv_modal_scroll_y');
@@ -10804,6 +10810,27 @@
             }
           } catch (e) {}
         }
+
+        // Reinforce history entry on first user gesture if a product page was restored on reload
+        // (prevents Mobile Chrome History Manipulation Intervention from skipping the Home entry)
+        function reinforceHistoryOnUserGesture() {
+          if (!needsGestureHistoryReinforce) return;
+          needsGestureHistoryReinforce = false;
+          if (modalBackdrop && !modalBackdrop.classList.contains('hidden') && activeModalProduct) {
+            try {
+              const homeUrl = new URL(window.location.href);
+              homeUrl.searchParams.delete('product');
+              const prodUrl = new URL(window.location.href);
+              prodUrl.searchParams.set('product', activeModalProduct.id);
+              window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
+              window.history.pushState({ view: 'product', productId: activeModalProduct.id }, '', prodUrl.toString());
+              hasPushedProductHistoryEntry = true;
+            } catch (e) {}
+          }
+        }
+        window.addEventListener('pointerdown', reinforceHistoryOnUserGesture, { passive: true });
+        window.addEventListener('touchstart', reinforceHistoryOnUserGesture, { passive: true });
+        window.addEventListener('keydown', reinforceHistoryOnUserGesture, { passive: true });
 
         // Handle Phone Hardware Back Button & Desktop Browser Back/Forward Button (popstate)
         window.addEventListener('popstate', (e) => {
