@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793197440226,
+  "updatedAt": 1793197443920,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -18,7 +18,7 @@
     "weatherIntensity": 65,
     "pageBgColor": "#fafaf9",
     "cardBgColor": "#ffffff",
-    "headerBgColor": "#ffffff",
+    "headerBgColor": "#fffbeb",
     "priceTextColor": "#ea580c",
     "titleTextColor": "#09090b",
     "cardFrameStyle": "neon-shadow",
