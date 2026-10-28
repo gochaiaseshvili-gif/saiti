@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793202192153,
+  "updatedAt": 1793202192194,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -400,7 +400,7 @@
       "sku": "500W IPX5",
       "category": "karaoke",
       "categoryLabel": "კარაოკე სისტემა",
-      "badgeText": "IPX5 წყალგამძლე",
+      "badgeText": "",
       "name": "StreetBeat 500W კომპაქტური კარაოკე დინამიკი 2 მიკროფონით",
       "shortMeta": "500W სიმძლავრე · IPX5 დაცვა · 16 სთ ელემენტი",
       "oldPrice": 650,
@@ -444,7 +444,9 @@
       "youtubeCaption": "StreetBeat 500W კომპაქტური კარაოკეს ტესტი",
       "tiktokUrl": "",
       "tiktokCaption": "StreetBeat 500W ბუნებაში მეგობრებთან ერთად",
-      "closedFields": {},
+      "closedFields": {
+        "badge": true
+      },
       "facebookUrl": "",
       "instagramUrl": ""
     },
