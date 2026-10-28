@@ -1,7 +1,7 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793197438646,
-  "themeColor": "#2563eb",
+  "updatedAt": 1793197440226,
+  "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
     "contactName": "გოჩა",
@@ -19,7 +19,7 @@
     "pageBgColor": "#fafaf9",
     "cardBgColor": "#ffffff",
     "headerBgColor": "#ffffff",
-    "priceTextColor": "#2563eb",
+    "priceTextColor": "#ea580c",
     "titleTextColor": "#09090b",
     "cardFrameStyle": "neon-shadow",
     "homeBlocksOrder": [
