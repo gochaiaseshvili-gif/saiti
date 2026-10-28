@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793195671217,
+  "updatedAt": 1793195695172,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -300,7 +300,7 @@
         },
         {
           "label": "აკუსტიკური წნევა",
-          "value": "126 dB SPL მაქსიმუმი"
+          "value": ""
         },
         {
           "label": "დრაივერები",
@@ -330,7 +330,8 @@
         "sku": true,
         "instagram": true,
         "youtube": true,
-        "facebook": true
+        "facebook": true,
+        "spec_1": true
       }
     },
     {
