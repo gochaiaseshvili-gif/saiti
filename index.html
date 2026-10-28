@@ -6008,18 +6008,29 @@
         const modalInstallmentBtn = document.getElementById('modal-installment-btn');
         const modalCardPaymentBtn = document.getElementById('modal-card-payment-btn');
         const modalYoutubeIframe = document.getElementById('modal-youtube-iframe');
+        const modalYtHeaderLink = document.getElementById('modal-yt-header-link');
         const modalYtDuration = document.getElementById('modal-yt-duration');
         const modalYtCaption = document.getElementById('modal-yt-caption');
         const modalYtExternal = document.getElementById('modal-yt-external');
         const modalTiktokIframe = document.getElementById('modal-tiktok-iframe');
+        const modalTiktokFallback = document.getElementById('modal-tiktok-fallback');
+        const modalTtFallbackImg = document.getElementById('modal-tt-fallback-img');
+        const modalTtFallbackBadge = document.getElementById('modal-tt-fallback-badge');
+        const modalTtHeaderLink = document.getElementById('modal-tt-header-link');
         const modalTtCaption = document.getElementById('modal-tt-caption');
         const modalTtExternal = document.getElementById('modal-tt-external');
         const modalFacebookIframe = document.getElementById('modal-facebook-iframe');
         const modalFacebookFallback = document.getElementById('modal-facebook-fallback');
         const modalFbFallbackImg = document.getElementById('modal-fb-fallback-img');
+        const modalFbFallbackBadge = document.getElementById('modal-fb-fallback-badge');
+        const modalFbHeaderLink = document.getElementById('modal-fb-header-link');
         const modalFbCaption = document.getElementById('modal-fb-caption');
         const modalFbExternal = document.getElementById('modal-fb-external');
         const modalInstagramIframe = document.getElementById('modal-instagram-iframe');
+        const modalInstagramFallback = document.getElementById('modal-instagram-fallback');
+        const modalIgFallbackImg = document.getElementById('modal-ig-fallback-img');
+        const modalIgFallbackBadge = document.getElementById('modal-ig-fallback-badge');
+        const modalIgHeaderLink = document.getElementById('modal-ig-header-link');
         const modalIgCaption = document.getElementById('modal-ig-caption');
         const modalIgExternal = document.getElementById('modal-ig-external');
 
@@ -6064,73 +6075,89 @@
           return '+' + clean;
         }
 
+        function extractNewestUrlFromText(raw) {
+          if (!raw) return '';
+          let s = String(raw)
+            .replace(/https?:\/\/www\.tiktok\.com\/embed\/v2\/7234567890123456789/gi, '')
+            .replace(/7234567890123456789/g, '')
+            .replace(/https?:\/\/www\.instagram\.com\/p\/C-DefaultReel\/embed/gi, '')
+            .replace(/C-DefaultReel/g, '')
+            .trim();
+          if (!s) return '';
+          const srcMatch = s.match(/src=["']([^"']+)["']/i);
+          if (srcMatch && srcMatch[1]) {
+            s = srcMatch[1].trim();
+          }
+          const urlMatches = s.match(/https?:\/\/[^\s"'<>]+/gi);
+          if (urlMatches && urlMatches.length > 0) {
+            return urlMatches[urlMatches.length - 1].trim();
+          }
+          if (/^(?:www\.|vt\.tiktok\.com|vm\.tiktok\.com|tiktok\.com|m\.tiktok\.com|facebook\.com|m\.facebook\.com|web\.facebook\.com|fb\.watch|instagram\.com|youtube\.com|youtu\.be)/i.test(s)) {
+            return 'https://' + s.replace(/^\/+/, '');
+          }
+          return s;
+        }
+
         function extractYoutubeId(input) {
           if (!input) return 'M7lc1UVf-VE';
-          const trimmed = input.trim();
+          const trimmed = extractNewestUrlFromText(input) || String(input).trim();
           const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
           const match = trimmed.match(regExp);
-          return match && match[2].length === 11 ? match[2] : trimmed;
+          return match && match[2].length === 11 ? match[2] : (trimmed.length === 11 ? trimmed : 'M7lc1UVf-VE');
+        }
+
+        function extractCleanTiktokUrl(input) {
+          const cleaned = extractNewestUrlFromText(input);
+          if (!cleaned) return '';
+          const embedMatch = cleaned.match(/tiktok\.com\/embed\/v2\/(\d+)/i);
+          if (embedMatch && embedMatch[1]) {
+            return `https://www.tiktok.com/@iyidebaiyide/video/${embedMatch[1]}`;
+          }
+          if (/^\d{15,22}$/.test(cleaned)) {
+            return `https://www.tiktok.com/@iyidebaiyide/video/${cleaned}`;
+          }
+          if (cleaned.startsWith('@')) {
+            return `https://www.tiktok.com/${cleaned}`;
+          }
+          return cleaned;
         }
 
         function normalizeTiktokEmbedUrl(input) {
-          if (!input) return 'https://www.tiktok.com/embed/v2/7234567890123456789';
-          const trimmed = input.trim();
-          if (trimmed.includes('/embed/')) return trimmed;
-          const match = trimmed.match(/video\/(\d+)/);
-          if (match && match[1]) {
-            return `https://www.tiktok.com/embed/v2/${match[1]}`;
+          return extractCleanTiktokUrl(input);
+        }
+
+        function extractCleanInstagramUrl(input) {
+          const cleaned = extractNewestUrlFromText(input);
+          if (!cleaned) return '';
+          const embedMatch = cleaned.match(/instagram\.com\/(p|reel|tv)\/([A-Za-z0-9_-]+)\/embed/i);
+          if (embedMatch && embedMatch[1] && embedMatch[2]) {
+            return `https://www.instagram.com/${embedMatch[1]}/${embedMatch[2]}/`;
           }
-          if (/^\d{15,22}$/.test(trimmed)) {
-            return `https://www.tiktok.com/embed/v2/${trimmed}`;
+          if (cleaned.startsWith('@')) {
+            return `https://www.instagram.com/${cleaned.replace(/^@/, '')}/`;
           }
-          return trimmed;
+          return cleaned;
         }
 
         function normalizeInstagramEmbedUrl(input) {
-          if (!input) return 'https://www.instagram.com/p/C-DefaultReel/embed';
-          const trimmed = input.trim();
-          if (trimmed.includes('/embed')) return trimmed;
-          const match = trimmed.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/i);
-          if (match && match[1]) {
-            return `https://www.instagram.com/reel/${match[1]}/embed`;
-          }
-          return trimmed;
+          return extractCleanInstagramUrl(input);
         }
 
         function extractCleanFacebookUrl(input) {
-          if (!input) return '';
-          let trimmed = String(input).trim();
-          const srcMatch = trimmed.match(/src=["']([^"']+)["']/i);
-          if (srcMatch && srcMatch[1]) {
-            trimmed = srcMatch[1];
-          }
-          if (trimmed.includes('facebook.com/plugins/video.php')) {
+          const cleaned = extractNewestUrlFromText(input);
+          if (!cleaned) return '';
+          if (cleaned.includes('facebook.com/plugins/video.php')) {
             try {
-              const u = new URL(trimmed);
+              const u = new URL(cleaned);
               const hrefParam = u.searchParams.get('href');
               if (hrefParam) return decodeURIComponent(hrefParam);
             } catch (e) {}
           }
-          return trimmed;
+          return cleaned;
         }
 
         function normalizeFacebookEmbedUrl(input) {
-          if (!input) return '';
-          const trimmed = String(input).trim();
-          if (!trimmed) return '';
-          const srcMatch = trimmed.match(/src=["']([^"']+)["']/i);
-          if (srcMatch && srcMatch[1]) {
-            return srcMatch[1];
-          }
-          if (trimmed.includes('facebook.com/plugins/video.php')) {
-            return trimmed;
-          }
-          // Only embed if it looks like a Facebook video, reel, watch, or share/v, share/r link
-          const isVideoLink = /facebook\.com\/(?:watch|reel|share\/[vr]|.*\/videos\/)|fb\.watch\//i.test(trimmed);
-          if (!isVideoLink) {
-            return '';
-          }
-          return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(trimmed)}&show_text=false&width=500`;
+          return '';
         }
 
         function applyLanguageToDOM() {
