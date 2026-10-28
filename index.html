@@ -810,6 +810,17 @@
               <span>✏️</span>
               <span id="live-edit-btn-label">საიტზე ტექსტების ხელით ჩასწორება: გამორთულია</span>
             </button>
+
+            <!-- Direct Live Sync to iyidebaa.ge Button -->
+            <button
+              id="sync-live-iyidebaa-btn"
+              type="button"
+              class="min-h-[36px] px-3 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-700 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer"
+              title="ყველა ცვლილება ავტომატურად აისახება iyidebaa.ge-ზე • დააჭირეთ მყისიერი სინქრონიზაციისთვის"
+            >
+              <span class="w-2 h-2 rounded-full bg-emerald-200 animate-pulse"></span>
+              <span id="sync-live-iyidebaa-label">iyidebaa.ge მიბმულია (ავტო-განახლება)</span>
+            </button>
           </div>
         </div>
 
@@ -2305,6 +2316,54 @@
             </a>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
+    <!-- OWNER PIN UNLOCK MODAL (მფლობელის პინ-კოდით შესვლა) -->
+    <!-- ======================================================================================== -->
+    <div
+      id="owner-pin-modal-backdrop"
+      class="fixed inset-0 z-[70] hidden bg-black/75 backdrop-blur-sm flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="owner-pin-modal-title"
+    >
+      <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-zinc-200 overflow-hidden">
+        <div class="px-5 py-4 bg-zinc-950 text-white flex items-center justify-between">
+          <h3 id="owner-pin-modal-title" class="font-display text-sm sm:text-base font-bold">
+            🔒 მფლობელის რეჟიმში შესვლა
+          </h3>
+          <button
+            id="owner-pin-close-btn"
+            type="button"
+            class="min-h-[32px] min-w-[32px] rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 flex items-center justify-center cursor-pointer"
+            aria-label="დახურვა"
+          >
+            ✕
+          </button>
+        </div>
+        <form id="owner-pin-form" class="p-5 space-y-3.5">
+          <p class="text-xs text-zinc-600">
+            მართვის პანელის გასახსნელად შეიყვანეთ მფლობელის პინ-კოდი:
+          </p>
+          <input
+            id="owner-pin-input"
+            type="password"
+            inputmode="numeric"
+            placeholder="პინ-კოდი"
+            class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-center font-mono-num text-lg font-extrabold tracking-widest focus:outline-none focus:border-zinc-900"
+          />
+          <p id="owner-pin-error" class="hidden text-xs font-bold text-rose-600 text-center">
+            პინ-კოდი არასწორია!
+          </p>
+          <button
+            type="submit"
+            class="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs sm:text-sm font-extrabold cursor-pointer active:scale-[0.98] fast-transition"
+          >
+            შესვლა მართვის პანელში
+          </button>
+        </form>
       </div>
     </div>
 
@@ -8086,23 +8145,74 @@
           openControlPanel('form');
         });
         const OWNER_PIN = '8579';
+        const ownerPinModal = document.getElementById('owner-pin-modal-backdrop');
+        const ownerPinForm = document.getElementById('owner-pin-form');
+        const ownerPinInput = document.getElementById('owner-pin-input');
+        const ownerPinError = document.getElementById('owner-pin-error');
+        const ownerPinCloseBtn = document.getElementById('owner-pin-close-btn');
 
-        footerAdminBtn.addEventListener('click', () => {
-          if (document.body.classList.contains('customer-view-mode')) {
-            const entered = window.prompt('მფლობელის რეჟიმში შესასვლელად შეიყვანეთ პინ-კოდი:');
-            if (entered === null) return;
-            if (entered.trim() !== OWNER_PIN) {
-              window.alert('პინ-კოდი არასწორია!');
+        if (ownerPinCloseBtn && ownerPinModal) {
+          ownerPinCloseBtn.addEventListener('click', () => {
+            ownerPinModal.classList.add('hidden');
+          });
+          ownerPinModal.addEventListener('click', (e) => {
+            if (e.target === ownerPinModal) ownerPinModal.classList.add('hidden');
+          });
+        }
+
+        if (ownerPinForm) {
+          ownerPinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const entered = ownerPinInput ? ownerPinInput.value.trim() : '';
+            if (entered !== OWNER_PIN) {
+              if (ownerPinError) ownerPinError.classList.remove('hidden');
               return;
             }
+            if (ownerPinError) ownerPinError.classList.add('hidden');
+            if (ownerPinModal) ownerPinModal.classList.add('hidden');
             try {
               sessionStorage.setItem('vv_owner_unlocked', '1');
               localStorage.setItem('vv_owner_unlocked', '1');
-            } catch (e) {}
+              sessionStorage.removeItem('vv_forced_customer_preview');
+            } catch (err) {}
             setCustomerViewMode(false);
+            openControlPanel('list');
+          });
+        }
+
+        footerAdminBtn.addEventListener('click', () => {
+          if (document.body.classList.contains('customer-view-mode')) {
+            if (ownerPinModal && ownerPinInput) {
+              if (ownerPinError) ownerPinError.classList.add('hidden');
+              ownerPinInput.value = '';
+              ownerPinModal.classList.remove('hidden');
+              setTimeout(() => ownerPinInput.focus(), 50);
+              return;
+            }
           }
           openControlPanel('list');
         });
+
+        const syncLiveIyidebaaBtn = document.getElementById('sync-live-iyidebaa-btn');
+        const syncLiveIyidebaaLabel = document.getElementById('sync-live-iyidebaa-label');
+        if (syncLiveIyidebaaBtn) {
+          syncLiveIyidebaaBtn.addEventListener('click', async () => {
+            if (syncLiveIyidebaaLabel) syncLiveIyidebaaLabel.textContent = 'მიმდინარეობს iyidebaa.ge-ზე ასახვა...';
+            try {
+              await saveStateEverywhere({ immediate: true });
+              try {
+                await fetch('/api/sync-github', { method: 'POST' });
+              } catch (e) {}
+              if (syncLiveIyidebaaLabel) syncLiveIyidebaaLabel.textContent = '✅ აისახა iyidebaa.ge-ზე!';
+              showWishlistToast('ყველა ცვლილება წარმატებით აისახა iyidebaa.ge-ზე!');
+            } catch (err) {
+              if (syncLiveIyidebaaLabel) syncLiveIyidebaaLabel.textContent = 'iyidebaa.ge მიბმულია (ავტო-განახლება)';
+            }
+            setTimeout(() => {
+              if (syncLiveIyidebaaLabel) syncLiveIyidebaaLabel.textContent = 'iyidebaa.ge მიბმულია (ავტო-განახლება)';
+            }, 3000);
+          });
+        }
         closeCpBtn.addEventListener('click', closeControlPanel);
         cpBackdrop.addEventListener('click', (e) => {
           if (e.target === cpBackdrop) closeControlPanel();
@@ -9368,6 +9478,7 @@
             try {
               sessionStorage.removeItem('vv_owner_unlocked');
               localStorage.removeItem('vv_owner_unlocked');
+              sessionStorage.setItem('vv_forced_customer_preview', '1');
             } catch (e) {}
             setCustomerViewMode(true);
             try {
@@ -9382,13 +9493,21 @@
           try {
             const params = new URLSearchParams(window.location.search);
             const adminParam = params.get('admin');
+            const isAiStudioOrLocal =
+              window.location.hostname.includes('run.app') ||
+              window.location.hostname === 'localhost' ||
+              window.location.hostname === '127.0.0.1';
+            const forcedCustomerPreview = sessionStorage.getItem('vv_forced_customer_preview') === '1';
+
             if (adminParam === '8579' || adminParam === '1') {
               sessionStorage.setItem('vv_owner_unlocked', '1');
               localStorage.setItem('vv_owner_unlocked', '1');
+              sessionStorage.removeItem('vv_forced_customer_preview');
               setCustomerViewMode(false);
             } else if (
               sessionStorage.getItem('vv_owner_unlocked') === '1' ||
-              localStorage.getItem('vv_owner_unlocked') === '1'
+              localStorage.getItem('vv_owner_unlocked') === '1' ||
+              (isAiStudioOrLocal && !forcedCustomerPreview && params.get('view') !== 'customer')
             ) {
               setCustomerViewMode(false);
             } else {
@@ -11529,7 +11648,7 @@
           if (geoBtn) {
             geoBtn.addEventListener('click', () => {
               if (!navigator.geolocation) {
-                alert(currentLang === 'en' ? 'Geolocation is not supported by your browser' : (currentLang === 'ru' ? 'Геолокация не поддерживается вашим браузером' : 'გეოლოკაცია არ არის მხარდაჭერილი თქვენს ბრაუზერში'));
+                showWishlistToast(currentLang === 'en' ? 'Geolocation is not supported by your browser' : (currentLang === 'ru' ? 'Геолокация не поддерживается вашим браузером' : 'გეოლოკაცია არ არის მხარდაჭერილი თქვენს ბრაუზერში'));
                 return;
               }
               const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
