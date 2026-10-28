@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793200270810,
+  "updatedAt": 1793200276954,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -200,7 +200,7 @@
       "specs": [
         {
           "label": "სიმძლავრე ვატი",
-          "value": "800W"
+          "value": "0W"
         },
         {
           "label": "აკუსტიკური დრაივერი",
