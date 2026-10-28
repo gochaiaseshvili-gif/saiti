@@ -7432,21 +7432,6 @@
           modalInstallmentBtn.href = `https://wa.me/${cleanDigits}?text=${installmentText}`;
           modalCardPaymentBtn.href = `https://wa.me/${cleanDigits}?text=${cardPaymentText}`;
 
-          const ytId = extractYoutubeId(rawProduct.youtubeId);
-          modalYoutubeIframe.src = `https://www.youtube.com/embed/${ytId}?rel=0`;
-          modalYtDuration.textContent = rawProduct.youtubeDuration || '08:45';
-          modalYtCaption.textContent = product.youtubeCaption || product.name;
-          modalYtExternal.href = `https://www.youtube.com/watch?v=${ytId}`;
-
-          modalTiktokIframe.src = normalizeTiktokEmbedUrl(rawProduct.tiktokUrl);
-          modalTtCaption.textContent = product.tiktokCaption || product.name;
-          modalTtExternal.href =
-            rawProduct.tiktokUrl &&
-            rawProduct.tiktokUrl.startsWith('http') &&
-            !rawProduct.tiktokUrl.includes('7234567890123456789')
-              ? rawProduct.tiktokUrl
-              : ttModalHref;
-
           if (
             !storeSettings.igHandle ||
             storeSettings.igHandle === '@voltandvox' ||
@@ -7466,46 +7451,7 @@
           if (modalTopIgLink) modalTopIgLink.href = igModalHref;
           if (modalBottomIgBtn) modalBottomIgBtn.href = igModalHref;
 
-          const fbEmbedSrc = normalizeFacebookEmbedUrl(rawProduct.facebookUrl);
-          const cleanFbUrl = extractCleanFacebookUrl(rawProduct.facebookUrl);
-          const targetFbHref =
-            cleanFbUrl && cleanFbUrl.startsWith('http') ? cleanFbUrl : fbPageHref;
-          if (modalFacebookIframe && modalFacebookFallback) {
-            if (fbEmbedSrc) {
-              modalFacebookIframe.src = fbEmbedSrc;
-              modalFacebookIframe.classList.remove('hidden');
-              modalFacebookFallback.classList.add('hidden');
-            } else {
-              modalFacebookIframe.src = '';
-              modalFacebookIframe.classList.add('hidden');
-              modalFacebookFallback.classList.remove('hidden');
-              modalFacebookFallback.href = targetFbHref;
-              if (modalFbFallbackImg) {
-                modalFbFallbackImg.src = getProductImageSrc(rawProduct, activeThemeColor);
-              }
-            }
-          }
-          if (modalFbCaption) {
-            modalFbCaption.textContent = product.facebookCaption || product.name;
-          }
-          if (modalFbExternal) {
-            modalFbExternal.href = targetFbHref;
-          }
-
-          if (modalInstagramIframe) {
-            modalInstagramIframe.src = normalizeInstagramEmbedUrl(rawProduct.instagramUrl);
-          }
-          if (modalIgCaption) {
-            modalIgCaption.textContent = product.instagramCaption || product.name;
-          }
-          if (modalIgExternal) {
-            modalIgExternal.href =
-              rawProduct.instagramUrl &&
-              rawProduct.instagramUrl.startsWith('http') &&
-              !rawProduct.instagramUrl.includes('C-DefaultReel')
-                ? rawProduct.instagramUrl
-                : igModalHref;
-          }
+          updateModalAllFourVideos(rawProduct, product);
 
           if (typeof setVideoTab === 'function') {
             setVideoTab('both');
