@@ -23489,16 +23489,18 @@
 </a>
 
 <script>
-    // ვამოწმებთ მისამართს: თუ არ არის მთავარი გვერდი, მაშინ გამოჩნდეს
-    const currentPath = window.location.pathname;
-    const isHome = currentPath === '/' || currentPath === '/index.html' || currentPath === '' || currentPath.endsWith('index.html');
-    
-    if (!isHome) {
+    // ვამოწმებთ: თუ მიმდინარე გვერდი არ არის მთავარი (ანუ ბმული არ მთავრდება დომენით ან index.html-ით)
+    const path = window.location.pathname;
+    const isNotHome = path.length > 1 && path !== '/index.html';
+
+    if (isNotHome) {
         const btn = document.getElementById('backButton');
         if (btn) {
             btn.classList.remove('hidden');
             btn.classList.add('flex');
         }
+    }
+</script>
     }
 </script>
   </body>
