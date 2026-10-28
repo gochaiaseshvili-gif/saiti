@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793194239161,
+  "updatedAt": 1793195630456,
   "themeColor": "#d97706",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -92,23 +92,23 @@
         },
         {
           "label": "ელემენტი / ტევადობა",
-          "value": "—"
+          "value": ""
         },
         {
           "label": "კომპლექტაცია",
-          "value": "—"
+          "value": ""
         },
         {
           "label": "ავტონომიური მუშაობა",
-          "value": "—"
+          "value": ""
         },
         {
           "label": "პორტები და კავშირი",
-          "value": "—"
+          "value": ""
         },
         {
           "label": "წონა და გარანტია",
-          "value": "—"
+          "value": ""
         }
       ],
       "youtubeId": "",
@@ -118,7 +118,8 @@
       "tiktokCaption": "ახალი პროდუქტი",
       "instagramUrl": "",
       "instagramCaption": "ახალი პროდუქტი",
-      "facebookUrl": "https://www.facebook.com/share/v/19awNHgcYH/"
+      "facebookUrl": "https://www.facebook.com/share/v/19awNHgcYH/",
+      "closedFields": {}
     },
     {
       "id": "ecovolt-1200w-solar",
@@ -164,12 +165,13 @@
           "value": "11.5 კგ"
         }
       ],
-      "youtubeId": "aqz-KE-bpKQ",
+      "youtubeId": "",
       "youtubeDuration": "11:20",
       "youtubeCaption": "EcoVolt 1200W სრული დატვირთვის და მზის პანელით დატენვის ტესტი",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7690179868289420565",
       "tiktokCaption": "როგორ ამუშავებს EcoVolt 1200W აგარაკის ტექნიკას",
-      "facebookUrl": "https://www.facebook.com/share/v/1DVkJy97xf/"
+      "facebookUrl": "https://www.facebook.com/share/v/1DVkJy97xf/",
+      "closedFields": {}
     },
     {
       "id": "voxmaster-800w",
@@ -215,11 +217,12 @@
           "value": "12.2 კგ"
         }
       ],
-      "youtubeId": "M7lc1UVf-VE",
+      "youtubeId": "",
       "youtubeDuration": "06:48",
       "youtubeCaption": "VoxMaster 800W ვოკალის და ბასის დეტალური მიმოხილვა",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
-      "tiktokCaption": "VoxMaster 800W კარაოკე საღამოს ტესტი"
+      "tiktokCaption": "VoxMaster 800W კარაოკე საღამოს ტესტი",
+      "closedFields": {}
     },
     {
       "id": "suncore-mini-600w",
@@ -265,15 +268,16 @@
           "value": "6.4 კგ (სადგური)"
         }
       ],
-      "youtubeId": "aqz-KE-bpKQ",
+      "youtubeId": "",
       "youtubeDuration": "08:12",
       "youtubeCaption": "SunCore Mini 600W + 100W პანელის საველე ტესტირება",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
-      "tiktokCaption": "უფასო მზის ენერგია ბუნებაში SunCore 600W-ით"
+      "tiktokCaption": "უფასო მზის ენერგია ბუნებაში SunCore 600W-ით",
+      "closedFields": {}
     },
     {
       "id": "acousticpro-titan-1500w",
-      "sku": "1500W TITAN",
+      "sku": "",
       "category": "karaoke",
       "categoryLabel": "კარაოკე სისტემა",
       "badgeText": "ფლაგმანი 1500W",
@@ -321,7 +325,10 @@
       "tiktokUrl": "",
       "tiktokCaption": "1500W კარაოკე ტაუერის ბასის ტესტი",
       "facebookUrl": "",
-      "instagramUrl": ""
+      "instagramUrl": "",
+      "closedFields": {
+        "sku": true
+      }
     },
     {
       "id": "nomadpower-300w",
@@ -367,11 +374,12 @@
           "value": "3.2 კგ"
         }
       ],
-      "youtubeId": "aqz-KE-bpKQ",
+      "youtubeId": "",
       "youtubeDuration": "05:54",
       "youtubeCaption": "NomadPower 300W მინი გენერატორის მიმოხილვა",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
-      "tiktokCaption": "NomadPower 300W — სარეზერვო 220V ნებისმიერ დროს"
+      "tiktokCaption": "NomadPower 300W — სარეზერვო 220V ნებისმიერ დროს",
+      "closedFields": {}
     },
     {
       "id": "streetbeat-500w",
@@ -417,11 +425,12 @@
           "value": "6.8 კგ"
         }
       ],
-      "youtubeId": "M7lc1UVf-VE",
+      "youtubeId": "",
       "youtubeDuration": "06:15",
       "youtubeCaption": "StreetBeat 500W კომპაქტური კარაოკეს ტესტი",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
-      "tiktokCaption": "StreetBeat 500W ბუნებაში მეგობრებთან ერთად"
+      "tiktokCaption": "StreetBeat 500W ბუნებაში მეგობრებთან ერთად",
+      "closedFields": {}
     },
     {
       "id": "offgrid-event-combo",
@@ -467,11 +476,12 @@
           "value": "უფასო საკურიერო მთელ საქართველოში"
         }
       ],
-      "youtubeId": "aqz-KE-bpKQ",
+      "youtubeId": "",
       "youtubeDuration": "12:40",
       "youtubeCaption": "Off-Grid Event კომბოს სრული დემონსტრაცია",
       "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
-      "tiktokCaption": "კარაოკე + მზის გენერატორის კომბო ტესტი"
+      "tiktokCaption": "კარაოკე + მზის გენერატორის კომბო ტესტი",
+      "closedFields": {}
     }
   ],
   "imagesMap": {
