@@ -4241,14 +4241,36 @@
             arr[0] = product.customImage.trim();
           }
           product.images = arr;
+          if (!product.closedFields || typeof product.closedFields !== 'object') {
+            product.closedFields = {};
+          }
+          if (product.youtubeId === 'M7lc1UVf-VE' || product.youtubeId === 'aqz-KE-bpKQ') {
+            product.youtubeId = '';
+          }
           if (Array.isArray(product.specs)) {
             product.specs.forEach((s) => {
-              if (s && s.label === 'პიკური სიმძლავრე') {
+              if (!s) return;
+              if (s.label === 'პიკური სიმძლავრე') {
                 s.label = 'სიმძლავრე ვატი';
+              }
+              if (s.value === '—' || s.value === '-') {
+                s.value = '';
               }
             });
           }
           return arr;
+        }
+
+        function getActiveGallerySlotIndices(product) {
+          ensureFiveImagesArray(product);
+          const cf = product.closedFields || {};
+          const indices = [];
+          for (let i = 0; i < 5; i++) {
+            if (!cf[`photo_${i}`]) {
+              indices.push(i);
+            }
+          }
+          return indices.length > 0 ? indices : [0];
         }
 
         // Get resolved image URL for a specific slot (0..4) of a product
@@ -4268,26 +4290,26 @@
           return createKaraokeSvg(tag, sub || '2x UHF MIC', accentHex, Number(product.newPrice) >= 1000, slotIndex);
         }
 
-        // Get all 5 resolved gallery images for a product (uploaded photos first, or all 5 slots)
+        // Get active resolved gallery images for a product (excluding closed slots)
         function getProductFiveGalleryUrls(product, accentHex) {
-          const urls = [];
-          for (let i = 0; i < 5; i++) {
-            urls.push(getProductSlotImageSrc(product, i, accentHex));
-          }
-          return urls;
+          const activeIndices = getActiveGallerySlotIndices(product);
+          return activeIndices.map((slotIdx) => getProductSlotImageSrc(product, slotIdx, accentHex));
         }
 
         // Count how many custom images the store owner has uploaded for a product
         function countCustomUploadedImages(product) {
           const arr = ensureFiveImagesArray(product);
-          return arr.filter((x) => x.length > 0).length;
+          const cf = product.closedFields || {};
+          return arr.filter((x, idx) => !cf[`photo_${idx}`] && x.length > 0).length;
         }
 
         function getProductImageSrc(product, accentHex) {
           const arr = ensureFiveImagesArray(product);
-          const firstCustom = arr.find((x) => x.length > 0);
-          if (firstCustom) return firstCustom;
-          return getProductSlotImageSrc(product, 0, accentHex);
+          const activeIndices = getActiveGallerySlotIndices(product);
+          for (const idx of activeIndices) {
+            if (arr[idx] && arr[idx].length > 0) return arr[idx];
+          }
+          return getProductSlotImageSrc(product, activeIndices[0] || 0, accentHex);
         }
 
         // Default 8 Products Catalog
@@ -6873,41 +6895,8 @@
         }
 
         function updateSingleProductCardInPlace(product) {
-          const cardEl = productGridEl.querySelector(`[data-product-id="${product.id}"]`);
-          if (!cardEl) {
-            preserveScroll(() => renderProducts());
-            return;
-          }
-          const loc = getLocalizedProduct(product, currentLang);
-          const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
-          const savings = Math.max(0, Number(product.oldPrice) - Number(product.newPrice));
-          const customCount = countCustomUploadedImages(product);
-          const imgEl = cardEl.querySelector('.card-img-el');
-          const photoCountEl = cardEl.querySelector('.card-photo-count-el');
-          const catEl = cardEl.querySelector('.card-cat-el');
-          const badgeEl = cardEl.querySelector('.card-badge-el');
-          const titleEl = cardEl.querySelector('.card-title-el');
-          const metaEl = cardEl.querySelector('.card-meta-el');
-          const newPriceEl = cardEl.querySelector('.card-new-price-el');
-          const oldPriceEl = cardEl.querySelector('.card-old-price-el');
-          const savingsEl = cardEl.querySelector('.card-savings-el');
-          const wlBtn = cardEl.querySelector('[data-wishlist-toggle]');
-
-          if (imgEl) imgEl.src = getProductImageSrc(product, activeThemeColor);
-          if (photoCountEl) {
-            photoCountEl.textContent = customCount > 0
-              ? strings.cardPhotosCount.replace('{count}', customCount)
-              : strings.cardUpload5Photos;
-          }
-          if (catEl) catEl.textContent = loc.categoryLabel || (currentLang === 'en' ? 'Product' : 'პროდუქტი');
-          if (badgeEl) badgeEl.textContent = loc.badgeText || (currentLang === 'en' ? 'Special Offer' : 'აქცია');
-          if (titleEl) titleEl.textContent = loc.name;
-          if (metaEl) metaEl.textContent = loc.shortMeta;
-          if (newPriceEl) newPriceEl.textContent = formatGel(product.newPrice);
-          if (oldPriceEl) oldPriceEl.textContent = formatGel(product.oldPrice);
-          if (savingsEl) savingsEl.textContent = `-${formatGel(savings)}`;
-
-          if (wlBtn) {
+          preserveScroll(() => renderProducts());
+        }
             const isWishlisted = wishlistIds.has(product.id);
             wlBtn.className = `wishlist-toggle-btn absolute top-3 left-3 z-10 w-9 h-9 rounded-xl ${
               isWishlisted
@@ -7022,6 +7011,14 @@
                 ? strings.cardPhotosCount.replace('{count}', customCount)
                 : strings.cardUpload5Photos;
 
+              const cf = rawProduct.closedFields || {};
+              const showCat = !cf.category && Boolean(product.categoryLabel);
+              const showBadge = !cf.badge && Boolean(product.badgeText && String(product.badgeText).trim());
+              const showTitle = !cf.name && Boolean(product.name && String(product.name).trim());
+              const showShortMeta = !cf.shortMeta && Boolean(product.shortMeta && String(product.shortMeta).trim());
+              const showNewPrice = !cf.newPrice && Number(rawProduct.newPrice) > 0;
+              const showOldPrice = !cf.oldPrice && Number(rawProduct.oldPrice) > 0 && Number(rawProduct.oldPrice) > Number(rawProduct.newPrice);
+
               return `
                 <article
                   data-product-id="${rawProduct.id}"
@@ -7084,21 +7081,23 @@
 
                     <!-- Card Body -->
                     <div class="p-5 space-y-2.5">
-                      <div class="flex items-center gap-1.5 text-xs text-zinc-500">
-                        <span class="card-cat-el font-medium text-zinc-700">${product.categoryLabel || (currentLang === 'en' ? 'Product' : currentLang === 'ru' ? 'Товар' : 'პროდუქტი')}</span>
-                        <span aria-hidden="true">•</span>
-                        <span class="card-badge-el theme-text font-semibold">${product.badgeText || (currentLang === 'en' ? 'Special Offer' : currentLang === 'ru' ? 'Акция' : 'აქცია')}</span>
-                        <span aria-hidden="true">•</span>
+                      <div class="flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
+                        ${showCat ? `<span class="card-cat-el font-medium text-zinc-700">${product.categoryLabel}</span><span aria-hidden="true">•</span>` : ''}
+                        ${showBadge ? `<span class="card-badge-el theme-text font-semibold">${product.badgeText}</span><span aria-hidden="true">•</span>` : ''}
                         <span class="font-mono-num">${strings.cardFivePhotosBadge}</span>
                       </div>
 
-                      <h3 class="card-title-el text-base font-semibold text-zinc-950 leading-snug line-clamp-2 group-hover:underline decoration-zinc-400 underline-offset-2">
-                        ${product.name}
-                      </h3>
+                      ${
+                        showTitle
+                          ? `<h3 class="card-title-el text-base font-semibold text-zinc-950 leading-snug line-clamp-2 group-hover:underline decoration-zinc-400 underline-offset-2">${product.name}</h3>`
+                          : ''
+                      }
 
-                      <p class="card-meta-el text-xs text-zinc-500 font-mono-num truncate">
-                        ${product.shortMeta}
-                      </p>
+                      ${
+                        showShortMeta
+                          ? `<p class="card-meta-el text-xs text-zinc-500 font-mono-num truncate">${product.shortMeta}</p>`
+                          : ''
+                      }
                     </div>
                   </div>
 
@@ -7106,14 +7105,20 @@
                   <div class="px-5 pb-5 pt-3 border-t border-zinc-100 space-y-2.5">
                     <div class="flex items-end justify-between gap-2">
                       <div class="flex flex-wrap items-end gap-3">
-                        <div>
+                        ${
+                          showNewPrice
+                            ? `<div>
                           <div class="text-[10px] font-semibold text-zinc-500 leading-tight mb-0.5">${strings.cardSalePrice}</div>
                           <span class="card-new-price-el font-mono-num text-xl font-bold theme-text leading-none">
                             ${formatGel(rawProduct.newPrice)}
                           </span>
-                        </div>
+                        </div>`
+                            : ''
+                        }
 
-                        <div>
+                        ${
+                          showOldPrice
+                            ? `<div>
                           <div class="text-[10px] font-bold text-zinc-500 leading-tight mb-0.5">${strings.cardOldPrice}</div>
                           <span class="card-old-price-el font-mono-num text-xs sm:text-sm font-semibold text-zinc-600 line-through decoration-red-600 decoration-2 leading-none" style="text-decoration-color: #dc2626; text-decoration-thickness: 2px;">
                             ${formatGel(rawProduct.oldPrice)}
@@ -7125,7 +7130,9 @@
                           <span class="card-savings-el text-xs sm:text-sm font-extrabold text-emerald-600 font-mono-num leading-none">
                             -${formatGel(savings)}
                           </span>
-                        </div>
+                        </div>`
+                            : ''
+                        }
                       </div>
 
                       <button
@@ -7216,12 +7223,13 @@
         function renderModalGalleryState() {
           if (!activeModalProduct) return;
           const urls = getProductFiveGalleryUrls(activeModalProduct, activeThemeColor);
-          const safeIdx = ((activeModalImageIdx % 5) + 5) % 5;
+          const total = Math.max(1, urls.length);
+          const safeIdx = ((activeModalImageIdx % total) + total) % total;
           activeModalImageIdx = safeIdx;
 
           modalProductImg.src = urls[safeIdx];
           modalProductImg.alt = `${activeModalProduct.name} - ფოტო ${safeIdx + 1}`;
-          modalImgCounter.textContent = `${safeIdx + 1} / 5`;
+          modalImgCounter.textContent = `${safeIdx + 1} / ${total}`;
 
           modalThumbnailsStrip.innerHTML = urls
             .map((u, idx) => {
@@ -7244,13 +7252,15 @@
 
         modalPrevImgBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          activeModalImageIdx = (activeModalImageIdx - 1 + 5) % 5;
+          const total = activeModalProduct ? Math.max(1, getProductFiveGalleryUrls(activeModalProduct, activeThemeColor).length) : 5;
+          activeModalImageIdx = (activeModalImageIdx - 1 + total) % total;
           renderModalGalleryState();
         });
 
         modalNextImgBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          activeModalImageIdx = (activeModalImageIdx + 1) % 5;
+          const total = activeModalProduct ? Math.max(1, getProductFiveGalleryUrls(activeModalProduct, activeThemeColor).length) : 5;
+          activeModalImageIdx = (activeModalImageIdx + 1) % total;
           renderModalGalleryState();
         });
 
@@ -7286,10 +7296,11 @@
               const diffY = e.changedTouches[0].screenY - touchStartY;
               if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
                 isStageSwiping = true;
+                const total = activeModalProduct ? Math.max(1, getProductFiveGalleryUrls(activeModalProduct, activeThemeColor).length) : 5;
                 if (diffX < 0) {
-                  activeModalImageIdx = (activeModalImageIdx + 1) % 5;
+                  activeModalImageIdx = (activeModalImageIdx + 1) % total;
                 } else {
-                  activeModalImageIdx = (activeModalImageIdx - 1 + 5) % 5;
+                  activeModalImageIdx = (activeModalImageIdx - 1 + total) % total;
                 }
                 renderModalGalleryState();
               }
@@ -7321,12 +7332,13 @@
           if (lightboxNextBtn) lightboxNextBtn.classList.remove('hidden');
           if (lightboxThumbnailsStrip) lightboxThumbnailsStrip.classList.remove('hidden');
           const urls = getProductFiveGalleryUrls(activeModalProduct, activeThemeColor);
-          const safeIdx = ((lightboxActiveIdx % 5) + 5) % 5;
+          const total = Math.max(1, urls.length);
+          const safeIdx = ((lightboxActiveIdx % total) + total) % total;
           lightboxActiveIdx = safeIdx;
 
           const locProd = getLocalizedProduct(activeModalProduct, currentLang);
           if (lightboxProductTitle) lightboxProductTitle.textContent = locProd.name;
-          if (lightboxCounterBadge) lightboxCounterBadge.textContent = `${safeIdx + 1} / 5`;
+          if (lightboxCounterBadge) lightboxCounterBadge.textContent = `${safeIdx + 1} / ${total}`;
 
           // Main enlarged image
           if (lightboxImg) {
@@ -7338,7 +7350,7 @@
           activeModalImageIdx = safeIdx;
           renderModalGalleryState();
 
-          // Render 5 interactive Lightbox Thumbnails
+          // Render interactive Lightbox Thumbnails
           if (lightboxThumbnailsStrip) {
             lightboxThumbnailsStrip.innerHTML = urls
               .map((u, idx) => {
@@ -7367,12 +7379,12 @@
         let hasPushedProductHistoryEntry = false;
         let hasPushedLightboxHistoryEntry = false;
         let hasPushedCpHistoryEntry = false;
-        let needsGestureHistoryReinforce = false;
 
         function openLightbox(initialIdx = 0) {
           if (!activeModalProduct) return;
           const wasHidden = !lightboxModalBackdrop || lightboxModalBackdrop.classList.contains('hidden');
-          lightboxActiveIdx = ((initialIdx % 5) + 5) % 5;
+          const total = Math.max(1, getProductFiveGalleryUrls(activeModalProduct, activeThemeColor).length);
+          lightboxActiveIdx = ((initialIdx % total) + total) % total;
           renderLightboxState();
           if (lightboxModalBackdrop) {
             lightboxModalBackdrop.classList.remove('hidden');
@@ -7390,7 +7402,7 @@
           }
         }
 
-        function closeLightbox() {
+        function closeLightbox(opts = {}) {
           if (lightboxModalBackdrop) {
             lightboxModalBackdrop.classList.add('hidden');
           }
@@ -7400,28 +7412,31 @@
           } else {
             document.body.classList.remove('overflow-hidden');
           }
+          const fromPopState = Boolean(opts && opts.fromPopState === true);
+          if (hasPushedLightboxHistoryEntry && !fromPopState) {
+            hasPushedLightboxHistoryEntry = false;
+            try {
+              window.history.back();
+              return;
+            } catch (e) {}
+          }
           hasPushedLightboxHistoryEntry = false;
-          try {
-            if (activeModalProduct) {
-              const url = new URL(window.location.href);
-              url.searchParams.set('product', activeModalProduct.id);
-              window.history.replaceState({ view: 'product', productId: activeModalProduct.id }, '', url.toString());
-            }
-          } catch (e) {}
         }
 
         function lightboxNext() {
-          lightboxActiveIdx = (lightboxActiveIdx + 1) % 5;
+          const total = activeModalProduct ? Math.max(1, getProductFiveGalleryUrls(activeModalProduct, activeThemeColor).length) : 5;
+          lightboxActiveIdx = (lightboxActiveIdx + 1) % total;
           renderLightboxState();
         }
 
         function lightboxPrev() {
-          lightboxActiveIdx = (lightboxActiveIdx - 1 + 5) % 5;
+          const total = activeModalProduct ? Math.max(1, getProductFiveGalleryUrls(activeModalProduct, activeThemeColor).length) : 5;
+          lightboxActiveIdx = (lightboxActiveIdx - 1 + total) % total;
           renderLightboxState();
         }
 
         if (lightboxCloseBtn) {
-          lightboxCloseBtn.addEventListener('click', closeLightbox);
+          lightboxCloseBtn.addEventListener('click', () => closeLightbox());
         }
 
         if (lightboxPrevBtn) {
@@ -7497,6 +7512,7 @@
         function openProductModal(productId, opts = {}) {
           const rawProduct = productsList.find((p) => p.id === productId);
           if (!rawProduct) return;
+          ensureFiveImagesArray(rawProduct);
           const wasAlreadyOpen = !modalBackdrop.classList.contains('hidden');
           if (!wasAlreadyOpen) {
             savedWindowScrollY = window.scrollY;
@@ -7506,39 +7522,12 @@
 
           const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
           const product = getLocalizedProduct(rawProduct, currentLang);
-          const savings = Math.max(0, Number(rawProduct.oldPrice) - Number(rawProduct.newPrice));
           const cleanDigits = String(storeSettings.phoneDigits || '995551588579').replace(/\D/g, '') || '995551588579';
           const displayPhone = formatPhoneDisplay(cleanDigits);
 
-          const warrantyLabel = currentLang === 'en'
-            ? `${product.categoryLabel} • Code: ${rawProduct.sku} • Official 24-Month Warranty`
-            : currentLang === 'ru'
-            ? `${product.categoryLabel} • Код: ${rawProduct.sku} • Официальная гарантия 24 месяца`
-            : `${product.categoryLabel} • კოდი: ${rawProduct.sku} • ოფიციალური გარანტია 24 თვე`;
-          modalCategoryMeta.textContent = warrantyLabel;
-
-          renderModalGalleryState();
           syncModalWishlistButton();
           syncPriceDropUI(productId);
-          modalSkuCaption.textContent = `${product.shortMeta}`;
-          modalProductTitle.textContent = product.name;
-          modalNewPrice.textContent = formatGel(rawProduct.newPrice);
-          modalOldPrice.textContent = formatGel(rawProduct.oldPrice);
-          modalSavings.textContent = `-${formatGel(savings)}`;
-          modalProductDesc.textContent = product.description;
-
-          const specsArr = Array.isArray(product.specs) ? product.specs : [];
-          modalSpecsGrid.innerHTML = specsArr
-            .filter((s) => s && (s.label || s.value))
-            .map(
-              (spec) => `
-              <div class="px-2.5 py-1.5 rounded-lg bg-stone-50 border border-zinc-200/80 min-w-0">
-                <div class="text-[10px] leading-tight text-zinc-500 truncate">${spec.label || ''}</div>
-                <div class="text-[11px] sm:text-xs font-semibold text-zinc-900 font-mono-num leading-tight mt-0.5 truncate">${spec.value || ''}</div>
-              </div>
-            `
-            )
-            .join('');
+          refreshOpenProductModalView(rawProduct);
 
           const waOrderText = currentLang === 'en'
             ? `Hello, I would like to order this product: ${product.name} (${rawProduct.newPrice} ₾)`
@@ -7634,8 +7623,6 @@
           if (modalTopIgLink) modalTopIgLink.href = igModalHref;
           if (modalBottomIgBtn) modalBottomIgBtn.href = igModalHref;
 
-          updateModalAllFourVideos(rawProduct, product);
-
           if (typeof setVideoTab === 'function') {
             setVideoTab('both');
           }
@@ -7657,9 +7644,8 @@
 
           // Persist open product page in sessionStorage and browser history so:
           // 1) Refreshing stays on this product page
-          // 2) Pressing Phone or Browser Back button returns to the main catalog without leaving the site!
+          // 2) Pressing Phone or Browser Back button returns to the main catalog in 1 single click!
           const fromPopState = Boolean(opts && opts.fromPopState === true);
-          const isInitialRestore = Boolean(opts && opts.isInitialRestore === true);
           try {
             sessionStorage.setItem('vv_open_product_id', productId);
             const url = new URL(window.location.href);
@@ -7667,32 +7653,20 @@
 
             if (fromPopState) {
               hasPushedProductHistoryEntry = true;
-              needsGestureHistoryReinforce = false;
-            } else if (isInitialRestore) {
-              if (!hasPushedProductHistoryEntry) {
-                const homeUrl = new URL(window.location.href);
-                homeUrl.searchParams.delete('product');
-                window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
-                window.history.pushState({ view: 'product', productId }, '', url.toString());
-                hasPushedProductHistoryEntry = true;
-                needsGestureHistoryReinforce = true;
-              } else {
-                window.history.replaceState({ view: 'product', productId }, '', url.toString());
-              }
-            } else if (!wasAlreadyOpen && !hasPushedProductHistoryEntry) {
+            } else if (!hasPushedProductHistoryEntry) {
               const homeUrl = new URL(window.location.href);
               homeUrl.searchParams.delete('product');
               window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
               window.history.pushState({ view: 'product', productId }, '', url.toString());
               hasPushedProductHistoryEntry = true;
-              needsGestureHistoryReinforce = false;
             } else {
               window.history.replaceState({ view: 'product', productId }, '', url.toString());
             }
           } catch (e) {}
         }
 
-        function closeProductModal() {
+        function closeProductModal(opts = {}) {
+          const fromPopState = Boolean(opts && opts.fromPopState === true);
           const inlineEditorEl = document.getElementById('modal-inline-editor-panel');
           if (inlineEditorEl && !inlineEditorEl.classList.contains('hidden')) {
             if (typeof applyInlineProductEditorChanges === 'function' && activeModalProduct) {
@@ -7708,19 +7682,20 @@
           }
           modalBackdrop.classList.add('hidden');
           document.body.classList.remove('overflow-hidden');
-          modalYoutubeIframe.src = '';
-          modalTiktokIframe.src = '';
-          if (modalFacebookIframe) modalFacebookIframe.src = '';
-          if (modalInstagramIframe) modalInstagramIframe.src = '';
+          setIframeUrlWithoutHistory(modalYoutubeIframe, 'about:blank');
           activeModalProduct = null;
+          const hadHistoryEntry = hasPushedProductHistoryEntry;
           hasPushedProductHistoryEntry = false;
-          needsGestureHistoryReinforce = false;
           try {
             sessionStorage.removeItem('vv_open_product_id');
             sessionStorage.removeItem('vv_modal_scroll_y');
-            const url = new URL(window.location.href);
-            url.searchParams.delete('product');
-            window.history.replaceState({ view: 'home' }, '', url.toString());
+            if (!fromPopState && hadHistoryEntry && window.history.state && window.history.state.view === 'product') {
+              window.history.back();
+            } else {
+              const url = new URL(window.location.href);
+              url.searchParams.delete('product');
+              window.history.replaceState({ view: 'home' }, '', url.toString());
+            }
           } catch (e) {}
           window.scrollTo({ top: savedWindowScrollY, behavior: 'instant' });
         }
@@ -8119,27 +8094,48 @@
         function buildSpecInputs(specsArray) {
           const rows = [];
           for (let i = 0; i < 6; i++) {
-            const item = (specsArray && specsArray[i]) || { label: DEFAULT_SPEC_LABELS[i], value: '' };
+            const rawItem = (specsArray && specsArray[i]) || null;
+            const rawVal = rawItem && rawItem.value && rawItem.value !== '—' && rawItem.value !== '-' ? rawItem.value : '';
+            const rawLbl = rawItem && rawItem.label !== undefined ? rawItem.label : DEFAULT_SPEC_LABELS[i];
             rows.push(`
-              <div class="grid grid-cols-5 gap-2 bg-stone-50 p-2 rounded-xl border border-zinc-200/80">
+              <div class="flex items-center gap-1.5 bg-stone-50 p-2 rounded-xl border border-zinc-200/80">
                 <input
                   type="text"
                   data-spec-label="${i}"
-                  value="${(item.label || '').replace(/"/g, '&quot;')}"
+                  value="${(rawLbl || '').replace(/"/g, '&quot;')}"
                   placeholder="მახასიათებელი ${i + 1}"
-                  class="col-span-2 min-h-[38px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-white text-xs"
+                  class="w-2/5 min-h-[38px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-white text-xs"
                 />
                 <input
                   type="text"
                   data-spec-value="${i}"
-                  value="${(item.value || '').replace(/"/g, '&quot;')}"
-                  placeholder="მნიშვნელობა (მაგ: 1200W)"
-                  class="col-span-3 min-h-[38px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-white text-xs font-mono-num"
+                  value="${(rawVal || '').replace(/"/g, '&quot;')}"
+                  placeholder="ცარიელი = არ გამოჩნდება"
+                  class="flex-1 min-h-[38px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-white text-xs font-mono-num"
                 />
+                <button
+                  type="button"
+                  data-cp-clear-spec="${i}"
+                  title="ამ უჯრის წაშლა / გასუფთავება"
+                  class="min-h-[38px] px-2.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold cursor-pointer shrink-0"
+                >✕</button>
               </div>
             `);
           }
           cpSpecsContainer.innerHTML = rows.join('');
+        }
+
+        if (cpSpecsContainer) {
+          cpSpecsContainer.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-cp-clear-spec]');
+            if (!btn) return;
+            const idx = Number(btn.getAttribute('data-cp-clear-spec'));
+            const lblEl = cpSpecsContainer.querySelector(`[data-spec-label="${idx}"]`);
+            const valEl = cpSpecsContainer.querySelector(`[data-spec-value="${idx}"]`);
+            if (lblEl) lblEl.value = '';
+            if (valEl) valEl.value = '';
+            autoSaveFormProductLive({ immediate: true });
+          });
         }
 
         let toastTimer = null;
@@ -8233,7 +8229,8 @@
           fSku.value = prod.sku || '';
           fShortMeta.value = prod.shortMeta || '';
           fDesc.value = prod.description || '';
-          fYoutube.value = prod.youtubeId ? `https://www.youtube.com/watch?v=${extractYoutubeId(prod.youtubeId)}` : '';
+          const cleanYt = extractYoutubeId(prod.youtubeId);
+          fYoutube.value = cleanYt ? `https://www.youtube.com/watch?v=${cleanYt}` : '';
           if (fYtDuration) fYtDuration.value = prod.youtubeDuration || '08:45';
           fYtCaption.value = prod.youtubeCaption || '';
           fTiktok.value = extractCleanTiktokUrl(prod.tiktokUrl);
@@ -8262,15 +8259,15 @@
             fId.value = existingId;
           }
 
+          const existingProd = productsList.find((p) => p.id === existingId);
           const specsCollected = [];
           for (let i = 0; i < 6; i++) {
             const lblEl = cpSpecsContainer.querySelector(`[data-spec-label="${i}"]`);
             const valEl = cpSpecsContainer.querySelector(`[data-spec-value="${i}"]`);
             const label = lblEl ? lblEl.value.trim() : '';
-            const value = valEl ? valEl.value.trim() : '';
-            if (label || value) {
-              specsCollected.push({ label: label || `პარამეტრი ${i + 1}`, value: value || '—' });
-            }
+            const rawVal = valEl ? valEl.value.trim() : '';
+            const value = rawVal === '—' || rawVal === '-' ? '' : rawVal;
+            specsCollected.push({ label, value });
           }
 
           const catValue = fCategory.value || 'karaoke';
@@ -8279,17 +8276,18 @@
 
           const updatedProductObj = {
             id: existingId,
-            sku: fSku.value.trim() || 'VV-PRO',
+            sku: fSku.value.trim(),
             category: catValue,
             categoryLabel: customCatLabel || CATEGORY_LABELS[catValue] || 'პროდუქტი',
-            badgeText: fBadge.value.trim() || 'აქცია',
+            badgeText: fBadge.value.trim(),
             name: displayName,
-            shortMeta: fShortMeta.value.trim() || 'ოფიციალური გარანტია 24 თვე',
+            shortMeta: fShortMeta.value.trim(),
             oldPrice: Number(fOldPrice.value) || 0,
             newPrice: Number(fNewPrice.value) || 0,
             images: formFiveImages.slice(0, 5),
-            description: fDesc.value.trim() || displayName,
+            description: fDesc.value.trim(),
             specs: specsCollected,
+            closedFields: existingProd && existingProd.closedFields ? Object.assign({}, existingProd.closedFields) : {},
             youtubeId: extractYoutubeId(fYoutube.value),
             youtubeDuration: (fYtDuration && fYtDuration.value.trim()) || '08:45',
             youtubeCaption: fYtCaption.value.trim() || displayName,
@@ -9081,11 +9079,53 @@
         const mieOpenFullCpBtn = document.getElementById('mie-open-full-cp-btn');
         const mieDeleteProdBtn = document.getElementById('mie-delete-prod-btn');
 
+        function syncMieFieldActiveClosedUI(prod) {
+          if (!modalInlineEditorPanel || !prod) return;
+          ensureFiveImagesArray(prod);
+          const cf = prod.closedFields || {};
+          const keys = [
+            'name',
+            'newPrice',
+            'oldPrice',
+            'shortMeta',
+            'category',
+            'badge',
+            'sku',
+            'description',
+            'tiktok',
+            'facebook',
+            'youtube',
+            'instagram'
+          ];
+          keys.forEach((k) => {
+            const activeEl = modalInlineEditorPanel.querySelector(`[data-mie-field-active="${k}"]`);
+            const closedEl = modalInlineEditorPanel.querySelector(`[data-mie-field-closed="${k}"]`);
+            const isClosed = Boolean(cf[k]);
+            if (activeEl) activeEl.classList.toggle('hidden', isClosed);
+            if (closedEl) closedEl.classList.toggle('hidden', !isClosed);
+          });
+        }
+
         function renderMieFiveSlots(prod) {
           if (!mieFiveSlotsGrid || !prod) return;
           ensureFiveImagesArray(prod);
+          const cf = prod.closedFields || {};
           const cardsHtml = [];
           for (let i = 0; i < 5; i++) {
+            const isSlotClosed = Boolean(cf[`photo_${i}`]);
+            if (isSlotClosed) {
+              cardsHtml.push(`
+                <div class="p-2.5 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex flex-col items-center justify-center gap-2 min-h-[140px] text-center">
+                  <span class="text-[11px] font-bold text-zinc-500">ფოტო #${i + 1} უჯრა დახურულია</span>
+                  <button
+                    type="button"
+                    data-mie-open-field="photo_${i}"
+                    class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[11px] font-extrabold cursor-pointer shadow-2xs"
+                  >+ უჯრის ჩართვა</button>
+                </div>
+              `);
+              continue;
+            }
             const rawImg = prod.images[i] || '';
             const hasCustom = Boolean(rawImg && rawImg.trim().length > 0);
             const previewSrc = getProductSlotImageSrc(prod, i, activeThemeColor);
@@ -9095,9 +9135,12 @@
               } flex flex-col justify-between gap-1.5 shadow-2xs">
                 <div class="flex items-center justify-between gap-1">
                   <span class="text-[11px] font-extrabold text-zinc-900">${i === 0 ? '#1 მთავარი' : `ფოტო #${i + 1}`}</span>
-                  <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${
-                    hasCustom ? 'bg-emerald-50 text-emerald-700' : 'bg-stone-100 text-zinc-500'
-                  }">${hasCustom ? 'ატვირთულია' : 'ცარიელი'}</span>
+                  <button
+                    type="button"
+                    data-mie-close-field="photo_${i}"
+                    title="ამ ფოტო უჯრის დახურვა / გაუქმება"
+                    class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 cursor-pointer"
+                  >✕ დახურვა</button>
                 </div>
                 <div class="relative aspect-[4/3] w-full rounded-lg bg-stone-100 border border-zinc-200/80 flex items-center justify-center overflow-hidden p-1">
                   <img src="${previewSrc}" alt="ფოტო ${i + 1}" referrerPolicy="no-referrer" class="w-full h-full object-contain rounded" />
@@ -9109,13 +9152,13 @@
                 <div class="flex items-center justify-between gap-1">
                   ${
                     i > 0 && hasCustom
-                      ? `<button type="button" data-mie-slot-main="${i}" class="text-[10px] font-bold text-amber-700 hover:underline">მთავარად</button>`
-                      : `<span></span>`
+                      ? `<button type="button" data-mie-slot-main="${i}" class="text-[10px] font-bold text-amber-700 hover:underline cursor-pointer">მთავარად</button>`
+                      : `<span class="text-[9px] font-bold ${hasCustom ? 'text-emerald-700' : 'text-zinc-400'}">${hasCustom ? 'ატვირთულია' : 'ცარიელი'}</span>`
                   }
                   ${
                     hasCustom
-                      ? `<button type="button" data-mie-slot-clear="${i}" class="text-[10px] font-bold text-rose-600 hover:underline">წაშლა</button>`
-                      : ''
+                      ? `<button type="button" data-mie-slot-clear="${i}" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">წაშლა</button>`
+                      : `<button type="button" data-mie-close-field="photo_${i}" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">გაუქმება</button>`
                   }
                 </div>
               </div>
@@ -9126,6 +9169,8 @@
 
         function updateModalAllFourVideos(prod, localizedProd) {
           if (!prod) return;
+          ensureFiveImagesArray(prod);
+          const cf = prod.closedFields || {};
           const product = localizedProd || getLocalizedProduct(prod, currentLang);
           const previewImgSrc = getProductImageSrc(prod, activeThemeColor);
 
@@ -9141,7 +9186,6 @@
           const targetTtHref = hasCustomTt ? cleanTtUrl : defaultTtHref;
 
           if (modalTiktokIframe) {
-            modalTiktokIframe.src = '';
             modalTiktokIframe.classList.add('hidden');
           }
           if (modalTiktokFallback) {
@@ -9167,7 +9211,6 @@
           const targetFbHref = hasCustomFb ? cleanFbUrl : defaultFbHref;
 
           if (modalFacebookIframe) {
-            modalFacebookIframe.src = '';
             modalFacebookIframe.classList.add('hidden');
           }
           if (modalFacebookFallback) {
@@ -9184,12 +9227,15 @@
           if (modalFbExternal) modalFbExternal.href = targetFbHref;
           if (modalFbCaption) modalFbCaption.textContent = product.facebookCaption || product.name;
 
-          // 3. YouTube Card Setup
+          // 3. YouTube Card Setup (Never push iframe history entry; hide if closed or no custom YouTube ID)
           const ytId = extractYoutubeId(prod.youtubeId);
-          const targetYtHref = `https://www.youtube.com/watch?v=${ytId}`;
+          const hasValidYt = Boolean(ytId) && !cf.youtube;
+          const targetYtHref = hasValidYt
+            ? `https://www.youtube.com/watch?v=${ytId}`
+            : String(storeSettings.youtubeUrl || 'https://www.youtube.com/@voltandvox').trim();
           if (modalYoutubeIframe) {
-            const newYtSrc = `https://www.youtube.com/embed/${ytId}?rel=0`;
-            if (modalYoutubeIframe.src !== newYtSrc) modalYoutubeIframe.src = newYtSrc;
+            const newYtSrc = hasValidYt ? `https://www.youtube.com/embed/${ytId}?rel=0` : 'about:blank';
+            setIframeUrlWithoutHistory(modalYoutubeIframe, newYtSrc);
           }
           if (modalYtDuration) modalYtDuration.textContent = prod.youtubeDuration || '08:45';
           if (modalYtCaption) modalYtCaption.textContent = product.youtubeCaption || product.name;
@@ -9208,7 +9254,6 @@
           const targetIgHref = hasCustomIg ? cleanIgUrl : defaultIgHref;
 
           if (modalInstagramIframe) {
-            modalInstagramIframe.src = '';
             modalInstagramIframe.classList.add('hidden');
           }
           if (modalInstagramFallback) {
@@ -9224,77 +9269,151 @@
           if (modalIgHeaderLink) modalIgHeaderLink.href = targetIgHref;
           if (modalIgExternal) modalIgExternal.href = targetIgHref;
           if (modalIgCaption) modalIgCaption.textContent = product.instagramCaption || product.name;
+
+          if (typeof setVideoTab === 'function') {
+            setVideoTab('both');
+          }
+        }
+
+        function renderMieSpecsRows(prod) {
+          if (!mieSpecsContainer || !prod) return;
+          ensureFiveImagesArray(prod);
+          const cf = prod.closedFields || {};
+          const specsArray = Array.isArray(prod.specs) ? prod.specs : [];
+          const rows = [];
+          for (let i = 0; i < 6; i++) {
+            const isClosed = Boolean(cf[`spec_${i}`]);
+            const item = specsArray[i] || { label: DEFAULT_SPEC_LABELS[i] || `პარამეტრი ${i + 1}`, value: '' };
+            const cleanVal = item.value === '—' || item.value === '-' ? '' : (item.value || '');
+            if (isClosed) {
+              rows.push(`
+                <div class="min-h-[44px] px-3 py-1.5 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-bold text-zinc-500 truncate">მახასიათებელი #${i + 1} გაუქმებულია</span>
+                  <button
+                    type="button"
+                    data-mie-open-field="spec_${i}"
+                    class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0"
+                  >+ ჩართვა</button>
+                </div>
+              `);
+            } else {
+              rows.push(`
+                <div class="flex items-center gap-1.5 bg-white p-1.5 rounded-xl border border-zinc-200/90">
+                  <input
+                    type="text"
+                    data-mie-spec-label="${i}"
+                    value="${(item.label || '').replace(/"/g, '&quot;')}"
+                    placeholder="მახასიათებელი ${i + 1}"
+                    class="w-[38%] min-h-[36px] px-2 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-semibold text-zinc-800"
+                  />
+                  <input
+                    type="text"
+                    data-mie-spec-value="${i}"
+                    value="${cleanVal.replace(/"/g, '&quot;')}"
+                    placeholder="მნიშვნელობა"
+                    class="flex-1 min-w-0 min-h-[36px] px-2 py-1 rounded-lg border border-zinc-300 bg-white text-xs font-bold text-zinc-900 font-mono-num"
+                  />
+                  <button
+                    type="button"
+                    data-mie-close-field="spec_${i}"
+                    title="ამ უჯრის დახურვა / წაშლა"
+                    class="min-h-[36px] px-2 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-[11px] font-extrabold cursor-pointer shrink-0"
+                  >✕</button>
+                </div>
+              `);
+            }
+          }
+          mieSpecsContainer.innerHTML = rows.join('');
         }
 
         function populateInlineProductEditor(prod) {
           if (!prod || !modalInlineEditorPanel) return;
           ensureFiveImagesArray(prod);
           if (mieNameInput) mieNameInput.value = prod.name || '';
-          if (mieNewPriceInput) mieNewPriceInput.value = prod.newPrice != null ? prod.newPrice : '';
-          if (mieOldPriceInput) mieOldPriceInput.value = prod.oldPrice != null ? prod.oldPrice : '';
+          if (mieNewPriceInput) mieNewPriceInput.value = prod.newPrice != null && prod.newPrice !== 0 ? prod.newPrice : '';
+          if (mieOldPriceInput) mieOldPriceInput.value = prod.oldPrice != null && prod.oldPrice !== 0 ? prod.oldPrice : '';
           if (mieShortMetaInput) mieShortMetaInput.value = prod.shortMeta || '';
           if (mieCategorySelect) mieCategorySelect.value = prod.category || 'karaoke';
           if (mieBadgeInput) mieBadgeInput.value = prod.badgeText || '';
           if (mieSkuInput) mieSkuInput.value = prod.sku || '';
           if (mieDescInput) mieDescInput.value = prod.description || '';
           if (mieYoutubeInput) {
-            mieYoutubeInput.value = prod.youtubeId ? `https://www.youtube.com/watch?v=${extractYoutubeId(prod.youtubeId)}` : '';
+            const cleanYtId = extractYoutubeId(prod.youtubeId);
+            mieYoutubeInput.value = cleanYtId ? `https://www.youtube.com/watch?v=${cleanYtId}` : '';
           }
           if (mieTiktokInput) mieTiktokInput.value = extractCleanTiktokUrl(prod.tiktokUrl);
           if (mieFacebookInput) mieFacebookInput.value = extractCleanFacebookUrl(prod.facebookUrl);
           if (mieInstagramInput) mieInstagramInput.value = extractCleanInstagramUrl(prod.instagramUrl);
 
-          if (mieSpecsContainer) {
-            const specsArray = Array.isArray(prod.specs) ? prod.specs : [];
-            const rows = [];
-            for (let i = 0; i < 6; i++) {
-              const item = specsArray[i] || { label: DEFAULT_SPEC_LABELS[i] || `პარამეტრი ${i + 1}`, value: '' };
-              rows.push(`
-                <div class="grid grid-cols-5 gap-1.5 bg-white p-1.5 rounded-xl border border-zinc-200/90">
-                  <input
-                    type="text"
-                    data-mie-spec-label="${i}"
-                    value="${(item.label || '').replace(/"/g, '&quot;')}"
-                    placeholder="მახასიათებელი ${i + 1}"
-                    class="col-span-2 min-h-[36px] px-2 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-semibold text-zinc-800"
-                  />
-                  <input
-                    type="text"
-                    data-mie-spec-value="${i}"
-                    value="${(item.value || '').replace(/"/g, '&quot;')}"
-                    placeholder="მნიშვნელობა"
-                    class="col-span-3 min-h-[36px] px-2 py-1 rounded-lg border border-zinc-300 bg-white text-xs font-bold text-zinc-900 font-mono-num"
-                  />
-                </div>
-              `);
-            }
-            mieSpecsContainer.innerHTML = rows.join('');
-          }
-
+          syncMieFieldActiveClosedUI(prod);
+          renderMieSpecsRows(prod);
           renderMieFiveSlots(prod);
         }
 
         function refreshOpenProductModalView(prod) {
           if (!prod || !activeModalProduct || prod.id !== activeModalProduct.id) return;
+          ensureFiveImagesArray(prod);
+          const cf = prod.closedFields || {};
           const product = getLocalizedProduct(prod, currentLang);
           const savings = Math.max(0, Number(prod.oldPrice) - Number(prod.newPrice));
-          const warrantyLabel = currentLang === 'en'
-            ? `${product.categoryLabel} • Code: ${prod.sku} • Official 24-Month Warranty`
-            : currentLang === 'ru'
-            ? `${product.categoryLabel} • Код: ${prod.sku} • Официальная гарантия 24 месяца`
-            : `${product.categoryLabel} • კოდი: ${prod.sku} • ოფიციალური გარანტია 24 თვე`;
-          if (modalCategoryMeta) modalCategoryMeta.textContent = warrantyLabel;
-          if (modalSkuCaption) modalSkuCaption.textContent = `${product.shortMeta}`;
-          if (modalProductTitle) modalProductTitle.textContent = product.name;
+
+          const metaParts = [];
+          if (!cf.category && product.categoryLabel) {
+            metaParts.push(product.categoryLabel);
+          }
+          if (!cf.sku && prod.sku && String(prod.sku).trim()) {
+            const codeWord = currentLang === 'en' ? 'Code' : currentLang === 'ru' ? 'Код' : 'კოდი';
+            metaParts.push(`${codeWord}: ${prod.sku}`);
+          }
+          if (modalCategoryMeta) {
+            if (metaParts.length > 0) {
+              modalCategoryMeta.textContent = metaParts.join(' • ');
+              modalCategoryMeta.classList.remove('hidden');
+            } else {
+              modalCategoryMeta.textContent = '';
+              modalCategoryMeta.classList.add('hidden');
+            }
+          }
+
+          if (modalSkuCaption) {
+            const showMeta = !cf.shortMeta && Boolean(product.shortMeta && String(product.shortMeta).trim());
+            modalSkuCaption.textContent = showMeta ? `${product.shortMeta}` : '';
+            modalSkuCaption.classList.toggle('hidden', !showMeta);
+          }
+
+          if (modalProductTitle) {
+            const showTitle = !cf.name && Boolean(product.name && String(product.name).trim());
+            modalProductTitle.textContent = showTitle ? product.name : '';
+            modalProductTitle.classList.toggle('hidden', !showTitle);
+          }
+
+          const newPriceWrap = document.getElementById('modal-new-price-wrap');
+          const oldAndDiscWrap = document.getElementById('modal-old-and-discount-wrap');
+          const showNewPrice = !cf.newPrice && Number(prod.newPrice) > 0;
+          const showOldPrice = !cf.oldPrice && Number(prod.oldPrice) > 0 && Number(prod.oldPrice) > Number(prod.newPrice);
+          if (newPriceWrap) newPriceWrap.classList.toggle('hidden', !showNewPrice);
+          if (oldAndDiscWrap) oldAndDiscWrap.classList.toggle('hidden', !showOldPrice);
           if (modalNewPrice) modalNewPrice.textContent = formatGel(prod.newPrice);
           if (modalOldPrice) modalOldPrice.textContent = formatGel(prod.oldPrice);
           if (modalSavings) modalSavings.textContent = `-${formatGel(savings)}`;
-          if (modalProductDesc) modalProductDesc.textContent = product.description;
+
+          const descSecEl = document.getElementById('modal-sec-specs');
+          const showDesc = !cf.description && Boolean(product.description && String(product.description).trim());
+          if (modalProductDesc) modalProductDesc.textContent = showDesc ? product.description : '';
+          if (descSecEl) descSecEl.classList.toggle('hidden', !showDesc);
 
           const specsArr = Array.isArray(product.specs) ? product.specs : [];
+          const visibleSpecs = specsArr.filter((s, idx) => {
+            if (!s || cf[`spec_${idx}`]) return false;
+            const val = String(s.value || '').trim();
+            return Boolean(val && val !== '—' && val !== '-');
+          });
+          const techSpecsSecEl = document.getElementById('modal-sec-tech-specs');
+          if (techSpecsSecEl) {
+            techSpecsSecEl.classList.toggle('hidden', visibleSpecs.length === 0);
+          }
           if (modalSpecsGrid) {
-            modalSpecsGrid.innerHTML = specsArr
-              .filter((s) => s && (s.label || s.value))
+            modalSpecsGrid.innerHTML = visibleSpecs
               .map(
                 (spec) => `
                 <div class="px-2.5 py-1.5 rounded-lg bg-stone-50 border border-zinc-200/80 min-w-0">
@@ -9314,43 +9433,66 @@
           if (!activeModalProduct) return;
           const prod = activeModalProduct;
           ensureFiveImagesArray(prod);
+          const cf = prod.closedFields || {};
 
-          const nameVal = mieNameInput ? mieNameInput.value.trim() : prod.name;
-          const catValue = mieCategorySelect ? mieCategorySelect.value || 'karaoke' : prod.category;
-          prod.name = nameVal || prod.name || 'ახალი პროდუქტი';
-          prod.newPrice = mieNewPriceInput ? Number(mieNewPriceInput.value) || 0 : prod.newPrice;
-          prod.oldPrice = mieOldPriceInput ? Number(mieOldPriceInput.value) || 0 : prod.oldPrice;
-          prod.shortMeta = mieShortMetaInput ? mieShortMetaInput.value.trim() || 'ოფიციალური გარანტია 24 თვე' : prod.shortMeta;
-          prod.category = catValue;
-          prod.categoryLabel = CATEGORY_LABELS[catValue] || prod.categoryLabel || 'პროდუქტი';
-          prod.badgeText = mieBadgeInput ? mieBadgeInput.value.trim() || 'აქცია' : prod.badgeText;
-          prod.sku = mieSkuInput ? mieSkuInput.value.trim() || 'VV-PRO' : prod.sku;
-          prod.description = mieDescInput ? mieDescInput.value.trim() || prod.name : prod.description;
+          if (!cf.name && mieNameInput) {
+            prod.name = mieNameInput.value.trim();
+          }
+          if (!cf.newPrice && mieNewPriceInput) {
+            prod.newPrice = Number(mieNewPriceInput.value) || 0;
+          }
+          if (!cf.oldPrice && mieOldPriceInput) {
+            prod.oldPrice = Number(mieOldPriceInput.value) || 0;
+          }
+          if (!cf.shortMeta && mieShortMetaInput) {
+            prod.shortMeta = mieShortMetaInput.value.trim();
+          }
+          if (!cf.category && mieCategorySelect) {
+            const catValue = mieCategorySelect.value || 'karaoke';
+            prod.category = catValue;
+            prod.categoryLabel = CATEGORY_LABELS[catValue] || prod.categoryLabel || 'პროდუქტი';
+          }
+          if (!cf.badge && mieBadgeInput) {
+            prod.badgeText = mieBadgeInput.value.trim();
+          }
+          if (!cf.sku && mieSkuInput) {
+            prod.sku = mieSkuInput.value.trim();
+          }
+          if (!cf.description && mieDescInput) {
+            prod.description = mieDescInput.value.trim();
+          }
 
           if (mieSpecsContainer) {
+            const prevSpecs = Array.isArray(prod.specs) ? prod.specs : [];
             const specsCollected = [];
             for (let i = 0; i < 6; i++) {
+              if (cf[`spec_${i}`]) {
+                specsCollected.push({
+                  label: (prevSpecs[i] && prevSpecs[i].label) || DEFAULT_SPEC_LABELS[i] || `პარამეტრი ${i + 1}`,
+                  value: ''
+                });
+                continue;
+              }
               const lblEl = mieSpecsContainer.querySelector(`[data-mie-spec-label="${i}"]`);
               const valEl = mieSpecsContainer.querySelector(`[data-mie-spec-value="${i}"]`);
-              const label = lblEl ? lblEl.value.trim() : '';
-              const value = valEl ? valEl.value.trim() : '';
-              if (label || value) {
-                specsCollected.push({ label: label || `პარამეტრი ${i + 1}`, value: value || '—' });
-              }
+              const label = lblEl ? lblEl.value.trim() : ((prevSpecs[i] && prevSpecs[i].label) || DEFAULT_SPEC_LABELS[i] || `პარამეტრი ${i + 1}`);
+              const rawVal = valEl ? valEl.value.trim() : '';
+              const value = rawVal === '—' || rawVal === '-' ? '' : rawVal;
+              specsCollected.push({ label, value });
             }
             prod.specs = specsCollected;
           }
 
-          if (mieYoutubeInput) {
-            prod.youtubeId = mieYoutubeInput.value.trim() ? extractYoutubeId(mieYoutubeInput.value.trim()) : 'M7lc1UVf-VE';
+          if (mieYoutubeInput && !cf.youtube) {
+            prod.youtubeId = mieYoutubeInput.value.trim() ? extractYoutubeId(mieYoutubeInput.value.trim()) : '';
           }
-          if (mieTiktokInput) {
+          if (mieTiktokInput && !cf.tiktok) {
             prod.tiktokUrl = extractCleanTiktokUrl(mieTiktokInput.value);
           }
-          if (mieFacebookInput) {
+          if (mieFacebookInput && !cf.facebook) {
             prod.facebookUrl = extractCleanFacebookUrl(mieFacebookInput.value);
           }
-          if (mieInstagramInput) {
+          if (mieInstagramInput && !cf.instagram) {
             prod.instagramUrl = extractCleanInstagramUrl(mieInstagramInput.value);
           }
 
@@ -9470,6 +9612,144 @@
 
         if (modalInlineEditorPanel) {
           modalInlineEditorPanel.addEventListener('click', (e) => {
+            if (!activeModalProduct) return;
+            ensureFiveImagesArray(activeModalProduct);
+            const cf = activeModalProduct.closedFields;
+
+            // 1. Close / Cancel any individual field or box (photo_0..4, name, newPrice, oldPrice, shortMeta, category, badge, sku, description, spec_0..5, tiktok, facebook, youtube, instagram)
+            const closeFieldBtn = e.target.closest('[data-mie-close-field]');
+            if (closeFieldBtn) {
+              e.preventDefault();
+              e.stopPropagation();
+              const fieldKey = closeFieldBtn.getAttribute('data-mie-close-field');
+              if (!fieldKey) return;
+              // Save any current edits in other fields first
+              applyInlineProductEditorChanges();
+              cf[fieldKey] = true;
+
+              if (fieldKey === 'oldPrice') {
+                activeModalProduct.oldPrice = 0;
+                if (mieOldPriceInput) mieOldPriceInput.value = '';
+              } else if (fieldKey === 'newPrice') {
+                activeModalProduct.newPrice = 0;
+                if (mieNewPriceInput) mieNewPriceInput.value = '';
+              } else if (fieldKey === 'shortMeta') {
+                activeModalProduct.shortMeta = '';
+                if (mieShortMetaInput) mieShortMetaInput.value = '';
+              } else if (fieldKey === 'badge') {
+                activeModalProduct.badgeText = '';
+                if (mieBadgeInput) mieBadgeInput.value = '';
+              } else if (fieldKey === 'sku') {
+                activeModalProduct.sku = '';
+                if (mieSkuInput) mieSkuInput.value = '';
+              } else if (fieldKey === 'description') {
+                activeModalProduct.description = '';
+                if (mieDescInput) mieDescInput.value = '';
+              } else if (fieldKey === 'tiktok') {
+                activeModalProduct.tiktokUrl = '';
+                if (mieTiktokInput) mieTiktokInput.value = '';
+              } else if (fieldKey === 'facebook') {
+                activeModalProduct.facebookUrl = '';
+                if (mieFacebookInput) mieFacebookInput.value = '';
+              } else if (fieldKey === 'youtube') {
+                activeModalProduct.youtubeId = '';
+                if (mieYoutubeInput) mieYoutubeInput.value = '';
+              } else if (fieldKey === 'instagram') {
+                activeModalProduct.instagramUrl = '';
+                if (mieInstagramInput) mieInstagramInput.value = '';
+              } else if (fieldKey.startsWith('spec_')) {
+                const sIdx = Number(fieldKey.split('_')[1]);
+                if (Array.isArray(activeModalProduct.specs) && activeModalProduct.specs[sIdx]) {
+                  activeModalProduct.specs[sIdx].value = '';
+                }
+              }
+
+              populateInlineProductEditor(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              saveStateEverywhere({ immediate: true });
+              showWishlistToast('🗑️ უჯრა დაიხურა და მოიხსნა გვერდიდან!');
+              return;
+            }
+
+            // 2. Re-open / Enable a previously closed field or box
+            const openFieldBtn = e.target.closest('[data-mie-open-field]');
+            if (openFieldBtn) {
+              e.preventDefault();
+              e.stopPropagation();
+              const fieldKey = openFieldBtn.getAttribute('data-mie-open-field');
+              if (!fieldKey) return;
+              applyInlineProductEditorChanges();
+              delete cf[fieldKey];
+              populateInlineProductEditor(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              saveStateEverywhere({ immediate: true });
+              showWishlistToast('✅ უჯრა კვლავ ჩაირთო!');
+              return;
+            }
+
+            // 3. Bulk close all empty/unused boxes at once
+            const closeEmptySpecsBtn = e.target.closest('#mie-close-empty-specs-btn');
+            if (closeEmptySpecsBtn) {
+              e.preventDefault();
+              e.stopPropagation();
+              applyInlineProductEditorChanges();
+              let closedCount = 0;
+              const specsArr = Array.isArray(activeModalProduct.specs) ? activeModalProduct.specs : [];
+              for (let i = 0; i < 6; i++) {
+                const val = specsArr[i] && specsArr[i].value ? String(specsArr[i].value).trim() : '';
+                if (!val || val === '—' || val === '-') {
+                  if (!cf[`spec_${i}`]) {
+                    cf[`spec_${i}`] = true;
+                    closedCount++;
+                  }
+                }
+              }
+              if (!extractCleanTiktokUrl(activeModalProduct.tiktokUrl) && !cf.tiktok) {
+                cf.tiktok = true;
+                closedCount++;
+              }
+              if (!extractCleanFacebookUrl(activeModalProduct.facebookUrl) && !cf.facebook) {
+                cf.facebook = true;
+                closedCount++;
+              }
+              if (!extractYoutubeId(activeModalProduct.youtubeId) && !cf.youtube) {
+                cf.youtube = true;
+                closedCount++;
+              }
+              if (!extractCleanInstagramUrl(activeModalProduct.instagramUrl) && !cf.instagram) {
+                cf.instagram = true;
+                closedCount++;
+              }
+              populateInlineProductEditor(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              saveStateEverywhere({ immediate: true });
+              showWishlistToast(
+                closedCount > 0
+                  ? `🗑️ ${closedCount} ცარიელი უჯრა დაიხურა!`
+                  : 'ყველა ცარიელი უჯრა უკვე დახურულია!'
+              );
+              return;
+            }
+
+            // 4. Bulk re-open all closed boxes at once
+            const openAllSpecsBtn = e.target.closest('#mie-open-all-specs-btn');
+            if (openAllSpecsBtn) {
+              e.preventDefault();
+              e.stopPropagation();
+              applyInlineProductEditorChanges();
+              activeModalProduct.closedFields = {};
+              populateInlineProductEditor(activeModalProduct);
+              refreshOpenProductModalView(activeModalProduct);
+              updateSingleProductCardInPlace(activeModalProduct);
+              saveStateEverywhere({ immediate: true });
+              showWishlistToast('✅ ყველა უჯრა გაიხსნა!');
+              return;
+            }
+
+            // 5. Legacy clear video input button support
             const clearVideoBtn = e.target.closest('[data-clear-video-input]');
             if (clearVideoBtn) {
               const targetId = clearVideoBtn.getAttribute('data-clear-video-input');
@@ -9510,7 +9790,13 @@
             );
             mieMultiPhotoInput.value = '';
             if (count > 0) {
-              activeModalImageIdx = startSlot;
+              for (let k = 0; k < count; k++) {
+                const slotIdx = (startSlot + k) % 5;
+                if (activeModalProduct.closedFields) {
+                  delete activeModalProduct.closedFields[`photo_${slotIdx}`];
+                }
+              }
+              activeModalImageIdx = 0;
               renderMieFiveSlots(activeModalProduct);
               refreshOpenProductModalView(activeModalProduct);
               updateSingleProductCardInPlace(activeModalProduct);
@@ -9556,7 +9842,10 @@
             );
             fileInput.value = '';
             if (count > 0) {
-              activeModalImageIdx = startAt;
+              if (activeModalProduct.closedFields) {
+                delete activeModalProduct.closedFields[`photo_${slotIdx}`];
+              }
+              activeModalImageIdx = 0;
               renderMieFiveSlots(activeModalProduct);
               refreshOpenProductModalView(activeModalProduct);
               updateSingleProductCardInPlace(activeModalProduct);
@@ -10730,6 +11019,24 @@
         const videoReviewsGrid = document.getElementById('video-reviews-grid');
 
         function setVideoTab(mode) {
+          const cf = (activeModalProduct && activeModalProduct.closedFields) || {};
+          const ytId = activeModalProduct ? extractYoutubeId(activeModalProduct.youtubeId) : '';
+          const allowTt = !cf.tiktok;
+          const allowFb = !cf.facebook;
+          const allowYt = !cf.youtube && Boolean(ytId);
+          const allowIg = !cf.instagram;
+
+          const modalSecVideo = document.getElementById('modal-sec-video');
+          const visibleCount = [allowTt, allowFb, allowYt, allowIg].filter(Boolean).length;
+          if (modalSecVideo) {
+            modalSecVideo.classList.toggle('hidden', visibleCount === 0);
+          }
+
+          if (videoTabTiktok) videoTabTiktok.classList.toggle('hidden', !allowTt);
+          if (videoTabFacebook) videoTabFacebook.classList.toggle('hidden', !allowFb);
+          if (videoTabYoutube) videoTabYoutube.classList.toggle('hidden', !allowYt);
+          if (videoTabInstagram) videoTabInstagram.classList.toggle('hidden', !allowIg);
+
           [videoTabBoth, videoTabTiktok, videoTabFacebook, videoTabYoutube, videoTabInstagram].forEach((btn) => {
             if (!btn) return;
             btn.classList.remove('theme-bg');
@@ -10741,12 +11048,20 @@
               videoTabBoth.classList.add('theme-bg');
               videoTabBoth.classList.remove('text-zinc-600');
             }
-            if (tiktokCard) tiktokCard.classList.remove('hidden');
-            if (facebookCard) facebookCard.classList.remove('hidden');
-            if (youtubeCard) youtubeCard.classList.remove('hidden');
-            if (instagramCard) instagramCard.classList.remove('hidden');
-            videoReviewsGrid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5';
-          } else if (mode === 'tiktok') {
+            if (tiktokCard) tiktokCard.classList.toggle('hidden', !allowTt);
+            if (facebookCard) facebookCard.classList.toggle('hidden', !allowFb);
+            if (youtubeCard) youtubeCard.classList.toggle('hidden', !allowYt);
+            if (instagramCard) instagramCard.classList.toggle('hidden', !allowIg);
+            const colsClass =
+              visibleCount === 1
+                ? 'grid grid-cols-1 max-w-md mx-auto gap-2.5'
+                : visibleCount === 2
+                ? 'grid grid-cols-1 sm:grid-cols-2 max-w-2xl mx-auto gap-2.5'
+                : visibleCount === 3
+                ? 'grid grid-cols-1 sm:grid-cols-3 gap-2.5'
+                : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5';
+            videoReviewsGrid.className = colsClass;
+          } else if (mode === 'tiktok' && allowTt) {
             if (videoTabTiktok) {
               videoTabTiktok.classList.add('theme-bg');
               videoTabTiktok.classList.remove('text-zinc-600');
@@ -10756,7 +11071,7 @@
             if (youtubeCard) youtubeCard.classList.add('hidden');
             if (instagramCard) instagramCard.classList.add('hidden');
             videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
-          } else if (mode === 'facebook') {
+          } else if (mode === 'facebook' && allowFb) {
             if (videoTabFacebook) {
               videoTabFacebook.classList.add('theme-bg');
               videoTabFacebook.classList.remove('text-zinc-600');
@@ -10766,7 +11081,7 @@
             if (youtubeCard) youtubeCard.classList.add('hidden');
             if (instagramCard) instagramCard.classList.add('hidden');
             videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
-          } else if (mode === 'youtube') {
+          } else if (mode === 'youtube' && allowYt) {
             if (videoTabYoutube) {
               videoTabYoutube.classList.add('theme-bg');
               videoTabYoutube.classList.remove('text-zinc-600');
@@ -10776,7 +11091,7 @@
             if (youtubeCard) youtubeCard.classList.remove('hidden');
             if (instagramCard) instagramCard.classList.add('hidden');
             videoReviewsGrid.className = 'grid grid-cols-1 max-w-md mx-auto gap-2.5';
-          } else if (mode === 'instagram') {
+          } else if (mode === 'instagram' && allowIg) {
             if (videoTabInstagram) {
               videoTabInstagram.classList.add('theme-bg');
               videoTabInstagram.classList.remove('text-zinc-600');
@@ -10965,43 +11280,11 @@
           } catch (e) {}
         }
 
-        // Reinforce history entry on first user gesture if a product page was restored on reload
-        // (prevents Mobile Chrome History Manipulation Intervention from skipping the Home entry)
-        function reinforceHistoryOnUserGesture() {
-          if (!needsGestureHistoryReinforce) return;
-          needsGestureHistoryReinforce = false;
-          if (modalBackdrop && !modalBackdrop.classList.contains('hidden') && activeModalProduct) {
-            try {
-              const homeUrl = new URL(window.location.href);
-              homeUrl.searchParams.delete('product');
-              const prodUrl = new URL(window.location.href);
-              prodUrl.searchParams.set('product', activeModalProduct.id);
-              window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
-              window.history.pushState({ view: 'product', productId: activeModalProduct.id }, '', prodUrl.toString());
-              hasPushedProductHistoryEntry = true;
-            } catch (e) {}
-          }
-        }
-        window.addEventListener('pointerdown', reinforceHistoryOnUserGesture, { passive: true });
-        window.addEventListener('touchstart', reinforceHistoryOnUserGesture, { passive: true });
-        window.addEventListener('keydown', reinforceHistoryOnUserGesture, { passive: true });
-
         // Handle Phone Hardware Back Button & Desktop Browser Back/Forward Button (popstate)
         window.addEventListener('popstate', (e) => {
           // 1. If Lightbox fullscreen photo is open, close Lightbox first and stay on Product Page
           if (lightboxModalBackdrop && !lightboxModalBackdrop.classList.contains('hidden')) {
-            closeLightbox();
-            if (activeModalProduct) {
-              try {
-                const homeUrl = new URL(window.location.href);
-                homeUrl.searchParams.delete('product');
-                const prodUrl = new URL(window.location.href);
-                prodUrl.searchParams.set('product', activeModalProduct.id);
-                window.history.replaceState({ view: 'home' }, '', homeUrl.toString());
-                window.history.pushState({ view: 'product', productId: activeModalProduct.id }, '', prodUrl.toString());
-                hasPushedProductHistoryEntry = true;
-              } catch (err) {}
-            }
+            closeLightbox({ fromPopState: true });
             return;
           }
 
@@ -11034,9 +11317,9 @@
             return;
           }
 
-          // 4. If Product Page (#product-modal-backdrop) is open, close it and return to Main Catalog
+          // 4. If Product Page (#product-modal-backdrop) is open, close it in 1 single click and return to Main Catalog
           if (modalBackdrop && !modalBackdrop.classList.contains('hidden')) {
-            closeProductModal();
+            closeProductModal({ fromPopState: true });
             return;
           }
 
