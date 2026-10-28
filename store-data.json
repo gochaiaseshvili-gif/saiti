@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793202604870,
+  "updatedAt": 1793202605490,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -79,7 +79,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე სისტემა",
       "badgeText": "აქცია",
-      "name": "კარაოკ",
+      "name": "კარაოკე",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -120,13 +120,13 @@
       "closedFields": {},
       "youtubeId": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "კარაოკ",
+      "youtubeCaption": "კარაოკე",
       "tiktokUrl": "",
-      "tiktokCaption": "კარაოკ",
+      "tiktokCaption": "კარაოკე",
       "facebookUrl": "",
-      "facebookCaption": "კარაოკ",
+      "facebookCaption": "კარაოკე",
       "instagramUrl": "",
-      "instagramCaption": "კარაოკ"
+      "instagramCaption": "კარაოკე"
     },
     {
       "id": "prod-1793127387296",
