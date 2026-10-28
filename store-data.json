@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793212198377,
+  "updatedAt": 1793212238975,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -39,8 +39,8 @@
     ],
     "serviceCardsOrder": [
       "serv-1",
-      "serv-2",
-      "serv-3"
+      "serv-3",
+      "serv-2"
     ],
     "blockOffsets": {},
     "navCatalog": "კატალოგი",
