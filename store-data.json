@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793200334886,
+  "updatedAt": 1793200334928,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -204,7 +204,7 @@
         },
         {
           "label": "აკუსტიკური დრაივერი",
-          "value": "12\" Subwoofer + Horn"
+          "value": ""
         },
         {
           "label": "მიკროფონები",
@@ -228,7 +228,9 @@
       "youtubeCaption": "VoxMaster 800W ვოკალის და ბასის დეტალური მიმოხილვა",
       "tiktokUrl": "",
       "tiktokCaption": "VoxMaster 800W კარაოკე საღამოს ტესტი",
-      "closedFields": {},
+      "closedFields": {
+        "spec_1": true
+      },
       "facebookUrl": "",
       "instagramUrl": ""
     },
