@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793209322824,
+  "updatedAt": 1793209325011,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -119,7 +119,6 @@
       ],
       "closedFields": {
         "photo_0": true,
-        "photo_1": true,
         "photo_4": true
       },
       "youtubeId": "",
