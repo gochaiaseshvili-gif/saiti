@@ -257,7 +257,7 @@
     </div>
 
     <!-- TOP BAR CONTRACT: Fully responsive across mobile, tablet & desktop with zero horizontal overflow -->
-    <header class="sticky top-0 z-30 min-h-[56px] py-1.5 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-3 sm:px-6 lg:px-8 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-4">
+    <header class="sticky top-0 z-30 min-h-[56px] py-1.5 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-3 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
       <!-- Zone 1: Single text element Brand Wordmark -->
       <a
         href="#catalog"
@@ -267,24 +267,112 @@
         იყიდება საინტერესო ნივთები
       </a>
 
-      <!-- Zone 2: 4 concise single-line navigation links -->
-      <nav class="hidden xl:flex items-center gap-5 text-sm font-medium text-zinc-600" aria-label="მთავარი ნავიგაცია">
-        <a id="nav-link-catalog" href="#catalog" data-nav-cat="all" class="hover:text-zinc-950 hover:underline underline-offset-4 whitespace-nowrap shrink-0 py-1">
-          კატალოგი
-        </a>
-        <a id="nav-link-karaoke" href="#catalog" data-nav-cat="karaoke" class="hover:text-zinc-950 hover:underline underline-offset-4 whitespace-nowrap shrink-0 py-1">
-          კარაოკე სისტემები
-        </a>
-        <a id="nav-link-solar" href="#catalog" data-nav-cat="solar" class="hover:text-zinc-950 hover:underline underline-offset-4 whitespace-nowrap shrink-0 py-1">
-          სოლარ გენერატორები
-        </a>
-        <a id="nav-link-service" href="#service-standards" class="hover:text-zinc-950 hover:underline underline-offset-4 whitespace-nowrap shrink-0 py-1">
-          მიწოდება და გარანტია
-        </a>
-      </nav>
+      <!-- Zone 2: საათის, ამინდის და ინფორმაციის მთლიანი გრაფა (Moved into header in place of deleted nav links) -->
+      <div
+        id="live-info-banner"
+        style="background-color: #1e3a8a; border-color: #1d4ed8;"
+        class="order-3 xl:order-none w-full xl:w-auto xl:flex-1 min-w-0 rounded-xl text-white px-2.5 py-1.5 shadow-sm border flex flex-wrap items-center justify-between gap-1.5 text-xs transition-colors duration-150"
+      >
+        <!-- Left: Store Trust Badges -->
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs font-semibold text-zinc-100">
+          <span class="inline-flex items-center gap-1 text-amber-300 font-bold">🚚 მიწოდება მთელ საქართველოში</span>
+          <span class="inline-flex items-center gap-1">🛡️ 24 თვე გარანტია</span>
+          <span class="inline-flex items-center gap-1 text-emerald-300 font-bold">💳 განვადება / ადგილზე გადახდა</span>
+        </div>
+
+        <!-- Right: Compact Live Date, Clock & Weather -->
+        <div class="flex flex-wrap items-center gap-1.5 ml-auto">
+          <div class="hidden md:flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+            <span>📅</span>
+            <span id="live-weekday" class="font-bold text-amber-300 capitalize">...</span><span>, </span><span id="live-date" class="text-white">...</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+            <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
+            <span id="live-clock" class="font-mono-num font-bold text-white tracking-wider">00:00:00</span>
+          </div>
+
+          <div id="live-weather-widget" class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+            <span id="live-weather-icon" class="text-sm">☀️</span>
+            <span id="live-weather-temp" class="font-mono-num font-bold text-amber-300">--°C</span>
+            <span id="live-weather-city" class="font-semibold text-white">თბილისი</span>
+            <span id="live-weather-desc" class="hidden xl:inline text-white/80"></span>
+            <span id="live-weather-details" class="hidden"></span>
+          </div>
+
+          <div class="hidden sm:flex items-center gap-1">
+            <button
+              type="button"
+              data-city-choice="tbilisi"
+              id="weather-city-btn-tbilisi"
+              class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
+            >
+              თბილისი
+            </button>
+            <button
+              type="button"
+              data-city-choice="batumi"
+              id="weather-city-btn-batumi"
+              class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
+            >
+              ბათუმი
+            </button>
+            <button
+              type="button"
+              data-city-choice="kutaisi"
+              id="weather-city-btn-kutaisi"
+              class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
+            >
+              ქუთაისი
+            </button>
+            <button
+              type="button"
+              id="weather-geo-btn"
+              class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
+              title="ჩემი ლოკაციის ამინდი"
+            >
+              <span>📍</span>
+              <span id="weather-geo-btn-text" class="hidden">ჩემი ქალაქი</span>
+            </button>
+            <button
+              type="button"
+              id="weather-refresh-btn"
+              class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
+              title="ამინდის განახლება"
+            >
+              🔄
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Notice Shown Only When Live Info Banner Is Hidden -->
+      <div
+        id="live-info-banner-hidden-notice"
+        class="owner-only-admin-el hidden order-3 xl:order-none w-full xl:w-auto xl:flex-1 min-w-0 rounded-xl bg-amber-50 border border-dashed border-amber-400 px-3 py-1.5 flex items-center justify-between gap-2 text-xs"
+      >
+        <span class="font-bold text-amber-950">👁️ საათის და ამინდის გრაფა ამჟამად დამალულია კლიენტებისთვის.</span>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            data-lb-toggle-visibility="1"
+            class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold cursor-pointer"
+          >
+            👁️ გრაფის გამოჩენა
+          </button>
+          <button
+            type="button"
+            data-lb-open-manager="1"
+            class="px-3 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-bold cursor-pointer"
+          >
+            ⚙️ მართვა
+          </button>
+        </div>
+      </div>
 
       <!-- Zone 3: Language Switcher Toggle + Click-to-Call Primary Action -->
-      <div class="flex flex-wrap items-center justify-end gap-1.5 sm:gap-2.5 ml-auto">
+      <div class="flex flex-wrap items-center justify-end gap-1.5 sm:gap-2 shrink-0 ml-auto xl:ml-0">
         <!-- Language Switcher Component (ქართული / English / Русский) -->
         <div
           class="inline-flex items-center bg-stone-100 p-0.5 rounded-xl border border-zinc-200/90 text-xs font-bold"
@@ -355,110 +443,6 @@
     <!-- MOBILE-FIRST WORKSPACE, QUICK CONTACT, WEATHER SWITCHER & OWNER CONTROL PANEL TOOLBAR -->
     <section id="top" class="bg-white border-b border-zinc-200/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-2.5">
-        <!-- 1. სულ თავში: საათის, ამინდის და ინფორმაციის მთლიანი გრაფა (Fully Customizable, Movable, Colorable & Deletable Live Date, Clock, Weather & Trust Badges Bar) -->
-        <div
-          id="live-info-banner"
-          style="background-color: #1e3a8a; border-color: #1d4ed8;"
-          class="rounded-xl text-white px-3 py-2 shadow-sm border flex flex-wrap items-center justify-between gap-2 text-xs transition-colors duration-150"
-        >
-          <!-- Left: Store Trust Badges -->
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs font-semibold text-zinc-100">
-            <span class="inline-flex items-center gap-1 text-amber-300 font-bold">🚚 მიწოდება მთელ საქართველოში</span>
-            <span class="inline-flex items-center gap-1">🛡️ 24 თვე გარანტია</span>
-            <span class="inline-flex items-center gap-1 text-emerald-300 font-bold">💳 განვადება / ადგილზე გადახდა</span>
-          </div>
-
-          <!-- Right: Compact Live Date, Clock & Weather -->
-          <div class="flex flex-wrap items-center gap-2 ml-auto">
-            <div class="hidden md:flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
-              <span>📅</span>
-              <span id="live-weekday" class="font-bold text-amber-300 capitalize">...</span><span>, </span><span id="live-date" class="text-white">...</span>
-            </div>
-
-            <div class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
-              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
-              <span id="live-clock" class="font-mono-num font-bold text-white tracking-wider">00:00:00</span>
-            </div>
-
-            <div id="live-weather-widget" class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
-              <span id="live-weather-icon" class="text-sm">☀️</span>
-              <span id="live-weather-temp" class="font-mono-num font-bold text-amber-300">--°C</span>
-              <span id="live-weather-city" class="font-semibold text-white">თბილისი</span>
-              <span id="live-weather-desc" class="hidden xl:inline text-white/80"></span>
-              <span id="live-weather-details" class="hidden"></span>
-            </div>
-
-            <div class="hidden sm:flex items-center gap-1">
-              <button
-                type="button"
-                data-city-choice="tbilisi"
-                id="weather-city-btn-tbilisi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
-              >
-                თბილისი
-              </button>
-              <button
-                type="button"
-                data-city-choice="batumi"
-                id="weather-city-btn-batumi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
-              >
-                ბათუმი
-              </button>
-              <button
-                type="button"
-                data-city-choice="kutaisi"
-                id="weather-city-btn-kutaisi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
-              >
-                ქუთაისი
-              </button>
-              <button
-                type="button"
-                id="weather-geo-btn"
-                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
-                title="ჩემი ლოკაციის ამინდი"
-              >
-                <span>📍</span>
-                <span id="weather-geo-btn-text" class="hidden">ჩემი ქალაქი</span>
-              </button>
-              <button
-                type="button"
-                id="weather-refresh-btn"
-                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
-                title="ამინდის განახლება"
-              >
-                🔄
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Admin Notice Shown Only When Live Info Banner Is Hidden -->
-        <div
-          id="live-info-banner-hidden-notice"
-          class="owner-only-admin-el hidden rounded-xl bg-amber-50 border border-dashed border-amber-400 px-3 py-2 flex items-center justify-between gap-2 text-xs"
-        >
-          <span class="font-bold text-amber-950">👁️ საათის და ამინდის გრაფა ამჟამად დამალულია კლიენტებისთვის.</span>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              data-lb-toggle-visibility="1"
-              class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold cursor-pointer"
-            >
-              👁️ გრაფის გამოჩენა
-            </button>
-            <button
-              type="button"
-              data-lb-open-manager="1"
-              class="px-3 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-bold cursor-pointer"
-            >
-              ⚙️ მართვა
-            </button>
-          </div>
-        </div>
-
         <!-- On-Page Admin Live Info Banner (Clock, Weather & Announcements Bar) Manager Panel -->
         <div
           id="inline-live-banner-manager-panel"
