@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793295230555,
+  "updatedAt": 1793295312857,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -22,6 +22,59 @@
     "priceTextColor": "#059669",
     "titleTextColor": "#09090b",
     "cardFrameStyle": "gold-glow",
+    "homeBlocksOrder": [
+      "fb-banner",
+      "catalog-header",
+      "product-grid",
+      "service-standards"
+    ],
+    "modalBlocksOrder": [
+      "modal-pricing",
+      "modal-tech-specs",
+      "modal-gallery",
+      "modal-specs",
+      "modal-video",
+      "modal-chat",
+      "modal-order"
+    ],
+    "serviceCardsOrder": [
+      "serv-1",
+      "serv-3",
+      "serv-2"
+    ],
+    "blockOffsets": {
+      "serv-2": {
+        "x": 0,
+        "y": 0
+      }
+    },
+    "navCatalog": "კატალოგი",
+    "navKaraoke": "კარაოკე სისტემები",
+    "navSolar": "სოლარ გენერატორები",
+    "navService": "მიწოდება და გარანტია",
+    "catAll": "ყველა პროდუქტი",
+    "catKaraoke": "კარაოკე დინამიკები",
+    "catSolar": "სოლარ გენერატორები",
+    "catBundle": "სათამაშოები",
+    "catalogTitle": "კარაოკე დინამიკები და სოლარ გენერატორები",
+    "searchPlaceholder": "ძებნა: კარაოკე, სოლარ გენერატორი, ვატი...",
+    "chatTitle": "მისწერე გამყიდველს პირდაპირ საიტზე",
+    "chatSubtitle": "მოგვწერეთ კითხვა, გამოგვიგზავნეთ ფოტო ან ვიდეო — გოჩა გიპასუხებთ პირდაპირ აქ",
+    "chatEmptyCustomer": "👋 მოგესალმებით! მოგვწერეთ ნებისმიერი კითხვა, აირჩიეთ სმაილი 😊 ან გამოგვიგზავნეთ სურათი/ვიდეო პირდაპირ აქ.",
+    "serv1Tag": "სწრაფი ლოჯისტიკა",
+    "serv1Title": "მიწოდება თბილისსა და რეგიონებში",
+    "serv1Desc": "თბილისში შეკვეთას მოგიტანთ იმავე დღეს (2-4 საათში). საქართველოს ნებისმიერ ქალაქსა და სოფელში 24-48 საათში.",
+    "serv2Tag": "მოქნილი გადახდა",
+    "serv2Title": "განვადება და ადგილზე გადახდა",
+    "serv2Desc": "საქართველოს ბანკის, TBC-ის და კრედო ბანკის ონლაინ განვადება 3-დან 24 თვემდე, ან კურიერთან ბარათით/ნაღდი ანგარიშსწორებით.",
+    "serv3Tag": "სერვის ცენტრი",
+    "serv3Title": "12-თვიანი ოფიციალური გარანტია",
+    "serv3Desc": "ყველა  ჩვენი ნივთი  გადის სრულ ტესტირებას გაგზავნამდე და მოყვება ოფიციალური საგარანტიო.",
+    "footerTagline": "ვყიდით საინტერესო  ნივთებს ოფიციალური გარანტიით.",
+    "heroDiscount": "სეზონური აქცია -30%-მდე",
+    "heroWarranty": "ოფიციალური გარანტია 12 თვე",
+    "heroTitle": "პროფესიონალური კარაოკე აკუსტიკა და პორტატული სოლარ გენერატორები",
+    "heroSubtitle": "მძლავრი ავტონომიური ჟღერადობა ღონისძიებებისთვის, აგარაკისა და კომერციული სივრცეებისთვის — LiFePO4 მზის სადგურებთან ერთად უწყვეტი 220V ენერგიისთვის ნებისმიერ გარემოში.",
     "liveBannerBgColor": "#f8f1f4",
     "liveBannerHidden": false,
     "liveBannerCustomized": true,
@@ -104,40 +157,6 @@
         "align": "right"
       }
     ],
-    "homeBlocksOrder": [
-      "fb-banner",
-      "catalog-header",
-      "product-grid",
-      "service-standards"
-    ],
-    "modalBlocksOrder": [
-      "modal-pricing",
-      "modal-tech-specs",
-      "modal-gallery",
-      "modal-specs",
-      "modal-video",
-      "modal-chat",
-      "modal-order"
-    ],
-    "serviceCardsOrder": [
-      "serv-1",
-      "serv-3",
-      "serv-2"
-    ],
-    "blockOffsets": {
-      "serv-2": {
-        "x": 0,
-        "y": 0
-      }
-    },
-    "navCatalog": "კატალოგი",
-    "navKaraoke": "კარაოკე სისტემები",
-    "navSolar": "სოლარ გენერატორები",
-    "navService": "მიწოდება და გარანტია",
-    "catAll": "ყველა პროდუქტი",
-    "catKaraoke": "კარაოკე დინამიკები",
-    "catSolar": "სოლარ გენერატორები",
-    "catBundle": "სათამაშოები",
     "customCategories": [
       {
         "id": "karaoke",
@@ -178,28 +197,64 @@
     ],
     "microphoneDefaultAdded": true,
     "deletedCategoryIds": [],
-    "catalogTitle": "კარაოკე დინამიკები და სოლარ გენერატორები",
-    "searchPlaceholder": "ძებნა: კარაოკე, სოლარ გენერატორი, ვატი...",
-    "chatTitle": "მისწერე გამყიდველს პირდაპირ საიტზე",
-    "chatSubtitle": "მოგვწერეთ კითხვა, გამოგვიგზავნეთ ფოტო ან ვიდეო — გოჩა გიპასუხებთ პირდაპირ აქ",
-    "chatEmptyCustomer": "👋 მოგესალმებით! მოგვწერეთ ნებისმიერი კითხვა, აირჩიეთ სმაილი 😊 ან გამოგვიგზავნეთ სურათი/ვიდეო პირდაპირ აქ.",
-    "serv1Tag": "სწრაფი ლოჯისტიკა",
-    "serv1Title": "მიწოდება თბილისსა და რეგიონებში",
-    "serv1Desc": "თბილისში შეკვეთას მოგიტანთ იმავე დღეს (2-4 საათში). საქართველოს ნებისმიერ ქალაქსა და სოფელში 24-48 საათში.",
-    "serv2Tag": "მოქნილი გადახდა",
-    "serv2Title": "განვადება და ადგილზე გადახდა",
-    "serv2Desc": "საქართველოს ბანკის, TBC-ის და კრედო ბანკის ონლაინ განვადება 3-დან 24 თვემდე, ან კურიერთან ბარათით/ნაღდი ანგარიშსწორებით.",
-    "serv3Tag": "სერვის ცენტრი",
-    "serv3Title": "12-თვიანი ოფიციალური გარანტია",
-    "serv3Desc": "ყველა  ჩვენი ნივთი  გადის სრულ ტესტირებას გაგზავნამდე და მოყვება ოფიციალური საგარანტიო.",
-    "footerTagline": "ვყიდით საინტერესო  ნივთებს ოფიციალური გარანტიით.",
-    "heroDiscount": "სეზონური აქცია -30%-მდე",
-    "heroWarranty": "ოფიციალური გარანტია 12 თვე",
-    "heroTitle": "პროფესიონალური კარაოკე აკუსტიკა და პორტატული სოლარ გენერატორები",
-    "heroSubtitle": "მძლავრი ავტონომიური ჟღერადობა ღონისძიებებისთვის, აგარაკისა და კომერციული სივრცეებისთვის — LiFePO4 მზის სადგურებთან ერთად უწყვეტი 220V ენერგიისთვის ნებისმიერ გარემოში.",
     "_techSpecsOnlyAboveGalleryV1": true
   },
   "productsList": [
+    {
+      "id": "prod-1793295312743",
+      "sku": "PRO-1000",
+      "category": "karaoke",
+      "categoryLabel": "კარაოკე სისტემა",
+      "badgeText": "აქცია",
+      "name": "ახალი პროდუქტი",
+      "shortMeta": "",
+      "oldPrice": 0,
+      "newPrice": 0,
+      "images": [
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793295303705_5chv.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793295305948_jrht.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793295308183_i701.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793295310490_r9up.jpg",
+        ""
+      ],
+      "description": "",
+      "specs": [
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": ""
+        },
+        {
+          "label": "ელემენტი / ტევადობა",
+          "value": ""
+        },
+        {
+          "label": "კომპლექტაცია",
+          "value": ""
+        },
+        {
+          "label": "ავტონომიური მუშაობა",
+          "value": ""
+        },
+        {
+          "label": "პორტები და კავშირი",
+          "value": ""
+        },
+        {
+          "label": "წონა და გარანტია",
+          "value": ""
+        }
+      ],
+      "closedFields": {},
+      "youtubeId": "",
+      "youtubeDuration": "08:45",
+      "youtubeCaption": "ახალი პროდუქტი",
+      "tiktokUrl": "",
+      "tiktokCaption": "ახალი პროდუქტი",
+      "facebookUrl": "",
+      "facebookCaption": "ახალი პროდუქტი",
+      "instagramUrl": "",
+      "instagramCaption": "ახალი პროდუქტი"
+    },
     {
       "id": "prod-1793276344129",
       "sku": "PRO-1000",
@@ -3335,6 +3390,13 @@
     }
   ],
   "imagesMap": {
+    "prod-1793295312743": [
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793295303705_5chv.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793295305948_jrht.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793295308183_i701.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793295310490_r9up.jpg",
+      ""
+    ],
     "prod-1793276344129": [
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793276333139_7vqn.jpg",
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793276335902_dm0r.jpg",
