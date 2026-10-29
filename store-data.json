@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793294954476,
+  "updatedAt": 1793294994496,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -76,7 +76,7 @@
         "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
         "text": "⏰",
         "textColor": "#ffffff",
-        "bgColor": "#172554",
+        "bgColor": "#e11d48",
         "offsetX": 0,
         "offsetY": 0,
         "align": "right"
