@@ -13887,6 +13887,207 @@
           });
         });
 
+        // Live Info Banner (Clock, Weather & Announcements) Interactive Manager Listeners
+        const inlineLbManagerPanel = document.getElementById('inline-live-banner-manager-panel');
+        const topOpenLbManagerBtn = document.getElementById('top-open-live-banner-manager-btn');
+        const closeInlineLbManagerBtn = document.getElementById('close-inline-live-banner-manager-btn');
+
+        function openInlineLiveBannerManager() {
+          if (!inlineLbManagerPanel) return;
+          inlineLbManagerPanel.classList.remove('hidden');
+          renderLiveInfoBanner();
+          inlineLbManagerPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        if (topOpenLbManagerBtn && inlineLbManagerPanel) {
+          topOpenLbManagerBtn.addEventListener('click', () => {
+            const isHidden = inlineLbManagerPanel.classList.contains('hidden');
+            inlineLbManagerPanel.classList.toggle('hidden', !isHidden);
+            renderLiveInfoBanner();
+            if (isHidden) {
+              const inp = document.getElementById('inline-lb-new-item-input');
+              if (inp) inp.focus();
+            }
+          });
+        }
+        if (closeInlineLbManagerBtn && inlineLbManagerPanel) {
+          closeInlineLbManagerBtn.addEventListener('click', () => {
+            inlineLbManagerPanel.classList.add('hidden');
+            renderLiveInfoBanner();
+          });
+        }
+
+        document.addEventListener('click', (e) => {
+          const openBtn = e.target.closest('[data-lb-open-manager]');
+          if (openBtn) {
+            if (inlineLbManagerPanel) {
+              const isHidden = inlineLbManagerPanel.classList.contains('hidden');
+              if (isHidden) {
+                openInlineLiveBannerManager();
+              } else {
+                inlineLbManagerPanel.classList.add('hidden');
+                renderLiveInfoBanner();
+              }
+            }
+            return;
+          }
+          const visBtn = e.target.closest('[data-lb-toggle-visibility]');
+          if (visBtn) {
+            toggleLiveBannerVisibility();
+            return;
+          }
+          const resetAllBtn = e.target.closest('[data-lb-reset-all]');
+          if (resetAllBtn) {
+            resetLiveBannerToDefault();
+            return;
+          }
+          const presetBgBtn = e.target.closest('[data-lb-bar-preset]');
+          if (presetBgBtn) {
+            const hex = presetBgBtn.getAttribute('data-lb-bar-preset');
+            if (hex) setLiveBannerBgColor(hex);
+            return;
+          }
+          const restoreWidgetBtn = e.target.closest('[data-lb-restore-widget]');
+          if (restoreWidgetBtn) {
+            const wId = restoreWidgetBtn.getAttribute('data-lb-restore-widget');
+            if (wId) restoreOrAddLiveBannerWidget(wId);
+            return;
+          }
+        });
+
+        document.querySelectorAll('[data-lb-bar-bg-picker]').forEach((pickerEl) => {
+          pickerEl.addEventListener('input', (e) => {
+            setLiveBannerBgColor(e.target.value);
+          });
+        });
+
+        ['inline-lb-new-text-color', 'inline-lb-new-bg-color', 'theme-lb-new-text-color', 'theme-lb-new-bg-color', 'cp-lb-new-text-color', 'cp-lb-new-bg-color'].forEach((cid) => {
+          const el = document.getElementById(cid);
+          if (el) {
+            el.addEventListener('input', () => el.setAttribute('data-touched', 'true'));
+            el.addEventListener('change', () => el.setAttribute('data-touched', 'true'));
+          }
+        });
+
+        const bindNewLbItemControls = (inputId, btnId, txtColorId, bgColorId) => {
+          const inp = document.getElementById(inputId);
+          const btn = document.getElementById(btnId);
+          if (!inp || !btn) return;
+          const handleAdd = () => {
+            const txtEl = txtColorId ? document.getElementById(txtColorId) : null;
+            const bgEl = bgColorId ? document.getElementById(bgColorId) : null;
+            const pickedText = txtEl && txtEl.getAttribute('data-touched') === 'true' ? txtEl.value : '#ffffff';
+            const pickedBg = bgEl && bgEl.getAttribute('data-touched') === 'true' ? bgEl.value : '';
+            const val = inp.value;
+            if (String(val || '').trim()) {
+              addCustomLiveBannerItem(val, { textColor: pickedText, bgColor: pickedBg });
+              inp.value = '';
+              if (txtEl) txtEl.setAttribute('data-touched', 'false');
+              if (bgEl) bgEl.setAttribute('data-touched', 'false');
+            } else {
+              addCustomLiveBannerItem('');
+            }
+          };
+          btn.addEventListener('click', handleAdd);
+          inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAdd();
+            }
+          });
+        };
+
+        bindNewLbItemControls('inline-lb-new-item-input', 'inline-lb-add-item-btn', 'inline-lb-new-text-color', 'inline-lb-new-bg-color');
+        bindNewLbItemControls('theme-lb-new-item-input', 'theme-lb-add-item-btn', 'theme-lb-new-text-color', 'theme-lb-new-bg-color');
+        bindNewLbItemControls('cp-lb-new-item-input', 'cp-lb-add-item-btn', 'cp-lb-new-text-color', 'cp-lb-new-bg-color');
+
+        [
+          document.getElementById('inline-live-banner-items-list'),
+          document.getElementById('theme-live-banner-items-list'),
+          document.getElementById('cp-live-banner-items-list')
+        ].forEach((listEl) => {
+          if (!listEl) return;
+          listEl.addEventListener('input', (e) => {
+            const txtInp = e.target.closest('[data-lb-item-text]');
+            if (txtInp) {
+              updateLiveBannerItemText(txtInp.getAttribute('data-lb-item-text'), txtInp.value);
+              return;
+            }
+            const txtColInp = e.target.closest('[data-lb-item-text-color]');
+            if (txtColInp) {
+              setLiveBannerItemColor(txtColInp.getAttribute('data-lb-item-text-color'), { textColor: txtColInp.value });
+              return;
+            }
+            const bgColInp = e.target.closest('[data-lb-item-bg-color]');
+            if (bgColInp) {
+              setLiveBannerItemColor(bgColInp.getAttribute('data-lb-item-bg-color'), { bgColor: bgColInp.value });
+              return;
+            }
+          });
+          listEl.addEventListener('change', (e) => {
+            if (
+              e.target.closest('[data-lb-item-text-color]') ||
+              e.target.closest('[data-lb-item-bg-color]') ||
+              e.target.closest('[data-lb-item-text]')
+            ) {
+              renderLiveBannerManagerLists();
+            }
+          });
+          listEl.addEventListener('click', (e) => {
+            const moveBtn = e.target.closest('[data-lb-move-order]');
+            if (moveBtn) {
+              const id = moveBtn.getAttribute('data-lb-move-order');
+              const dir = Number(moveBtn.getAttribute('data-lb-dir')) || 0;
+              if (id && dir) moveLiveBannerItemOrder(id, dir);
+              return;
+            }
+            const alignBtn = e.target.closest('[data-lb-align]');
+            if (alignBtn) {
+              const id = alignBtn.getAttribute('data-lb-align');
+              const val = alignBtn.getAttribute('data-lb-align-val');
+              if (id && val) setLiveBannerItemAlign(id, val);
+              return;
+            }
+            const nudgeBtn = e.target.closest('[data-lb-nudge]');
+            if (nudgeBtn) {
+              const id = nudgeBtn.getAttribute('data-lb-nudge');
+              const dx = Number(nudgeBtn.getAttribute('data-dx')) || 0;
+              const dy = Number(nudgeBtn.getAttribute('data-dy')) || 0;
+              if (id) nudgeLiveBannerItemOffset(id, dx, dy, false);
+              return;
+            }
+            const nudgeResetBtn = e.target.closest('[data-lb-nudge-reset]');
+            if (nudgeResetBtn) {
+              nudgeLiveBannerItemOffset(nudgeResetBtn.getAttribute('data-lb-nudge-reset'), 0, 0, true);
+              return;
+            }
+            const quickTxtBtn = e.target.closest('[data-lb-quick-text]');
+            if (quickTxtBtn) {
+              setLiveBannerItemColor(quickTxtBtn.getAttribute('data-lb-quick-text'), {
+                textColor: quickTxtBtn.getAttribute('data-color-hex')
+              });
+              return;
+            }
+            const quickBgBtn = e.target.closest('[data-lb-quick-bg]');
+            if (quickBgBtn) {
+              setLiveBannerItemColor(quickBgBtn.getAttribute('data-lb-quick-bg'), {
+                bgColor: quickBgBtn.getAttribute('data-color-hex')
+              });
+              return;
+            }
+            const resetColBtn = e.target.closest('[data-lb-reset-color]');
+            if (resetColBtn) {
+              setLiveBannerItemColor(resetColBtn.getAttribute('data-lb-reset-color'), { reset: true });
+              return;
+            }
+            const delBtn = e.target.closest('[data-lb-delete-id]');
+            if (delBtn) {
+              deleteLiveBannerItem(delBtn.getAttribute('data-lb-delete-id'));
+              return;
+            }
+          });
+        });
+
         // Search Input & Sort
         searchInput.addEventListener('input', (e) => {
           searchQuery = e.target.value;
