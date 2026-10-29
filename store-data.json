@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793296311507,
+  "updatedAt": 1793296325746,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -65,7 +65,7 @@
         "badgeTitle": "📅 თარიღი და კვირის დღე",
         "text": "📅",
         "textColor": "#3b82f6",
-        "bgColor": "#e11d48",
+        "bgColor": "#18181b",
         "offsetX": 0,
         "offsetY": 0,
         "align": "right"
