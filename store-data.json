@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793282339336,
+  "updatedAt": 1793282343991,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -31,7 +31,7 @@
         "type": "text",
         "badgeTitle": "🚚 მიწოდების ტექსტი",
         "text": "🚚 მიწოდება მთელ საქართველოში",
-        "textColor": "#fde047",
+        "textColor": "#09090b",
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
