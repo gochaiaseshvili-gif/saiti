@@ -434,10 +434,10 @@
               id="toggle-cat-manager-btn"
               type="button"
               class="owner-only-admin-el min-h-[38px] px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-xs font-extrabold text-amber-950 flex items-center gap-1.5 whitespace-nowrap shrink-0 active:scale-[0.98] fast-transition cursor-pointer shadow-xs"
-              title="ახალი გრაფის / კატეგორიის ხელით დამატება (მაგ: მიკროფონი) და მართვა"
+              title="გრაფების (კატეგორიების) დამატება, ნაწერის ფერის შეცვლა და უკან საღებავის ჩასხმა"
             >
-              <span>📂</span>
-              <span>+ გრაფის დამატება</span>
+              <span>📂🎨</span>
+              <span>+ გრაფის დამატება / ფერები</span>
             </button>
 
             <button
@@ -464,7 +464,7 @@
           </div>
         </div>
 
-        <!-- On-Page Admin Category / Section Manager Panel (Add Unlimited Categories like "მიკროფონი" & Upload Directly) -->
+        <!-- On-Page Admin Category / Section Manager Panel (Add Unlimited Categories like "მიკროფონი", Change Text Color & Pour Background Paint) -->
         <div
           id="inline-cat-manager-panel"
           class="owner-only-admin-el hidden rounded-2xl bg-gradient-to-br from-amber-50/95 via-white to-stone-50 border-2 theme-border p-4 space-y-3.5 shadow-md"
@@ -472,11 +472,11 @@
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-200/80">
             <div>
               <h3 class="text-sm sm:text-base font-extrabold text-zinc-950 flex items-center gap-2">
-                <span>📂</span>
-                <span>გრაფების (კატეგორიების) ხელით დამატება და მართვა</span>
+                <span>📂🎨</span>
+                <span>გრაფების (კატეგორიების) დამატება, ნაწერის ფერი და უკან საღებავის ჩასხმა</span>
               </h3>
               <p class="text-xs text-zinc-600">
-                ჩაწერეთ ნებისმიერი ახალი გრაფის სახელი (მაგ: <strong>მიკროფონი</strong>, <strong>განათება</strong>, <strong>სადგამები</strong>, <strong>ხმის პულტი</strong>) — შეგიძლიათ დაამატოთ რამდენიც გსურთ და თითოეულ გრაფაში ატვირთოთ შესაბამისი ნივთები.
+                დაამატეთ რამდენი გრაფაც გსურთ (მაგ: <strong>მიკროფონი</strong>, <strong>განათება</strong>, <strong>სადგამები</strong>) და თითოეულ გრაფაზე შეცვალეთ <strong>🔤 ნაწერის ფერი</strong> ან ჩაასხით <strong>🪣 უკან საღებავი (ფონის ფერი)</strong>.
               </p>
             </div>
             <button
@@ -488,20 +488,30 @@
             </button>
           </div>
 
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 bg-white/90 p-2.5 rounded-xl border border-amber-200/90">
             <input
               id="inline-new-cat-input"
               type="text"
               placeholder="ჩაწერეთ ახალი გრაფის სახელი (მაგ: მიკროფონი, განათება, კაბელები)..."
               class="flex-1 min-h-[42px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
             />
-            <button
-              type="button"
-              id="inline-add-cat-btn"
-              class="theme-bg min-h-[42px] px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
-            >
-              + ახალი გრაფის დამატება
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+              <label class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი გრაფის ნაწერის ფერი">
+                <span>🔤 ნაწერის ფერი:</span>
+                <input id="inline-new-cat-text-color" type="color" value="#ffffff" data-touched="false" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+              </label>
+              <label class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი გრაფის უკან საღებავის ჩასხმა">
+                <span>🪣 საღებავის ჩასხმა:</span>
+                <input id="inline-new-cat-bg-color" type="color" value="#d97706" data-touched="false" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+              </label>
+              <button
+                type="button"
+                id="inline-add-cat-btn"
+                class="theme-bg min-h-[42px] px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
+              >
+                + ახალი გრაფის დამატება
+              </button>
+            </div>
           </div>
 
           <div id="inline-cat-manager-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
@@ -1360,6 +1370,19 @@
                 ✨ 3D ნათება და ჩრდილი
               </button>
             </div>
+          </div>
+
+          <!-- 4. Category Tabs Text Color & Paint Bucket Background Fill -->
+          <div class="space-y-2.5 pt-2 border-t border-zinc-200/80">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <p class="text-xs font-extrabold text-zinc-800 uppercase tracking-wider">
+                4. კატეგორიის გრაფების ნაწერის ფერი და უკან საღებავის ჩასხმა (ყველა გრაფისთვის ცალ-ცალკე):
+              </p>
+              <span class="text-[11px] font-semibold text-zinc-500">
+                აირჩიეთ 🔤 ნაწერის ფერი და 🪣 ჩაასხით საღებავი ნებისმიერ გრაფაზე
+              </span>
+            </div>
+            <div id="theme-cat-colors-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
           </div>
         </div>
       </div>
@@ -3940,28 +3963,38 @@
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h4 class="text-sm font-extrabold text-zinc-950 flex items-center gap-1.5">
-                    <span>📂</span>
-                    <span>საიტის გრაფები / კატეგორიები (დაამატეთ რამდენიც გსურთ: მაგ. მიკროფონი, განათება, სადგამები...)</span>
+                    <span>📂🎨</span>
+                    <span>საიტის გრაფები / კატეგორიები — დამატება, ნაწერის ფერი და უკან საღებავის ჩასხმა</span>
                   </h4>
                   <p class="text-xs text-zinc-600">
-                    ჩაწერეთ გრაფის სახელი და დააჭირეთ „+ ახალი გრაფის დამატება“-ს. შემდეგ დააჭირეთ „+ ამ გრაფაში ატვირთვა“-ს, რომ პირდაპირ იმ გრაფაში ატვირთოთ ნივთები.
+                    ჩაწერეთ გრაფის სახელი (მაგ: მიკროფონი), შეუცვალეთ <strong>🔤 ნაწერის ფერი</strong> და <strong>🪣 ჩაასხით უკან საღებავი</strong>, ან დააჭირეთ „+ ამ გრაფაში ატვირთვა“-ს.
                   </p>
                 </div>
               </div>
-              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 bg-white/90 p-2.5 rounded-xl border border-amber-200/90">
                 <input
                   id="cp-new-cat-input"
                   type="text"
                   placeholder="ჩაწერეთ ახალი გრაფის სახელი (მაგ: მიკროფონი)..."
                   class="flex-1 min-h-[40px] px-3.5 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
                 />
-                <button
-                  type="button"
-                  id="cp-add-cat-btn"
-                  class="theme-bg min-h-[40px] px-4 py-1.5 rounded-xl text-xs font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
-                >
-                  + ახალი გრაფის დამატება
-                </button>
+                <div class="flex flex-wrap items-center gap-2">
+                  <label class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი გრაფის ნაწერის ფერი">
+                    <span>🔤 ნაწერი:</span>
+                    <input id="cp-new-cat-text-color" type="color" value="#ffffff" data-touched="false" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                  </label>
+                  <label class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი გრაფის უკან საღებავის ჩასხმა">
+                    <span>🪣 საღებავი:</span>
+                    <input id="cp-new-cat-bg-color" type="color" value="#d97706" data-touched="false" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                  </label>
+                  <button
+                    type="button"
+                    id="cp-add-cat-btn"
+                    class="theme-bg min-h-[40px] px-4 py-1.5 rounded-xl text-xs font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
+                  >
+                    + ახალი გრაფის დამატება
+                  </button>
+                </div>
               </div>
               <div id="cp-cat-manager-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"></div>
             </div>
@@ -7532,22 +7565,27 @@
         function ensureStoreCategories() {
           if (!Array.isArray(storeSettings.customCategories) || storeSettings.customCategories.length === 0) {
             storeSettings.customCategories = [
-              { id: 'karaoke', label: storeSettings.catKaraoke || DEFAULT_SETTINGS.catKaraoke || 'კარაოკე დინამიკები' },
-              { id: 'solar', label: storeSettings.catSolar || DEFAULT_SETTINGS.catSolar || 'სოლარ გენერატორები' },
-              { id: 'bundle', label: storeSettings.catBundle || DEFAULT_SETTINGS.catBundle || 'კომბო ნაკრები' },
-              { id: 'microphone', label: 'მიკროფონი' }
+              { id: 'karaoke', label: storeSettings.catKaraoke || DEFAULT_SETTINGS.catKaraoke || 'კარაოკე დინამიკები', textColor: '', bgColor: '' },
+              { id: 'solar', label: storeSettings.catSolar || DEFAULT_SETTINGS.catSolar || 'სოლარ გენერატორები', textColor: '', bgColor: '' },
+              { id: 'bundle', label: storeSettings.catBundle || DEFAULT_SETTINGS.catBundle || 'კომბო ნაკრები', textColor: '', bgColor: '' },
+              { id: 'microphone', label: 'მიკროფონი', textColor: '', bgColor: '' }
             ];
             storeSettings.microphoneDefaultAdded = true;
           } else {
             storeSettings.customCategories = storeSettings.customCategories
               .filter((c) => c && c.id && String(c.label || '').trim())
-              .map((c) => ({ id: String(c.id).trim(), label: String(c.label).trim() }));
+              .map((c) => ({
+                id: String(c.id).trim(),
+                label: String(c.label).trim(),
+                textColor: c.textColor ? String(c.textColor).trim() : '',
+                bgColor: c.bgColor ? String(c.bgColor).trim() : ''
+              }));
             if (!storeSettings.microphoneDefaultAdded) {
               const hasMic = storeSettings.customCategories.some(
                 (c) => c.id === 'microphone' || c.label.toLowerCase().includes('მიკროფონ')
               );
               if (!hasMic) {
-                storeSettings.customCategories.push({ id: 'microphone', label: 'მიკროფონი' });
+                storeSettings.customCategories.push({ id: 'microphone', label: 'მიკროფონი', textColor: '', bgColor: '' });
               }
               storeSettings.microphoneDefaultAdded = true;
             }
@@ -7566,7 +7604,9 @@
               ) {
                 storeSettings.customCategories.push({
                   id: String(p.category).trim(),
-                  label: String(p.categoryLabel || p.category).trim()
+                  label: String(p.categoryLabel || p.category).trim(),
+                  textColor: '',
+                  bgColor: ''
                 });
               }
             });
@@ -7574,7 +7614,75 @@
           return storeSettings.customCategories;
         }
 
+        function getAutoContrastTextColor(bgHex) {
+          const clean = String(bgHex || '').replace('#', '').trim();
+          if (clean.length !== 6) return '#ffffff';
+          const r = parseInt(clean.slice(0, 2), 16) || 0;
+          const g = parseInt(clean.slice(2, 4), 16) || 0;
+          const b = parseInt(clean.slice(4, 6), 16) || 0;
+          const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+          return yiq >= 165 ? '#09090b' : '#ffffff';
+        }
+
+        function getCategoryColorsById(catId) {
+          if (catId === 'all') {
+            return {
+              textColor: storeSettings.catAllTextColor ? String(storeSettings.catAllTextColor).trim() : '',
+              bgColor: storeSettings.catAllBgColor ? String(storeSettings.catAllBgColor).trim() : ''
+            };
+          }
+          if (catId === 'wishlist') {
+            return {
+              textColor: storeSettings.catWishlistTextColor ? String(storeSettings.catWishlistTextColor).trim() : '',
+              bgColor: storeSettings.catWishlistBgColor ? String(storeSettings.catWishlistBgColor).trim() : ''
+            };
+          }
+          const cats = ensureStoreCategories();
+          const found = cats.find((c) => c.id === catId);
+          return {
+            textColor: found && found.textColor ? String(found.textColor).trim() : '',
+            bgColor: found && found.bgColor ? String(found.bgColor).trim() : ''
+          };
+        }
+
+        function buildCategoryTabStyleAndClass(catId, isSel, extraClasses = '') {
+          const { textColor, bgColor } = getCategoryColorsById(catId);
+          const hasCustomBg = Boolean(bgColor);
+          const hasCustomText = Boolean(textColor);
+          const effectiveText = hasCustomText ? textColor : hasCustomBg ? getAutoContrastTextColor(bgColor) : '';
+
+          const styleParts = [];
+          if (hasCustomBg) {
+            styleParts.push(`background-color: ${bgColor} !important`);
+            styleParts.push(`border-color: ${bgColor}`);
+          }
+          if (effectiveText) {
+            styleParts.push(`color: ${effectiveText} !important`);
+          }
+          const styleAttr = styleParts.length > 0 ? `style="${styleParts.join('; ')};"` : '';
+
+          let stateClasses = '';
+          if (hasCustomBg) {
+            stateClasses = isSel
+              ? 'ring-2 ring-zinc-950 ring-offset-1 shadow-md font-extrabold scale-[1.02]'
+              : 'shadow-xs hover:opacity-95 font-bold';
+          } else if (hasCustomText) {
+            stateClasses = isSel
+              ? 'theme-bg shadow-sm ring-2 ring-zinc-900/30 font-extrabold'
+              : 'bg-white/80 hover:bg-white shadow-2xs font-bold';
+          } else {
+            stateClasses = isSel ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950';
+          }
+
+          return {
+            styleAttr,
+            className: `category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${extraClasses} ${stateClasses}`.trim()
+          };
+        }
+
         function getCategoryLabelById(catId) {
+          if (catId === 'all') return storeSettings.catAll || DEFAULT_SETTINGS.catAll || 'ყველა პროდუქტი';
+          if (catId === 'wishlist') return (UI_STRINGS[currentLang] || UI_STRINGS.ka).catWishlist || 'რჩეულები';
           const cats = ensureStoreCategories();
           const found = cats.find((c) => c.id === catId);
           if (found && found.label) return found.label;
@@ -7603,63 +7711,205 @@
           }
         }
 
+        const CAT_QUICK_TEXT_SWATCHES = [
+          { hex: '#ffffff', title: 'თეთრი ნაწერი' },
+          { hex: '#09090b', title: 'შავი ნაწერი' },
+          { hex: '#fde047', title: 'ოქროსფერი / ყვითელი ნაწერი' },
+          { hex: '#ef4444', title: 'წითელი ნაწერი' },
+          { hex: '#22c55e', title: 'მწვანე ნაწერი' },
+          { hex: '#3b82f6', title: 'ლურჯი ნაწერი' },
+          { hex: '#a855f7', title: 'იისფერი ნაწერი' },
+          { hex: '#f97316', title: 'სტაფილოსფერი ნაწერი' }
+        ];
+
+        const CAT_QUICK_BG_SWATCHES = [
+          { hex: '#18181b', title: 'შავი საღებავი' },
+          { hex: '#dc2626', title: 'წითელი საღებავი' },
+          { hex: '#2563eb', title: 'ლურჯი საღებავი' },
+          { hex: '#059669', title: 'მწვანე საღებავი' },
+          { hex: '#d97706', title: 'ოქროსფერი / ქარვისფერი საღებავი' },
+          { hex: '#7c3aed', title: 'იისფერი საღებავი' },
+          { hex: '#e11d48', title: 'ვარდისფერი / ჟოლოსფერი საღებავი' },
+          { hex: '#0284c7', title: 'ცისფერი საღებავი' }
+        ];
+
         function renderCategoryManagerLists() {
           const cats = ensureStoreCategories();
           const containers = [
             document.getElementById('inline-cat-manager-list'),
-            document.getElementById('cp-cat-manager-list')
+            document.getElementById('cp-cat-manager-list'),
+            document.getElementById('theme-cat-colors-list')
           ].filter(Boolean);
           if (containers.length === 0) return;
 
-          const html = cats
-            .map((c, idx) => {
-              const count = productsList.filter((p) => p.category === c.id).length;
-              const safeId = String(c.id).replace(/"/g, '&quot;');
-              const safeLbl = String(c.label).replace(/"/g, '&quot;');
+          const allEntries = [
+            {
+              id: 'all',
+              label: storeSettings.catAll || DEFAULT_SETTINGS.catAll || 'ყველა პროდუქტი',
+              count: productsList.length,
+              isSystem: true,
+              badgeTitle: 'მთავარი გრაფა'
+            },
+            ...cats.map((c, idx) => ({
+              id: c.id,
+              label: c.label,
+              count: productsList.filter((p) => p.category === c.id).length,
+              isSystem: false,
+              badgeTitle: `გრაფა #${idx + 1}`
+            })),
+            {
+              id: 'wishlist',
+              label: (UI_STRINGS[currentLang] || UI_STRINGS.ka).catWishlist || 'რჩეულები',
+              count: wishlistIds.size,
+              isSystem: true,
+              badgeTitle: 'რჩეულების გრაფა'
+            }
+          ];
+
+          const html = allEntries
+            .map((entry) => {
+              const safeId = String(entry.id).replace(/"/g, '&quot;');
+              const safeLbl = String(entry.label).replace(/"/g, '&quot;');
+              const safeDisplay = String(entry.label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              const { textColor, bgColor } = getCategoryColorsById(entry.id);
+              const pickerTextVal = /^#[0-9a-fA-F]{6}$/.test(textColor)
+                ? textColor
+                : bgColor
+                  ? getAutoContrastTextColor(bgColor)
+                  : '#18181b';
+              const pickerBgVal = /^#[0-9a-fA-F]{6}$/.test(bgColor) ? bgColor : '#d97706';
+              const previewText = textColor || (bgColor ? getAutoContrastTextColor(bgColor) : '#18181b');
+              const previewBg = bgColor || '#f5f5f4';
+              const hasAnyCustomColor = Boolean(textColor || bgColor);
+
+              const textSwatchesHtml = CAT_QUICK_TEXT_SWATCHES.map(
+                (sw) =>
+                  `<button type="button" data-cat-quick-text="${safeId}" data-color-hex="${sw.hex}" title="${sw.title}" style="background-color:${sw.hex};" class="w-4 h-4 rounded-full border border-zinc-400 shadow-2xs hover:scale-125 fast-transition cursor-pointer shrink-0"></button>`
+              ).join('');
+
+              const bgSwatchesHtml = CAT_QUICK_BG_SWATCHES.map(
+                (sw) =>
+                  `<button type="button" data-cat-quick-bg="${safeId}" data-color-hex="${sw.hex}" title="${sw.title}" style="background-color:${sw.hex};" class="w-4 h-4 rounded-md border border-zinc-300 shadow-2xs hover:scale-125 fast-transition cursor-pointer shrink-0"></button>`
+              ).join('');
+
               return `
-                <div class="p-2.5 rounded-xl bg-white border border-zinc-200/90 shadow-2xs flex flex-col gap-2">
+                <div class="p-3 rounded-xl bg-white border border-zinc-200/90 shadow-2xs flex flex-col gap-2">
                   <div class="flex items-center justify-between gap-1.5">
-                    <span class="px-2 py-0.5 rounded-md bg-stone-100 text-zinc-700 text-[11px] font-extrabold">გრაფა #${idx + 1} • ${count} ნივთი</span>
-                    <button
-                      type="button"
-                      data-cat-delete-id="${safeId}"
-                      title="ამ გრაფის წაშლა"
-                      class="px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-bold cursor-pointer"
-                    >✕ წაშლა</button>
+                    <span class="px-2 py-0.5 rounded-md bg-stone-100 text-zinc-700 text-[11px] font-extrabold">${entry.badgeTitle} • ${entry.count} ნივთი</span>
+                    <div class="flex items-center gap-1">
+                      ${
+                        hasAnyCustomColor
+                          ? `<button type="button" data-cat-reset-color="${safeId}" title="ფერის გასუფთავება" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">↺ ფერის მოხსნა</button>`
+                          : ''
+                      }
+                      ${
+                        !entry.isSystem
+                          ? `<button type="button" data-cat-delete-id="${safeId}" title="ამ გრაფის წაშლა" class="px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-bold cursor-pointer">✕ წაშლა</button>`
+                          : ''
+                      }
+                    </div>
                   </div>
-                  <div class="flex items-center gap-1.5">
-                    <input
-                      type="text"
-                      data-cat-rename-id="${safeId}"
-                      value="${safeLbl}"
-                      placeholder="გრაფის სახელი..."
-                      class="flex-1 min-h-[36px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
-                    />
+
+                  <div class="flex items-center justify-between gap-2 px-2 py-1.5 rounded-lg bg-stone-50 border border-zinc-200/80">
+                    <span class="text-[10px] font-bold text-zinc-500">ნიმუში:</span>
+                    <span
+                      data-cat-preview-pill="${safeId}"
+                      style="background-color: ${previewBg}; color: ${previewText};"
+                      class="px-3 py-1 rounded-lg text-xs font-extrabold shadow-2xs border border-black/10 truncate max-w-[180px]"
+                    >${safeDisplay} (${entry.count})</span>
                   </div>
-                  <div class="flex items-center gap-1.5 pt-0.5">
-                    <button
-                      type="button"
-                      data-cat-upload-into="${safeId}"
-                      class="flex-1 min-h-[34px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 fast-transition cursor-pointer"
-                    >
-                      <span>+ ამ გრაფაში ატვირთვა</span>
-                    </button>
-                    <button
-                      type="button"
-                      data-cat-view-tab="${safeId}"
-                      class="min-h-[34px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-[11px] font-bold cursor-pointer"
-                    >
-                      ნახვა
-                    </button>
+
+                  ${
+                    entry.id !== 'wishlist'
+                      ? `<div class="flex items-center gap-1.5">
+                          <input
+                            type="text"
+                            data-cat-rename-id="${safeId}"
+                            value="${safeLbl}"
+                            placeholder="გრაფის სახელი..."
+                            class="flex-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
+                          />
+                        </div>`
+                      : ''
+                  }
+
+                  <!-- Text Color & Paint Bucket Background Fill Controls -->
+                  <div class="grid grid-cols-1 gap-1.5 p-2 rounded-lg bg-amber-50/50 border border-amber-200/70">
+                    <div class="flex items-center justify-between gap-1.5">
+                      <label class="flex items-center gap-1.5 text-[11px] font-extrabold text-zinc-800 cursor-pointer">
+                        <span>🔤 ნაწერის ფერი:</span>
+                        <input
+                          type="color"
+                          data-cat-text-color="${safeId}"
+                          value="${pickerTextVal}"
+                          class="w-6 h-6 rounded cursor-pointer border border-zinc-300 bg-white p-0 shrink-0"
+                        />
+                      </label>
+                      <div class="flex items-center gap-1 flex-wrap justify-end">
+                        ${textSwatchesHtml}
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-1.5 pt-1 border-t border-amber-200/60">
+                      <label class="flex items-center gap-1.5 text-[11px] font-extrabold text-zinc-800 cursor-pointer">
+                        <span>🪣 უკან საღებავი:</span>
+                        <input
+                          type="color"
+                          data-cat-bg-color="${safeId}"
+                          value="${pickerBgVal}"
+                          class="w-6 h-6 rounded cursor-pointer border border-zinc-300 bg-white p-0 shrink-0"
+                        />
+                      </label>
+                      <div class="flex items-center gap-1 flex-wrap justify-end">
+                        ${bgSwatchesHtml}
+                      </div>
+                    </div>
                   </div>
+
+                  ${
+                    !entry.isSystem
+                      ? `<div class="flex items-center gap-1.5 pt-0.5">
+                          <button
+                            type="button"
+                            data-cat-upload-into="${safeId}"
+                            class="flex-1 min-h-[32px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 fast-transition cursor-pointer"
+                          >
+                            <span>+ ამ გრაფაში ატვირთვა</span>
+                          </button>
+                          <button
+                            type="button"
+                            data-cat-view-tab="${safeId}"
+                            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-[11px] font-bold cursor-pointer"
+                          >
+                            ნახვა
+                          </button>
+                        </div>`
+                      : ''
+                  }
                 </div>
               `;
             })
             .join('');
 
           containers.forEach((el) => {
-            // Preserve focus if user is actively typing a rename inside this container
-            if (el.contains(document.activeElement) && document.activeElement.hasAttribute('data-cat-rename-id')) {
+            const activeEl = document.activeElement;
+            if (
+              activeEl &&
+              el.contains(activeEl) &&
+              (activeEl.hasAttribute('data-cat-rename-id') ||
+                activeEl.hasAttribute('data-cat-text-color') ||
+                activeEl.hasAttribute('data-cat-bg-color'))
+            ) {
+              // Update live preview pills in-place without closing the open native color picker or losing text input focus
+              allEntries.forEach((entry) => {
+                const pill = el.querySelector(`[data-cat-preview-pill="${entry.id}"]`);
+                if (pill) {
+                  const { textColor, bgColor } = getCategoryColorsById(entry.id);
+                  pill.style.backgroundColor = bgColor || '#f5f5f4';
+                  pill.style.color = textColor || (bgColor ? getAutoContrastTextColor(bgColor) : '#18181b');
+                  pill.textContent = `${entry.label} (${entry.count})`;
+                }
+              });
               return;
             }
             el.innerHTML = html;
@@ -7679,6 +7929,9 @@
             const allSelected = activeCategory === 'all';
             const wlSelected = activeCategory === 'wishlist';
 
+            const allPresentation = buildCategoryTabStyleAndClass('all', allSelected);
+            const wlPresentation = buildCategoryTabStyleAndClass('wishlist', wlSelected, 'flex items-center gap-1.5');
+
             const catButtonsHtml = cats
               .map((c) => {
                 const cnt = productsList.filter((p) => p.category === c.id).length;
@@ -7691,6 +7944,7 @@
                   else if (c.id === 'bundle') displayLbl = strings.catBundle;
                 }
                 const safeLbl = String(displayLbl).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const pres = buildCategoryTabStyleAndClass(c.id, isSel);
                 return `
                   <button
                     type="button"
@@ -7698,9 +7952,8 @@
                     aria-selected="${isSel ? 'true' : 'false'}"
                     data-category="${safeId}"
                     id="cat-btn-${safeId}"
-                    class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${
-                      isSel ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
-                    }"
+                    class="${pres.className}"
+                    ${pres.styleAttr}
                   >${safeLbl} (${cnt})</button>
                 `;
               })
@@ -7713,9 +7966,8 @@
                 aria-selected="${allSelected ? 'true' : 'false'}"
                 data-category="all"
                 id="cat-btn-all"
-                class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${
-                  allSelected ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
-                }"
+                class="${allPresentation.className}"
+                ${allPresentation.styleAttr}
               >${lblAll} (${allCount})</button>
               ${catButtonsHtml}
               <button
@@ -7724,9 +7976,8 @@
                 aria-selected="${wlSelected ? 'true' : 'false'}"
                 data-category="wishlist"
                 id="cat-btn-wishlist"
-                class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition flex items-center gap-1.5 cursor-pointer ${
-                  wlSelected ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
-                }"
+                class="${wlPresentation.className}"
+                ${wlPresentation.styleAttr}
               >
                 <svg class="w-3.5 h-3.5 text-rose-500 fill-current shrink-0" viewBox="0 0 24 24">
                   <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -8063,7 +8314,17 @@
                     <!-- Card Body -->
                     <div class="p-5 space-y-2.5">
                       <div class="flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
-                        ${showCat ? `<span class="card-cat-el font-medium text-zinc-700">${product.categoryLabel}</span><span aria-hidden="true">•</span>` : ''}
+                        ${(() => {
+                          if (!showCat) return '';
+                          const catCols = getCategoryColorsById(product.category);
+                          const hasCustom = Boolean(catCols.bgColor || catCols.textColor);
+                          const cTxt = catCols.textColor || (catCols.bgColor ? getAutoContrastTextColor(catCols.bgColor) : '');
+                          const cStyle = [
+                            catCols.bgColor ? `background-color:${catCols.bgColor};padding:2px 8px;border-radius:6px;` : '',
+                            cTxt ? `color:${cTxt};` : ''
+                          ].filter(Boolean).join('');
+                          return `<span class="card-cat-el ${hasCustom ? 'font-bold shadow-2xs' : 'font-medium text-zinc-700'}" ${cStyle ? `style="${cStyle}"` : ''}>${product.categoryLabel}</span><span aria-hidden="true">•</span>`;
+                        })()}
                         ${showBadge ? `<span class="card-badge-el theme-text font-semibold">${product.badgeText}</span><span aria-hidden="true">•</span>` : ''}
                         <span class="font-mono-num">${strings.cardFivePhotosBadge}</span>
                       </div>
@@ -12300,7 +12561,7 @@
           });
         });
 
-        // Dynamic Category / Section Creation, Renaming, Deletion & Upload Handlers
+        // Dynamic Category / Section Creation, Renaming, Deletion, Custom Colors & Upload Handlers
         function addCustomStoreCategory(rawLabel, opts = {}) {
           const cleanLabel = String(rawLabel || '').trim();
           if (!cleanLabel) {
@@ -12313,9 +12574,13 @@
           const cats = ensureStoreCategories();
           const existing = cats.find((c) => c.label.toLowerCase() === cleanLabel.toLowerCase());
           if (existing) {
+            if (opts.textColor) existing.textColor = String(opts.textColor).trim();
+            if (opts.bgColor) existing.bgColor = String(opts.bgColor).trim();
+            updateCategoryTabCounts();
             if (opts.activateFilter !== false) {
               setCategoryFilter(existing.id);
             }
+            saveStateEverywhere({ immediate: true });
             if (typeof showWishlistToast === 'function') {
               showWishlistToast(`📂 არჩეულია გრაფა: „${existing.label}“`);
             }
@@ -12334,7 +12599,12 @@
             storeSettings.deletedCategoryIds = storeSettings.deletedCategoryIds.filter((id) => id !== newId);
           }
 
-          storeSettings.customCategories.push({ id: newId, label: cleanLabel });
+          storeSettings.customCategories.push({
+            id: newId,
+            label: cleanLabel,
+            textColor: opts.textColor ? String(opts.textColor).trim() : '',
+            bgColor: opts.bgColor ? String(opts.bgColor).trim() : ''
+          });
           updateCategoryTabCounts();
           if (opts.activateFilter !== false) {
             setCategoryFilter(newId);
@@ -12350,6 +12620,14 @@
         function renameCustomStoreCategory(catId, rawNewLabel) {
           const cleanLabel = String(rawNewLabel || '').trim();
           if (!cleanLabel) return;
+          if (catId === 'all') {
+            storeSettings.catAll = cleanLabel;
+            const cpCatAllInp = document.getElementById('cp-cat-all');
+            if (cpCatAllInp) cpCatAllInp.value = cleanLabel;
+            updateCategoryTabCounts();
+            saveStateEverywhere({ immediate: true });
+            return;
+          }
           const cats = ensureStoreCategories();
           const target = cats.find((c) => c.id === catId);
           if (!target) return;
@@ -12363,6 +12641,40 @@
               p.categoryLabel = cleanLabel;
             }
           });
+          updateCategoryTabCounts();
+          preserveScroll(() => renderProducts());
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function setCustomStoreCategoryColor(catId, { textColor, bgColor, reset = false } = {}) {
+          if (catId === 'all') {
+            if (reset) {
+              storeSettings.catAllTextColor = '';
+              storeSettings.catAllBgColor = '';
+            } else {
+              if (textColor !== undefined) storeSettings.catAllTextColor = String(textColor || '').trim();
+              if (bgColor !== undefined) storeSettings.catAllBgColor = String(bgColor || '').trim();
+            }
+          } else if (catId === 'wishlist') {
+            if (reset) {
+              storeSettings.catWishlistTextColor = '';
+              storeSettings.catWishlistBgColor = '';
+            } else {
+              if (textColor !== undefined) storeSettings.catWishlistTextColor = String(textColor || '').trim();
+              if (bgColor !== undefined) storeSettings.catWishlistBgColor = String(bgColor || '').trim();
+            }
+          } else {
+            const cats = ensureStoreCategories();
+            const target = cats.find((c) => c.id === catId);
+            if (!target) return;
+            if (reset) {
+              target.textColor = '';
+              target.bgColor = '';
+            } else {
+              if (textColor !== undefined) target.textColor = String(textColor || '').trim();
+              if (bgColor !== undefined) target.bgColor = String(bgColor || '').trim();
+            }
+          }
           updateCategoryTabCounts();
           preserveScroll(() => renderProducts());
           saveStateEverywhere({ immediate: true });
@@ -12416,14 +12728,32 @@
           });
         }
 
-        const bindNewCatInputAndBtn = (inputId, btnId, afterCreate) => {
+        ['inline-new-cat-text-color', 'inline-new-cat-bg-color', 'cp-new-cat-text-color', 'cp-new-cat-bg-color'].forEach((cid) => {
+          const el = document.getElementById(cid);
+          if (el) {
+            el.addEventListener('input', () => el.setAttribute('data-touched', 'true'));
+            el.addEventListener('change', () => el.setAttribute('data-touched', 'true'));
+          }
+        });
+
+        const bindNewCatInputAndBtn = (inputId, btnId, afterCreate, textColorPickerId, bgColorPickerId) => {
           const inp = document.getElementById(inputId);
           const btn = document.getElementById(btnId);
           if (!inp || !btn) return;
           const handleAdd = () => {
-            const createdId = addCustomStoreCategory(inp.value, { activateFilter: !afterCreate });
+            const txtPicker = textColorPickerId ? document.getElementById(textColorPickerId) : null;
+            const bgPicker = bgColorPickerId ? document.getElementById(bgColorPickerId) : null;
+            const pickedText = txtPicker && txtPicker.getAttribute('data-touched') === 'true' ? txtPicker.value : '';
+            const pickedBg = bgPicker && bgPicker.getAttribute('data-touched') === 'true' ? bgPicker.value : '';
+            const createdId = addCustomStoreCategory(inp.value, {
+              activateFilter: !afterCreate,
+              textColor: pickedText,
+              bgColor: pickedBg
+            });
             if (createdId) {
               inp.value = '';
+              if (txtPicker) txtPicker.setAttribute('data-touched', 'false');
+              if (bgPicker) bgPicker.setAttribute('data-touched', 'false');
               if (typeof afterCreate === 'function') {
                 afterCreate(createdId);
               }
@@ -12438,8 +12768,8 @@
           });
         };
 
-        bindNewCatInputAndBtn('inline-new-cat-input', 'inline-add-cat-btn');
-        bindNewCatInputAndBtn('cp-new-cat-input', 'cp-add-cat-btn');
+        bindNewCatInputAndBtn('inline-new-cat-input', 'inline-add-cat-btn', null, 'inline-new-cat-text-color', 'inline-new-cat-bg-color');
+        bindNewCatInputAndBtn('cp-new-cat-input', 'cp-add-cat-btn', null, 'cp-new-cat-text-color', 'cp-new-cat-bg-color');
         bindNewCatInputAndBtn('cp-form-new-cat-input', 'cp-form-add-cat-btn', (newCatId) => {
           populateCategorySelectOptions(fCategory, newCatId);
           if (fCategoryLabel) fCategoryLabel.value = getCategoryLabelById(newCatId);
@@ -12450,40 +12780,81 @@
           applyInlineProductEditorChanges({ immediate: true });
         });
 
-        [document.getElementById('inline-cat-manager-list'), document.getElementById('cp-cat-manager-list')].forEach(
-          (listEl) => {
-            if (!listEl) return;
-            listEl.addEventListener('input', (e) => {
-              const renameInp = e.target.closest('[data-cat-rename-id]');
-              if (!renameInp) return;
+        [
+          document.getElementById('inline-cat-manager-list'),
+          document.getElementById('cp-cat-manager-list'),
+          document.getElementById('theme-cat-colors-list')
+        ].forEach((listEl) => {
+          if (!listEl) return;
+          listEl.addEventListener('input', (e) => {
+            const renameInp = e.target.closest('[data-cat-rename-id]');
+            if (renameInp) {
               const catId = renameInp.getAttribute('data-cat-rename-id');
               renameCustomStoreCategory(catId, renameInp.value);
-            });
-            listEl.addEventListener('click', (e) => {
-              const delBtn = e.target.closest('[data-cat-delete-id]');
-              if (delBtn) {
-                deleteCustomStoreCategory(delBtn.getAttribute('data-cat-delete-id'));
-                return;
+              return;
+            }
+            const textColInp = e.target.closest('[data-cat-text-color]');
+            if (textColInp) {
+              const catId = textColInp.getAttribute('data-cat-text-color');
+              setCustomStoreCategoryColor(catId, { textColor: textColInp.value });
+              return;
+            }
+            const bgColInp = e.target.closest('[data-cat-bg-color]');
+            if (bgColInp) {
+              const catId = bgColInp.getAttribute('data-cat-bg-color');
+              setCustomStoreCategoryColor(catId, { bgColor: bgColInp.value });
+              return;
+            }
+          });
+          listEl.addEventListener('change', (e) => {
+            if (e.target.closest('[data-cat-text-color]') || e.target.closest('[data-cat-bg-color]')) {
+              renderCategoryManagerLists();
+            }
+          });
+          listEl.addEventListener('click', (e) => {
+            const quickTxtBtn = e.target.closest('[data-cat-quick-text]');
+            if (quickTxtBtn) {
+              const catId = quickTxtBtn.getAttribute('data-cat-quick-text');
+              const hex = quickTxtBtn.getAttribute('data-color-hex');
+              setCustomStoreCategoryColor(catId, { textColor: hex });
+              return;
+            }
+            const quickBgBtn = e.target.closest('[data-cat-quick-bg]');
+            if (quickBgBtn) {
+              const catId = quickBgBtn.getAttribute('data-cat-quick-bg');
+              const hex = quickBgBtn.getAttribute('data-color-hex');
+              setCustomStoreCategoryColor(catId, { bgColor: hex });
+              return;
+            }
+            const resetColBtn = e.target.closest('[data-cat-reset-color]');
+            if (resetColBtn) {
+              const catId = resetColBtn.getAttribute('data-cat-reset-color');
+              setCustomStoreCategoryColor(catId, { reset: true });
+              return;
+            }
+            const delBtn = e.target.closest('[data-cat-delete-id]');
+            if (delBtn) {
+              deleteCustomStoreCategory(delBtn.getAttribute('data-cat-delete-id'));
+              return;
+            }
+            const uploadBtn = e.target.closest('[data-cat-upload-into]');
+            if (uploadBtn) {
+              const targetCat = uploadBtn.getAttribute('data-cat-upload-into');
+              setCategoryFilter(targetCat);
+              resetProductForm(targetCat);
+              openControlPanel('form');
+              return;
+            }
+            const viewBtn = e.target.closest('[data-cat-view-tab]');
+            if (viewBtn) {
+              const targetCat = viewBtn.getAttribute('data-cat-view-tab');
+              setCategoryFilter(targetCat);
+              if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
+                closeControlPanel();
               }
-              const uploadBtn = e.target.closest('[data-cat-upload-into]');
-              if (uploadBtn) {
-                const targetCat = uploadBtn.getAttribute('data-cat-upload-into');
-                setCategoryFilter(targetCat);
-                resetProductForm(targetCat);
-                openControlPanel('form');
-                return;
-              }
-              const viewBtn = e.target.closest('[data-cat-view-tab]');
-              if (viewBtn) {
-                const targetCat = viewBtn.getAttribute('data-cat-view-tab');
-                setCategoryFilter(targetCat);
-                if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
-                  closeControlPanel();
-                }
-              }
-            });
-          }
-        );
+            }
+          });
+        });
 
         // Search Input & Sort
         searchInput.addEventListener('input', (e) => {
