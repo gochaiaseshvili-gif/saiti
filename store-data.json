@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793276801329,
+  "updatedAt": 1793276813096,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -998,8 +998,8 @@
     {
       "id": "prod-1793274561309",
       "sku": "PRO-1000",
-      "category": "cat_mvtipf68_yrn",
-      "categoryLabel": "ანტენები",
+      "category": "bundle",
+      "categoryLabel": "სათამაშოები",
       "badgeText": "აქცია",
       "name": "ახალი პროდუქტი",
       "shortMeta": "",
