@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793276619639,
+  "updatedAt": 1793276620386,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -55,7 +55,7 @@
     "catAll": "ყველა პროდუქტი",
     "catKaraoke": "კარაოკე დინამიკები",
     "catSolar": "სოლარ გენერატორები",
-    "catBundle": "სათამაშოე",
+    "catBundle": "სათამაშოებ",
     "customCategories": [
       {
         "id": "karaoke",
@@ -67,7 +67,7 @@
       },
       {
         "id": "bundle",
-        "label": "სათამაშოე"
+        "label": "სათამაშოებ"
       },
       {
         "id": "microphone",
@@ -3182,7 +3182,7 @@
       "id": "offgrid-event-combo",
       "sku": "COMBO 1800W",
       "category": "bundle",
-      "categoryLabel": "სათამაშოე",
+      "categoryLabel": "სათამაშოებ",
       "badgeText": "დაზოგეთ 750 ₾",
       "name": "Off-Grid Event კომბო: StageMax 1200W კარაოკე + SunCore 600W სოლარ სადგური",
       "shortMeta": "1200W აკუსტიკა + 600W სოლარ გენერატორი + 100W პანელი",
