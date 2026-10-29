@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793278240022,
+  "updatedAt": 1793280873888,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -22,6 +22,88 @@
     "priceTextColor": "#059669",
     "titleTextColor": "#09090b",
     "cardFrameStyle": "gold-glow",
+    "liveBannerBgColor": "#be185d",
+    "liveBannerHidden": false,
+    "liveBannerCustomized": true,
+    "liveBannerItems": [
+      {
+        "id": "delivery",
+        "type": "text",
+        "badgeTitle": "🚚 მიწოდების ტექსტი",
+        "text": "🚚 მიწოდება მთელ საქართველოში",
+        "textColor": "#fde047",
+        "bgColor": "",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "left"
+      },
+      {
+        "id": "warranty",
+        "type": "text",
+        "badgeTitle": "🛡️ გარანტიის ტექსტი",
+        "text": "🛡️ 24 თვე გარანტია",
+        "textColor": "#ffffff",
+        "bgColor": "",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "left"
+      },
+      {
+        "id": "installment",
+        "type": "text",
+        "badgeTitle": "💳 განვადების ტექსტი",
+        "text": "💳 განვადება / ადგილზე გადახდა",
+        "textColor": "#6ee7b7",
+        "bgColor": "",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "left"
+      },
+      {
+        "id": "date",
+        "type": "date",
+        "badgeTitle": "📅 თარიღი და კვირის დღე",
+        "text": "📅",
+        "textColor": "#fde047",
+        "bgColor": "#172554",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "right"
+      },
+      {
+        "id": "clock",
+        "type": "clock",
+        "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
+        "text": "⏰",
+        "textColor": "#ffffff",
+        "bgColor": "#172554",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "right"
+      },
+      {
+        "id": "weather",
+        "type": "weather",
+        "badgeTitle": "☀️ ამინდის პროგნოზი",
+        "text": "",
+        "textColor": "#fde047",
+        "bgColor": "#172554",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "right"
+      },
+      {
+        "id": "cities",
+        "type": "cities",
+        "badgeTitle": "🏙️ ქალაქების ღილაკები",
+        "text": "თბილისი, ბათუმი, ქუთაისი",
+        "textColor": "#ffffff",
+        "bgColor": "#172554",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "right"
+      }
+    ],
     "homeBlocksOrder": [
       "fb-banner",
       "catalog-header",
