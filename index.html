@@ -10209,6 +10209,89 @@
           });
         });
 
+        function applyDirectModalVideoInput(fieldKey, rawVal, immediate = false) {
+          if (!activeModalProduct) return;
+          ensureFiveImagesArray(activeModalProduct);
+          const cf = activeModalProduct.closedFields || {};
+          delete cf[fieldKey];
+          if (fieldKey === 'youtube') {
+            delete cf.youtubeExplicit;
+            const ytId = rawVal && rawVal.trim() ? extractYoutubeId(rawVal.trim()) : '';
+            activeModalProduct.youtubeId = ytId;
+            if (mieYoutubeInput) mieYoutubeInput.value = ytId ? `https://www.youtube.com/watch?v=${ytId}` : '';
+          } else if (fieldKey === 'tiktok') {
+            const cleanTt = extractCleanTiktokUrl(rawVal);
+            activeModalProduct.tiktokUrl = cleanTt;
+            if (mieTiktokInput) mieTiktokInput.value = cleanTt;
+          } else if (fieldKey === 'facebook') {
+            const cleanFb = extractCleanFacebookUrl(rawVal);
+            activeModalProduct.facebookUrl = cleanFb;
+            if (mieFacebookInput) mieFacebookInput.value = cleanFb;
+          } else if (fieldKey === 'instagram') {
+            const cleanIg = extractCleanInstagramUrl(rawVal);
+            activeModalProduct.instagramUrl = cleanIg;
+            if (mieInstagramInput) mieInstagramInput.value = cleanIg;
+          }
+          syncMieFieldActiveClosedUI(activeModalProduct);
+          refreshOpenProductModalView(activeModalProduct);
+          saveStateEverywhere(immediate ? { immediate: true } : {});
+        }
+
+        [
+          { el: modalDirectTtInput, key: 'tiktok' },
+          { el: modalDirectFbInput, key: 'facebook' },
+          { el: modalDirectYtInput, key: 'youtube' },
+          { el: modalDirectIgInput, key: 'instagram' }
+        ].forEach(({ el, key }) => {
+          if (!el) return;
+          el.addEventListener('paste', (e) => {
+            const pasted = (e.clipboardData || window.clipboardData)?.getData('text') || '';
+            if (pasted && pasted.trim()) {
+              e.preventDefault();
+              el.value = extractNewestUrlFromText(pasted) || pasted.trim();
+              applyDirectModalVideoInput(key, el.value, true);
+              showWishlistToast('✅ ვიდეოს ლინკი ჩაისვა და შეინახა!');
+            }
+          });
+          el.addEventListener('change', () => {
+            applyDirectModalVideoInput(key, el.value, true);
+            showWishlistToast('✅ ვიდეოს ლინკი განახლდა!');
+          });
+        });
+
+        const modalSecVideoEl = document.getElementById('modal-sec-video');
+        if (modalSecVideoEl) {
+          modalSecVideoEl.addEventListener('click', (e) => {
+            const closeBtn = e.target.closest('[data-direct-video-close]');
+            if (!closeBtn || !activeModalProduct) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const fieldKey = closeBtn.getAttribute('data-direct-video-close');
+            if (!fieldKey) return;
+            ensureFiveImagesArray(activeModalProduct);
+            const cf = activeModalProduct.closedFields;
+            cf[fieldKey] = true;
+            if (fieldKey === 'youtube') {
+              cf.youtubeExplicit = true;
+              activeModalProduct.youtubeId = '';
+              if (mieYoutubeInput) mieYoutubeInput.value = '';
+            } else if (fieldKey === 'tiktok') {
+              activeModalProduct.tiktokUrl = '';
+              if (mieTiktokInput) mieTiktokInput.value = '';
+            } else if (fieldKey === 'facebook') {
+              activeModalProduct.facebookUrl = '';
+              if (mieFacebookInput) mieFacebookInput.value = '';
+            } else if (fieldKey === 'instagram') {
+              activeModalProduct.instagramUrl = '';
+              if (mieInstagramInput) mieInstagramInput.value = '';
+            }
+            populateInlineProductEditor(activeModalProduct);
+            refreshOpenProductModalView(activeModalProduct);
+            saveStateEverywhere({ immediate: true });
+            showWishlistToast('🗑️ ვიდეო უჯრა დაიხურა!');
+          });
+        }
+
         if (modalInlineEditorPanel) {
           modalInlineEditorPanel.addEventListener('click', (e) => {
             if (!activeModalProduct) return;
