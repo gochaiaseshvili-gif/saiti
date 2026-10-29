@@ -8614,7 +8614,8 @@
               </button>
             `;
 
-            bannerEl.innerHTML = `
+            const dynamicEl = document.getElementById('live-info-banner-dynamic') || bannerEl;
+            dynamicEl.innerHTML = `
               <div class="flex flex-wrap items-center gap-2">
                 ${leftItems.join('')}
               </div>
