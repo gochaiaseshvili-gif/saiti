@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793296196967,
+  "updatedAt": 1793296208781,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -153,7 +153,7 @@
         "id": "solar",
         "label": "სოლარ გენერატორები",
         "textColor": "",
-        "bgColor": ""
+        "bgColor": "#d97706"
       },
       {
         "id": "bundle",
