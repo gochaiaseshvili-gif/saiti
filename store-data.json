@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793278164746,
+  "updatedAt": 1793278240022,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -78,7 +78,7 @@
       {
         "id": "microphone",
         "label": "მიკროფონი",
-        "textColor": "",
+        "textColor": "#3b82f6",
         "bgColor": ""
       },
       {
