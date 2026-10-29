@@ -593,7 +593,7 @@
 
               <a
                 id="catalog-youtube-banner-link"
-                href="https://www.youtube.com/@voltandvox"
+                href="https://www.youtube.com/@iyidebasainteresonivtebi"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="min-h-[36px] px-3 py-1.5 rounded-xl bg-[#FF0000] hover:bg-red-700 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
@@ -1489,7 +1489,7 @@
           <span aria-hidden="true">•</span>
           <a
             id="footer-youtube-link"
-            href="https://www.youtube.com/@voltandvox"
+            href="https://www.youtube.com/@iyidebasainteresonivtebi"
             target="_blank"
             rel="noopener noreferrer"
             class="font-bold text-[#FF0000] hover:underline flex items-center gap-1"
@@ -2630,11 +2630,11 @@
                 </div>
               </div>
 
-              <!-- 3. YouTube Player Card (Compact & Always Available with Embed + Fallback + Direct Link Paste) -->
+              <!-- 3. YouTube Player Card (Compact & 100% Clickable — Redirects to Main Channel if no video link is set) -->
               <div id="youtube-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
                 <a
                   id="modal-yt-header-link"
-                  href="https://www.youtube.com"
+                  href="https://www.youtube.com/@iyidebasainteresonivtebi"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="px-2.5 py-1.5 border-b border-zinc-800 flex items-center justify-between text-[10px] sm:text-[11px] hover:bg-zinc-900 fast-transition"
@@ -2657,7 +2657,7 @@
                   ></iframe>
                   <a
                     id="modal-youtube-fallback"
-                    href="https://www.youtube.com"
+                    href="https://www.youtube.com/@iyidebasainteresonivtebi"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="w-full h-full rounded bg-gradient-to-br from-red-600/35 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
@@ -2675,18 +2675,18 @@
                       </svg>
                     </span>
                     <span id="modal-yt-fallback-badge" class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/85 px-2.5 py-0.5 rounded-full border border-red-400/50">
-                      ▶ YouTube-ზე ჩართვა ↗
+                      ▶ YouTube გვერდზე ნახვა ↗
                     </span>
                   </a>
                 </div>
                 <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
-                  <span id="modal-yt-caption" class="truncate">YouTube მიმოხილვა</span>
+                  <span id="modal-yt-caption" class="truncate">YouTube გვერდი / ვიდეო</span>
                   <a
                     id="modal-yt-external"
-                    href="https://www.youtube.com"
+                    href="https://www.youtube.com/@iyidebasainteresonivtebi"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="text-amber-400 hover:underline whitespace-nowrap ml-1.5 font-bold shrink-0"
+                    class="text-red-400 hover:underline whitespace-nowrap ml-1.5 font-bold shrink-0"
                   >
                     YouTube ↗
                   </a>
@@ -3021,7 +3021,7 @@
 
               <a
                 id="modal-bottom-youtube-btn"
-                href="https://www.youtube.com/@voltandvox"
+                href="https://www.youtube.com/@iyidebasainteresonivtebi"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="min-h-[48px] px-3 py-2.5 rounded-xl bg-[#FF0000] hover:bg-red-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
@@ -4313,7 +4313,7 @@
                   <input
                     id="cp-set-youtube-url"
                     type="text"
-                    placeholder="https://www.youtube.com/@voltandvox"
+                    placeholder="https://www.youtube.com/@iyidebasainteresonivtebi"
                     class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-red-300 bg-white text-xs font-mono-num focus:outline-none focus:border-red-600"
                   />
                 </div>
@@ -4572,7 +4572,7 @@
           fbBannerBtn: 'Facebook გვერდი',
           waDefaultText: 'გამარჯობა, მინდა შევუკვეთო ეს პროდუქტი',
           tiktokHandle: 'https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc',
-          youtubeUrl: 'https://www.youtube.com/@voltandvox',
+          youtubeUrl: 'https://www.youtube.com/@iyidebasainteresonivtebi',
           igHandle: 'https://www.instagram.com/iyideba_saintereso_nivtebi/',
           weatherMode: 'off',
           weatherIntensity: 65,
@@ -4775,7 +4775,7 @@
           if (!product.closedFields || typeof product.closedFields !== 'object') {
             product.closedFields = {};
           }
-          if (product.closedFields.youtube && !product.closedFields.youtubeExplicit) {
+          if (product.closedFields.youtube && !product.closedFields.youtubeExplicitV2) {
             delete product.closedFields.youtube;
           }
           if (product.youtubeId === 'M7lc1UVf-VE' || product.youtubeId === 'aqz-KE-bpKQ') {
@@ -5161,7 +5161,7 @@
             modalCallGocha: '{name} • დარეკვა',
             modalVideoTitle: 'ვიდეო მიმოხილვა (TikTok, Facebook, YouTube & Instagram)',
             modalVideoAll: 'ყველა',
-            modalYtLabel: 'YouTube ტესტი',
+            modalYtLabel: 'YouTube ვიდეო',
             modalTtLabel: 'TikTok ვიდეო',
             modalFbLabel: 'Facebook ვიდეო',
             modalIgLabel: 'Instagram ვიდეო',
@@ -6819,9 +6819,28 @@
           if (!trimmed || trimmed.includes('M7lc1UVf-VE') || trimmed.includes('aqz-KE-bpKQ')) return '';
           const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
           const match = trimmed.match(regExp);
-          const id = match && match[2].length === 11 ? match[2] : (trimmed.length === 11 ? trimmed : '');
+          const id = match && match[2].length === 11 ? match[2] : (trimmed.length === 11 && !trimmed.startsWith('@') ? trimmed : '');
           if (id === 'M7lc1UVf-VE' || id === 'aqz-KE-bpKQ') return '';
           return id;
+        }
+
+        function extractCleanYoutubeUrl(input) {
+          if (!input) return '';
+          const rawStr = String(input).trim();
+          if (!rawStr || rawStr === 'M7lc1UVf-VE' || rawStr === 'aqz-KE-bpKQ') return '';
+          const ytId = extractYoutubeId(rawStr);
+          if (ytId) {
+            return `https://www.youtube.com/watch?v=${ytId}`;
+          }
+          const cleaned = extractNewestUrlFromText(rawStr) || rawStr;
+          if (!cleaned || cleaned.includes('M7lc1UVf-VE') || cleaned.includes('aqz-KE-bpKQ')) return '';
+          if (cleaned.startsWith('@')) {
+            return `https://www.youtube.com/${cleaned}`;
+          }
+          if (/^https?:\/\/(www\.|m\.)?(youtube\.com|youtu\.be)\//i.test(cleaned)) {
+            return cleaned;
+          }
+          return '';
         }
 
         function extractCleanTiktokUrl(input) {
@@ -7180,7 +7199,18 @@
           safeSetHref('modal-bottom-tiktok-btn', ttHref);
           safeSetHref('footer-tiktok-link', ttHref);
 
-          const rawYt = String(storeSettings.youtubeUrl || 'https://www.youtube.com/@voltandvox').trim();
+          if (
+            !storeSettings.youtubeUrl ||
+            storeSettings.youtubeUrl === '@voltandvox' ||
+            storeSettings.youtubeUrl === '@voltandvox.ge' ||
+            storeSettings.youtubeUrl === 'https://www.youtube.com/@voltandvox' ||
+            storeSettings.youtubeUrl === 'https://www.youtube.com'
+          ) {
+            storeSettings.youtubeUrl = 'https://www.youtube.com/@iyidebasainteresonivtebi';
+          }
+          const rawYt = String(
+            storeSettings.youtubeUrl || 'https://www.youtube.com/@iyidebasainteresonivtebi'
+          ).trim();
           const ytHref = rawYt.startsWith('http')
             ? rawYt
             : `https://www.youtube.com/${rawYt.startsWith('@') ? rawYt : '@' + rawYt}`;
@@ -8138,7 +8168,18 @@
           if (modalTopTtLink) modalTopTtLink.href = ttModalHref;
           if (modalBottomTtBtn) modalBottomTtBtn.href = ttModalHref;
 
-          const rawYtModal = String(storeSettings.youtubeUrl || 'https://www.youtube.com/@voltandvox').trim();
+          if (
+            !storeSettings.youtubeUrl ||
+            storeSettings.youtubeUrl === '@voltandvox' ||
+            storeSettings.youtubeUrl === '@voltandvox.ge' ||
+            storeSettings.youtubeUrl === 'https://www.youtube.com/@voltandvox' ||
+            storeSettings.youtubeUrl === 'https://www.youtube.com'
+          ) {
+            storeSettings.youtubeUrl = 'https://www.youtube.com/@iyidebasainteresonivtebi';
+          }
+          const rawYtModal = String(
+            storeSettings.youtubeUrl || 'https://www.youtube.com/@iyidebasainteresonivtebi'
+          ).trim();
           const ytModalHref = rawYtModal.startsWith('http')
             ? rawYtModal
             : `https://www.youtube.com/${rawYtModal.startsWith('@') ? rawYtModal : '@' + rawYtModal}`;
@@ -8802,8 +8843,8 @@
           fSku.value = prod.sku || '';
           fShortMeta.value = prod.shortMeta || '';
           fDesc.value = prod.description || '';
-          const cleanYt = extractYoutubeId(prod.youtubeId);
-          fYoutube.value = cleanYt ? `https://www.youtube.com/watch?v=${cleanYt}` : '';
+          const cleanYt = extractCleanYoutubeUrl(prod.youtubeUrl || prod.youtubeId);
+          fYoutube.value = cleanYt || '';
           if (fYtDuration) fYtDuration.value = prod.youtubeDuration || '08:45';
           fYtCaption.value = prod.youtubeCaption || '';
           fTiktok.value = extractCleanTiktokUrl(prod.tiktokUrl);
@@ -8862,6 +8903,7 @@
             specs: specsCollected,
             closedFields: existingProd && existingProd.closedFields ? Object.assign({}, existingProd.closedFields) : {},
             youtubeId: extractYoutubeId(fYoutube.value),
+            youtubeUrl: extractCleanYoutubeUrl(fYoutube.value),
             youtubeDuration: (fYtDuration && fYtDuration.value.trim()) || '08:45',
             youtubeCaption: fYtCaption.value.trim() || displayName,
             tiktokUrl: extractCleanTiktokUrl(fTiktok.value),
@@ -9806,36 +9848,47 @@
             modalDirectFbInput.value = cleanFbUrl || '';
           }
 
-          // 3. YouTube Card Setup (Never push iframe history entry; show embed when ytId exists, otherwise show clickable fallback card)
-          const ytId = extractYoutubeId(prod.youtubeId);
-          const hasValidYt = Boolean(ytId) && !cf.youtube;
-          const rawDefaultYt = String(storeSettings.youtubeUrl || 'https://www.youtube.com').trim();
-          const defaultYtHref = rawDefaultYt.startsWith('http')
-            ? rawDefaultYt
-            : `https://www.youtube.com/${rawDefaultYt.startsWith('@') ? rawDefaultYt : '@' + rawDefaultYt}`;
-          const targetYtHref = hasValidYt ? `https://www.youtube.com/watch?v=${ytId}` : defaultYtHref;
+          // 3. YouTube Card Setup (Redirects to Gocha's main YouTube channel when no product video link is pasted, just like TikTok, Facebook & Instagram!)
+          if (
+            !storeSettings.youtubeUrl ||
+            storeSettings.youtubeUrl === '@voltandvox' ||
+            storeSettings.youtubeUrl === '@voltandvox.ge' ||
+            storeSettings.youtubeUrl === 'https://www.youtube.com/@voltandvox' ||
+            storeSettings.youtubeUrl === 'https://www.youtube.com'
+          ) {
+            storeSettings.youtubeUrl = 'https://www.youtube.com/@iyidebasainteresonivtebi';
+          }
+          const rawYtSetting = String(
+            storeSettings.youtubeUrl || 'https://www.youtube.com/@iyidebasainteresonivtebi'
+          ).trim();
+          const defaultYtHref = rawYtSetting.startsWith('http')
+            ? rawYtSetting
+            : `https://www.youtube.com/${rawYtSetting.startsWith('@') ? rawYtSetting : '@' + rawYtSetting}`;
+          const cleanYtUrl = extractCleanYoutubeUrl(prod.youtubeUrl || prod.youtubeId);
+          const hasCustomYt = Boolean(cleanYtUrl && cleanYtUrl.startsWith('http'));
+          const targetYtHref = hasCustomYt ? cleanYtUrl : defaultYtHref;
 
           if (modalYoutubeIframe) {
-            const newYtSrc = hasValidYt ? `https://www.youtube.com/embed/${ytId}?rel=0` : 'about:blank';
-            setIframeUrlWithoutHistory(modalYoutubeIframe, newYtSrc);
-            modalYoutubeIframe.classList.toggle('hidden', !hasValidYt);
+            modalYoutubeIframe.classList.add('hidden');
           }
           if (modalYoutubeFallback) {
-            modalYoutubeFallback.classList.toggle('hidden', hasValidYt);
+            modalYoutubeFallback.classList.remove('hidden');
             modalYoutubeFallback.href = targetYtHref;
           }
           if (modalYtFallbackImg) {
             modalYtFallbackImg.src = previewImgSrc;
           }
           if (modalYtFallbackBadge) {
-            modalYtFallbackBadge.textContent = hasValidYt ? '▶ ვიდეოს ჩართვა YouTube-ზე ↗' : '▶ YouTube-ზე ნახვა ↗';
+            modalYtFallbackBadge.textContent = hasCustomYt
+              ? '▶ ვიდეოს ჩართვა YouTube-ზე ↗'
+              : '▶ YouTube გვერდზე ნახვა ↗';
           }
-          if (modalYtDuration) modalYtDuration.textContent = hasValidYt ? (prod.youtubeDuration || '▶ ვიდეო') : 'გახსნა ↗';
+          if (modalYtDuration) modalYtDuration.textContent = 'გახსნა ↗';
           if (modalYtCaption) modalYtCaption.textContent = product.youtubeCaption || product.name;
           if (modalYtHeaderLink) modalYtHeaderLink.href = targetYtHref;
           if (modalYtExternal) modalYtExternal.href = targetYtHref;
           if (modalDirectYtInput && document.activeElement !== modalDirectYtInput) {
-            modalDirectYtInput.value = ytId ? `https://www.youtube.com/watch?v=${ytId}` : '';
+            modalDirectYtInput.value = cleanYtUrl || '';
           }
 
           // 4. Instagram Card Setup
@@ -9937,8 +9990,7 @@
           if (mieSkuInput) mieSkuInput.value = prod.sku || '';
           if (mieDescInput) mieDescInput.value = prod.description || '';
           if (mieYoutubeInput) {
-            const cleanYtId = extractYoutubeId(prod.youtubeId);
-            mieYoutubeInput.value = cleanYtId ? `https://www.youtube.com/watch?v=${cleanYtId}` : '';
+            mieYoutubeInput.value = extractCleanYoutubeUrl(prod.youtubeUrl || prod.youtubeId) || '';
           }
           if (mieTiktokInput) mieTiktokInput.value = extractCleanTiktokUrl(prod.tiktokUrl);
           if (mieFacebookInput) mieFacebookInput.value = extractCleanFacebookUrl(prod.facebookUrl);
@@ -10083,7 +10135,9 @@
           }
 
           if (mieYoutubeInput && !cf.youtube) {
-            prod.youtubeId = mieYoutubeInput.value.trim() ? extractYoutubeId(mieYoutubeInput.value.trim()) : '';
+            const rawYtVal = mieYoutubeInput.value.trim();
+            prod.youtubeId = rawYtVal ? extractYoutubeId(rawYtVal) : '';
+            prod.youtubeUrl = rawYtVal ? extractCleanYoutubeUrl(rawYtVal) : '';
           }
           if (mieTiktokInput && !cf.tiktok) {
             prod.tiktokUrl = extractCleanTiktokUrl(mieTiktokInput.value);
@@ -10216,9 +10270,13 @@
           delete cf[fieldKey];
           if (fieldKey === 'youtube') {
             delete cf.youtubeExplicit;
-            const ytId = rawVal && rawVal.trim() ? extractYoutubeId(rawVal.trim()) : '';
+            delete cf.youtubeExplicitV2;
+            const rawYtVal = rawVal ? rawVal.trim() : '';
+            const ytId = rawYtVal ? extractYoutubeId(rawYtVal) : '';
+            const cleanYt = rawYtVal ? extractCleanYoutubeUrl(rawYtVal) : '';
             activeModalProduct.youtubeId = ytId;
-            if (mieYoutubeInput) mieYoutubeInput.value = ytId ? `https://www.youtube.com/watch?v=${ytId}` : '';
+            activeModalProduct.youtubeUrl = cleanYt;
+            if (mieYoutubeInput) mieYoutubeInput.value = cleanYt || '';
           } else if (fieldKey === 'tiktok') {
             const cleanTt = extractCleanTiktokUrl(rawVal);
             activeModalProduct.tiktokUrl = cleanTt;
@@ -10273,7 +10331,9 @@
             cf[fieldKey] = true;
             if (fieldKey === 'youtube') {
               cf.youtubeExplicit = true;
+              cf.youtubeExplicitV2 = true;
               activeModalProduct.youtubeId = '';
+              activeModalProduct.youtubeUrl = '';
               if (mieYoutubeInput) mieYoutubeInput.value = '';
             } else if (fieldKey === 'tiktok') {
               activeModalProduct.tiktokUrl = '';
@@ -10335,7 +10395,9 @@
                 if (mieFacebookInput) mieFacebookInput.value = '';
               } else if (fieldKey === 'youtube') {
                 cf.youtubeExplicit = true;
+                cf.youtubeExplicitV2 = true;
                 activeModalProduct.youtubeId = '';
+                activeModalProduct.youtubeUrl = '';
                 if (mieYoutubeInput) mieYoutubeInput.value = '';
               } else if (fieldKey === 'instagram') {
                 activeModalProduct.instagramUrl = '';
@@ -10372,6 +10434,7 @@
               delete cf[fieldKey];
               if (fieldKey === 'youtube') {
                 delete cf.youtubeExplicit;
+                delete cf.youtubeExplicitV2;
               }
               populateInlineProductEditor(activeModalProduct);
               refreshOpenProductModalView(activeModalProduct);
