@@ -7903,6 +7903,9 @@
           });
 
           updateCategoryTabCounts();
+          if (typeof renderLiveInfoBanner === 'function') {
+            renderLiveInfoBanner();
+          }
           if (typeof syncWeatherStateFromSettings === 'function') {
             syncWeatherStateFromSettings();
           }
