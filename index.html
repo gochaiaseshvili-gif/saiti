@@ -209,7 +209,8 @@
       body.customer-view-mode #home-chat-role-seller,
       body.customer-view-mode #modal-chat-role-seller,
       body.customer-view-mode #enter-customer-view-btn,
-      body.customer-view-mode .owner-only-video-input {
+      body.customer-view-mode .owner-only-video-input,
+      body.customer-view-mode .owner-only-admin-el {
         display: none !important;
       }
     </style>
@@ -357,7 +358,8 @@
         <!-- Row 0 (Directly Under Header Catalog): Interactive Category Filter Tabs + Sort Selector -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div
-            class="flex items-center gap-1.5 overflow-x-auto no-scrollbar p-1 bg-stone-100 rounded-xl border border-zinc-200/70"
+            id="category-tabs-bar"
+            class="flex flex-wrap items-center gap-1.5 p-1.5 bg-stone-100 rounded-xl border border-zinc-200/70"
             role="tablist"
             aria-label="კატეგორიების ფილტრი"
           >
@@ -367,7 +369,7 @@
               aria-selected="true"
               data-category="all"
               id="cat-btn-all"
-              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition theme-bg shadow-sm"
+              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition theme-bg shadow-sm cursor-pointer"
             >
               ყველა პროდუქტი
             </button>
@@ -377,7 +379,7 @@
               aria-selected="false"
               data-category="karaoke"
               id="cat-btn-karaoke"
-              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950"
+              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950 cursor-pointer"
             >
               კარაოკე დინამიკები
             </button>
@@ -387,7 +389,7 @@
               aria-selected="false"
               data-category="solar"
               id="cat-btn-solar"
-              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950"
+              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950 cursor-pointer"
             >
               სოლარ გენერატორები
             </button>
@@ -397,9 +399,19 @@
               aria-selected="false"
               data-category="bundle"
               id="cat-btn-bundle"
-              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950"
+              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950 cursor-pointer"
             >
               კომბო ნაკრები
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-category="microphone"
+              id="cat-btn-microphone"
+              class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition text-zinc-600 hover:text-zinc-950 cursor-pointer"
+            >
+              მიკროფონი
             </button>
             <button
               type="button"
@@ -417,11 +429,21 @@
             </button>
           </div>
 
-          <div class="flex items-center justify-between sm:justify-end gap-2">
+          <div class="flex flex-wrap items-center justify-between sm:justify-end gap-2">
+            <button
+              id="toggle-cat-manager-btn"
+              type="button"
+              class="owner-only-admin-el min-h-[38px] px-3.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-xs font-extrabold text-amber-950 flex items-center gap-1.5 whitespace-nowrap shrink-0 active:scale-[0.98] fast-transition cursor-pointer shadow-xs"
+              title="ახალი გრაფის / კატეგორიის ხელით დამატება (მაგ: მიკროფონი) და მართვა"
+            >
+              <span>📂</span>
+              <span>+ გრაფის დამატება</span>
+            </button>
+
             <button
               id="quick-add-product-btn"
               type="button"
-              class="min-h-[38px] px-3.5 py-1.5 rounded-xl border theme-border theme-bg-soft text-xs font-semibold text-zinc-900 hover:bg-stone-100 flex items-center gap-1.5 whitespace-nowrap shrink-0 active:scale-[0.98] fast-transition"
+              class="min-h-[38px] px-3.5 py-1.5 rounded-xl border theme-border theme-bg-soft text-xs font-semibold text-zinc-900 hover:bg-stone-100 flex items-center gap-1.5 whitespace-nowrap shrink-0 active:scale-[0.98] fast-transition cursor-pointer"
             >
               <svg class="w-4 h-4 theme-text" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
@@ -440,6 +462,49 @@
               <option id="sort-opt-discount" value="discount">მაქსიმალური დანაზოგი</option>
             </select>
           </div>
+        </div>
+
+        <!-- On-Page Admin Category / Section Manager Panel (Add Unlimited Categories like "მიკროფონი" & Upload Directly) -->
+        <div
+          id="inline-cat-manager-panel"
+          class="owner-only-admin-el hidden rounded-2xl bg-gradient-to-br from-amber-50/95 via-white to-stone-50 border-2 theme-border p-4 space-y-3.5 shadow-md"
+        >
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-zinc-200/80">
+            <div>
+              <h3 class="text-sm sm:text-base font-extrabold text-zinc-950 flex items-center gap-2">
+                <span>📂</span>
+                <span>გრაფების (კატეგორიების) ხელით დამატება და მართვა</span>
+              </h3>
+              <p class="text-xs text-zinc-600">
+                ჩაწერეთ ნებისმიერი ახალი გრაფის სახელი (მაგ: <strong>მიკროფონი</strong>, <strong>განათება</strong>, <strong>სადგამები</strong>, <strong>ხმის პულტი</strong>) — შეგიძლიათ დაამატოთ რამდენიც გსურთ და თითოეულ გრაფაში ატვირთოთ შესაბამისი ნივთები.
+              </p>
+            </div>
+            <button
+              type="button"
+              id="close-inline-cat-manager-btn"
+              class="self-start sm:self-auto min-h-[34px] px-3 py-1 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold cursor-pointer shrink-0"
+            >
+              ✕ დახურვა
+            </button>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+            <input
+              id="inline-new-cat-input"
+              type="text"
+              placeholder="ჩაწერეთ ახალი გრაფის სახელი (მაგ: მიკროფონი, განათება, კაბელები)..."
+              class="flex-1 min-h-[42px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
+            />
+            <button
+              type="button"
+              id="inline-add-cat-btn"
+              class="theme-bg min-h-[42px] px-5 py-2 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
+            >
+              + ახალი გრაფის დამატება
+            </button>
+          </div>
+
+          <div id="inline-cat-manager-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
         </div>
 
         <!-- Row 0.2: Compact Trust Badges + Live Date, Clock & Weather Bar -->
@@ -1838,7 +1903,23 @@
                       <option value="karaoke">კარაოკე დინამიკები</option>
                       <option value="solar">სოლარ გენერატორები</option>
                       <option value="bundle">კომბო ნაკრები</option>
+                      <option value="microphone">მიკროფონი</option>
                     </select>
+                    <div class="flex items-center gap-1 mt-1.5">
+                      <input
+                        id="mie-new-cat-input"
+                        type="text"
+                        placeholder="+ ახალი გრაფა (მაგ: მიკროფონი)"
+                        class="flex-1 min-h-[32px] px-2 py-1 rounded-lg border border-zinc-300 bg-white text-[11px] text-zinc-900 focus:outline-none focus:border-zinc-900"
+                      />
+                      <button
+                        type="button"
+                        id="mie-add-cat-btn"
+                        class="theme-bg min-h-[32px] px-2.5 py-1 rounded-lg text-[10px] font-extrabold text-white whitespace-nowrap cursor-pointer shrink-0"
+                      >
+                        + დამატება
+                      </button>
+                    </div>
                   </div>
                   <div data-mie-field-closed="category" class="hidden min-h-[40px] px-2.5 py-1.5 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
                     <span class="text-[11px] font-bold text-zinc-500 truncate">კატეგორია დამალულია</span>
@@ -3854,6 +3935,37 @@
               </div>
             </div>
 
+            <!-- DYNAMIC CATEGORY / SECTION MANAGER IN ADMIN PANEL TAB 1 -->
+            <div class="p-4 rounded-2xl bg-amber-50/70 border-2 theme-border space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h4 class="text-sm font-extrabold text-zinc-950 flex items-center gap-1.5">
+                    <span>📂</span>
+                    <span>საიტის გრაფები / კატეგორიები (დაამატეთ რამდენიც გსურთ: მაგ. მიკროფონი, განათება, სადგამები...)</span>
+                  </h4>
+                  <p class="text-xs text-zinc-600">
+                    ჩაწერეთ გრაფის სახელი და დააჭირეთ „+ ახალი გრაფის დამატება“-ს. შემდეგ დააჭირეთ „+ ამ გრაფაში ატვირთვა“-ს, რომ პირდაპირ იმ გრაფაში ატვირთოთ ნივთები.
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input
+                  id="cp-new-cat-input"
+                  type="text"
+                  placeholder="ჩაწერეთ ახალი გრაფის სახელი (მაგ: მიკროფონი)..."
+                  class="flex-1 min-h-[40px] px-3.5 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
+                />
+                <button
+                  type="button"
+                  id="cp-add-cat-btn"
+                  class="theme-bg min-h-[40px] px-4 py-1.5 rounded-xl text-xs font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
+                >
+                  + ახალი გრაფის დამატება
+                </button>
+              </div>
+              <div id="cp-cat-manager-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2"></div>
+            </div>
+
             <div id="cp-products-table-list" class="space-y-3"></div>
           </div>
 
@@ -4016,16 +4128,32 @@
 
               <div class="sm:col-span-3 space-y-1.5">
                 <label for="cp-prod-category" class="block text-xs font-semibold text-zinc-800">
-                  კატეგორიის ფილტრი *
+                  კატეგორიის ფილტრი (გრაფა) *
                 </label>
                 <select
                   id="cp-prod-category"
                   class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border border-zinc-300 text-sm bg-white focus:outline-none focus:border-zinc-900"
                 >
-                  <option value="karaoke">კარაოკე დინამიკი</option>
-                  <option value="solar">სოლარ გენერატორი</option>
+                  <option value="karaoke">კარაოკე დინამიკები</option>
+                  <option value="solar">სოლარ გენერატორები</option>
                   <option value="bundle">კომბო ნაკრები</option>
+                  <option value="microphone">მიკროფონი</option>
                 </select>
+                <div class="flex items-center gap-1.5 pt-1">
+                  <input
+                    id="cp-form-new-cat-input"
+                    type="text"
+                    placeholder="+ ახალი გრაფა (მაგ: მიკროფონი)"
+                    class="flex-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs text-zinc-900 focus:outline-none focus:border-zinc-900"
+                  />
+                  <button
+                    type="button"
+                    id="cp-form-add-cat-btn"
+                    class="theme-bg min-h-[34px] px-2.5 py-1 rounded-lg text-[11px] font-extrabold text-white whitespace-nowrap cursor-pointer shrink-0"
+                  >
+                    + შექმნა
+                  </button>
+                </div>
               </div>
 
               <div class="sm:col-span-3 space-y-1.5">
@@ -4593,7 +4721,15 @@
           catAll: 'ყველა პროდუქტი',
           catKaraoke: 'კარაოკე დინამიკები',
           catSolar: 'სოლარ გენერატორები',
-          catBundle: 'კომბო ნაკრებები',
+          catBundle: 'კომბო ნაკრები',
+          customCategories: [
+            { id: 'karaoke', label: 'კარაოკე დინამიკები' },
+            { id: 'solar', label: 'სოლარ გენერატორები' },
+            { id: 'bundle', label: 'კომბო ნაკრები' },
+            { id: 'microphone', label: 'მიკროფონი' }
+          ],
+          microphoneDefaultAdded: true,
+          deletedCategoryIds: [],
           catalogTitle: 'კარაოკე დინამიკები და სოლარ გენერატორები',
           searchPlaceholder: 'ძებნა: კარაოკე, სოლარ გენერატორი, ვატი...',
           chatTitle: 'მისწერე გამყიდველს პირდაპირ საიტზე',
@@ -7393,32 +7529,228 @@
           }
         }
 
+        function ensureStoreCategories() {
+          if (!Array.isArray(storeSettings.customCategories) || storeSettings.customCategories.length === 0) {
+            storeSettings.customCategories = [
+              { id: 'karaoke', label: storeSettings.catKaraoke || DEFAULT_SETTINGS.catKaraoke || 'კარაოკე დინამიკები' },
+              { id: 'solar', label: storeSettings.catSolar || DEFAULT_SETTINGS.catSolar || 'სოლარ გენერატორები' },
+              { id: 'bundle', label: storeSettings.catBundle || DEFAULT_SETTINGS.catBundle || 'კომბო ნაკრები' },
+              { id: 'microphone', label: 'მიკროფონი' }
+            ];
+            storeSettings.microphoneDefaultAdded = true;
+          } else {
+            storeSettings.customCategories = storeSettings.customCategories
+              .filter((c) => c && c.id && String(c.label || '').trim())
+              .map((c) => ({ id: String(c.id).trim(), label: String(c.label).trim() }));
+            if (!storeSettings.microphoneDefaultAdded) {
+              const hasMic = storeSettings.customCategories.some(
+                (c) => c.id === 'microphone' || c.label.toLowerCase().includes('მიკროფონ')
+              );
+              if (!hasMic) {
+                storeSettings.customCategories.push({ id: 'microphone', label: 'მიკროფონი' });
+              }
+              storeSettings.microphoneDefaultAdded = true;
+            }
+          }
+
+          const deletedIds = Array.isArray(storeSettings.deletedCategoryIds) ? storeSettings.deletedCategoryIds : [];
+          if (Array.isArray(productsList)) {
+            productsList.forEach((p) => {
+              if (
+                p &&
+                p.category &&
+                p.category !== 'all' &&
+                p.category !== 'wishlist' &&
+                !deletedIds.includes(p.category) &&
+                !storeSettings.customCategories.some((c) => c.id === p.category)
+              ) {
+                storeSettings.customCategories.push({
+                  id: String(p.category).trim(),
+                  label: String(p.categoryLabel || p.category).trim()
+                });
+              }
+            });
+          }
+          return storeSettings.customCategories;
+        }
+
+        function getCategoryLabelById(catId) {
+          const cats = ensureStoreCategories();
+          const found = cats.find((c) => c.id === catId);
+          if (found && found.label) return found.label;
+          if (catId === 'karaoke') return 'კარაოკე დინამიკები';
+          if (catId === 'solar') return 'სოლარ გენერატორები';
+          if (catId === 'bundle') return 'კომბო ნაკრები';
+          if (catId === 'microphone') return 'მიკროფონი';
+          return 'პროდუქტი';
+        }
+
+        function populateCategorySelectOptions(selectEl, selectedVal) {
+          if (!selectEl) return;
+          const cats = ensureStoreCategories();
+          const currentVal = selectedVal !== undefined ? selectedVal : selectEl.value;
+          selectEl.innerHTML = cats
+            .map((c) => {
+              const safeId = String(c.id).replace(/"/g, '&quot;');
+              const safeLbl = String(c.label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              return `<option value="${safeId}" ${c.id === currentVal ? 'selected' : ''}>${safeLbl}</option>`;
+            })
+            .join('');
+          if (currentVal && cats.some((c) => c.id === currentVal)) {
+            selectEl.value = currentVal;
+          } else if (cats.length > 0) {
+            selectEl.value = cats[0].id;
+          }
+        }
+
+        function renderCategoryManagerLists() {
+          const cats = ensureStoreCategories();
+          const containers = [
+            document.getElementById('inline-cat-manager-list'),
+            document.getElementById('cp-cat-manager-list')
+          ].filter(Boolean);
+          if (containers.length === 0) return;
+
+          const html = cats
+            .map((c, idx) => {
+              const count = productsList.filter((p) => p.category === c.id).length;
+              const safeId = String(c.id).replace(/"/g, '&quot;');
+              const safeLbl = String(c.label).replace(/"/g, '&quot;');
+              return `
+                <div class="p-2.5 rounded-xl bg-white border border-zinc-200/90 shadow-2xs flex flex-col gap-2">
+                  <div class="flex items-center justify-between gap-1.5">
+                    <span class="px-2 py-0.5 rounded-md bg-stone-100 text-zinc-700 text-[11px] font-extrabold">გრაფა #${idx + 1} • ${count} ნივთი</span>
+                    <button
+                      type="button"
+                      data-cat-delete-id="${safeId}"
+                      title="ამ გრაფის წაშლა"
+                      class="px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-bold cursor-pointer"
+                    >✕ წაშლა</button>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <input
+                      type="text"
+                      data-cat-rename-id="${safeId}"
+                      value="${safeLbl}"
+                      placeholder="გრაფის სახელი..."
+                      class="flex-1 min-h-[36px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
+                    />
+                  </div>
+                  <div class="flex items-center gap-1.5 pt-0.5">
+                    <button
+                      type="button"
+                      data-cat-upload-into="${safeId}"
+                      class="flex-1 min-h-[34px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-extrabold flex items-center justify-center gap-1 shadow-xs active:scale-95 fast-transition cursor-pointer"
+                    >
+                      <span>+ ამ გრაფაში ატვირთვა</span>
+                    </button>
+                    <button
+                      type="button"
+                      data-cat-view-tab="${safeId}"
+                      class="min-h-[34px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-[11px] font-bold cursor-pointer"
+                    >
+                      ნახვა
+                    </button>
+                  </div>
+                </div>
+              `;
+            })
+            .join('');
+
+          containers.forEach((el) => {
+            // Preserve focus if user is actively typing a rename inside this container
+            if (el.contains(document.activeElement) && document.activeElement.hasAttribute('data-cat-rename-id')) {
+              return;
+            }
+            el.innerHTML = html;
+          });
+        }
+
         function updateCategoryTabCounts() {
+          const cats = ensureStoreCategories();
           const allCount = productsList.length;
-          const krkCount = productsList.filter((p) => p.category === 'karaoke').length;
-          const slrCount = productsList.filter((p) => p.category === 'solar').length;
-          const bndCount = productsList.filter((p) => p.category === 'bundle').length;
-
           const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
-          const catAllBtn = document.getElementById('cat-btn-all');
-          const catKrkBtn = document.getElementById('cat-btn-karaoke');
-          const catSlrBtn = document.getElementById('cat-btn-solar');
-          const catBndBtn = document.getElementById('cat-btn-bundle');
           const cpTotal = document.getElementById('cp-total-count');
-
-          const lblAll = currentLang === 'ka' ? (storeSettings.catAll || strings.catAll) : strings.catAll;
-          const lblKrk = currentLang === 'ka' ? (storeSettings.catKaraoke || strings.catKaraoke) : strings.catKaraoke;
-          const lblSlr = currentLang === 'ka' ? (storeSettings.catSolar || strings.catSolar) : strings.catSolar;
-          const lblBnd = currentLang === 'ka' ? (storeSettings.catBundle || strings.catBundle) : strings.catBundle;
-
-          if (catAllBtn) catAllBtn.textContent = `${lblAll} (${allCount})`;
-          if (catKrkBtn) catKrkBtn.textContent = `${lblKrk} (${krkCount})`;
-          if (catSlrBtn) catSlrBtn.textContent = `${lblSlr} (${slrCount})`;
-          if (catBndBtn) catBndBtn.textContent = `${lblBnd} (${bndCount})`;
           if (cpTotal) cpTotal.textContent = String(allCount);
 
-          const catWlLabel = document.getElementById('cat-wishlist-label');
-          if (catWlLabel) catWlLabel.textContent = strings.catWishlist;
+          const tabsBar = document.getElementById('category-tabs-bar');
+          if (tabsBar) {
+            const lblAll = currentLang === 'ka' ? (storeSettings.catAll || strings.catAll) : strings.catAll;
+            const allSelected = activeCategory === 'all';
+            const wlSelected = activeCategory === 'wishlist';
+
+            const catButtonsHtml = cats
+              .map((c) => {
+                const cnt = productsList.filter((p) => p.category === c.id).length;
+                const isSel = activeCategory === c.id;
+                const safeId = String(c.id).replace(/"/g, '&quot;');
+                let displayLbl = c.label;
+                if (currentLang !== 'ka') {
+                  if (c.id === 'karaoke') displayLbl = strings.catKaraoke;
+                  else if (c.id === 'solar') displayLbl = strings.catSolar;
+                  else if (c.id === 'bundle') displayLbl = strings.catBundle;
+                }
+                const safeLbl = String(displayLbl).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return `
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected="${isSel ? 'true' : 'false'}"
+                    data-category="${safeId}"
+                    id="cat-btn-${safeId}"
+                    class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${
+                      isSel ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
+                    }"
+                  >${safeLbl} (${cnt})</button>
+                `;
+              })
+              .join('');
+
+            tabsBar.innerHTML = `
+              <button
+                type="button"
+                role="tab"
+                aria-selected="${allSelected ? 'true' : 'false'}"
+                data-category="all"
+                id="cat-btn-all"
+                class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${
+                  allSelected ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
+                }"
+              >${lblAll} (${allCount})</button>
+              ${catButtonsHtml}
+              <button
+                type="button"
+                role="tab"
+                aria-selected="${wlSelected ? 'true' : 'false'}"
+                data-category="wishlist"
+                id="cat-btn-wishlist"
+                class="category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition flex items-center gap-1.5 cursor-pointer ${
+                  wlSelected ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950'
+                }"
+              >
+                <svg class="w-3.5 h-3.5 text-rose-500 fill-current shrink-0" viewBox="0 0 24 24">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                <span id="cat-wishlist-label">${strings.catWishlist}</span>
+                <span id="cat-wishlist-count-badge" class="wishlist-count-badge px-1.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-700 leading-none">${wishlistIds.size}</span>
+              </button>
+            `;
+          }
+
+          const quickAddTxt = document.getElementById('quick-add-btn-text');
+          if (quickAddTxt) {
+            if (activeCategory && activeCategory !== 'all' && activeCategory !== 'wishlist') {
+              const activeLbl = getCategoryLabelById(activeCategory);
+              quickAddTxt.textContent = `„${activeLbl}“-ში დამატება`;
+            } else {
+              quickAddTxt.textContent = strings.quickAddProduct || 'პროდუქტის დამატება';
+            }
+          }
+
+          populateCategorySelectOptions(document.getElementById('cp-prod-category'));
+          populateCategorySelectOptions(document.getElementById('mie-category'));
+          renderCategoryManagerLists();
+
           document.querySelectorAll('.wishlist-count-badge').forEach((badge) => {
             badge.textContent = String(wishlistIds.size);
           });
@@ -7587,6 +7919,52 @@
               const emptyBrowseBtn = document.getElementById('wishlist-empty-browse-btn');
               if (emptyBrowseBtn) {
                 emptyBrowseBtn.addEventListener('click', () => setCategoryFilter('all'));
+              }
+              window.scrollTo({ top: prevScroll, behavior: 'instant' });
+              return;
+            }
+            if (!query && activeCategory && activeCategory !== 'all') {
+              emptySearchEl.classList.add('hidden');
+              const activeCatLabel = escapeHtmlSafe(getCategoryLabelById(activeCategory));
+              const safeCatId = escapeHtmlSafe(activeCategory);
+              productGridEl.innerHTML = `
+                <div class="col-span-full py-12 px-6 text-center bg-white rounded-3xl border-2 border-dashed border-zinc-300 shadow-sm max-w-xl mx-auto my-4 space-y-4">
+                  <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center text-3xl shadow-xs">
+                    📂
+                  </div>
+                  <h3 class="font-display text-lg sm:text-xl font-extrabold text-zinc-950">გრაფა „${activeCatLabel}“ ჯერ ცარიელია</h3>
+                  <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed max-w-md mx-auto">
+                    ამ კატეგორიაში პროდუქტი ჯერ არ არის ატვირთული. დააჭირეთ ქვედა ღილაკს და ატვირთეთ ნივთი პირდაპირ „${activeCatLabel}“ გრაფაში.
+                  </p>
+                  <div class="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+                    <button
+                      type="button"
+                      data-empty-cat-upload="${safeCatId}"
+                      class="owner-only-admin-el theme-bg px-5 py-3 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-md hover:shadow-lg active:scale-95 fast-transition cursor-pointer inline-flex items-center gap-2"
+                    >
+                      <span>+ „${activeCatLabel}“ გრაფაში ნივთის ატვირთვა (5 ფოტოთი)</span>
+                    </button>
+                    <button
+                      type="button"
+                      id="empty-cat-back-all-btn"
+                      class="px-5 py-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-xs sm:text-sm font-bold cursor-pointer"
+                    >
+                      ყველა პროდუქტის ნახვა
+                    </button>
+                  </div>
+                </div>
+              `;
+              const backAllBtn = document.getElementById('empty-cat-back-all-btn');
+              if (backAllBtn) {
+                backAllBtn.addEventListener('click', () => setCategoryFilter('all'));
+              }
+              const emptyUploadBtn = productGridEl.querySelector('[data-empty-cat-upload]');
+              if (emptyUploadBtn) {
+                emptyUploadBtn.addEventListener('click', () => {
+                  const targetCat = emptyUploadBtn.getAttribute('data-empty-cat-upload');
+                  resetProductForm(targetCat);
+                  openControlPanel('form');
+                });
               }
               window.scrollTo({ top: prevScroll, behavior: 'instant' });
               return;
@@ -8357,9 +8735,10 @@
         const fIgCaption = document.getElementById('cp-prod-ig-caption');
 
         const CATEGORY_LABELS = {
-          karaoke: 'კარაოკე სისტემა',
-          solar: 'სოლარ გენერატორი',
-          bundle: 'კომბო ნაკრები'
+          karaoke: 'კარაოკე დინამიკები',
+          solar: 'სოლარ გენერატორები',
+          bundle: 'კომბო ნაკრები',
+          microphone: 'მიკროფონი'
         };
 
         const DEFAULT_SPEC_LABELS = [
@@ -8798,11 +9177,19 @@
         const fCategoryLabel = document.getElementById('cp-prod-category-label');
         const fYtDuration = document.getElementById('cp-prod-yt-duration');
 
-        function resetProductForm() {
+        function resetProductForm(preferredCategory) {
+          const cats = ensureStoreCategories();
+          const targetCat =
+            preferredCategory && cats.some((c) => c.id === preferredCategory)
+              ? preferredCategory
+              : activeCategory && activeCategory !== 'all' && activeCategory !== 'wishlist' && cats.some((c) => c.id === activeCategory)
+              ? activeCategory
+              : (cats[0] && cats[0].id) || 'karaoke';
+
           fId.value = '';
           fName.value = '';
-          fCategory.value = 'karaoke';
-          if (fCategoryLabel) fCategoryLabel.value = '';
+          populateCategorySelectOptions(fCategory, targetCat);
+          if (fCategoryLabel) fCategoryLabel.value = getCategoryLabelById(targetCat);
           fOldPrice.value = '';
           fNewPrice.value = '';
           fBadge.value = 'აქცია';
@@ -8820,7 +9207,8 @@
           if (fIgCaption) fIgCaption.value = '';
           formFiveImages = ['', '', '', '', ''];
 
-          document.getElementById('cp-form-heading').textContent = 'ახალი პროდუქტის დამატება ხელით (5 სურათით)';
+          const targetCatLbl = getCategoryLabelById(targetCat);
+          document.getElementById('cp-form-heading').textContent = `ახალი პროდუქტის დამატება გრაფაში: „${targetCatLbl}“ (5 სურათით)`;
           document.getElementById('cp-submit-btn-label').textContent = 'პროდუქტის დამატება და საიტზე დაბრუნება';
           buildSpecInputs(null);
           renderFiveImageSlotsUI();
@@ -8835,8 +9223,8 @@
 
           fId.value = prod.id;
           fName.value = prod.name || '';
-          fCategory.value = prod.category || 'karaoke';
-          if (fCategoryLabel) fCategoryLabel.value = prod.categoryLabel || '';
+          populateCategorySelectOptions(fCategory, prod.category || 'karaoke');
+          if (fCategoryLabel) fCategoryLabel.value = prod.categoryLabel || getCategoryLabelById(prod.category || 'karaoke');
           fOldPrice.value = prod.oldPrice || '';
           fNewPrice.value = prod.newPrice || '';
           fBadge.value = prod.badgeText || '';
@@ -8858,6 +9246,18 @@
           document.getElementById('cp-submit-btn-label').textContent = 'შენახვა და საიტზე დაბრუნება';
           buildSpecInputs(prod.specs || []);
           switchCpTab('form');
+        }
+
+        if (fCategory) {
+          fCategory.addEventListener('change', () => {
+            const selectedLbl = getCategoryLabelById(fCategory.value);
+            if (fCategoryLabel) {
+              fCategoryLabel.value = selectedLbl;
+            }
+            if (!fId.value.trim()) {
+              document.getElementById('cp-form-heading').textContent = `ახალი პროდუქტის დამატება გრაფაში: „${selectedLbl}“ (5 სურათით)`;
+            }
+          });
         }
 
         // Live auto-save when changing ANY field or uploading photos inside the Edit/Add Form (no Submit button click needed!)
@@ -8892,7 +9292,7 @@
             id: existingId,
             sku: fSku.value.trim(),
             category: catValue,
-            categoryLabel: customCatLabel || CATEGORY_LABELS[catValue] || 'პროდუქტი',
+            categoryLabel: customCatLabel || getCategoryLabelById(catValue) || 'პროდუქტი',
             badgeText: fBadge.value.trim(),
             name: displayName,
             shortMeta: fShortMeta.value.trim(),
@@ -9018,7 +9418,22 @@
                     <div class="space-y-2 min-w-0 flex-1">
                       <div class="flex flex-wrap items-center gap-2 text-[11px] text-zinc-500">
                         <span class="px-2 py-0.5 rounded-md bg-zinc-200/80 text-zinc-800 font-bold">#${idx + 1}</span>
-                        <span>${escapeHtmlSafe(prod.categoryLabel || '')}</span>
+                        <label class="inline-flex items-center gap-1 font-bold text-zinc-700">
+                          <span>გრაფა:</span>
+                          <select
+                            data-inline-category="${prod.id}"
+                            class="min-h-[28px] px-2 py-0.5 rounded-lg border border-zinc-300 bg-white text-xs font-extrabold text-zinc-900 focus:outline-none focus:border-zinc-900 cursor-pointer"
+                          >
+                            ${ensureStoreCategories()
+                              .map(
+                                (c) =>
+                                  `<option value="${escapeHtmlSafe(c.id)}" ${
+                                    c.id === prod.category ? 'selected' : ''
+                                  }>${escapeHtmlSafe(c.label)}</option>`
+                              )
+                              .join('')}
+                          </select>
+                        </label>
                         <span>•</span>
                         <span class="theme-text font-semibold">${customCount}/5 ატვირთული ფოტო</span>
                         <div class="flex items-center gap-1 ml-auto sm:ml-2">
@@ -9143,8 +9558,23 @@
             .join('');
         }
 
-        // Direct 1-Click 5-Photo Upload from Control Panel Tab 1 List
+        // Direct 1-Click 5-Photo Upload & Inline Category Switch from Control Panel Tab 1 List
         document.getElementById('cp-products-table-list').addEventListener('change', async (e) => {
+          const catSelect = e.target.closest('[data-inline-category]');
+          if (catSelect) {
+            const prodId = catSelect.getAttribute('data-inline-category');
+            const prod = productsList.find((p) => p.id === prodId);
+            if (prod) {
+              prod.category = catSelect.value;
+              prod.categoryLabel = getCategoryLabelById(catSelect.value);
+              updateCategoryTabCounts();
+              updateSingleProductCardInPlace(prod);
+              await saveStateEverywhere({ immediate: true });
+              showCpToast(`პროდუქტი გადატანილია გრაფაში: „${prod.categoryLabel}“!`);
+            }
+            return;
+          }
+
           const uploadInput = e.target.closest('[data-cp-list-upload]');
           if (!uploadInput) return;
           const prodId = uploadInput.getAttribute('data-cp-list-upload');
@@ -9985,7 +10415,7 @@
           if (mieNewPriceInput) mieNewPriceInput.value = prod.newPrice != null && prod.newPrice !== 0 ? prod.newPrice : '';
           if (mieOldPriceInput) mieOldPriceInput.value = prod.oldPrice != null && prod.oldPrice !== 0 ? prod.oldPrice : '';
           if (mieShortMetaInput) mieShortMetaInput.value = prod.shortMeta || '';
-          if (mieCategorySelect) mieCategorySelect.value = prod.category || 'karaoke';
+          populateCategorySelectOptions(mieCategorySelect, prod.category || 'karaoke');
           if (mieBadgeInput) mieBadgeInput.value = prod.badgeText || '';
           if (mieSkuInput) mieSkuInput.value = prod.sku || '';
           if (mieDescInput) mieDescInput.value = prod.description || '';
@@ -10101,7 +10531,7 @@
           if (!cf.category && mieCategorySelect) {
             const catValue = mieCategorySelect.value || 'karaoke';
             prod.category = catValue;
-            prod.categoryLabel = CATEGORY_LABELS[catValue] || prod.categoryLabel || 'პროდუქტი';
+            prod.categoryLabel = getCategoryLabelById(catValue) || prod.categoryLabel || 'პროდუქტი';
           }
           if (!cf.badge && mieBadgeInput) {
             prod.badgeText = mieBadgeInput.value.trim();
@@ -11853,18 +12283,207 @@
           videoTabInstagram.addEventListener('click', () => setVideoTab('instagram'));
         }
 
-        // Category Tabs & Nav Links
-        document.querySelectorAll('.category-tab-btn').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            setCategoryFilter(btn.getAttribute('data-category'));
+        // Category Tabs (Delegated so dynamically added categories work immediately) & Nav Links
+        const categoryTabsBarEl = document.getElementById('category-tabs-bar');
+        if (categoryTabsBarEl) {
+          categoryTabsBarEl.addEventListener('click', (e) => {
+            const btn = e.target.closest('.category-tab-btn');
+            if (!btn) return;
+            const cat = btn.getAttribute('data-category');
+            if (cat) setCategoryFilter(cat);
           });
-        });
+        }
 
         document.querySelectorAll('[data-nav-cat]').forEach((link) => {
           link.addEventListener('click', () => {
             setCategoryFilter(link.getAttribute('data-nav-cat'));
           });
         });
+
+        // Dynamic Category / Section Creation, Renaming, Deletion & Upload Handlers
+        function addCustomStoreCategory(rawLabel, opts = {}) {
+          const cleanLabel = String(rawLabel || '').trim();
+          if (!cleanLabel) {
+            showCpToast('გთხოვთ ჩაწეროთ ახალი გრაფის / კატეგორიის სახელი (მაგ: მიკროფონი)');
+            if (typeof showWishlistToast === 'function') {
+              showWishlistToast('⚠️ ჩაწერეთ ახალი გრაფის სახელი (მაგ: მიკროფონი)');
+            }
+            return null;
+          }
+          const cats = ensureStoreCategories();
+          const existing = cats.find((c) => c.label.toLowerCase() === cleanLabel.toLowerCase());
+          if (existing) {
+            if (opts.activateFilter !== false) {
+              setCategoryFilter(existing.id);
+            }
+            if (typeof showWishlistToast === 'function') {
+              showWishlistToast(`📂 არჩეულია გრაფა: „${existing.label}“`);
+            }
+            return existing.id;
+          }
+
+          let newId = 'cat_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 5);
+          if (
+            (cleanLabel === 'მიკროფონი' || cleanLabel === 'მიკროფონები') &&
+            !cats.some((c) => c.id === 'microphone')
+          ) {
+            newId = 'microphone';
+          }
+
+          if (Array.isArray(storeSettings.deletedCategoryIds)) {
+            storeSettings.deletedCategoryIds = storeSettings.deletedCategoryIds.filter((id) => id !== newId);
+          }
+
+          storeSettings.customCategories.push({ id: newId, label: cleanLabel });
+          updateCategoryTabCounts();
+          if (opts.activateFilter !== false) {
+            setCategoryFilter(newId);
+          }
+          saveStateEverywhere({ immediate: true });
+          showCpToast(`✅ ახალი გრაფა „${cleanLabel}“ დაემატა!`);
+          if (typeof showWishlistToast === 'function') {
+            showWishlistToast(`✅ ახალი გრაფა „${cleanLabel}“ დაემატა!`);
+          }
+          return newId;
+        }
+
+        function renameCustomStoreCategory(catId, rawNewLabel) {
+          const cleanLabel = String(rawNewLabel || '').trim();
+          if (!cleanLabel) return;
+          const cats = ensureStoreCategories();
+          const target = cats.find((c) => c.id === catId);
+          if (!target) return;
+          target.label = cleanLabel;
+          if (catId === 'karaoke') storeSettings.catKaraoke = cleanLabel;
+          if (catId === 'solar') storeSettings.catSolar = cleanLabel;
+          if (catId === 'bundle') storeSettings.catBundle = cleanLabel;
+
+          productsList.forEach((p) => {
+            if (p && p.category === catId) {
+              p.categoryLabel = cleanLabel;
+            }
+          });
+          updateCategoryTabCounts();
+          preserveScroll(() => renderProducts());
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function deleteCustomStoreCategory(catId) {
+          const cats = ensureStoreCategories();
+          if (cats.length <= 1) {
+            showCpToast('მინიმუმ 1 კატეგორიის გრაფა უნდა დარჩეს საიტზე.');
+            return;
+          }
+          const target = cats.find((c) => c.id === catId);
+          const removedLabel = target ? target.label : '';
+          storeSettings.customCategories = cats.filter((c) => c.id !== catId);
+          if (!Array.isArray(storeSettings.deletedCategoryIds)) {
+            storeSettings.deletedCategoryIds = [];
+          }
+          if (!storeSettings.deletedCategoryIds.includes(catId)) {
+            storeSettings.deletedCategoryIds.push(catId);
+          }
+          if (activeCategory === catId) {
+            setCategoryFilter('all');
+          } else {
+            updateCategoryTabCounts();
+            preserveScroll(() => renderProducts());
+          }
+          saveStateEverywhere({ immediate: true });
+          showCpToast(`გრაფა „${removedLabel}“ წაიშალა.`);
+          if (typeof showWishlistToast === 'function') {
+            showWishlistToast(`🗑️ გრაფა „${removedLabel}“ წაიშალა`);
+          }
+        }
+
+        const toggleCatManagerBtn = document.getElementById('toggle-cat-manager-btn');
+        const inlineCatManagerPanel = document.getElementById('inline-cat-manager-panel');
+        const closeInlineCatManagerBtn = document.getElementById('close-inline-cat-manager-btn');
+        if (toggleCatManagerBtn && inlineCatManagerPanel) {
+          toggleCatManagerBtn.addEventListener('click', () => {
+            const isHidden = inlineCatManagerPanel.classList.contains('hidden');
+            inlineCatManagerPanel.classList.toggle('hidden', !isHidden);
+            if (isHidden) {
+              renderCategoryManagerLists();
+              const inp = document.getElementById('inline-new-cat-input');
+              if (inp) inp.focus();
+            }
+          });
+        }
+        if (closeInlineCatManagerBtn && inlineCatManagerPanel) {
+          closeInlineCatManagerBtn.addEventListener('click', () => {
+            inlineCatManagerPanel.classList.add('hidden');
+          });
+        }
+
+        const bindNewCatInputAndBtn = (inputId, btnId, afterCreate) => {
+          const inp = document.getElementById(inputId);
+          const btn = document.getElementById(btnId);
+          if (!inp || !btn) return;
+          const handleAdd = () => {
+            const createdId = addCustomStoreCategory(inp.value, { activateFilter: !afterCreate });
+            if (createdId) {
+              inp.value = '';
+              if (typeof afterCreate === 'function') {
+                afterCreate(createdId);
+              }
+            }
+          };
+          btn.addEventListener('click', handleAdd);
+          inp.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleAdd();
+            }
+          });
+        };
+
+        bindNewCatInputAndBtn('inline-new-cat-input', 'inline-add-cat-btn');
+        bindNewCatInputAndBtn('cp-new-cat-input', 'cp-add-cat-btn');
+        bindNewCatInputAndBtn('cp-form-new-cat-input', 'cp-form-add-cat-btn', (newCatId) => {
+          populateCategorySelectOptions(fCategory, newCatId);
+          if (fCategoryLabel) fCategoryLabel.value = getCategoryLabelById(newCatId);
+          autoSaveFormProductLive({ immediate: true });
+        });
+        bindNewCatInputAndBtn('mie-new-cat-input', 'mie-add-cat-btn', (newCatId) => {
+          populateCategorySelectOptions(mieCategorySelect, newCatId);
+          applyInlineProductEditorChanges({ immediate: true });
+        });
+
+        [document.getElementById('inline-cat-manager-list'), document.getElementById('cp-cat-manager-list')].forEach(
+          (listEl) => {
+            if (!listEl) return;
+            listEl.addEventListener('input', (e) => {
+              const renameInp = e.target.closest('[data-cat-rename-id]');
+              if (!renameInp) return;
+              const catId = renameInp.getAttribute('data-cat-rename-id');
+              renameCustomStoreCategory(catId, renameInp.value);
+            });
+            listEl.addEventListener('click', (e) => {
+              const delBtn = e.target.closest('[data-cat-delete-id]');
+              if (delBtn) {
+                deleteCustomStoreCategory(delBtn.getAttribute('data-cat-delete-id'));
+                return;
+              }
+              const uploadBtn = e.target.closest('[data-cat-upload-into]');
+              if (uploadBtn) {
+                const targetCat = uploadBtn.getAttribute('data-cat-upload-into');
+                setCategoryFilter(targetCat);
+                resetProductForm(targetCat);
+                openControlPanel('form');
+                return;
+              }
+              const viewBtn = e.target.closest('[data-cat-view-tab]');
+              if (viewBtn) {
+                const targetCat = viewBtn.getAttribute('data-cat-view-tab');
+                setCategoryFilter(targetCat);
+                if (cpBackdrop && !cpBackdrop.classList.contains('hidden')) {
+                  closeControlPanel();
+                }
+              }
+            });
+          }
+        );
 
         // Search Input & Sort
         searchInput.addEventListener('input', (e) => {
@@ -12106,11 +12725,8 @@
 
             // Restore active category filter across page refresh
             const savedCat = params.get('category') || sessionStorage.getItem('vv_active_category');
-            if (
-              savedCat &&
-              ['all', 'karaoke', 'solar', 'bundle', 'wishlist'].includes(savedCat) &&
-              savedCat !== activeCategory
-            ) {
+            const validCatIds = ['all', 'wishlist', ...ensureStoreCategories().map((c) => c.id)];
+            if (savedCat && validCatIds.includes(savedCat) && savedCat !== activeCategory) {
               setCategoryFilter(savedCat, true);
             }
 
