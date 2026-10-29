@@ -8359,6 +8359,685 @@
           });
         }
 
+        const LIVE_BANNER_DEFAULT_WIDGETS = [
+          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
+          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 24 თვე გარანტია', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
+          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#6ee7b7', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
+          { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
+          { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
+          { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
+          { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' }
+        ];
+
+        function ensureLiveBannerItems() {
+          if (!storeSettings.liveBannerBgColor) {
+            storeSettings.liveBannerBgColor = '#1e3a8a';
+          }
+          if (!Array.isArray(storeSettings.liveBannerItems)) {
+            storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
+          } else if (storeSettings.liveBannerItems.length === 0 && !storeSettings.liveBannerCustomized) {
+            storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
+          } else {
+            storeSettings.liveBannerItems = storeSettings.liveBannerItems
+              .filter((it) => it && it.id)
+              .map((it) => {
+                const def = LIVE_BANNER_DEFAULT_WIDGETS.find((w) => w.id === it.id);
+                const cleanType = it.type || (def ? def.type : 'text');
+                return {
+                  id: String(it.id).trim(),
+                  type: cleanType,
+                  badgeTitle: it.badgeTitle || (def ? def.badgeTitle : '✨ დამატებული ნაწერი'),
+                  text: it.text !== undefined ? String(it.text) : (def ? def.text : ''),
+                  textColor: it.textColor ? String(it.textColor).trim() : '',
+                  bgColor: it.bgColor ? String(it.bgColor).trim() : '',
+                  offsetX: Number(it.offsetX) || 0,
+                  offsetY: Number(it.offsetY) || 0,
+                  align: it.align === 'center' || it.align === 'right' || it.align === 'left' ? it.align : (def ? def.align : 'left')
+                };
+              });
+          }
+          return storeSettings.liveBannerItems;
+        }
+
+        function escapeHtmlSimple(str) {
+          return String(str || '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+        }
+
+        function renderSingleLiveBannerItemHtml(item, idx, totalCount, showInlineControls) {
+          const safeId = escapeHtmlSimple(item.id);
+          const safeText = escapeHtmlSimple(item.text);
+          const hasBg = Boolean(item.bgColor);
+          const hasTextCol = Boolean(item.textColor);
+          const effTextCol = hasTextCol ? item.textColor : hasBg ? getAutoContrastTextColor(item.bgColor) : '';
+
+          const styleParts = [];
+          if (hasBg) {
+            styleParts.push(`background-color: ${item.bgColor} !important`);
+            styleParts.push(`border-color: rgba(255,255,255,0.22)`);
+          }
+          if (effTextCol) {
+            styleParts.push(`color: ${effTextCol} !important`);
+          }
+          const ox = Number(item.offsetX) || 0;
+          const oy = Number(item.offsetY) || 0;
+          if (ox || oy) {
+            styleParts.push(`transform: translate(${ox}px, ${oy}px)`);
+            styleParts.push(`position: relative`);
+            styleParts.push(`z-index: 10`);
+          }
+          const styleAttr = styleParts.length > 0 ? `style="${styleParts.join('; ')};"` : '';
+
+          const inlineControlsHtml = showInlineControls
+            ? `<span class="owner-only-admin-el inline-flex items-center gap-0.5 ml-1 pl-1 border-l border-white/25">
+                ${idx > 0 ? `<button type="button" data-lb-inline-move="${safeId}" data-lb-dir="-1" title="მარცხნივ გადაწევა" class="px-1 py-0.5 rounded bg-black/40 hover:bg-black/70 text-white text-[10px] leading-none cursor-pointer">⬅️</button>` : ''}
+                ${idx < totalCount - 1 ? `<button type="button" data-lb-inline-move="${safeId}" data-lb-dir="1" title="მარჯვნივ გადაწევა" class="px-1 py-0.5 rounded bg-black/40 hover:bg-black/70 text-white text-[10px] leading-none cursor-pointer">➡️</button>` : ''}
+                <button type="button" data-lb-inline-delete="${safeId}" title="ამ ნაწერის წაშლა" class="px-1 py-0.5 rounded bg-rose-600/90 hover:bg-rose-500 text-white text-[10px] leading-none font-bold cursor-pointer">✕</button>
+              </span>`
+            : '';
+
+          if (item.type === 'date') {
+            return `
+              <div
+                data-lb-chip-id="${safeId}"
+                draggable="true"
+                ${styleAttr}
+                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform"
+              >
+                ${safeText ? `<span>${safeText}</span>` : ''}
+                <span id="live-weekday" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-bold capitalize">...</span><span>, </span><span id="live-date" style="${effTextCol ? `color:${effTextCol} !important;` : ''}">...</span>
+                ${inlineControlsHtml}
+              </div>
+            `;
+          }
+
+          if (item.type === 'clock') {
+            return `
+              <div
+                data-lb-chip-id="${safeId}"
+                draggable="true"
+                ${styleAttr}
+                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform"
+              >
+                <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+                ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
+                <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
+                <span id="live-clock" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-mono-num font-bold tracking-wider">00:00:00</span>
+                ${inlineControlsHtml}
+              </div>
+            `;
+          }
+
+          if (item.type === 'weather') {
+            return `
+              <div
+                id="live-weather-widget"
+                data-lb-chip-id="${safeId}"
+                draggable="true"
+                ${styleAttr}
+                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform"
+              >
+                <span id="live-weather-icon" class="text-sm">☀️</span>
+                ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
+                <span id="live-weather-temp" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-mono-num font-bold">--°C</span>
+                <span id="live-weather-city" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-semibold">თბილისი</span>
+                <span id="live-weather-desc" style="${effTextCol ? `color:${effTextCol} !important; opacity:0.9;` : ''}" class="hidden xl:inline"></span>
+                <span id="live-weather-details" class="hidden"></span>
+                ${inlineControlsHtml}
+              </div>
+            `;
+          }
+
+          if (item.type === 'cities') {
+            const parts = String(item.text || 'თბილისი, ბათუმი, ქუთაისი').split(',').map((s) => s.trim());
+            const lblTbilisi = escapeHtmlSimple(parts[0] || 'თბილისი');
+            const lblBatumi = escapeHtmlSimple(parts[1] || 'ბათუმი');
+            const lblKutaisi = escapeHtmlSimple(parts[2] || 'ქუთაისი');
+            return `
+              <div
+                data-lb-chip-id="${safeId}"
+                draggable="true"
+                ${styleAttr}
+                class="lb-draggable-chip flex flex-wrap items-center gap-1 ${hasBg ? 'px-2 py-1 rounded-lg border shadow-2xs' : ''} transition-transform"
+              >
+                <button
+                  type="button"
+                  data-city-choice="tbilisi"
+                  id="weather-city-btn-tbilisi"
+                  style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
+                  class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 border border-amber-400/50 cursor-pointer"
+                >${lblTbilisi}</button>
+                <button
+                  type="button"
+                  data-city-choice="batumi"
+                  id="weather-city-btn-batumi"
+                  style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
+                  class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 border border-white/15 cursor-pointer"
+                >${lblBatumi}</button>
+                <button
+                  type="button"
+                  data-city-choice="kutaisi"
+                  id="weather-city-btn-kutaisi"
+                  style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
+                  class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 border border-white/15 cursor-pointer"
+                >${lblKutaisi}</button>
+                <button
+                  type="button"
+                  id="weather-geo-btn"
+                  style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
+                  class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 border border-white/15 cursor-pointer"
+                  title="ჩემი ლოკაციის ამინდი"
+                >
+                  <span>📍</span>
+                  <span id="weather-geo-btn-text" class="hidden">ჩემი ქალაქი</span>
+                </button>
+                <button
+                  type="button"
+                  id="weather-refresh-btn"
+                  style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
+                  class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 hover:opacity-100 border border-white/15 cursor-pointer"
+                  title="ამინდის განახლება"
+                >🔄</button>
+                ${inlineControlsHtml}
+              </div>
+            `;
+          }
+
+          // Standard / Custom Text Item
+          return `
+            <div
+              data-lb-chip-id="${safeId}"
+              draggable="true"
+              ${styleAttr}
+              class="lb-draggable-chip inline-flex items-center gap-1 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-1.5 py-0.5 rounded-md'} text-[11px] sm:text-xs font-bold transition-transform"
+            >
+              <span>${safeText}</span>
+              ${inlineControlsHtml}
+            </div>
+          `;
+        }
+
+        function renderLiveInfoBanner() {
+          const bannerEl = document.getElementById('live-info-banner');
+          const hiddenNoticeEl = document.getElementById('live-info-banner-hidden-notice');
+          const inlinePanelEl = document.getElementById('inline-live-banner-manager-panel');
+          const items = ensureLiveBannerItems();
+          const bgHex = storeSettings.liveBannerBgColor || '#1e3a8a';
+          const borderHex = /^#[0-9a-fA-F]{6}$/.test(bgHex) ? darkenHex(bgHex, 0.82) : '#1d4ed8';
+          const barDefaultTextCol = /^#[0-9a-fA-F]{6}$/.test(bgHex) ? getAutoContrastTextColor(bgHex) : '#ffffff';
+
+          // Sync pickers and hex readouts across all panels
+          document.querySelectorAll('[data-lb-bar-bg-picker]').forEach((inp) => {
+            if (/^#[0-9a-fA-F]{6}$/.test(bgHex)) inp.value = bgHex;
+          });
+          document.querySelectorAll('[data-lb-bar-bg-hex]').forEach((el) => {
+            el.textContent = String(bgHex).toUpperCase();
+          });
+          document.querySelectorAll('.lb-visibility-toggle-btn').forEach((btn) => {
+            btn.textContent = storeSettings.liveBannerHidden
+              ? '👁️ გრაფის გამოჩენა (ახლა დამალულია)'
+              : '👁️ გრაფის დამალვა';
+          });
+
+          if (bannerEl) {
+            if (storeSettings.liveBannerHidden) {
+              bannerEl.classList.add('hidden');
+              if (hiddenNoticeEl) hiddenNoticeEl.classList.remove('hidden');
+            } else {
+              bannerEl.classList.remove('hidden');
+              if (hiddenNoticeEl) hiddenNoticeEl.classList.add('hidden');
+            }
+
+            bannerEl.style.backgroundColor = bgHex;
+            bannerEl.style.borderColor = borderHex;
+            bannerEl.style.color = barDefaultTextCol;
+
+            const showInlineControls =
+              Boolean(inlinePanelEl && !inlinePanelEl.classList.contains('hidden')) ||
+              (typeof isMoveBlocksModeActive !== 'undefined' && Boolean(isMoveBlocksModeActive));
+
+            const leftItems = [];
+            const centerItems = [];
+            const rightItems = [];
+
+            items.forEach((it, idx) => {
+              const html = renderSingleLiveBannerItemHtml(it, idx, items.length, showInlineControls);
+              if (it.align === 'center') centerItems.push(html);
+              else if (it.align === 'right') rightItems.push(html);
+              else leftItems.push(html);
+            });
+
+            const adminBtnHtml = `
+              <button
+                type="button"
+                data-lb-open-manager="1"
+                class="owner-only-admin-el px-2.5 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 border border-amber-500 text-[11px] font-extrabold inline-flex items-center gap-1 shadow-xs active:scale-95 fast-transition cursor-pointer shrink-0"
+                title="ამ გრაფის ფერის შეცვლა, ნაწერების გადაადგილება, წაშლა და ახლიდან დამატება"
+              >
+                <span>🎨⚙️</span>
+                <span>გრაფის ფერები / გადაადგილება / +დამატება</span>
+              </button>
+            `;
+
+            bannerEl.innerHTML = `
+              <div class="flex flex-wrap items-center gap-2">
+                ${leftItems.join('')}
+              </div>
+              ${
+                centerItems.length > 0
+                  ? `<div class="flex flex-wrap items-center justify-center gap-2 mx-auto">${centerItems.join('')}</div>`
+                  : ''
+              }
+              <div class="flex flex-wrap items-center gap-2 ml-auto">
+                ${rightItems.join('')}
+                ${adminBtnHtml}
+              </div>
+            `;
+          }
+
+          if (typeof updateLiveDateTime === 'function') {
+            updateLiveDateTime();
+          }
+          if (typeof renderWeatherDisplay === 'function') {
+            renderWeatherDisplay();
+          }
+          renderLiveBannerManagerLists();
+        }
+
+        function renderLiveBannerManagerLists() {
+          const items = ensureLiveBannerItems();
+          const restoreBars = [
+            document.getElementById('inline-lb-restore-widgets-bar'),
+            document.getElementById('theme-lb-restore-widgets-bar'),
+            document.getElementById('cp-lb-restore-widgets-bar')
+          ].filter(Boolean);
+
+          if (restoreBars.length > 0) {
+            const restoreHtml = `
+              <span class="text-[11px] font-extrabold text-zinc-600 mr-1">სწრაფი ჩასმა / აღდგენა:</span>
+              ${LIVE_BANNER_DEFAULT_WIDGETS.map((def) => {
+                const exists = items.some((it) => it.id === def.id || (def.type !== 'text' && it.type === def.type));
+                const btnStyle = exists
+                  ? 'bg-stone-100 hover:bg-stone-200 text-zinc-700 border-zinc-300'
+                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-400 ring-1 ring-emerald-300';
+                return `
+                  <button
+                    type="button"
+                    data-lb-restore-widget="${escapeHtmlSimple(def.id)}"
+                    class="px-2.5 py-1 rounded-lg border text-[11px] font-extrabold cursor-pointer active:scale-95 fast-transition ${btnStyle}"
+                    title="${exists ? 'უკვე ჩასმულია (დააჭირეთ კიდევ დასამატებლად ან აღსადგენად)' : 'წაშლილია — დააჭირეთ ახლიდან დასამატებლად'}"
+                  >
+                    ${exists ? '✓ ' : '+ ახლიდან დამატება: '}${escapeHtmlSimple(def.badgeTitle)}
+                  </button>
+                `;
+              }).join('')}
+            `;
+            restoreBars.forEach((bar) => {
+              bar.innerHTML = restoreHtml;
+            });
+          }
+
+          const listContainers = [
+            document.getElementById('inline-live-banner-items-list'),
+            document.getElementById('theme-live-banner-items-list'),
+            document.getElementById('cp-live-banner-items-list')
+          ].filter(Boolean);
+          if (listContainers.length === 0) return;
+
+          const barBgHex = storeSettings.liveBannerBgColor || '#1e3a8a';
+
+          const cardsHtml =
+            items.length === 0
+              ? `<div class="col-span-full p-4 rounded-xl bg-amber-50 border border-amber-300 text-center text-xs font-bold text-amber-950">
+                  ამ გრაფაში ყველა ნაწერი წაშლილია. ზემოთ დააჭირეთ „+ ახალი ნაწერის დამატება“-ს ან „სწრაფი ჩასმა / აღდგენა“-ს ღილაკებს!
+                </div>`
+              : items
+                  .map((item, idx) => {
+                    const safeId = escapeHtmlSimple(item.id);
+                    const safeText = escapeHtmlSimple(item.text);
+                    const safeTitle = escapeHtmlSimple(item.badgeTitle || `ელემენტი #${idx + 1}`);
+                    const pickerTextVal = /^#[0-9a-fA-F]{6}$/.test(item.textColor)
+                      ? item.textColor
+                      : item.bgColor && /^#[0-9a-fA-F]{6}$/.test(item.bgColor)
+                        ? getAutoContrastTextColor(item.bgColor)
+                        : '#ffffff';
+                    const pickerBgVal = /^#[0-9a-fA-F]{6}$/.test(item.bgColor) ? item.bgColor : barBgHex;
+                    const previewBg = item.bgColor || barBgHex;
+                    const previewText = item.textColor || getAutoContrastTextColor(previewBg);
+                    const hasCustomColors = Boolean(item.textColor || item.bgColor);
+                    const ox = Number(item.offsetX) || 0;
+                    const oy = Number(item.offsetY) || 0;
+
+                    const textSwatchesHtml = CAT_QUICK_TEXT_SWATCHES.map(
+                      (sw) =>
+                        `<button type="button" data-lb-quick-text="${safeId}" data-color-hex="${sw.hex}" title="${sw.title}" style="background-color:${sw.hex};" class="w-4 h-4 rounded-full border border-zinc-400 shadow-2xs hover:scale-125 fast-transition cursor-pointer shrink-0"></button>`
+                    ).join('');
+
+                    const bgSwatchesHtml = CAT_QUICK_BG_SWATCHES.map(
+                      (sw) =>
+                        `<button type="button" data-lb-quick-bg="${safeId}" data-color-hex="${sw.hex}" title="${sw.title}" style="background-color:${sw.hex};" class="w-4 h-4 rounded-md border border-zinc-300 shadow-2xs hover:scale-125 fast-transition cursor-pointer shrink-0"></button>`
+                    ).join('');
+
+                    let inputPlaceholder = 'ჩაწერეთ ტექსტი...';
+                    if (item.type === 'clock') inputPlaceholder = 'საათის წინა წარწერა (მაგ: ⏰ დრო:)';
+                    else if (item.type === 'weather') inputPlaceholder = 'ამინდის წინა წარწერა (არასავალდებულო)';
+                    else if (item.type === 'date') inputPlaceholder = 'თარიღის სიმბოლო / წარწერა (მაგ: 📅)';
+                    else if (item.type === 'cities') inputPlaceholder = 'თბილისი, ბათუმი, ქუთაისი';
+
+                    const previewLabel =
+                      item.type === 'clock'
+                        ? `${safeText ? safeText + ' ' : ''}14:30:00`
+                        : item.type === 'weather'
+                          ? `☀️ ${safeText ? safeText + ' ' : ''}+21°C თბილისი`
+                          : item.type === 'date'
+                            ? `${safeText || '📅'} ორშაბათი, 29 ოქტ`
+                            : safeText || safeTitle;
+
+                    return `
+                      <div class="p-3 rounded-xl bg-white border border-blue-200/90 shadow-2xs flex flex-col gap-2">
+                        <div class="flex items-center justify-between gap-1.5">
+                          <span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-950 border border-blue-200 text-[11px] font-extrabold truncate">
+                            #${idx + 1} • ${safeTitle}
+                          </span>
+                          <div class="flex items-center gap-1 shrink-0">
+                            ${
+                              hasCustomColors
+                                ? `<button type="button" data-lb-reset-color="${safeId}" title="საკუთარი ფერის მოხსნა" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">↺ ფერის მოხსნა</button>`
+                                : ''
+                            }
+                            <button
+                              type="button"
+                              data-lb-delete-id="${safeId}"
+                              title="ამ ნაწერის წაშლა ზოლიდან"
+                              class="px-2 py-0.5 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-[11px] font-extrabold cursor-pointer"
+                            >✕ წაშლა</button>
+                          </div>
+                        </div>
+
+                        <!-- Live Color Preview -->
+                        <div class="flex items-center justify-between gap-2 px-2 py-1.5 rounded-lg bg-stone-50 border border-zinc-200/80">
+                          <span class="text-[10px] font-bold text-zinc-500">ნიმუში:</span>
+                          <span
+                            data-lb-preview-pill="${safeId}"
+                            style="background-color: ${previewBg}; color: ${previewText};"
+                            class="px-2.5 py-1 rounded-lg text-xs font-extrabold shadow-2xs border border-black/10 truncate max-w-[200px]"
+                          >${previewLabel}</span>
+                        </div>
+
+                        <!-- Move / Reorder & Alignment & X/Y Nudge Controls -->
+                        <div class="p-2 rounded-lg bg-indigo-50/60 border border-indigo-200/80 space-y-1.5">
+                          <div class="flex items-center justify-between gap-1">
+                            <span class="text-[10px] font-extrabold text-indigo-950">1. გადაადგილება (რიგითობა და მხარე):</span>
+                            <div class="flex items-center gap-1">
+                              <button type="button" data-lb-move-order="${safeId}" data-lb-dir="-1" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-950 border border-indigo-300 text-[11px] font-extrabold cursor-pointer" title="მარცხნივ / წინ გადაწევა">⬅️ მარცხნივ</button>
+                              <button type="button" data-lb-move-order="${safeId}" data-lb-dir="1" class="px-2 py-0.5 rounded bg-white hover:bg-indigo-100 text-indigo-950 border border-indigo-300 text-[11px] font-extrabold cursor-pointer" title="მარჯვნივ / უკან გადაწევა">➡️ მარჯვნივ</button>
+                            </div>
+                          </div>
+                          <div class="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-indigo-200/60">
+                            <div class="inline-flex items-center gap-0.5 bg-white p-0.5 rounded-lg border border-indigo-200">
+                              <button type="button" data-lb-align="${safeId}" data-lb-align-val="left" class="px-1.5 py-0.5 rounded text-[10px] font-extrabold cursor-pointer ${item.align === 'left' ? 'bg-indigo-600 text-white' : 'text-zinc-700 hover:bg-stone-100'}">◀ მარცხნივ</button>
+                              <button type="button" data-lb-align="${safeId}" data-lb-align-val="center" class="px-1.5 py-0.5 rounded text-[10px] font-extrabold cursor-pointer ${item.align === 'center' ? 'bg-indigo-600 text-white' : 'text-zinc-700 hover:bg-stone-100'}">● შუაში</button>
+                              <button type="button" data-lb-align="${safeId}" data-lb-align-val="right" class="px-1.5 py-0.5 rounded text-[10px] font-extrabold cursor-pointer ${item.align === 'right' ? 'bg-indigo-600 text-white' : 'text-zinc-700 hover:bg-stone-100'}">▶ მარჯვნივ</button>
+                            </div>
+                            <div class="inline-flex items-center gap-0.5">
+                              <button type="button" data-lb-nudge="${safeId}" data-dx="-8" data-dy="0" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-bold cursor-pointer" title="ცოტათი მარცხნივ გაწევა">⬅️</button>
+                              <button type="button" data-lb-nudge="${safeId}" data-dx="8" data-dy="0" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-bold cursor-pointer" title="ცოტათი მარჯვნივ გაწევა">➡️</button>
+                              <button type="button" data-lb-nudge="${safeId}" data-dx="0" data-dy="-4" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-bold cursor-pointer" title="ცოტათი ზემოთ აწევა">⬆️</button>
+                              <button type="button" data-lb-nudge="${safeId}" data-dx="0" data-dy="4" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-bold cursor-pointer" title="ცოტათი ქვემოთ ჩამოწევა">⬇️</button>
+                              ${
+                                ox || oy
+                                  ? `<button type="button" data-lb-nudge-reset="${safeId}" class="px-1.5 py-0.5 rounded bg-rose-100 text-rose-800 text-[10px] font-bold cursor-pointer" title="წანაცვლების განულება">↺</button>`
+                                  : ''
+                              }
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Text Edit Input -->
+                        <div class="flex items-center gap-1.5">
+                          <input
+                            type="text"
+                            data-lb-item-text="${safeId}"
+                            value="${safeText}"
+                            placeholder="${inputPlaceholder}"
+                            class="flex-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
+                          />
+                        </div>
+
+                        <!-- Text Color & Paint Bucket Background Fill Controls -->
+                        <div class="grid grid-cols-1 gap-1.5 p-2 rounded-lg bg-amber-50/50 border border-amber-200/70">
+                          <div class="flex items-center justify-between gap-1.5">
+                            <label class="flex items-center gap-1.5 text-[11px] font-extrabold text-zinc-800 cursor-pointer">
+                              <span>🔤 ნაწერის ფერი:</span>
+                              <input
+                                type="color"
+                                data-lb-item-text-color="${safeId}"
+                                value="${pickerTextVal}"
+                                class="w-6 h-6 rounded cursor-pointer border border-zinc-300 bg-white p-0 shrink-0"
+                              />
+                            </label>
+                            <div class="flex items-center gap-1 flex-wrap justify-end">
+                              ${textSwatchesHtml}
+                            </div>
+                          </div>
+
+                          <div class="flex items-center justify-between gap-1.5 pt-1 border-t border-amber-200/60">
+                            <label class="flex items-center gap-1.5 text-[11px] font-extrabold text-zinc-800 cursor-pointer">
+                              <span>🪣 უკან საღებავი:</span>
+                              <input
+                                type="color"
+                                data-lb-item-bg-color="${safeId}"
+                                value="${pickerBgVal}"
+                                class="w-6 h-6 rounded cursor-pointer border border-zinc-300 bg-white p-0 shrink-0"
+                              />
+                            </label>
+                            <div class="flex items-center gap-1 flex-wrap justify-end">
+                              ${bgSwatchesHtml}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    `;
+                  })
+                  .join('');
+
+          listContainers.forEach((el) => {
+            const activeEl = document.activeElement;
+            if (
+              activeEl &&
+              el.contains(activeEl) &&
+              (activeEl.hasAttribute('data-lb-item-text') ||
+                activeEl.hasAttribute('data-lb-item-text-color') ||
+                activeEl.hasAttribute('data-lb-item-bg-color'))
+            ) {
+              items.forEach((item) => {
+                const pill = el.querySelector(`[data-lb-preview-pill="${item.id}"]`);
+                if (pill) {
+                  const previewBg = item.bgColor || barBgHex;
+                  const previewText = item.textColor || getAutoContrastTextColor(previewBg);
+                  pill.style.backgroundColor = previewBg;
+                  pill.style.color = previewText;
+                  pill.textContent =
+                    item.type === 'clock'
+                      ? `${item.text ? item.text + ' ' : ''}14:30:00`
+                      : item.type === 'weather'
+                        ? `☀️ ${item.text ? item.text + ' ' : ''}+21°C თბილისი`
+                        : item.type === 'date'
+                          ? `${item.text || '📅'} ორშაბათი, 29 ოქტ`
+                          : item.text || item.badgeTitle;
+                }
+              });
+              return;
+            }
+            el.innerHTML = cardsHtml;
+          });
+        }
+
+        function setLiveBannerBgColor(hex) {
+          if (!hex) return;
+          storeSettings.liveBannerBgColor = String(hex).trim();
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function toggleLiveBannerVisibility() {
+          storeSettings.liveBannerHidden = !storeSettings.liveBannerHidden;
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+          showWishlistToast(
+            storeSettings.liveBannerHidden
+              ? '👁️ საათის და ამინდის გრაფა დაიმალა'
+              : '👁️ საათის და ამინდის გრაფა გამოჩნდა'
+          );
+        }
+
+        function resetLiveBannerToDefault() {
+          storeSettings.liveBannerBgColor = '#1e3a8a';
+          storeSettings.liveBannerHidden = false;
+          storeSettings.liveBannerCustomized = false;
+          storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+          showWishlistToast('🔄 საათის და ამინდის გრაფა დაუბრუნდა საწყის ფერებსა და განლაგებას!');
+        }
+
+        function addCustomLiveBannerItem(rawText, options = {}) {
+          const clean = String(rawText || '').trim();
+          if (!clean) {
+            showCpToast('გთხოვთ ჩაწეროთ დასამატებელი ნაწერი!');
+            return;
+          }
+          const items = ensureLiveBannerItems();
+          const newId = 'lb_custom_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 5);
+          items.push({
+            id: newId,
+            type: 'text',
+            badgeTitle: '✨ დამატებული ნაწერი',
+            text: clean,
+            textColor: options.textColor ? String(options.textColor).trim() : '#ffffff',
+            bgColor: options.bgColor ? String(options.bgColor).trim() : '',
+            offsetX: 0,
+            offsetY: 0,
+            align: 'left'
+          });
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+          showWishlistToast(`✅ ნაწერი „${clean}“ დაემატა ზედა ზოლში!`);
+        }
+
+        function restoreOrAddLiveBannerWidget(widgetId) {
+          const items = ensureLiveBannerItems();
+          const def = LIVE_BANNER_DEFAULT_WIDGETS.find((w) => w.id === widgetId);
+          if (!def) return;
+          const existingIdx = items.findIndex((it) => it.id === def.id);
+          if (existingIdx === -1) {
+            items.push({ ...def });
+            storeSettings.liveBannerCustomized = true;
+            renderLiveInfoBanner();
+            saveStateEverywhere({ immediate: true });
+            showWishlistToast(`✅ „${def.badgeTitle}“ ახლიდან დაემატა გრაფაში!`);
+          } else {
+            // Reset that widget's text & colors to default or duplicate if it's a text item
+            if (def.type === 'text') {
+              const dupId = `${def.id}_${Date.now().toString(36).slice(-4)}`;
+              items.push({ ...def, id: dupId });
+              storeSettings.liveBannerCustomized = true;
+              renderLiveInfoBanner();
+              saveStateEverywhere({ immediate: true });
+              showWishlistToast(`✅ „${def.badgeTitle}“ დაემატა გრაფაში!`);
+            } else {
+              items[existingIdx] = { ...def };
+              storeSettings.liveBannerCustomized = true;
+              renderLiveInfoBanner();
+              saveStateEverywhere({ immediate: true });
+              showWishlistToast(`🔄 „${def.badgeTitle}“ განახლდა საწყის იერსახეზე!`);
+            }
+          }
+        }
+
+        function deleteLiveBannerItem(itemId) {
+          const items = ensureLiveBannerItems();
+          const target = items.find((it) => it.id === itemId);
+          const title = target ? target.badgeTitle || target.text : '';
+          storeSettings.liveBannerItems = items.filter((it) => it.id !== itemId);
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+          showWishlistToast(`🗑️ „${title}“ წაიშალა (ნებისმიერ დროს შეგიძლიათ ახლიდან დაამატოთ)`);
+        }
+
+        function moveLiveBannerItemOrder(itemId, direction) {
+          const items = ensureLiveBannerItems();
+          const idx = items.findIndex((it) => it.id === itemId);
+          if (idx === -1) return;
+          const targetIdx = idx + direction;
+          if (targetIdx < 0 || targetIdx >= items.length) return;
+          const temp = items[idx];
+          items[idx] = items[targetIdx];
+          items[targetIdx] = temp;
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function setLiveBannerItemAlign(itemId, alignVal) {
+          const items = ensureLiveBannerItems();
+          const target = items.find((it) => it.id === itemId);
+          if (!target) return;
+          target.align = alignVal === 'center' || alignVal === 'right' ? alignVal : 'left';
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function nudgeLiveBannerItemOffset(itemId, dx, dy, reset = false) {
+          const items = ensureLiveBannerItems();
+          const target = items.find((it) => it.id === itemId);
+          if (!target) return;
+          if (reset) {
+            target.offsetX = 0;
+            target.offsetY = 0;
+          } else {
+            target.offsetX = Math.round((Number(target.offsetX) || 0) + dx);
+            target.offsetY = Math.round((Number(target.offsetY) || 0) + dy);
+          }
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function updateLiveBannerItemText(itemId, newText) {
+          const items = ensureLiveBannerItems();
+          const target = items.find((it) => it.id === itemId);
+          if (!target) return;
+          target.text = String(newText !== undefined ? newText : '');
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere();
+        }
+
+        function setLiveBannerItemColor(itemId, { textColor, bgColor, reset } = {}) {
+          const items = ensureLiveBannerItems();
+          const target = items.find((it) => it.id === itemId);
+          if (!target) return;
+          if (reset) {
+            target.textColor = '';
+            target.bgColor = '';
+          } else {
+            if (textColor !== undefined) target.textColor = String(textColor || '').trim();
+            if (bgColor !== undefined) target.bgColor = String(bgColor || '').trim();
+          }
+          storeSettings.liveBannerCustomized = true;
+          renderLiveInfoBanner();
+          saveStateEverywhere({ immediate: true });
+        }
+
         function applyExtendedColorSettings(shouldSave = false) {
           const root = document.documentElement;
           const pageBg = storeSettings.pageBgColor || '#fafaf9';
