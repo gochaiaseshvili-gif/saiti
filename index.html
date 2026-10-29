@@ -208,7 +208,8 @@
       body.customer-view-mode #modal-direct-5photo-label,
       body.customer-view-mode #home-chat-role-seller,
       body.customer-view-mode #modal-chat-role-seller,
-      body.customer-view-mode #enter-customer-view-btn {
+      body.customer-view-mode #enter-customer-view-btn,
+      body.customer-view-mode .owner-only-video-input {
         display: none !important;
       }
     </style>
@@ -1904,9 +1905,106 @@
                     <button type="button" data-mie-open-field="description" class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[11px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
                   </div>
                 </div>
+
+                <!-- Directly Below Full Description: 4 Video Link Boxes (1. TikTok, 2. Facebook, 3. YouTube, 4. Instagram) -->
+                <div class="sm:col-span-12 pt-2 border-t border-zinc-200/80">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                    <!-- 1. TikTok Video Box -->
+                    <div>
+                      <div data-mie-field-active="tiktok" class="p-2 rounded-xl border border-zinc-200 bg-stone-50/60">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                          <label for="mie-tiktok" class="block text-[11px] font-bold text-zinc-900 truncate">1. TikTok ვიდეოს ლინკი:</label>
+                          <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" data-clear-video-input="mie-tiktok" class="text-[10px] font-bold text-zinc-500 hover:text-rose-600 cursor-pointer">გასუფთავება</button>
+                            <button type="button" data-mie-close-field="tiktok" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ დახურვა</button>
+                          </div>
+                        </div>
+                        <input
+                          id="mie-tiktok"
+                          type="url"
+                          placeholder="ჩასვით TikTok ვიდეოს ლინკი..."
+                          class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-white focus:bg-white text-xs text-zinc-900"
+                        />
+                      </div>
+                      <div data-mie-field-closed="tiktok" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
+                        <span class="text-[11px] font-bold text-zinc-500">1. TikTok გაუქმებულია</span>
+                        <button type="button" data-mie-open-field="tiktok" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
+                      </div>
+                    </div>
+
+                    <!-- 2. Facebook Video Box -->
+                    <div>
+                      <div data-mie-field-active="facebook" class="p-2 rounded-xl border border-blue-200 bg-blue-50/30">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                          <label for="mie-facebook" class="block text-[11px] font-bold text-[#1877F2] truncate">2. Facebook ვიდეოს ლინკი:</label>
+                          <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" data-clear-video-input="mie-facebook" class="text-[10px] font-bold text-zinc-500 hover:text-rose-600 cursor-pointer">გასუფთავება</button>
+                            <button type="button" data-mie-close-field="facebook" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ დახურვა</button>
+                          </div>
+                        </div>
+                        <input
+                          id="mie-facebook"
+                          type="url"
+                          placeholder="ჩასვით Facebook ვიდეოს ლინკი..."
+                          class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-blue-300 bg-white focus:bg-white text-xs text-zinc-900"
+                        />
+                      </div>
+                      <div data-mie-field-closed="facebook" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
+                        <span class="text-[11px] font-bold text-zinc-500">2. Facebook გაუქმებულია</span>
+                        <button type="button" data-mie-open-field="facebook" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
+                      </div>
+                    </div>
+
+                    <!-- 3. YouTube Video Box -->
+                    <div>
+                      <div data-mie-field-active="youtube" class="p-2 rounded-xl border border-red-300 bg-red-50/30">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                          <label for="mie-youtube" class="block text-[11px] font-bold text-red-600 truncate">3. YouTube ვიდეოს ლინკი:</label>
+                          <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" data-clear-video-input="mie-youtube" class="text-[10px] font-bold text-zinc-500 hover:text-rose-600 cursor-pointer">გასუფთავება</button>
+                            <button type="button" data-mie-close-field="youtube" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ დახურვა</button>
+                          </div>
+                        </div>
+                        <input
+                          id="mie-youtube"
+                          type="url"
+                          placeholder="ჩასვით YouTube ვიდეოს ლინკი..."
+                          class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-red-300 bg-white focus:bg-white text-xs text-zinc-900"
+                        />
+                      </div>
+                      <div data-mie-field-closed="youtube" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
+                        <span class="text-[11px] font-bold text-zinc-500">3. YouTube გაუქმებულია</span>
+                        <button type="button" data-mie-open-field="youtube" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
+                      </div>
+                    </div>
+
+                    <!-- 4. Instagram Video Box -->
+                    <div>
+                      <div data-mie-field-active="instagram" class="p-2 rounded-xl border border-pink-200 bg-pink-50/20">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                          <label for="mie-instagram" class="block text-[11px] font-bold text-pink-600 truncate">4. Instagram ვიდეოს ლინკი:</label>
+                          <div class="flex items-center gap-1.5 shrink-0">
+                            <button type="button" data-clear-video-input="mie-instagram" class="text-[10px] font-bold text-zinc-500 hover:text-rose-600 cursor-pointer">გასუფთავება</button>
+                            <button type="button" data-mie-close-field="instagram" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ დახურვა</button>
+                          </div>
+                        </div>
+                        <input
+                          id="mie-instagram"
+                          type="url"
+                          placeholder="ჩასვით Instagram ვიდეოს ლინკი..."
+                          class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-white focus:bg-white text-xs text-zinc-900"
+                        />
+                      </div>
+                      <div data-mie-field-closed="instagram" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
+                        <span class="text-[11px] font-bold text-zinc-500">4. Instagram გაუქმებულია</span>
+                        <button type="button" data-mie-open-field="instagram" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <!-- 3. Technical Specs & Video Links (Every box has Close/Cancel & Enable!) -->
+              <!-- 3. Technical Specs (Every box has Close/Cancel & Enable!) -->
               <div class="p-3.5 rounded-2xl bg-white border border-amber-200 space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2">
                   <div class="text-xs font-extrabold text-zinc-800">⚙️ 6 ტექნიკური მახასიათებელი:</div>
@@ -1928,88 +2026,6 @@
                   </div>
                 </div>
                 <div id="mie-specs-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 pt-2 border-t border-zinc-100">
-                  <!-- 1. TikTok Video Box -->
-                  <div>
-                    <div data-mie-field-active="tiktok" class="p-2 rounded-xl border border-zinc-200 bg-stone-50/60">
-                      <div class="flex items-center justify-between gap-1 mb-1">
-                        <label for="mie-tiktok" class="block text-[11px] font-bold text-zinc-900 truncate">1. TikTok ვიდეოს ლინკი:</label>
-                        <button type="button" data-mie-close-field="tiktok" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer shrink-0">✕ დახურვა</button>
-                      </div>
-                      <input
-                        id="mie-tiktok"
-                        type="url"
-                        placeholder="ჩასვით TikTok ვიდეოს ლინკი..."
-                        class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-white focus:bg-white text-xs text-zinc-900"
-                      />
-                    </div>
-                    <div data-mie-field-closed="tiktok" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
-                      <span class="text-[11px] font-bold text-zinc-500">1. TikTok გაუქმებულია</span>
-                      <button type="button" data-mie-open-field="tiktok" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
-                    </div>
-                  </div>
-
-                  <!-- 2. Facebook Video Box -->
-                  <div>
-                    <div data-mie-field-active="facebook" class="p-2 rounded-xl border border-blue-200 bg-blue-50/30">
-                      <div class="flex items-center justify-between gap-1 mb-1">
-                        <label for="mie-facebook" class="block text-[11px] font-bold text-[#1877F2] truncate">2. Facebook ვიდეოს ლინკი:</label>
-                        <button type="button" data-mie-close-field="facebook" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer shrink-0">✕ დახურვა</button>
-                      </div>
-                      <input
-                        id="mie-facebook"
-                        type="url"
-                        placeholder="ჩასვით Facebook ვიდეოს ლინკი..."
-                        class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-blue-300 bg-white focus:bg-white text-xs text-zinc-900"
-                      />
-                    </div>
-                    <div data-mie-field-closed="facebook" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
-                      <span class="text-[11px] font-bold text-zinc-500">2. Facebook გაუქმებულია</span>
-                      <button type="button" data-mie-open-field="facebook" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
-                    </div>
-                  </div>
-
-                  <!-- 3. YouTube Video Box -->
-                  <div>
-                    <div data-mie-field-active="youtube" class="p-2 rounded-xl border border-red-200 bg-red-50/20">
-                      <div class="flex items-center justify-between gap-1 mb-1">
-                        <label for="mie-youtube" class="block text-[11px] font-bold text-red-600 truncate">3. YouTube ვიდეოს ლინკი:</label>
-                        <button type="button" data-mie-close-field="youtube" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer shrink-0">✕ დახურვა</button>
-                      </div>
-                      <input
-                        id="mie-youtube"
-                        type="url"
-                        placeholder="ჩასვით YouTube ვიდეოს ლინკი..."
-                        class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-white focus:bg-white text-xs text-zinc-900"
-                      />
-                    </div>
-                    <div data-mie-field-closed="youtube" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
-                      <span class="text-[11px] font-bold text-zinc-500">3. YouTube გაუქმებულია</span>
-                      <button type="button" data-mie-open-field="youtube" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
-                    </div>
-                  </div>
-
-                  <!-- 4. Instagram Video Box -->
-                  <div>
-                    <div data-mie-field-active="instagram" class="p-2 rounded-xl border border-pink-200 bg-pink-50/20">
-                      <div class="flex items-center justify-between gap-1 mb-1">
-                        <label for="mie-instagram" class="block text-[11px] font-bold text-pink-600 truncate">4. Instagram ვიდეოს ლინკი:</label>
-                        <button type="button" data-mie-close-field="instagram" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer shrink-0">✕ დახურვა</button>
-                      </div>
-                      <input
-                        id="mie-instagram"
-                        type="url"
-                        placeholder="ჩასვით Instagram ვიდეოს ლინკი..."
-                        class="w-full min-h-[38px] px-2.5 py-1 rounded-xl border border-zinc-300 bg-white focus:bg-white text-xs text-zinc-900"
-                      />
-                    </div>
-                    <div data-mie-field-closed="instagram" class="hidden min-h-[54px] px-2.5 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-1.5">
-                      <span class="text-[11px] font-bold text-zinc-500">4. Instagram გაუქმებულია</span>
-                      <button type="button" data-mie-open-field="instagram" class="px-2 py-1 rounded-lg bg-white hover:bg-amber-50 text-emerald-700 border border-emerald-300 text-[10px] font-extrabold cursor-pointer shrink-0">+ ჩართვა</button>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <!-- 3.5 Direct Site Color & Decoration Quick Bar inside Product Editor -->
@@ -2521,6 +2537,20 @@
                     TikTok ↗
                   </a>
                 </div>
+                <div class="owner-only-video-input px-2 py-1.5 bg-zinc-950 border-t border-zinc-800 flex items-center gap-1">
+                  <input
+                    id="modal-direct-tt-input"
+                    type="url"
+                    placeholder="ჩასვით TikTok ლინკი..."
+                    class="flex-1 min-w-0 h-7 px-2 rounded bg-zinc-900 border border-zinc-700 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-cyan-400"
+                  />
+                  <button
+                    type="button"
+                    data-direct-video-close="tiktok"
+                    title="TikTok უჯრის დახურვა"
+                    class="h-7 px-1.5 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/60 text-[10px] font-bold cursor-pointer shrink-0"
+                  >✕</button>
+                </div>
               </div>
 
               <!-- 2. Facebook Video / Reel Card (Compact & 100% Clickable) -->
@@ -2584,9 +2614,23 @@
                     Facebook ↗
                   </a>
                 </div>
+                <div class="owner-only-video-input px-2 py-1.5 bg-zinc-950 border-t border-zinc-800 flex items-center gap-1">
+                  <input
+                    id="modal-direct-fb-input"
+                    type="url"
+                    placeholder="ჩასვით Facebook ლინკი..."
+                    class="flex-1 min-w-0 h-7 px-2 rounded bg-zinc-900 border border-zinc-700 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-blue-400"
+                  />
+                  <button
+                    type="button"
+                    data-direct-video-close="facebook"
+                    title="Facebook უჯრის დახურვა"
+                    class="h-7 px-1.5 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/60 text-[10px] font-bold cursor-pointer shrink-0"
+                  >✕</button>
+                </div>
               </div>
 
-              <!-- 3. YouTube Player Card (Compact) -->
+              <!-- 3. YouTube Player Card (Compact & Always Available with Embed + Fallback + Direct Link Paste) -->
               <div id="youtube-review-card" class="rounded-xl bg-zinc-950 text-white overflow-hidden border border-zinc-800 flex flex-col justify-between">
                 <a
                   id="modal-yt-header-link"
@@ -2597,23 +2641,46 @@
                 >
                   <span class="font-semibold text-zinc-100 flex items-center gap-1.5 truncate">
                     <span class="w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
-                    <span id="modal-yt-test-label" class="truncate">YouTube ტესტი</span>
+                    <span id="modal-yt-test-label" class="truncate">YouTube ვიდეო</span>
                   </span>
-                  <span id="modal-yt-duration" class="font-mono-num text-zinc-400 text-[10px] shrink-0">08:42</span>
+                  <span id="modal-yt-duration" class="font-mono-num text-red-400 text-[10px] shrink-0 font-bold">გახსნა ↗</span>
                 </a>
-                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900">
+                <div class="relative w-full aspect-[16/10] sm:h-[152px] bg-zinc-900 p-1 flex items-center justify-center overflow-hidden">
                   <iframe
                     id="modal-youtube-iframe"
-                    class="w-full h-full"
+                    class="w-full h-full rounded hidden"
                     src="about:blank"
                     title="YouTube video review player"
                     loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen
                   ></iframe>
+                  <a
+                    id="modal-youtube-fallback"
+                    href="https://www.youtube.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-full h-full rounded bg-gradient-to-br from-red-600/35 via-zinc-900 to-zinc-950 flex flex-col items-center justify-center gap-1.5 p-2 text-center group relative overflow-hidden"
+                  >
+                    <img
+                      id="modal-yt-fallback-img"
+                      src=""
+                      alt=""
+                      referrerPolicy="no-referrer"
+                      class="absolute inset-0 w-full h-full object-cover opacity-35 group-hover:scale-105 fast-transition pointer-events-none"
+                    />
+                    <span class="relative z-10 w-10 h-10 rounded-full bg-[#FF0000] text-white flex items-center justify-center shadow-lg group-hover:scale-110 fast-transition">
+                      <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                    </span>
+                    <span id="modal-yt-fallback-badge" class="relative z-10 text-[11px] font-extrabold text-white bg-zinc-950/85 px-2.5 py-0.5 rounded-full border border-red-400/50">
+                      ▶ YouTube-ზე ჩართვა ↗
+                    </span>
+                  </a>
                 </div>
                 <div class="px-2.5 py-1.5 bg-zinc-900/95 flex items-center justify-between text-[10px] sm:text-[11px] text-zinc-400">
-                  <span id="modal-yt-caption" class="truncate">ვიდეო მიმოხილვა</span>
+                  <span id="modal-yt-caption" class="truncate">YouTube მიმოხილვა</span>
                   <a
                     id="modal-yt-external"
                     href="https://www.youtube.com"
@@ -2623,6 +2690,20 @@
                   >
                     YouTube ↗
                   </a>
+                </div>
+                <div class="owner-only-video-input px-2 py-1.5 bg-zinc-950 border-t border-zinc-800 flex items-center gap-1">
+                  <input
+                    id="modal-direct-yt-input"
+                    type="url"
+                    placeholder="ჩასვით YouTube ლინკი..."
+                    class="flex-1 min-w-0 h-7 px-2 rounded bg-zinc-900 border border-zinc-700 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-red-500"
+                  />
+                  <button
+                    type="button"
+                    data-direct-video-close="youtube"
+                    title="YouTube უჯრის დახურვა"
+                    class="h-7 px-1.5 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/60 text-[10px] font-bold cursor-pointer shrink-0"
+                  >✕</button>
                 </div>
               </div>
 
@@ -2685,6 +2766,20 @@
                   >
                     Instagram ↗
                   </a>
+                </div>
+                <div class="owner-only-video-input px-2 py-1.5 bg-zinc-950 border-t border-zinc-800 flex items-center gap-1">
+                  <input
+                    id="modal-direct-ig-input"
+                    type="url"
+                    placeholder="ჩასვით Instagram ლინკი..."
+                    class="flex-1 min-w-0 h-7 px-2 rounded bg-zinc-900 border border-zinc-700 text-[11px] text-white placeholder:text-zinc-500 focus:outline-none focus:border-pink-400"
+                  />
+                  <button
+                    type="button"
+                    data-direct-video-close="instagram"
+                    title="Instagram უჯრის დახურვა"
+                    class="h-7 px-1.5 rounded bg-rose-950/80 hover:bg-rose-900 text-rose-300 border border-rose-800/60 text-[10px] font-bold cursor-pointer shrink-0"
+                  >✕</button>
                 </div>
               </div>
             </div>
@@ -4680,6 +4775,9 @@
           if (!product.closedFields || typeof product.closedFields !== 'object') {
             product.closedFields = {};
           }
+          if (product.closedFields.youtube && !product.closedFields.youtubeExplicit) {
+            delete product.closedFields.youtube;
+          }
           if (product.youtubeId === 'M7lc1UVf-VE' || product.youtubeId === 'aqz-KE-bpKQ') {
             product.youtubeId = '';
           }
@@ -6603,10 +6701,17 @@
         const modalInstallmentBtn = document.getElementById('modal-installment-btn');
         const modalCardPaymentBtn = document.getElementById('modal-card-payment-btn');
         const modalYoutubeIframe = document.getElementById('modal-youtube-iframe');
+        const modalYoutubeFallback = document.getElementById('modal-youtube-fallback');
+        const modalYtFallbackImg = document.getElementById('modal-yt-fallback-img');
+        const modalYtFallbackBadge = document.getElementById('modal-yt-fallback-badge');
         const modalYtHeaderLink = document.getElementById('modal-yt-header-link');
         const modalYtDuration = document.getElementById('modal-yt-duration');
         const modalYtCaption = document.getElementById('modal-yt-caption');
         const modalYtExternal = document.getElementById('modal-yt-external');
+        const modalDirectTtInput = document.getElementById('modal-direct-tt-input');
+        const modalDirectFbInput = document.getElementById('modal-direct-fb-input');
+        const modalDirectYtInput = document.getElementById('modal-direct-yt-input');
+        const modalDirectIgInput = document.getElementById('modal-direct-ig-input');
         const modalTiktokIframe = document.getElementById('modal-tiktok-iframe');
         const modalTiktokFallback = document.getElementById('modal-tiktok-fallback');
         const modalTtFallbackImg = document.getElementById('modal-tt-fallback-img');
@@ -9669,6 +9774,9 @@
           if (modalTtHeaderLink) modalTtHeaderLink.href = targetTtHref;
           if (modalTtExternal) modalTtExternal.href = targetTtHref;
           if (modalTtCaption) modalTtCaption.textContent = product.tiktokCaption || product.name;
+          if (modalDirectTtInput && document.activeElement !== modalDirectTtInput) {
+            modalDirectTtInput.value = cleanTtUrl || '';
+          }
 
           // 2. Facebook Card Setup
           const defaultFbHref = String(
@@ -9694,21 +9802,41 @@
           if (modalFbHeaderLink) modalFbHeaderLink.href = targetFbHref;
           if (modalFbExternal) modalFbExternal.href = targetFbHref;
           if (modalFbCaption) modalFbCaption.textContent = product.facebookCaption || product.name;
+          if (modalDirectFbInput && document.activeElement !== modalDirectFbInput) {
+            modalDirectFbInput.value = cleanFbUrl || '';
+          }
 
-          // 3. YouTube Card Setup (Never push iframe history entry; hide if closed or no custom YouTube ID)
+          // 3. YouTube Card Setup (Never push iframe history entry; show embed when ytId exists, otherwise show clickable fallback card)
           const ytId = extractYoutubeId(prod.youtubeId);
           const hasValidYt = Boolean(ytId) && !cf.youtube;
-          const targetYtHref = hasValidYt
-            ? `https://www.youtube.com/watch?v=${ytId}`
-            : String(storeSettings.youtubeUrl || 'https://www.youtube.com/@voltandvox').trim();
+          const rawDefaultYt = String(storeSettings.youtubeUrl || 'https://www.youtube.com').trim();
+          const defaultYtHref = rawDefaultYt.startsWith('http')
+            ? rawDefaultYt
+            : `https://www.youtube.com/${rawDefaultYt.startsWith('@') ? rawDefaultYt : '@' + rawDefaultYt}`;
+          const targetYtHref = hasValidYt ? `https://www.youtube.com/watch?v=${ytId}` : defaultYtHref;
+
           if (modalYoutubeIframe) {
             const newYtSrc = hasValidYt ? `https://www.youtube.com/embed/${ytId}?rel=0` : 'about:blank';
             setIframeUrlWithoutHistory(modalYoutubeIframe, newYtSrc);
+            modalYoutubeIframe.classList.toggle('hidden', !hasValidYt);
           }
-          if (modalYtDuration) modalYtDuration.textContent = prod.youtubeDuration || '08:45';
+          if (modalYoutubeFallback) {
+            modalYoutubeFallback.classList.toggle('hidden', hasValidYt);
+            modalYoutubeFallback.href = targetYtHref;
+          }
+          if (modalYtFallbackImg) {
+            modalYtFallbackImg.src = previewImgSrc;
+          }
+          if (modalYtFallbackBadge) {
+            modalYtFallbackBadge.textContent = hasValidYt ? '▶ ვიდეოს ჩართვა YouTube-ზე ↗' : '▶ YouTube-ზე ნახვა ↗';
+          }
+          if (modalYtDuration) modalYtDuration.textContent = hasValidYt ? (prod.youtubeDuration || '▶ ვიდეო') : 'გახსნა ↗';
           if (modalYtCaption) modalYtCaption.textContent = product.youtubeCaption || product.name;
           if (modalYtHeaderLink) modalYtHeaderLink.href = targetYtHref;
           if (modalYtExternal) modalYtExternal.href = targetYtHref;
+          if (modalDirectYtInput && document.activeElement !== modalDirectYtInput) {
+            modalDirectYtInput.value = ytId ? `https://www.youtube.com/watch?v=${ytId}` : '';
+          }
 
           // 4. Instagram Card Setup
           const rawIgSetting = String(
@@ -9737,6 +9865,9 @@
           if (modalIgHeaderLink) modalIgHeaderLink.href = targetIgHref;
           if (modalIgExternal) modalIgExternal.href = targetIgHref;
           if (modalIgCaption) modalIgCaption.textContent = product.instagramCaption || product.name;
+          if (modalDirectIgInput && document.activeElement !== modalDirectIgInput) {
+            modalDirectIgInput.value = cleanIgUrl || '';
+          }
 
           if (typeof setVideoTab === 'function') {
             setVideoTab('both');
@@ -10120,6 +10251,7 @@
                 activeModalProduct.facebookUrl = '';
                 if (mieFacebookInput) mieFacebookInput.value = '';
               } else if (fieldKey === 'youtube') {
+                cf.youtubeExplicit = true;
                 activeModalProduct.youtubeId = '';
                 if (mieYoutubeInput) mieYoutubeInput.value = '';
               } else if (fieldKey === 'instagram') {
@@ -10155,6 +10287,9 @@
               if (!fieldKey) return;
               applyInlineProductEditorChanges();
               delete cf[fieldKey];
+              if (fieldKey === 'youtube') {
+                delete cf.youtubeExplicit;
+              }
               populateInlineProductEditor(activeModalProduct);
               refreshOpenProductModalView(activeModalProduct);
               updateSingleProductCardInPlace(activeModalProduct);
@@ -10163,7 +10298,7 @@
               return;
             }
 
-            // 3. Bulk close all empty/unused boxes at once
+            // 3. Bulk close all empty/unused spec boxes at once (keep video link boxes open unless closed individually)
             const closeEmptySpecsBtn = e.target.closest('#mie-close-empty-specs-btn');
             if (closeEmptySpecsBtn) {
               e.preventDefault();
@@ -10179,22 +10314,6 @@
                     closedCount++;
                   }
                 }
-              }
-              if (!extractCleanTiktokUrl(activeModalProduct.tiktokUrl) && !cf.tiktok) {
-                cf.tiktok = true;
-                closedCount++;
-              }
-              if (!extractCleanFacebookUrl(activeModalProduct.facebookUrl) && !cf.facebook) {
-                cf.facebook = true;
-                closedCount++;
-              }
-              if (!extractYoutubeId(activeModalProduct.youtubeId) && !cf.youtube) {
-                cf.youtube = true;
-                closedCount++;
-              }
-              if (!extractCleanInstagramUrl(activeModalProduct.instagramUrl) && !cf.instagram) {
-                cf.instagram = true;
-                closedCount++;
               }
               populateInlineProductEditor(activeModalProduct);
               refreshOpenProductModalView(activeModalProduct);
@@ -11497,10 +11616,9 @@
 
         function setVideoTab(mode) {
           const cf = (activeModalProduct && activeModalProduct.closedFields) || {};
-          const ytId = activeModalProduct ? extractYoutubeId(activeModalProduct.youtubeId) : '';
           const allowTt = !cf.tiktok;
           const allowFb = !cf.facebook;
-          const allowYt = !cf.youtube && Boolean(ytId);
+          const allowYt = !cf.youtube;
           const allowIg = !cf.instagram;
 
           const modalSecVideo = document.getElementById('modal-sec-video');
