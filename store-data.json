@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793277181119,
+  "updatedAt": 1793277189679,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -1054,8 +1054,8 @@
     {
       "id": "prod-1793274512161",
       "sku": "PRO-1000",
-      "category": "karaoke",
-      "categoryLabel": "კარაოკე დინამიკები",
+      "category": "bundle",
+      "categoryLabel": "სათამაშოები",
       "badgeText": "აქცია",
       "name": "ახალი პროდუქტი",
       "shortMeta": "",
@@ -1104,7 +1104,8 @@
       "facebookUrl": "",
       "facebookCaption": "ახალი პროდუქტი",
       "instagramUrl": "",
-      "instagramCaption": "ახალი პროდუქტი"
+      "instagramCaption": "ახალი პროდუქტი",
+      "youtubeUrl": ""
     },
     {
       "id": "prod-1793274435763",
