@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793296058301,
+  "updatedAt": 1793296091288,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -87,7 +87,7 @@
         "badgeTitle": "☀️ ამინდის პროგნოზი",
         "text": "",
         "textColor": "#fde047",
-        "bgColor": "#172554",
+        "bgColor": "#059669",
         "offsetX": 0,
         "offsetY": 0,
         "align": "right"
