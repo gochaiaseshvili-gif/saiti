@@ -355,7 +355,397 @@
     <!-- MOBILE-FIRST WORKSPACE, QUICK CONTACT, WEATHER SWITCHER & OWNER CONTROL PANEL TOOLBAR -->
     <section id="top" class="bg-white border-b border-zinc-200/80">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-2.5">
-        <!-- Row 0 (Directly Under Header Catalog): Interactive Category Filter Tabs + Sort Selector -->
+        <!-- 1. სულ თავში: საათის, ამინდის და ინფორმაციის მთლიანი გრაფა (Fully Customizable, Movable, Colorable & Deletable Live Date, Clock, Weather & Trust Badges Bar) -->
+        <div
+          id="live-info-banner"
+          style="background-color: #1e3a8a; border-color: #1d4ed8;"
+          class="rounded-xl text-white px-3 py-2 shadow-sm border flex flex-wrap items-center justify-between gap-2 text-xs transition-colors duration-150"
+        >
+          <!-- Left: Store Trust Badges -->
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs font-semibold text-zinc-100">
+            <span class="inline-flex items-center gap-1 text-amber-300 font-bold">🚚 მიწოდება მთელ საქართველოში</span>
+            <span class="inline-flex items-center gap-1">🛡️ 24 თვე გარანტია</span>
+            <span class="inline-flex items-center gap-1 text-emerald-300 font-bold">💳 განვადება / ადგილზე გადახდა</span>
+          </div>
+
+          <!-- Right: Compact Live Date, Clock & Weather -->
+          <div class="flex flex-wrap items-center gap-2 ml-auto">
+            <div class="hidden md:flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+              <span>📅</span>
+              <span id="live-weekday" class="font-bold text-amber-300 capitalize">...</span><span>, </span><span id="live-date" class="text-white">...</span>
+            </div>
+
+            <div class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
+              <span id="live-clock" class="font-mono-num font-bold text-white tracking-wider">00:00:00</span>
+            </div>
+
+            <div id="live-weather-widget" class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+              <span id="live-weather-icon" class="text-sm">☀️</span>
+              <span id="live-weather-temp" class="font-mono-num font-bold text-amber-300">--°C</span>
+              <span id="live-weather-city" class="font-semibold text-white">თბილისი</span>
+              <span id="live-weather-desc" class="hidden xl:inline text-white/80"></span>
+              <span id="live-weather-details" class="hidden"></span>
+            </div>
+
+            <div class="hidden sm:flex items-center gap-1">
+              <button
+                type="button"
+                data-city-choice="tbilisi"
+                id="weather-city-btn-tbilisi"
+                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
+              >
+                თბილისი
+              </button>
+              <button
+                type="button"
+                data-city-choice="batumi"
+                id="weather-city-btn-batumi"
+                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
+              >
+                ბათუმი
+              </button>
+              <button
+                type="button"
+                data-city-choice="kutaisi"
+                id="weather-city-btn-kutaisi"
+                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
+              >
+                ქუთაისი
+              </button>
+              <button
+                type="button"
+                id="weather-geo-btn"
+                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
+                title="ჩემი ლოკაციის ამინდი"
+              >
+                <span>📍</span>
+                <span id="weather-geo-btn-text" class="hidden">ჩემი ქალაქი</span>
+              </button>
+              <button
+                type="button"
+                id="weather-refresh-btn"
+                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
+                title="ამინდის განახლება"
+              >
+                🔄
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Admin Notice Shown Only When Live Info Banner Is Hidden -->
+        <div
+          id="live-info-banner-hidden-notice"
+          class="owner-only-admin-el hidden rounded-xl bg-amber-50 border border-dashed border-amber-400 px-3 py-2 flex items-center justify-between gap-2 text-xs"
+        >
+          <span class="font-bold text-amber-950">👁️ საათის და ამინდის გრაფა ამჟამად დამალულია კლიენტებისთვის.</span>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              data-lb-toggle-visibility="1"
+              class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold cursor-pointer"
+            >
+              👁️ გრაფის გამოჩენა
+            </button>
+            <button
+              type="button"
+              data-lb-open-manager="1"
+              class="px-3 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-bold cursor-pointer"
+            >
+              ⚙️ მართვა
+            </button>
+          </div>
+        </div>
+
+        <!-- On-Page Admin Live Info Banner (Clock, Weather & Announcements Bar) Manager Panel -->
+        <div
+          id="inline-live-banner-manager-panel"
+          class="owner-only-admin-el hidden rounded-2xl bg-gradient-to-br from-blue-50/95 via-white to-amber-50/60 border-2 border-blue-400 p-4 space-y-4 shadow-lg"
+        >
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-blue-200/80">
+            <div>
+              <h3 class="text-sm sm:text-base font-extrabold text-zinc-950 flex items-center gap-2">
+                <span>⏰☀️🎨</span>
+                <span>საათის, ამინდის და ინფორმაციის გრაფის სრული მართვა (ფერები, გადაადგილება, წაშლა და დამატება)</span>
+              </h3>
+              <p class="text-xs text-zinc-600">
+                შეუცვალეთ ფერი თვითონ მთლიან გრაფას (შავის ნაცვლად ნებისმიერი ფერი), გადაადგილეთ ნებისმიერი ნაწერი <strong>⬅️ ➡️ ⬆️ ⬇️</strong> ან მაუსით გადათრევით, შეუცვალეთ <strong>🔤 ნაწერის ფერი</strong> და <strong>🪣 უკან საღებავი</strong>, წაშალეთ ან ახლიდან დაამატეთ ნებისმიერი ელემენტი.
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
+              <button
+                type="button"
+                data-lb-toggle-visibility="1"
+                class="lb-visibility-toggle-btn min-h-[34px] px-3 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-xs font-extrabold cursor-pointer"
+              >
+                👁️ გრაფის დამალვა / გამოჩენა
+              </button>
+              <button
+                type="button"
+                data-lb-reset-all="1"
+                class="min-h-[34px] px-3 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold cursor-pointer"
+              >
+                🔄 საწყისზე აღდგენა
+              </button>
+              <button
+                type="button"
+                id="close-inline-live-banner-manager-btn"
+                class="min-h-[34px] px-3 py-1 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold cursor-pointer"
+              >
+                ✕ დახურვა
+              </button>
+            </div>
+          </div>
+
+          <!-- 1. Whole Bar Background & Border Color Picker + 12 Presets (Change the Black Bar to Any Color) -->
+          <div class="p-3 rounded-xl bg-white border border-blue-200/90 space-y-2.5 shadow-2xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex flex-wrap items-center gap-3">
+                <label class="flex items-center gap-2 text-xs sm:text-sm font-extrabold text-zinc-900 cursor-pointer">
+                  <span>🪣 1. მთლიანი გრაფის ფონის ფერი (შავის სხვა ფრად შეცვლა):</span>
+                  <input
+                    id="inline-lb-bg-picker"
+                    type="color"
+                    value="#1e3a8a"
+                    data-lb-bar-bg-picker="1"
+                    class="w-9 h-8 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
+                  />
+                </label>
+                <span data-lb-bar-bg-hex="1" class="font-mono-num text-xs font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#1E3A8A</span>
+              </div>
+              <span class="text-[11px] font-semibold text-zinc-500">დააჭირეთ სასურველ ფერს ან აირჩიეთ პალიტრიდან:</span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5" data-lb-bar-swatches="1">
+              <button type="button" data-lb-bar-preset="#1e3a8a" class="px-2.5 py-1.5 rounded-lg bg-[#1e3a8a] text-white text-[11px] font-extrabold border border-blue-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🔵 სამეფო ლურჯი</button>
+              <button type="button" data-lb-bar-preset="#065f46" class="px-2.5 py-1.5 rounded-lg bg-[#065f46] text-white text-[11px] font-extrabold border border-emerald-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🟢 ზურმუხტისფერი</button>
+              <button type="button" data-lb-bar-preset="#b45309" class="px-2.5 py-1.5 rounded-lg bg-[#b45309] text-white text-[11px] font-extrabold border border-amber-300 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🟠 ოქროსფერი / ქარვა</button>
+              <button type="button" data-lb-bar-preset="#991b1b" class="px-2.5 py-1.5 rounded-lg bg-[#991b1b] text-white text-[11px] font-extrabold border border-rose-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🔴 სცენის წითელი</button>
+              <button type="button" data-lb-bar-preset="#4c1d95" class="px-2.5 py-1.5 rounded-lg bg-[#4c1d95] text-white text-[11px] font-extrabold border border-violet-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🟣 იისფერი</button>
+              <button type="button" data-lb-bar-preset="#0369a1" class="px-2.5 py-1.5 rounded-lg bg-[#0369a1] text-white text-[11px] font-extrabold border border-sky-300 shadow-2xs hover:scale-105 fast-transition cursor-pointer">💎 ცისფერი</button>
+              <button type="button" data-lb-bar-preset="#be185d" class="px-2.5 py-1.5 rounded-lg bg-[#be185d] text-white text-[11px] font-extrabold border border-pink-300 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🌸 ჟოლოსფერი</button>
+              <button type="button" data-lb-bar-preset="#fffbeb" class="px-2.5 py-1.5 rounded-lg bg-[#fffbeb] text-zinc-900 text-[11px] font-extrabold border border-amber-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">☀️ ღია კრემისფერი</button>
+              <button type="button" data-lb-bar-preset="#ffffff" class="px-2.5 py-1.5 rounded-lg bg-[#ffffff] text-zinc-900 text-[11px] font-extrabold border border-zinc-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">⬜ ქათქათა თეთრი</button>
+              <button type="button" data-lb-bar-preset="#dcfce7" class="px-2.5 py-1.5 rounded-lg bg-[#dcfce7] text-emerald-950 text-[11px] font-extrabold border border-emerald-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🌿 ღია მწვანე</button>
+              <button type="button" data-lb-bar-preset="#334155" class="px-2.5 py-1.5 rounded-lg bg-[#334155] text-white text-[11px] font-extrabold border border-slate-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🩶 ნაცრისფერი</button>
+              <button type="button" data-lb-bar-preset="#09090b" class="px-2.5 py-1.5 rounded-lg bg-[#09090b] text-white text-[11px] font-extrabold border border-zinc-600 shadow-2xs hover:scale-105 fast-transition cursor-pointer">⬛ შავი</button>
+            </div>
+          </div>
+
+          <!-- 2. Add New Custom Text Item + Re-Add Deleted Widgets (Clock, Weather, Date, Cities, Delivery, etc.) -->
+          <div class="p-3 rounded-xl bg-white border border-blue-200/90 space-y-2.5 shadow-2xs">
+            <div class="text-xs font-extrabold text-zinc-900">
+              ➕ 2. ახალი ნაწერის დამატება ამ გრაფაში ან წაშლილი ბლოკების (საათი, ამინდი, თარიღი) ახლიდან ჩასმა:
+            </div>
+            <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2">
+              <input
+                id="inline-lb-new-item-input"
+                type="text"
+                placeholder="ჩაწერეთ ახალი ნაწერი (მაგ: 🎤 მიკროფონებზე აქცია, 📞 551 58 85 79, ⚡ სწრაფი მიწოდება)..."
+                class="flex-1 min-h-[40px] px-3.5 py-1.5 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
+              />
+              <div class="flex flex-wrap items-center gap-2">
+                <label class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი ნაწერის ფერი">
+                  <span>🔤 ნაწერის ფერი:</span>
+                  <input id="inline-lb-new-text-color" type="color" value="#ffffff" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                </label>
+                <label class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი ნაწერის უკან საღებავის ჩასხმა">
+                  <span>🪣 საღებავის ჩასხმა:</span>
+                  <input id="inline-lb-new-bg-color" type="color" value="#d97706" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
+                </label>
+                <button
+                  type="button"
+                  id="inline-lb-add-item-btn"
+                  class="theme-bg min-h-[40px] px-4 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
+                >
+                  + ახალი ნაწერის დამატება
+                </button>
+              </div>
+            </div>
+
+            <!-- 1-Click Restore / Add Built-In Widgets -->
+            <div id="inline-lb-restore-widgets-bar" class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-zinc-100"></div>
+          </div>
+
+          <!-- 3. List of All Items in the Bar (Move Left/Right/X/Y, Edit Text, Change Text Color, Pour Background Paint, Delete) -->
+          <div class="space-y-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <div class="text-xs font-extrabold text-zinc-900">
+                🛠️ 3. გრაფაში არსებული ყველა ნაწერის გადაადგილება (⬅️ ➡️ ⬆️ ⬇️), ფერის შეცვლა (🔤 / 🪣) და წაშლა (✕):
+              </div>
+              <span class="text-[11px] font-semibold text-blue-700">
+                შეგიძლიათ პირდაპირ ზედა ზოლზეც მოკიდოთ მაუსი ნებისმიერ ნაწერს და გადაათრიოთ!
+              </span>
+            </div>
+            <div id="inline-live-banner-items-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
+          </div>
+        </div>
+
+        <!-- 2. მეორე რიგში (საათის ქვემოთ): ლურჯ ფონში "ჩვენი ოფიციალური გვერდები" + WhatsApp/Viber/Telegram ზოლი -->
+        <div class="rounded-2xl overflow-hidden shadow-sm border border-blue-300/80">
+          <div
+            id="home-fb-callout-box"
+            class="bg-gradient-to-r from-[#1877F2] via-[#166fe5] to-[#0d5bd9] text-white px-3.5 py-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5"
+          >
+            <div class="flex items-center gap-2.5 min-w-0">
+              <a
+                id="catalog-fb-icon-link"
+                href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white text-[#1877F2] flex items-center justify-center shadow-sm shrink-0 hover:scale-105 fast-transition"
+                aria-label="Facebook გვერდი"
+              >
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </a>
+              <h3 id="fb-banner-title" class="font-display text-sm sm:text-base font-extrabold text-white leading-tight">
+                ჩვენი ოფიციალური გვერდები
+              </h3>
+              <p id="fb-banner-subtitle" class="hidden"></p>
+            </div>
+
+            <div class="w-full sm:w-auto grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 shrink-0">
+              <a
+                id="catalog-fb-banner-link"
+                href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-white hover:bg-amber-300 text-[#1877F2] hover:text-zinc-950 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                <span id="fb-banner-btn-text">Facebook</span>
+                <span>↗</span>
+              </a>
+
+              <a
+                id="catalog-tiktok-banner-link"
+                href="https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                </svg>
+                <span>TikTok</span>
+                <span>↗</span>
+              </a>
+
+              <a
+                id="catalog-ig-banner-link"
+                href="https://www.instagram.com/iyideba_saintereso_nivtebi/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-gradient-to-r from-pink-600 via-rose-500 to-amber-500 hover:opacity-95 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                <span>Instagram</span>
+                <span>↗</span>
+              </a>
+
+              <a
+                id="catalog-youtube-banner-link"
+                href="https://www.youtube.com/@iyidebasainteresonivtebi"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-[#FF0000] hover:bg-red-700 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                <span>YouTube</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Directly Attached Lower Bar: WhatsApp, Viber, Telegram, Wishlist & Share -->
+          <div class="bg-stone-50 px-3.5 py-2 border-t border-blue-200/70 flex flex-wrap items-center justify-start gap-2" role="group" aria-label="სწრაფი კონტაქტი და გაზიარება">
+            <!-- WhatsApp Quick Contact -->
+            <a
+              id="toolbar-wa-link"
+              href="https://wa.me/995551588579?text=გამარჯობა,%20მინდა%20შევუკვეთო%20ეს%20პროდუქტი"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 flex items-center justify-center gap-1.5 text-xs font-semibold active:scale-[0.97] fast-transition whitespace-nowrap shrink-0"
+              title="WhatsApp მიწერა"
+            >
+              <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.124.556 4.119 1.528 5.847l-1.528 5.581 5.714-1.499c1.693.903 3.621 1.419 5.672 1.419 6.627 0 12-5.373 12-12s-5.373-11.348-11.386-11.348z" />
+              </svg>
+              <span>WhatsApp</span>
+            </a>
+
+            <!-- Viber Quick Contact -->
+            <a
+              id="toolbar-viber-link"
+              href="viber://chat?number=%2B995551588579"
+              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200/80 flex items-center justify-center gap-1.5 text-xs font-semibold active:scale-[0.97] fast-transition whitespace-nowrap shrink-0"
+              title="Viber მიწერა"
+            >
+              <svg class="w-4 h-4 text-purple-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.4 0C5.5 0 1.2 3.8 1.2 9.7c0 2.8 1.1 5.3 3.2 7l-.7 3.8c-.1.5.4.8.8.5l3.5-2.1c1.1.3 2.2.5 3.4.5 5.9 0 10.2-3.8 10.2-9.7S17.3 0 11.4 0zm5.2 13.7c-.4 1.1-1.6 1.8-2.6 1.6-.8-.1-2-.7-3.4-1.6-1.9-1.3-3.4-3.1-4.1-4.7-.5-1.1 0-2.3.9-2.8.4-.2.8-.2 1.1.1.4.4.9 1.3 1.1 1.7.2.4.1.8-.2 1.1l-.4.4c-.2.2-.2.5 0 .8.4.8 1.1 1.6 1.9 2.2.8.6 1.5.9 1.9 1 .3.1.6 0 .8-.2l.4-.5c.3-.3.7-.4 1.1-.2.5.2 1.3.7 1.7 1 .3.3.3.7.1 1.1z" />
+              </svg>
+              <span>Viber</span>
+            </a>
+
+            <!-- Telegram Quick Contact -->
+            <a
+              id="toolbar-tg-link"
+              href="https://t.me/+995551588579"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200/80 flex items-center justify-center gap-1.5 text-xs font-semibold active:scale-[0.97] fast-transition whitespace-nowrap shrink-0"
+              title="Telegram მიწერა"
+            >
+              <svg class="w-4 h-4 text-sky-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+              </svg>
+              <span>Telegram</span>
+            </a>
+
+            <!-- Wishlist Quick View Button -->
+            <button
+              id="toolbar-wishlist-btn"
+              type="button"
+              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 text-xs font-bold flex items-center gap-1.5 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="რჩეული პროდუქტები"
+              aria-label="რჩეული პროდუქტები"
+            >
+              <svg class="w-4 h-4 text-rose-600 fill-current shrink-0" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              </svg>
+              <span id="toolbar-wishlist-label">რჩეულები</span>
+              <span
+                id="toolbar-wishlist-badge"
+                class="wishlist-count-badge px-1.5 py-0.5 text-[10px] font-black rounded-full bg-rose-600 text-white leading-none"
+              >0</span>
+            </button>
+
+            <!-- Store Share Button -->
+            <button
+              id="header-share-btn"
+              type="button"
+              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold flex items-center gap-1.5 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="გვერდის გაზიარება"
+            >
+              <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              <span>გაზიარება</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3. მესამე რიგში (ოფიციალური გვერდების ქვემოთ): "ყველა პროდუქტი" და კატეგორიების გრაფა + სორტირება -->
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div
             id="category-tabs-bar"
@@ -525,396 +915,6 @@
           </div>
 
           <div id="inline-cat-manager-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
-        </div>
-
-        <!-- On-Page Admin Live Info Banner (Clock, Weather & Announcements Bar) Manager Panel -->
-        <div
-          id="inline-live-banner-manager-panel"
-          class="owner-only-admin-el hidden rounded-2xl bg-gradient-to-br from-blue-50/95 via-white to-amber-50/60 border-2 border-blue-400 p-4 space-y-4 shadow-lg"
-        >
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2.5 border-b border-blue-200/80">
-            <div>
-              <h3 class="text-sm sm:text-base font-extrabold text-zinc-950 flex items-center gap-2">
-                <span>⏰☀️🎨</span>
-                <span>საათის, ამინდის და ინფორმაციის გრაფის სრული მართვა (ფერები, გადაადგილება, წაშლა და დამატება)</span>
-              </h3>
-              <p class="text-xs text-zinc-600">
-                შეუცვალეთ ფერი თვითონ მთლიან გრაფას (შავის ნაცვლად ნებისმიერი ფერი), გადაადგილეთ ნებისმიერი ნაწერი <strong>⬅️ ➡️ ⬆️ ⬇️</strong> ან მაუსით გადათრევით, შეუცვალეთ <strong>🔤 ნაწერის ფერი</strong> და <strong>🪣 უკან საღებავი</strong>, წაშალეთ ან ახლიდან დაამატეთ ნებისმიერი ელემენტი.
-              </p>
-            </div>
-            <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto shrink-0">
-              <button
-                type="button"
-                data-lb-toggle-visibility="1"
-                class="lb-visibility-toggle-btn min-h-[34px] px-3 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-xs font-extrabold cursor-pointer"
-              >
-                👁️ გრაფის დამალვა / გამოჩენა
-              </button>
-              <button
-                type="button"
-                data-lb-reset-all="1"
-                class="min-h-[34px] px-3 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold cursor-pointer"
-              >
-                🔄 საწყისზე აღდგენა
-              </button>
-              <button
-                type="button"
-                id="close-inline-live-banner-manager-btn"
-                class="min-h-[34px] px-3 py-1 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold cursor-pointer"
-              >
-                ✕ დახურვა
-              </button>
-            </div>
-          </div>
-
-          <!-- 1. Whole Bar Background & Border Color Picker + 12 Presets (Change the Black Bar to Any Color) -->
-          <div class="p-3 rounded-xl bg-white border border-blue-200/90 space-y-2.5 shadow-2xs">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div class="flex flex-wrap items-center gap-3">
-                <label class="flex items-center gap-2 text-xs sm:text-sm font-extrabold text-zinc-900 cursor-pointer">
-                  <span>🪣 1. მთლიანი გრაფის ფონის ფერი (შავის სხვა ფრად შეცვლა):</span>
-                  <input
-                    id="inline-lb-bg-picker"
-                    type="color"
-                    value="#1e3a8a"
-                    data-lb-bar-bg-picker="1"
-                    class="w-9 h-8 rounded-lg border border-zinc-300 cursor-pointer bg-white p-0.5 shrink-0"
-                  />
-                </label>
-                <span data-lb-bar-bg-hex="1" class="font-mono-num text-xs font-bold text-zinc-700 bg-stone-100 px-2 py-0.5 rounded border border-zinc-200">#1E3A8A</span>
-              </div>
-              <span class="text-[11px] font-semibold text-zinc-500">დააჭირეთ სასურველ ფერს ან აირჩიეთ პალიტრიდან:</span>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-1.5" data-lb-bar-swatches="1">
-              <button type="button" data-lb-bar-preset="#1e3a8a" class="px-2.5 py-1.5 rounded-lg bg-[#1e3a8a] text-white text-[11px] font-extrabold border border-blue-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🔵 სამეფო ლურჯი</button>
-              <button type="button" data-lb-bar-preset="#065f46" class="px-2.5 py-1.5 rounded-lg bg-[#065f46] text-white text-[11px] font-extrabold border border-emerald-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🟢 ზურმუხტისფერი</button>
-              <button type="button" data-lb-bar-preset="#b45309" class="px-2.5 py-1.5 rounded-lg bg-[#b45309] text-white text-[11px] font-extrabold border border-amber-300 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🟠 ოქროსფერი / ქარვა</button>
-              <button type="button" data-lb-bar-preset="#991b1b" class="px-2.5 py-1.5 rounded-lg bg-[#991b1b] text-white text-[11px] font-extrabold border border-rose-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🔴 სცენის წითელი</button>
-              <button type="button" data-lb-bar-preset="#4c1d95" class="px-2.5 py-1.5 rounded-lg bg-[#4c1d95] text-white text-[11px] font-extrabold border border-violet-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🟣 იისფერი</button>
-              <button type="button" data-lb-bar-preset="#0369a1" class="px-2.5 py-1.5 rounded-lg bg-[#0369a1] text-white text-[11px] font-extrabold border border-sky-300 shadow-2xs hover:scale-105 fast-transition cursor-pointer">💎 ცისფერი</button>
-              <button type="button" data-lb-bar-preset="#be185d" class="px-2.5 py-1.5 rounded-lg bg-[#be185d] text-white text-[11px] font-extrabold border border-pink-300 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🌸 ჟოლოსფერი</button>
-              <button type="button" data-lb-bar-preset="#fffbeb" class="px-2.5 py-1.5 rounded-lg bg-[#fffbeb] text-zinc-900 text-[11px] font-extrabold border border-amber-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">☀️ ღია კრემისფერი</button>
-              <button type="button" data-lb-bar-preset="#ffffff" class="px-2.5 py-1.5 rounded-lg bg-[#ffffff] text-zinc-900 text-[11px] font-extrabold border border-zinc-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">⬜ ქათქათა თეთრი</button>
-              <button type="button" data-lb-bar-preset="#dcfce7" class="px-2.5 py-1.5 rounded-lg bg-[#dcfce7] text-emerald-950 text-[11px] font-extrabold border border-emerald-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🌿 ღია მწვანე</button>
-              <button type="button" data-lb-bar-preset="#334155" class="px-2.5 py-1.5 rounded-lg bg-[#334155] text-white text-[11px] font-extrabold border border-slate-400 shadow-2xs hover:scale-105 fast-transition cursor-pointer">🩶 ნაცრისფერი</button>
-              <button type="button" data-lb-bar-preset="#09090b" class="px-2.5 py-1.5 rounded-lg bg-[#09090b] text-white text-[11px] font-extrabold border border-zinc-600 shadow-2xs hover:scale-105 fast-transition cursor-pointer">⬛ შავი</button>
-            </div>
-          </div>
-
-          <!-- 2. Add New Custom Text Item + Re-Add Deleted Widgets (Clock, Weather, Date, Cities, Delivery, etc.) -->
-          <div class="p-3 rounded-xl bg-white border border-blue-200/90 space-y-2.5 shadow-2xs">
-            <div class="text-xs font-extrabold text-zinc-900">
-              ➕ 2. ახალი ნაწერის დამატება ამ გრაფაში ან წაშლილი ბლოკების (საათი, ამინდი, თარიღი) ახლიდან ჩასმა:
-            </div>
-            <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-2">
-              <input
-                id="inline-lb-new-item-input"
-                type="text"
-                placeholder="ჩაწერეთ ახალი ნაწერი (მაგ: 🎤 მიკროფონებზე აქცია, 📞 551 58 85 79, ⚡ სწრაფი მიწოდება)..."
-                class="flex-1 min-h-[40px] px-3.5 py-1.5 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
-              />
-              <div class="flex flex-wrap items-center gap-2">
-                <label class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი ნაწერის ფერი">
-                  <span>🔤 ნაწერის ფერი:</span>
-                  <input id="inline-lb-new-text-color" type="color" value="#ffffff" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
-                </label>
-                <label class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer" title="ახალი ნაწერის უკან საღებავის ჩასხმა">
-                  <span>🪣 საღებავის ჩასხმა:</span>
-                  <input id="inline-lb-new-bg-color" type="color" value="#d97706" class="w-6 h-6 rounded cursor-pointer border-0 bg-transparent p-0" />
-                </label>
-                <button
-                  type="button"
-                  id="inline-lb-add-item-btn"
-                  class="theme-bg min-h-[40px] px-4 py-1.5 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap"
-                >
-                  + ახალი ნაწერის დამატება
-                </button>
-              </div>
-            </div>
-
-            <!-- 1-Click Restore / Add Built-In Widgets -->
-            <div id="inline-lb-restore-widgets-bar" class="flex flex-wrap items-center gap-1.5 pt-1 border-t border-zinc-100"></div>
-          </div>
-
-          <!-- 3. List of All Items in the Bar (Move Left/Right/X/Y, Edit Text, Change Text Color, Pour Background Paint, Delete) -->
-          <div class="space-y-2">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-              <div class="text-xs font-extrabold text-zinc-900">
-                🛠️ 3. გრაფაში არსებული ყველა ნაწერის გადაადგილება (⬅️ ➡️ ⬆️ ⬇️), ფერის შეცვლა (🔤 / 🪣) და წაშლა (✕):
-              </div>
-              <span class="text-[11px] font-semibold text-blue-700">
-                შეგიძლიათ პირდაპირ ქვედა ზოლზეც მოკიდოთ მაუსი ნებისმიერ ნაწერს და გადაათრიოთ!
-              </span>
-            </div>
-            <div id="inline-live-banner-items-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5"></div>
-          </div>
-        </div>
-
-        <!-- Admin Notice Shown Only When Live Info Banner Is Hidden -->
-        <div
-          id="live-info-banner-hidden-notice"
-          class="owner-only-admin-el hidden rounded-xl bg-amber-50 border border-dashed border-amber-400 px-3 py-2 flex items-center justify-between gap-2 text-xs"
-        >
-          <span class="font-bold text-amber-950">👁️ საათის და ამინდის გრაფა ამჟამად დამალულია კლიენტებისთვის.</span>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              data-lb-toggle-visibility="1"
-              class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold cursor-pointer"
-            >
-              👁️ გრაფის გამოჩენა
-            </button>
-            <button
-              type="button"
-              data-lb-open-manager="1"
-              class="px-3 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-white font-bold cursor-pointer"
-            >
-              ⚙️ მართვა
-            </button>
-          </div>
-        </div>
-
-        <!-- Row 0.2: Fully Customizable, Movable, Colorable & Deletable Live Date, Clock, Weather & Trust Badges Bar -->
-        <div
-          id="live-info-banner"
-          style="background-color: #1e3a8a; border-color: #1d4ed8;"
-          class="rounded-xl text-white px-3 py-2 shadow-sm border flex flex-wrap items-center justify-between gap-2 text-xs transition-colors duration-150"
-        >
-          <!-- Left: Store Trust Badges -->
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs font-semibold text-zinc-100">
-            <span class="inline-flex items-center gap-1 text-amber-300 font-bold">🚚 მიწოდება მთელ საქართველოში</span>
-            <span class="inline-flex items-center gap-1">🛡️ 24 თვე გარანტია</span>
-            <span class="inline-flex items-center gap-1 text-emerald-300 font-bold">💳 განვადება / ადგილზე გადახდა</span>
-          </div>
-
-          <!-- Right: Compact Live Date, Clock & Weather -->
-          <div class="flex flex-wrap items-center gap-2 ml-auto">
-            <div class="hidden md:flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
-              <span>📅</span>
-              <span id="live-weekday" class="font-bold text-amber-300 capitalize">...</span><span>, </span><span id="live-date" class="text-white">...</span>
-            </div>
-
-            <div class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
-              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
-              <span id="live-clock" class="font-mono-num font-bold text-white tracking-wider">00:00:00</span>
-            </div>
-
-            <div id="live-weather-widget" class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
-              <span id="live-weather-icon" class="text-sm">☀️</span>
-              <span id="live-weather-temp" class="font-mono-num font-bold text-amber-300">--°C</span>
-              <span id="live-weather-city" class="font-semibold text-white">თბილისი</span>
-              <span id="live-weather-desc" class="hidden xl:inline text-white/80"></span>
-              <span id="live-weather-details" class="hidden"></span>
-            </div>
-
-            <div class="hidden sm:flex items-center gap-1">
-              <button
-                type="button"
-                data-city-choice="tbilisi"
-                id="weather-city-btn-tbilisi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
-              >
-                თბილისი
-              </button>
-              <button
-                type="button"
-                data-city-choice="batumi"
-                id="weather-city-btn-batumi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
-              >
-                ბათუმი
-              </button>
-              <button
-                type="button"
-                data-city-choice="kutaisi"
-                id="weather-city-btn-kutaisi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
-              >
-                ქუთაისი
-              </button>
-              <button
-                type="button"
-                id="weather-geo-btn"
-                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
-                title="ჩემი ლოკაციის ამინდი"
-              >
-                <span>📍</span>
-                <span id="weather-geo-btn-text" class="hidden">ჩემი ქალაქი</span>
-              </button>
-              <button
-                type="button"
-                id="weather-refresh-btn"
-                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
-                title="ამინდის განახლება"
-              >
-                🔄
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 0.5: COMPACT OFFICIAL CHANNELS BANNER + ATTACHED WHATSAPP/VIBER/TELEGRAM BAR -->
-        <div class="rounded-2xl overflow-hidden shadow-sm border border-blue-300/80">
-          <div
-            id="home-fb-callout-box"
-            class="bg-gradient-to-r from-[#1877F2] via-[#166fe5] to-[#0d5bd9] text-white px-3.5 py-2.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5"
-          >
-            <div class="flex items-center gap-2.5 min-w-0">
-              <a
-                id="catalog-fb-icon-link"
-                href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white text-[#1877F2] flex items-center justify-center shadow-sm shrink-0 hover:scale-105 fast-transition"
-                aria-label="Facebook გვერდი"
-              >
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-              </a>
-              <h3 id="fb-banner-title" class="font-display text-sm sm:text-base font-extrabold text-white leading-tight">
-                ჩვენი ოფიციალური გვერდები
-              </h3>
-              <p id="fb-banner-subtitle" class="hidden"></p>
-            </div>
-
-            <div class="w-full sm:w-auto grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 shrink-0">
-              <a
-                id="catalog-fb-banner-link"
-                href="https://www.facebook.com/profile.php?id=100063598716104&sk=photos_albums"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-white hover:bg-amber-300 text-[#1877F2] hover:text-zinc-950 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
-              >
-                <svg class="w-3.5 h-3.5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                <span id="fb-banner-btn-text">Facebook</span>
-                <span>↗</span>
-              </a>
-
-              <a
-                id="catalog-tiktok-banner-link"
-                href="https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
-              >
-                <svg class="w-3.5 h-3.5 shrink-0 text-cyan-400" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                </svg>
-                <span>TikTok</span>
-                <span>↗</span>
-              </a>
-
-              <a
-                id="catalog-ig-banner-link"
-                href="https://www.instagram.com/iyideba_saintereso_nivtebi/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-gradient-to-r from-pink-600 via-rose-500 to-amber-500 hover:opacity-95 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
-              >
-                <svg class="w-3.5 h-3.5 shrink-0 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-                <span>Instagram</span>
-                <span>↗</span>
-              </a>
-
-              <a
-                id="catalog-youtube-banner-link"
-                href="https://www.youtube.com/@iyidebasainteresonivtebi"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="min-h-[36px] px-3 py-1.5 rounded-xl bg-[#FF0000] hover:bg-red-700 text-white border border-white/20 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
-              >
-                <svg class="w-3.5 h-3.5 shrink-0 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-                <span>YouTube</span>
-                <span>↗</span>
-              </a>
-            </div>
-          </div>
-
-          <!-- Directly Attached Lower Bar: WhatsApp, Viber, Telegram, Wishlist & Share -->
-          <div class="bg-stone-50 px-3.5 py-2 border-t border-blue-200/70 flex flex-wrap items-center justify-start gap-2" role="group" aria-label="სწრაფი კონტაქტი და გაზიარება">
-            <!-- WhatsApp Quick Contact -->
-            <a
-              id="toolbar-wa-link"
-              href="https://wa.me/995551588579?text=გამარჯობა,%20მინდა%20შევუკვეთო%20ეს%20პროდუქტი"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200/80 flex items-center justify-center gap-1.5 text-xs font-semibold active:scale-[0.97] fast-transition whitespace-nowrap shrink-0"
-              title="WhatsApp მიწერა"
-            >
-              <svg class="w-4 h-4 text-emerald-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.124.556 4.119 1.528 5.847l-1.528 5.581 5.714-1.499c1.693.903 3.621 1.419 5.672 1.419 6.627 0 12-5.373 12-12s-5.373-11.348-11.386-11.348z" />
-              </svg>
-              <span>WhatsApp</span>
-            </a>
-
-            <!-- Viber Quick Contact -->
-            <a
-              id="toolbar-viber-link"
-              href="viber://chat?number=%2B995551588579"
-              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200/80 flex items-center justify-center gap-1.5 text-xs font-semibold active:scale-[0.97] fast-transition whitespace-nowrap shrink-0"
-              title="Viber მიწერა"
-            >
-              <svg class="w-4 h-4 text-purple-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11.4 0C5.5 0 1.2 3.8 1.2 9.7c0 2.8 1.1 5.3 3.2 7l-.7 3.8c-.1.5.4.8.8.5l3.5-2.1c1.1.3 2.2.5 3.4.5 5.9 0 10.2-3.8 10.2-9.7S17.3 0 11.4 0zm5.2 13.7c-.4 1.1-1.6 1.8-2.6 1.6-.8-.1-2-.7-3.4-1.6-1.9-1.3-3.4-3.1-4.1-4.7-.5-1.1 0-2.3.9-2.8.4-.2.8-.2 1.1.1.4.4.9 1.3 1.1 1.7.2.4.1.8-.2 1.1l-.4.4c-.2.2-.2.5 0 .8.4.8 1.1 1.6 1.9 2.2.8.6 1.5.9 1.9 1 .3.1.6 0 .8-.2l.4-.5c.3-.3.7-.4 1.1-.2.5.2 1.3.7 1.7 1 .3.3.3.7.1 1.1z" />
-              </svg>
-              <span>Viber</span>
-            </a>
-
-            <!-- Telegram Quick Contact -->
-            <a
-              id="toolbar-tg-link"
-              href="https://t.me/+995551588579"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200/80 flex items-center justify-center gap-1.5 text-xs font-semibold active:scale-[0.97] fast-transition whitespace-nowrap shrink-0"
-              title="Telegram მიწერა"
-            >
-              <svg class="w-4 h-4 text-sky-600 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
-              </svg>
-              <span>Telegram</span>
-            </a>
-
-            <!-- Wishlist Quick View Button -->
-            <button
-              id="toolbar-wishlist-btn"
-              type="button"
-              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200 text-xs font-bold flex items-center gap-1.5 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
-              title="რჩეული პროდუქტები"
-              aria-label="რჩეული პროდუქტები"
-            >
-              <svg class="w-4 h-4 text-rose-600 fill-current shrink-0" viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-              <span id="toolbar-wishlist-label">რჩეულები</span>
-              <span
-                id="toolbar-wishlist-badge"
-                class="wishlist-count-badge px-1.5 py-0.5 text-[10px] font-black rounded-full bg-rose-600 text-white leading-none"
-              >0</span>
-            </button>
-
-            <!-- Store Share Button -->
-            <button
-              id="header-share-btn"
-              type="button"
-              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold flex items-center gap-1.5 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
-              title="გვერდის გაზიარება"
-            >
-              <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-              </svg>
-              <span>გაზიარება</span>
-            </button>
-          </div>
         </div>
 
         <!-- Row 1: Search Bar + Theme + Control Panel Buttons -->
