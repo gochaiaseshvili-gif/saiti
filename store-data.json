@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793296161484,
+  "updatedAt": 1793296196967,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -171,7 +171,7 @@
         "id": "cat_mvtimg2e_3dy",
         "label": "ფანრები",
         "textColor": "",
-        "bgColor": ""
+        "bgColor": "#d97706"
       },
       {
         "id": "cat_mvtipf68_yrn",
