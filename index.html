@@ -16365,22 +16365,22 @@
           const detailsEl = document.getElementById('live-weather-details');
           const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
 
-          // City button highlight
+          // City button highlight (preserves custom user textColor/bgColor if set)
           document.querySelectorAll('.weather-city-btn').forEach((btn) => {
             const choice = btn.getAttribute('data-city-choice');
             if (!customGeoCoords && choice === activeCityChoice) {
-              btn.className = 'weather-city-btn min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500/25 text-amber-300 border border-amber-500/50 shadow-sm active:scale-95 fast-transition cursor-pointer';
+              btn.className = 'weather-city-btn min-h-[32px] px-2.5 py-1 rounded-lg text-xs font-extrabold bg-amber-500/35 text-amber-200 border-2 border-amber-400 shadow-sm active:scale-95 fast-transition cursor-pointer';
             } else {
-              btn.className = 'weather-city-btn min-h-[34px] px-2.5 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:bg-zinc-800 active:scale-95 fast-transition cursor-pointer';
+              btn.className = 'weather-city-btn min-h-[32px] px-2.5 py-1 rounded-lg text-xs font-bold bg-black/25 hover:bg-black/40 border border-white/20 active:scale-95 fast-transition cursor-pointer';
             }
           });
 
           const geoBtn = document.getElementById('weather-geo-btn');
           if (geoBtn) {
             if (customGeoCoords) {
-              geoBtn.className = 'min-h-[34px] px-2 py-1 rounded-lg text-xs font-bold bg-emerald-500/25 text-emerald-300 border border-emerald-500/50 shadow-sm active:scale-95 fast-transition cursor-pointer flex items-center gap-1';
+              geoBtn.className = 'min-h-[32px] px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-500/35 text-emerald-200 border-2 border-emerald-400 shadow-sm active:scale-95 fast-transition cursor-pointer flex items-center gap-1';
             } else {
-              geoBtn.className = 'min-h-[34px] px-2 py-1 rounded-lg text-xs font-semibold bg-zinc-900 text-zinc-300 border border-zinc-800 hover:bg-zinc-800 active:scale-95 fast-transition cursor-pointer flex items-center gap-1';
+              geoBtn.className = 'min-h-[32px] px-2.5 py-1 rounded-lg text-xs font-bold bg-black/25 hover:bg-black/40 border border-white/20 active:scale-95 fast-transition cursor-pointer flex items-center gap-1';
             }
           }
 
@@ -16495,63 +16495,149 @@
             }
           } finally {
             isFetchingWeather = false;
-            if (refreshBtn) {
-              setTimeout(() => refreshBtn.classList.remove('animate-spin'), 300);
+            const currentRefreshBtn = document.getElementById('weather-refresh-btn');
+            if (currentRefreshBtn) {
+              setTimeout(() => currentRefreshBtn.classList.remove('animate-spin'), 300);
             }
           }
         }
 
+        let draggedLiveBannerChipId = null;
+
         function initLiveInfoWidgets() {
+          renderLiveInfoBanner();
           updateLiveDateTime();
           setInterval(updateLiveDateTime, 1000);
 
-          // City button clicks
-          document.querySelectorAll('[data-city-choice]').forEach((btn) => {
-            btn.addEventListener('click', () => {
-              const choice = btn.getAttribute('data-city-choice');
-              if (choice && GEORGIAN_CITIES[choice]) {
-                activeCityChoice = choice;
-                customGeoCoords = null;
-                cachedWeatherData = null;
-                fetchLiveWeather(true);
-              }
-            });
-          });
-
-          // Refresh button
-          const refreshBtn = document.getElementById('weather-refresh-btn');
-          if (refreshBtn) {
-            refreshBtn.addEventListener('click', () => fetchLiveWeather(true));
-          }
-
-          // Browser Geolocation button
-          const geoBtn = document.getElementById('weather-geo-btn');
-          if (geoBtn) {
-            geoBtn.addEventListener('click', () => {
-              if (!navigator.geolocation) {
-                showWishlistToast(currentLang === 'en' ? 'Geolocation is not supported by your browser' : (currentLang === 'ru' ? 'Геолокация не поддерживается вашим браузером' : 'გეოლოკაცია არ არის მხარდაჭერილი თქვენს ბრაუზერში'));
+          const bannerEl = document.getElementById('live-info-banner');
+          if (bannerEl) {
+            // Event delegation for city buttons, refresh, geolocation, and inline move/delete buttons
+            bannerEl.addEventListener('click', (e) => {
+              const inlineMoveBtn = e.target.closest('[data-lb-inline-move]');
+              if (inlineMoveBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = inlineMoveBtn.getAttribute('data-lb-inline-move');
+                const dir = Number(inlineMoveBtn.getAttribute('data-dir')) || 0;
+                if (id && dir) moveLiveBannerItemOrder(id, dir);
                 return;
               }
-              const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
-              const geoBtnText = document.getElementById('weather-geo-btn-text');
-              if (geoBtnText) geoBtnText.textContent = '...';
 
-              navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                  customGeoCoords = {
-                    lat: pos.coords.latitude,
-                    lon: pos.coords.longitude,
-                    label: strings.weatherGeoBtn
-                  };
+              const inlineDelBtn = e.target.closest('[data-lb-inline-delete]');
+              if (inlineDelBtn) {
+                e.preventDefault();
+                e.stopPropagation();
+                const id = inlineDelBtn.getAttribute('data-lb-inline-delete');
+                if (id) deleteLiveBannerItem(id);
+                return;
+              }
+
+              const cityBtn = e.target.closest('[data-city-choice]');
+              if (cityBtn) {
+                const choice = cityBtn.getAttribute('data-city-choice');
+                if (choice && GEORGIAN_CITIES[choice]) {
+                  activeCityChoice = choice;
+                  customGeoCoords = null;
                   cachedWeatherData = null;
                   fetchLiveWeather(true);
-                },
-                (err) => {
-                  console.warn('Geolocation denied or failed:', err);
-                  if (geoBtnText) geoBtnText.textContent = strings.weatherGeoBtn;
-                },
-                { timeout: 8000 }
-              );
+                }
+                return;
+              }
+
+              const refreshBtn = e.target.closest('#weather-refresh-btn');
+              if (refreshBtn) {
+                fetchLiveWeather(true);
+                return;
+              }
+
+              const geoBtn = e.target.closest('#weather-geo-btn');
+              if (geoBtn) {
+                if (!navigator.geolocation) {
+                  showWishlistToast(currentLang === 'en' ? 'Geolocation is not supported by your browser' : (currentLang === 'ru' ? 'Геолокация не поддерживается вашим браузером' : 'გეოლოკაცია არ არის მხარდაჭერილი თქვენს ბრაუზერში'));
+                  return;
+                }
+                const strings = UI_STRINGS[currentLang] || UI_STRINGS.ka;
+                const geoBtnText = document.getElementById('weather-geo-btn-text');
+                if (geoBtnText) geoBtnText.textContent = '...';
+
+                navigator.geolocation.getCurrentPosition(
+                  (pos) => {
+                    customGeoCoords = {
+                      lat: pos.coords.latitude,
+                      lon: pos.coords.longitude,
+                      label: strings.weatherGeoBtn
+                    };
+                    cachedWeatherData = null;
+                    fetchLiveWeather(true);
+                  },
+                  (err) => {
+                    console.warn('Geolocation denied or failed:', err);
+                    if (geoBtnText) geoBtnText.textContent = strings.weatherGeoBtn;
+                  },
+                  { timeout: 8000 }
+                );
+              }
+            });
+
+            // Direct Drag & Drop reordering on #live-info-banner
+            bannerEl.addEventListener('dragstart', (e) => {
+              const chip = e.target.closest('[data-lb-chip-id]');
+              if (!chip) return;
+              draggedLiveBannerChipId = chip.getAttribute('data-lb-chip-id');
+              chip.classList.add('opacity-50');
+              if (e.dataTransfer) {
+                e.dataTransfer.effectAllowed = 'move';
+                try { e.dataTransfer.setData('text/plain', draggedLiveBannerChipId); } catch (err) {}
+              }
+            });
+
+            bannerEl.addEventListener('dragend', (e) => {
+              const chip = e.target.closest('[data-lb-chip-id]');
+              if (chip) chip.classList.remove('opacity-50');
+              draggedLiveBannerChipId = null;
+              bannerEl.querySelectorAll('[data-lb-chip-id]').forEach((el) => {
+                el.classList.remove('ring-2', 'ring-amber-400');
+              });
+            });
+
+            bannerEl.addEventListener('dragover', (e) => {
+              const overChip = e.target.closest('[data-lb-chip-id]');
+              if (!overChip || !draggedLiveBannerChipId) return;
+              e.preventDefault();
+              if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+              const overId = overChip.getAttribute('data-lb-chip-id');
+              if (overId !== draggedLiveBannerChipId) {
+                overChip.classList.add('ring-2', 'ring-amber-400');
+              }
+            });
+
+            bannerEl.addEventListener('dragleave', (e) => {
+              const overChip = e.target.closest('[data-lb-chip-id]');
+              if (overChip) overChip.classList.remove('ring-2', 'ring-amber-400');
+            });
+
+            bannerEl.addEventListener('drop', (e) => {
+              const targetChip = e.target.closest('[data-lb-chip-id]');
+              if (!targetChip || !draggedLiveBannerChipId) return;
+              e.preventDefault();
+              const targetId = targetChip.getAttribute('data-lb-chip-id');
+              targetChip.classList.remove('ring-2', 'ring-amber-400');
+              if (!targetId || targetId === draggedLiveBannerChipId) return;
+
+              const items = ensureLiveBannerItems();
+              const fromIdx = items.findIndex((it) => it.id === draggedLiveBannerChipId);
+              const toIdx = items.findIndex((it) => it.id === targetId);
+              if (fromIdx === -1 || toIdx === -1) return;
+
+              const [moved] = items.splice(fromIdx, 1);
+              items.splice(toIdx, 0, moved);
+              storeSettings.liveBannerCustomized = true;
+              renderLiveInfoBanner();
+              renderLiveBannerManagerLists();
+              saveStateEverywhere({ immediate: true });
+              if (typeof showWishlistToast === 'function') {
+                showWishlistToast('↔️ ელემენტი გადაადგილდა');
+              }
             });
           }
 
