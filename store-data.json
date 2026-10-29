@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": "2026-10-29T11:59:05.210Z",
+  "updatedAt": 1793275190981,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -78,6 +78,62 @@
     "_techSpecsOnlyAboveGalleryV1": true
   },
   "productsList": [
+    {
+      "id": "prod-1793275190871",
+      "sku": "PRO-1000",
+      "category": "karaoke",
+      "categoryLabel": "კარაოკე სისტემა",
+      "badgeText": "აქცია",
+      "name": "ახალი პროდუქტი",
+      "shortMeta": "",
+      "oldPrice": 0,
+      "newPrice": 0,
+      "images": [
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793275180916_mij4.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793275183086_s4pv.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793275184931_5f4w.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793275186821_21md.jpg",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_5_1793275188949_sp7b.jpg"
+      ],
+      "description": "",
+      "specs": [
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": ""
+        },
+        {
+          "label": "ელემენტი / ტევადობა",
+          "value": ""
+        },
+        {
+          "label": "კომპლექტაცია",
+          "value": ""
+        },
+        {
+          "label": "ავტონომიური მუშაობა",
+          "value": ""
+        },
+        {
+          "label": "პორტები და კავშირი",
+          "value": ""
+        },
+        {
+          "label": "წონა და გარანტია",
+          "value": ""
+        }
+      ],
+      "closedFields": {},
+      "youtubeId": "",
+      "youtubeUrl": "",
+      "youtubeDuration": "08:45",
+      "youtubeCaption": "ახალი პროდუქტი",
+      "tiktokUrl": "",
+      "tiktokCaption": "ახალი პროდუქტი",
+      "facebookUrl": "",
+      "facebookCaption": "ახალი პროდუქტი",
+      "instagramUrl": "",
+      "instagramCaption": "ახალი პროდუქტი"
+    },
     {
       "id": "prod-1793275000806",
       "sku": "PRO-1000",
@@ -2544,7 +2600,6 @@
       "closedFields": {
         "sku": true,
         "instagram": true,
-        "youtube": true,
         "facebook": true,
         "spec_1": true
       }
@@ -2708,6 +2763,13 @@
     }
   ],
   "imagesMap": {
+    "prod-1793275190871": [
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793275180916_mij4.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793275183086_s4pv.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1793275184931_5f4w.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793275186821_21md.jpg",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_5_1793275188949_sp7b.jpg"
+    ],
     "prod-1793275000806": [
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793274991078_uqwd.jpg",
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793274993097_3vku.jpg",
