@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340469824,
+  "updatedAt": 1793340550634,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -130,6 +130,20 @@
         "offsetY": 0,
         "align": "right",
         "fontSize": 8,
+        "isBold": false,
+        "isUnderline": false
+      },
+      {
+        "id": "lb_custom_mvuknsue_kj9",
+        "type": "text",
+        "badgeTitle": "✨ დამატებული ნაწერი",
+        "text": "საცდელი",
+        "textColor": "#ffffff",
+        "bgColor": "",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "left",
+        "fontSize": 0,
         "isBold": false,
         "isUnderline": false
       }
