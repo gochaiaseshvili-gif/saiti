@@ -8899,6 +8899,10 @@
           }
 
           if (item.type === 'weather') {
+            const isAutoSyncOn = Boolean(storeSettings.weatherAutoSync);
+            const autoBtnStyle = isAutoSyncOn
+              ? 'bg-emerald-500 text-white border-emerald-300 ring-1 ring-emerald-200 shadow-2xs'
+              : 'bg-black/30 hover:bg-black/45 text-emerald-200 border-emerald-400/50';
             return `
               <div
                 id="live-weather-widget"
@@ -8906,7 +8910,7 @@
                 ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
+                class="lb-draggable-chip flex flex-wrap items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
               >
                 <span id="live-weather-icon" class="text-sm">☀️</span>
                 ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
@@ -8914,6 +8918,16 @@
                 <span id="live-weather-city" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-semibold">თბილისი</span>
                 <span id="live-weather-desc" style="${effTextCol ? `color:${effTextCol} !important; opacity:0.9;` : ''}" class="hidden xl:inline"></span>
                 <span id="live-weather-details" class="hidden"></span>
+                <button
+                  type="button"
+                  data-weather-auto-sync-btn="1"
+                  data-weather-auto-compact="1"
+                  class="px-2 py-0.5 rounded-md border text-[10px] font-extrabold inline-flex items-center gap-1 cursor-pointer active:scale-95 fast-transition ${autoBtnStyle}"
+                  title="როცა ჩართულია, საიტის ამინდი (მზე ☀️ / წვიმა 🌧️ / თოვლი ❄️) ავტომატურად სინქრონიზდება რეალურ ამინდის პროგნოზთან"
+                >
+                  <span>🔄</span>
+                  <span data-weather-auto-sync-label="1">${isAutoSyncOn ? 'ავტომატური ✓' : 'ავტომატური'}</span>
+                </button>
                 ${inlineControlsHtml}
               </div>
             `;
