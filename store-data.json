@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340055161,
+  "updatedAt": 1793340081938,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -50,10 +50,10 @@
         "isUnderline": false
       },
       {
-        "id": "warranty",
+        "id": "installment",
         "type": "text",
-        "badgeTitle": "🛡️ გარანტიის ტექსტი",
-        "text": "🛡️ 24 თვე გარანტია",
+        "badgeTitle": "💳 განვადების ტექსტი",
+        "text": "💳 განვადება / ადგილზე გადახდა",
         "textColor": "#ffffff",
         "bgColor": "",
         "offsetX": 0,
@@ -64,10 +64,10 @@
         "isUnderline": false
       },
       {
-        "id": "installment",
+        "id": "warranty",
         "type": "text",
-        "badgeTitle": "💳 განვადების ტექსტი",
-        "text": "💳 განვადება / ადგილზე გადახდა",
+        "badgeTitle": "🛡️ გარანტიის ტექსტი",
+        "text": "🛡️ 24 თვე გარანტია",
         "textColor": "#ffffff",
         "bgColor": "",
         "offsetX": 0,
