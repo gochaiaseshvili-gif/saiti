@@ -1,9 +1,16 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793339269362,
+  "updatedAt": 1793339276131,
   "themeColor": "#ea580c",
   "storeSettings": {
-    "wordElementStyles": {},
+    "wordElementStyles": {
+      "id:inline-live-banner-items-list": {
+        "fontSize": 16,
+        "isBold": false,
+        "isUnderline": true,
+        "underlineColor": ""
+      }
+    },
     "wordSubstringsMap": {},
     "brandName": "იყიდება საინტერესო ნივთები",
     "contactName": "გოჩა",
