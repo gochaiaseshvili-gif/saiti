@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340385987,
+  "updatedAt": 1793340414847,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -117,7 +117,7 @@
         "align": "right",
         "fontSize": 16,
         "isBold": true,
-        "isUnderline": true
+        "isUnderline": false
       },
       {
         "id": "cities",
