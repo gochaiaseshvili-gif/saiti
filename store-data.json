@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793338639353,
+  "updatedAt": 1793338640552,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {},
@@ -94,7 +94,7 @@
         "offsetX": 0,
         "offsetY": 0,
         "align": "right",
-        "fontSize": 18,
+        "fontSize": 20,
         "isBold": false,
         "isUnderline": false
       },
