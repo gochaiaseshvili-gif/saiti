@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340157112,
+  "updatedAt": 1793340202195,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -92,20 +92,6 @@
         "isUnderline": false
       },
       {
-        "id": "date",
-        "type": "date",
-        "badgeTitle": "📅 თარიღი და კვირის დღე",
-        "text": "📅",
-        "textColor": "#ea3ee4",
-        "bgColor": "#33f085",
-        "offsetX": 0,
-        "offsetY": 0,
-        "align": "right",
-        "fontSize": 16,
-        "isBold": true,
-        "isUnderline": true
-      },
-      {
         "id": "clock",
         "type": "clock",
         "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
@@ -118,6 +104,20 @@
         "fontSize": 0,
         "isBold": false,
         "isUnderline": false
+      },
+      {
+        "id": "date",
+        "type": "date",
+        "badgeTitle": "📅 თარიღი და კვირის დღე",
+        "text": "📅",
+        "textColor": "#ea3ee4",
+        "bgColor": "#33f085",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "right",
+        "fontSize": 16,
+        "isBold": true,
+        "isUnderline": true
       },
       {
         "id": "cities",
