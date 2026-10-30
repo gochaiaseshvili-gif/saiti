@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793388196913,
+  "updatedAt": 1793388199354,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -384,7 +384,7 @@
         "isItalic": false,
         "isUnderline": false,
         "textColor": "#2323e1",
-        "bgColor": "#24eb4b"
+        "bgColor": "#63ee7f"
       }
     },
     {
