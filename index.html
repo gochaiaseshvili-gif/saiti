@@ -8253,15 +8253,20 @@
           if (typeof applySavedLayoutOrderAndOffsets === 'function') {
             applySavedLayoutOrderAndOffsets();
           }
+          if (typeof applyWordFormattingToDOM === 'function') {
+            applyWordFormattingToDOM();
+          }
         }
+
+        const WORD_FONT_SIZES_LIST = [8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 26, 28, 32, 36, 42, 48, 56, 72];
 
         function ensureStoreCategories() {
           if (!Array.isArray(storeSettings.customCategories) || storeSettings.customCategories.length === 0) {
             storeSettings.customCategories = [
-              { id: 'karaoke', label: storeSettings.catKaraoke || DEFAULT_SETTINGS.catKaraoke || 'კარაოკე დინამიკები', textColor: '', bgColor: '' },
-              { id: 'solar', label: storeSettings.catSolar || DEFAULT_SETTINGS.catSolar || 'სოლარ გენერატორები', textColor: '', bgColor: '' },
-              { id: 'bundle', label: storeSettings.catBundle || DEFAULT_SETTINGS.catBundle || 'კომბო ნაკრები', textColor: '', bgColor: '' },
-              { id: 'microphone', label: 'მიკროფონი', textColor: '', bgColor: '' }
+              { id: 'karaoke', label: storeSettings.catKaraoke || DEFAULT_SETTINGS.catKaraoke || 'კარაოკე დინამიკები', textColor: '', bgColor: '', fontSize: 0, isBold: false, isUnderline: false },
+              { id: 'solar', label: storeSettings.catSolar || DEFAULT_SETTINGS.catSolar || 'სოლარ გენერატორები', textColor: '', bgColor: '', fontSize: 0, isBold: false, isUnderline: false },
+              { id: 'bundle', label: storeSettings.catBundle || DEFAULT_SETTINGS.catBundle || 'კომბო ნაკრები', textColor: '', bgColor: '', fontSize: 0, isBold: false, isUnderline: false },
+              { id: 'microphone', label: 'მიკროფონი', textColor: '', bgColor: '', fontSize: 0, isBold: false, isUnderline: false }
             ];
             storeSettings.microphoneDefaultAdded = true;
           } else {
@@ -8271,14 +8276,17 @@
                 id: String(c.id).trim(),
                 label: String(c.label).trim(),
                 textColor: c.textColor ? String(c.textColor).trim() : '',
-                bgColor: c.bgColor ? String(c.bgColor).trim() : ''
+                bgColor: c.bgColor ? String(c.bgColor).trim() : '',
+                fontSize: Number(c.fontSize) || 0,
+                isBold: Boolean(c.isBold),
+                isUnderline: Boolean(c.isUnderline)
               }));
             if (!storeSettings.microphoneDefaultAdded) {
               const hasMic = storeSettings.customCategories.some(
                 (c) => c.id === 'microphone' || c.label.toLowerCase().includes('მიკროფონ')
               );
               if (!hasMic) {
-                storeSettings.customCategories.push({ id: 'microphone', label: 'მიკროფონი', textColor: '', bgColor: '' });
+                storeSettings.customCategories.push({ id: 'microphone', label: 'მიკროფონი', textColor: '', bgColor: '', fontSize: 0, isBold: false, isUnderline: false });
               }
               storeSettings.microphoneDefaultAdded = true;
             }
@@ -8299,7 +8307,10 @@
                   id: String(p.category).trim(),
                   label: String(p.categoryLabel || p.category).trim(),
                   textColor: '',
-                  bgColor: ''
+                  bgColor: '',
+                  fontSize: 0,
+                  isBold: false,
+                  isUnderline: false
                 });
               }
             });
@@ -8321,25 +8332,34 @@
           if (catId === 'all') {
             return {
               textColor: storeSettings.catAllTextColor ? String(storeSettings.catAllTextColor).trim() : '',
-              bgColor: storeSettings.catAllBgColor ? String(storeSettings.catAllBgColor).trim() : ''
+              bgColor: storeSettings.catAllBgColor ? String(storeSettings.catAllBgColor).trim() : '',
+              fontSize: Number(storeSettings.catAllFontSize) || 0,
+              isBold: Boolean(storeSettings.catAllBold),
+              isUnderline: Boolean(storeSettings.catAllUnderline)
             };
           }
           if (catId === 'wishlist') {
             return {
               textColor: storeSettings.catWishlistTextColor ? String(storeSettings.catWishlistTextColor).trim() : '',
-              bgColor: storeSettings.catWishlistBgColor ? String(storeSettings.catWishlistBgColor).trim() : ''
+              bgColor: storeSettings.catWishlistBgColor ? String(storeSettings.catWishlistBgColor).trim() : '',
+              fontSize: Number(storeSettings.catWishlistFontSize) || 0,
+              isBold: Boolean(storeSettings.catWishlistBold),
+              isUnderline: Boolean(storeSettings.catWishlistUnderline)
             };
           }
           const cats = ensureStoreCategories();
           const found = cats.find((c) => c.id === catId);
           return {
             textColor: found && found.textColor ? String(found.textColor).trim() : '',
-            bgColor: found && found.bgColor ? String(found.bgColor).trim() : ''
+            bgColor: found && found.bgColor ? String(found.bgColor).trim() : '',
+            fontSize: found ? Number(found.fontSize) || 0 : 0,
+            isBold: Boolean(found && found.isBold),
+            isUnderline: Boolean(found && found.isUnderline)
           };
         }
 
         function buildCategoryTabStyleAndClass(catId, isSel, extraClasses = '') {
-          const { textColor, bgColor } = getCategoryColorsById(catId);
+          const { textColor, bgColor, fontSize, isBold, isUnderline } = getCategoryColorsById(catId);
           const hasCustomBg = Boolean(bgColor);
           const hasCustomText = Boolean(textColor);
           const effectiveText = hasCustomText ? textColor : hasCustomBg ? getAutoContrastTextColor(bgColor) : '';
@@ -8351,6 +8371,19 @@
           }
           if (effectiveText) {
             styleParts.push(`color: ${effectiveText} !important`);
+          }
+          if (fontSize && fontSize >= 8) {
+            styleParts.push(`font-size: ${fontSize}px !important`);
+            styleParts.push(`line-height: 1.25 !important`);
+          }
+          if (isBold) {
+            styleParts.push(`font-weight: 900 !important`);
+          }
+          if (isUnderline) {
+            styleParts.push(`text-decoration-line: underline !important`);
+            styleParts.push(`text-decoration-thickness: 2.5px !important`);
+            styleParts.push(`text-underline-offset: 4px !important`);
+            styleParts.push(`text-decoration-skip-ink: none !important`);
           }
           const styleAttr = styleParts.length > 0 ? `style="${styleParts.join('; ')};"` : '';
 
@@ -8367,9 +8400,11 @@
             stateClasses = isSel ? 'theme-bg shadow-sm' : 'text-zinc-600 hover:text-zinc-950';
           }
 
+          const fmtClasses = `${isBold ? 'word-bold-active' : ''} ${isUnderline ? 'word-underline-active' : ''}`.trim();
+
           return {
             styleAttr,
-            className: `category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${extraClasses} ${stateClasses}`.trim()
+            className: `category-tab-btn min-h-[38px] px-3.5 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap shrink-0 fast-transition cursor-pointer ${extraClasses} ${stateClasses} ${fmtClasses}`.trim()
           };
         }
 
@@ -8464,7 +8499,7 @@
               const safeId = String(entry.id).replace(/"/g, '&quot;');
               const safeLbl = String(entry.label).replace(/"/g, '&quot;');
               const safeDisplay = String(entry.label).replace(/</g, '&lt;').replace(/>/g, '&gt;');
-              const { textColor, bgColor } = getCategoryColorsById(entry.id);
+              const { textColor, bgColor, fontSize, isBold, isUnderline } = getCategoryColorsById(entry.id);
               const pickerTextVal = /^#[0-9a-fA-F]{6}$/.test(textColor)
                 ? textColor
                 : bgColor
@@ -8473,7 +8508,12 @@
               const pickerBgVal = /^#[0-9a-fA-F]{6}$/.test(bgColor) ? bgColor : '#d97706';
               const previewText = textColor || (bgColor ? getAutoContrastTextColor(bgColor) : '#18181b');
               const previewBg = bgColor || '#f5f5f4';
-              const hasAnyCustomColor = Boolean(textColor || bgColor);
+              const hasAnyCustomColor = Boolean(textColor || bgColor || fontSize || isBold || isUnderline);
+              const activeFontSize = fontSize && fontSize >= 8 ? fontSize : 12;
+
+              const sizeOptionsHtml = WORD_FONT_SIZES_LIST.map(
+                (sz) => `<option value="${sz}" ${sz === activeFontSize ? 'selected' : ''}>${sz}</option>`
+              ).join('');
 
               const textSwatchesHtml = CAT_QUICK_TEXT_SWATCHES.map(
                 (sw) =>
@@ -8485,6 +8525,14 @@
                   `<button type="button" data-cat-quick-bg="${safeId}" data-color-hex="${sw.hex}" title="${sw.title}" style="background-color:${sw.hex};" class="w-4 h-4 rounded-md border border-zinc-300 shadow-2xs hover:scale-125 fast-transition cursor-pointer shrink-0"></button>`
               ).join('');
 
+              const previewExtraStyle = [
+                `background-color: ${previewBg}`,
+                `color: ${previewText}`,
+                fontSize ? `font-size: ${fontSize}px` : '',
+                isBold ? 'font-weight: 900' : '',
+                isUnderline ? 'text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 4px; text-decoration-skip-ink: none' : ''
+              ].filter(Boolean).join('; ');
+
               return `
                 <div class="p-3 rounded-xl bg-white border border-zinc-200/90 shadow-2xs flex flex-col gap-2">
                   <div class="flex items-center justify-between gap-1.5">
@@ -8492,7 +8540,7 @@
                     <div class="flex items-center gap-1">
                       ${
                         hasAnyCustomColor
-                          ? `<button type="button" data-cat-reset-color="${safeId}" title="ფერის გასუფთავება" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">↺ ფერის მოხსნა</button>`
+                          ? `<button type="button" data-cat-reset-color="${safeId}" title="ფერის და შრიფტის გასუფთავება" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">↺ სტილის მოხსნა</button>`
                           : ''
                       }
                       ${
@@ -8507,8 +8555,8 @@
                     <span class="text-[10px] font-bold text-zinc-500">ნიმუში:</span>
                     <span
                       data-cat-preview-pill="${safeId}"
-                      style="background-color: ${previewBg}; color: ${previewText};"
-                      class="px-3 py-1 rounded-lg text-xs font-extrabold shadow-2xs border border-black/10 truncate max-w-[180px]"
+                      style="${previewExtraStyle};"
+                      class="px-3 py-1 rounded-lg text-xs font-semibold shadow-2xs border border-black/10 truncate max-w-[180px]"
                     >${safeDisplay} (${entry.count})</span>
                   </div>
 
@@ -8525,6 +8573,40 @@
                         </div>`
                       : ''
                   }
+
+                  <!-- Word Font Size (8..72), Bold (B) & Underline (U) Controls -->
+                  <div class="flex flex-wrap items-center justify-between gap-1.5 p-2 rounded-lg bg-indigo-50/70 border border-indigo-200/80">
+                    <div class="flex items-center gap-1">
+                      <span class="text-[10px] font-extrabold text-indigo-950">📏 ზომა:</span>
+                      <select
+                        data-cat-font-size="${safeId}"
+                        class="min-h-[26px] px-1.5 py-0.5 rounded bg-white border border-indigo-300 text-[11px] font-black text-zinc-900 cursor-pointer"
+                        title="შრიფტის ზომა ციფრებით (Word-ის სტილში)"
+                      >
+                        ${sizeOptionsHtml}
+                      </select>
+                      <button type="button" data-cat-font-step="${safeId}" data-step="-1" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-black text-zinc-800 cursor-pointer" title="შრიფტის დაპატარავება">A-</button>
+                      <button type="button" data-cat-font-step="${safeId}" data-step="1" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-black text-zinc-800 cursor-pointer" title="შრიფტის გაზრდა">A+</button>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <button
+                        type="button"
+                        data-cat-toggle-bold="${safeId}"
+                        class="px-2 py-0.5 rounded border text-[11px] font-black cursor-pointer fast-transition ${
+                          isBold ? 'bg-zinc-900 text-amber-300 border-zinc-900 shadow-2xs' : 'bg-white hover:bg-indigo-100 text-zinc-800 border-indigo-200'
+                        }"
+                        title="გამსხვილება (Bold)"
+                      >B სქელი</button>
+                      <button
+                        type="button"
+                        data-cat-toggle-underline="${safeId}"
+                        class="px-2 py-0.5 rounded border text-[11px] font-black cursor-pointer fast-transition ${
+                          isUnderline ? 'bg-indigo-600 text-white border-indigo-700 shadow-2xs' : 'bg-white hover:bg-indigo-100 text-zinc-800 border-indigo-200'
+                        }"
+                        title="ქვევით ხაზის გავლება (Underline)"
+                      ><span class="underline decoration-2 underline-offset-2">U</span> ხაზი</button>
+                    </div>
+                  </div>
 
                   <!-- Text Color & Paint Bucket Background Fill Controls -->
                   <div class="grid grid-cols-1 gap-1.5 p-2 rounded-lg bg-amber-50/50 border border-amber-200/70">
@@ -8597,9 +8679,12 @@
               allEntries.forEach((entry) => {
                 const pill = el.querySelector(`[data-cat-preview-pill="${entry.id}"]`);
                 if (pill) {
-                  const { textColor, bgColor } = getCategoryColorsById(entry.id);
+                  const { textColor, bgColor, fontSize, isBold, isUnderline } = getCategoryColorsById(entry.id);
                   pill.style.backgroundColor = bgColor || '#f5f5f4';
                   pill.style.color = textColor || (bgColor ? getAutoContrastTextColor(bgColor) : '#18181b');
+                  pill.style.fontSize = fontSize ? `${fontSize}px` : '';
+                  pill.style.fontWeight = isBold ? '900' : '';
+                  pill.style.textDecorationLine = isUnderline ? 'underline' : '';
                   pill.textContent = `${entry.label} (${entry.count})`;
                 }
               });
@@ -8698,16 +8783,19 @@
           document.querySelectorAll('.wishlist-count-badge').forEach((badge) => {
             badge.textContent = String(wishlistIds.size);
           });
+          if (typeof applyWordFormattingToDOM === 'function') {
+            applyWordFormattingToDOM();
+          }
         }
 
         const LIVE_BANNER_DEFAULT_WIDGETS = [
-          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
-          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 24 თვე გარანტია', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
-          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#6ee7b7', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
-          { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
-          { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
-          { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
-          { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' }
+          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 0, isBold: false, isUnderline: false },
+          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 24 თვე გარანტია', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 0, isBold: false, isUnderline: false },
+          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#6ee7b7', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 0, isBold: false, isUnderline: false },
+          { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false },
+          { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false },
+          { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false },
+          { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false }
         ];
 
         function ensureLiveBannerItems() {
@@ -8733,7 +8821,10 @@
                   bgColor: it.bgColor ? String(it.bgColor).trim() : '',
                   offsetX: Number(it.offsetX) || 0,
                   offsetY: Number(it.offsetY) || 0,
-                  align: it.align === 'center' || it.align === 'right' || it.align === 'left' ? it.align : (def ? def.align : 'left')
+                  align: it.align === 'center' || it.align === 'right' || it.align === 'left' ? it.align : (def ? def.align : 'left'),
+                  fontSize: Number(it.fontSize) || 0,
+                  isBold: Boolean(it.isBold),
+                  isUnderline: Boolean(it.isUnderline)
                 };
               });
           }
@@ -8754,6 +8845,9 @@
           const hasBg = Boolean(item.bgColor);
           const hasTextCol = Boolean(item.textColor);
           const effTextCol = hasTextCol ? item.textColor : hasBg ? getAutoContrastTextColor(item.bgColor) : '';
+          const fSize = Number(item.fontSize) || 0;
+          const isBold = Boolean(item.isBold);
+          const isUnderline = Boolean(item.isUnderline);
 
           const styleParts = [];
           if (hasBg) {
@@ -8763,6 +8857,19 @@
           if (effTextCol) {
             styleParts.push(`color: ${effTextCol} !important`);
           }
+          if (fSize >= 8) {
+            styleParts.push(`font-size: ${fSize}px !important`);
+            styleParts.push(`line-height: 1.25 !important`);
+          }
+          if (isBold) {
+            styleParts.push(`font-weight: 900 !important`);
+          }
+          if (isUnderline) {
+            styleParts.push(`text-decoration-line: underline !important`);
+            styleParts.push(`text-decoration-thickness: 2.5px !important`);
+            styleParts.push(`text-underline-offset: 4px !important`);
+            styleParts.push(`text-decoration-skip-ink: none !important`);
+          }
           const ox = Number(item.offsetX) || 0;
           const oy = Number(item.offsetY) || 0;
           if (ox || oy) {
@@ -8771,6 +8878,12 @@
             styleParts.push(`z-index: 10`);
           }
           const styleAttr = styleParts.length > 0 ? `style="${styleParts.join('; ')};"` : '';
+          const fmtDataAttrs = [
+            fSize >= 8 ? 'data-has-custom-fontsize="1"' : '',
+            isBold ? 'data-has-custom-bold="1"' : '',
+            isUnderline ? 'data-has-custom-underline="1"' : ''
+          ].filter(Boolean).join(' ');
+          const extraFmtClass = `${isBold ? 'word-bold-active' : ''} ${isUnderline ? 'word-underline-active' : ''}`.trim();
 
           const inlineControlsHtml = showInlineControls
             ? `<span class="owner-only-admin-el inline-flex items-center gap-0.5 ml-1 pl-1 border-l border-white/25">
@@ -8784,9 +8897,10 @@
             return `
               <div
                 data-lb-chip-id="${safeId}"
+                ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform"
+                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
               >
                 ${safeText ? `<span>${safeText}</span>` : ''}
                 <span id="live-weekday" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-bold capitalize">...</span><span>, </span><span id="live-date" style="${effTextCol ? `color:${effTextCol} !important;` : ''}">...</span>
@@ -8799,9 +8913,10 @@
             return `
               <div
                 data-lb-chip-id="${safeId}"
+                ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform"
+                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
               >
                 <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
                 ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
@@ -8817,9 +8932,10 @@
               <div
                 id="live-weather-widget"
                 data-lb-chip-id="${safeId}"
+                ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform"
+                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
               >
                 <span id="live-weather-icon" class="text-sm">☀️</span>
                 ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
@@ -8840,9 +8956,10 @@
             return `
               <div
                 data-lb-chip-id="${safeId}"
+                ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex flex-wrap items-center gap-1 ${hasBg ? 'px-2 py-1 rounded-lg border shadow-2xs' : ''} transition-transform"
+                class="lb-draggable-chip flex flex-wrap items-center gap-1 ${hasBg ? 'px-2 py-1 rounded-lg border shadow-2xs' : ''} transition-transform ${extraFmtClass}"
               >
                 <button
                   type="button"
@@ -8891,9 +9008,10 @@
           return `
             <div
               data-lb-chip-id="${safeId}"
+              ${fmtDataAttrs}
               draggable="true"
               ${styleAttr}
-              class="lb-draggable-chip inline-flex items-center gap-1 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-1.5 py-0.5 rounded-md'} text-[11px] sm:text-xs font-bold transition-transform"
+              class="lb-draggable-chip inline-flex items-center gap-1 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-1.5 py-0.5 rounded-md'} text-[11px] sm:text-xs font-bold transition-transform ${extraFmtClass}"
             >
               <span>${safeText}</span>
               ${inlineControlsHtml}
@@ -8987,6 +9105,9 @@
             renderWeatherDisplay();
           }
           renderLiveBannerManagerLists();
+          if (typeof applyWordFormattingToDOM === 'function') {
+            applyWordFormattingToDOM();
+          }
         }
 
         function renderLiveBannerManagerLists() {
@@ -9049,9 +9170,17 @@
                     const pickerBgVal = /^#[0-9a-fA-F]{6}$/.test(item.bgColor) ? item.bgColor : barBgHex;
                     const previewBg = item.bgColor || barBgHex;
                     const previewText = item.textColor || getAutoContrastTextColor(previewBg);
-                    const hasCustomColors = Boolean(item.textColor || item.bgColor);
+                    const fSize = Number(item.fontSize) || 0;
+                    const isBold = Boolean(item.isBold);
+                    const isUnderline = Boolean(item.isUnderline);
+                    const hasCustomColors = Boolean(item.textColor || item.bgColor || fSize || isBold || isUnderline);
                     const ox = Number(item.offsetX) || 0;
                     const oy = Number(item.offsetY) || 0;
+                    const activeFontSize = fSize >= 8 ? fSize : 12;
+
+                    const sizeOptionsHtml = WORD_FONT_SIZES_LIST.map(
+                      (sz) => `<option value="${sz}" ${sz === activeFontSize ? 'selected' : ''}>${sz}</option>`
+                    ).join('');
 
                     const textSwatchesHtml = CAT_QUICK_TEXT_SWATCHES.map(
                       (sw) =>
@@ -9078,6 +9207,14 @@
                             ? `${safeText || '📅'} ორშაბათი, 29 ოქტ`
                             : safeText || safeTitle;
 
+                    const previewExtraStyle = [
+                      `background-color: ${previewBg}`,
+                      `color: ${previewText}`,
+                      fSize >= 8 ? `font-size: ${fSize}px` : '',
+                      isBold ? 'font-weight: 900' : '',
+                      isUnderline ? 'text-decoration: underline; text-decoration-thickness: 2.5px; text-underline-offset: 4px; text-decoration-skip-ink: none' : ''
+                    ].filter(Boolean).join('; ');
+
                     return `
                       <div class="p-3 rounded-xl bg-white border border-blue-200/90 shadow-2xs flex flex-col gap-2">
                         <div class="flex items-center justify-between gap-1.5">
@@ -9087,7 +9224,7 @@
                           <div class="flex items-center gap-1 shrink-0">
                             ${
                               hasCustomColors
-                                ? `<button type="button" data-lb-reset-color="${safeId}" title="საკუთარი ფერის მოხსნა" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">↺ ფერის მოხსნა</button>`
+                                ? `<button type="button" data-lb-reset-color="${safeId}" title="საკუთარი ფერის და შრიფტის მოხსნა" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">↺ სტილის მოხსნა</button>`
                                 : ''
                             }
                             <button
@@ -9104,7 +9241,7 @@
                           <span class="text-[10px] font-bold text-zinc-500">ნიმუში:</span>
                           <span
                             data-lb-preview-pill="${safeId}"
-                            style="background-color: ${previewBg}; color: ${previewText};"
+                            style="${previewExtraStyle};"
                             class="px-2.5 py-1 rounded-lg text-xs font-extrabold shadow-2xs border border-black/10 truncate max-w-[200px]"
                           >${previewLabel}</span>
                         </div>
@@ -9147,6 +9284,40 @@
                             placeholder="${inputPlaceholder}"
                             class="flex-1 min-h-[34px] px-2.5 py-1 rounded-lg border border-zinc-300 bg-stone-50 focus:bg-white text-xs font-bold text-zinc-900 focus:outline-none focus:border-zinc-900"
                           />
+                        </div>
+
+                        <!-- Word Font Size (8..72), Bold (B) & Underline (U) Controls -->
+                        <div class="flex flex-wrap items-center justify-between gap-1.5 p-2 rounded-lg bg-indigo-50/70 border border-indigo-200/80">
+                          <div class="flex items-center gap-1">
+                            <span class="text-[10px] font-extrabold text-indigo-950">📏 ზომა:</span>
+                            <select
+                              data-lb-item-font-size="${safeId}"
+                              class="min-h-[26px] px-1.5 py-0.5 rounded bg-white border border-indigo-300 text-[11px] font-black text-zinc-900 cursor-pointer"
+                              title="შრიფტის ზომა ციფრებით (Word-ის სტილში)"
+                            >
+                              ${sizeOptionsHtml}
+                            </select>
+                            <button type="button" data-lb-item-font-step="${safeId}" data-step="-1" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-black text-zinc-800 cursor-pointer" title="შრიფტის დაპატარავება">A-</button>
+                            <button type="button" data-lb-item-font-step="${safeId}" data-step="1" class="px-1.5 py-0.5 rounded bg-white hover:bg-indigo-100 border border-indigo-200 text-[10px] font-black text-zinc-800 cursor-pointer" title="შრიფტის გაზრდა">A+</button>
+                          </div>
+                          <div class="flex items-center gap-1">
+                            <button
+                              type="button"
+                              data-lb-item-toggle-bold="${safeId}"
+                              class="px-2 py-0.5 rounded border text-[11px] font-black cursor-pointer fast-transition ${
+                                isBold ? 'bg-zinc-900 text-amber-300 border-zinc-900 shadow-2xs' : 'bg-white hover:bg-indigo-100 text-zinc-800 border-indigo-200'
+                              }"
+                              title="გამსხვილება (Bold)"
+                            >B სქელი</button>
+                            <button
+                              type="button"
+                              data-lb-item-toggle-underline="${safeId}"
+                              class="px-2 py-0.5 rounded border text-[11px] font-black cursor-pointer fast-transition ${
+                                isUnderline ? 'bg-indigo-600 text-white border-indigo-700 shadow-2xs' : 'bg-white hover:bg-indigo-100 text-zinc-800 border-indigo-200'
+                              }"
+                              title="ქვევით ხაზის გავლება (Underline)"
+                            ><span class="underline decoration-2 underline-offset-2">U</span> ხაზი</button>
+                          </div>
                         </div>
 
                         <!-- Text Color & Paint Bucket Background Fill Controls -->
@@ -9202,6 +9373,9 @@
                   const previewText = item.textColor || getAutoContrastTextColor(previewBg);
                   pill.style.backgroundColor = previewBg;
                   pill.style.color = previewText;
+                  pill.style.fontSize = item.fontSize ? `${item.fontSize}px` : '';
+                  pill.style.fontWeight = item.isBold ? '900' : '';
+                  pill.style.textDecorationLine = item.isUnderline ? 'underline' : '';
                   pill.textContent =
                     item.type === 'clock'
                       ? `${item.text ? item.text + ' ' : ''}14:30:00`
@@ -9265,7 +9439,10 @@
             bgColor: options.bgColor ? String(options.bgColor).trim() : '',
             offsetX: 0,
             offsetY: 0,
-            align: 'left'
+            align: 'left',
+            fontSize: 0,
+            isBold: false,
+            isUnderline: false
           });
           storeSettings.liveBannerCustomized = true;
           renderLiveInfoBanner();
@@ -9364,16 +9541,22 @@
           saveStateEverywhere();
         }
 
-        function setLiveBannerItemColor(itemId, { textColor, bgColor, reset } = {}) {
+        function setLiveBannerItemColor(itemId, { textColor, bgColor, fontSize, isBold, isUnderline, reset } = {}) {
           const items = ensureLiveBannerItems();
           const target = items.find((it) => it.id === itemId);
           if (!target) return;
           if (reset) {
             target.textColor = '';
             target.bgColor = '';
+            target.fontSize = 0;
+            target.isBold = false;
+            target.isUnderline = false;
           } else {
             if (textColor !== undefined) target.textColor = String(textColor || '').trim();
             if (bgColor !== undefined) target.bgColor = String(bgColor || '').trim();
+            if (fontSize !== undefined) target.fontSize = Number(fontSize) || 0;
+            if (isBold !== undefined) target.isBold = Boolean(isBold);
+            if (isUnderline !== undefined) target.isUnderline = Boolean(isUnderline);
           }
           storeSettings.liveBannerCustomized = true;
           renderLiveInfoBanner();
@@ -9830,6 +10013,9 @@
 
           if (typeof renderMoveHandlesOnAllBlocks === 'function' && isMoveBlocksModeActive) {
             renderMoveHandlesOnAllBlocks();
+          }
+          if (typeof applyWordFormattingToDOM === 'function') {
+            applyWordFormattingToDOM();
           }
           window.scrollTo({ top: prevScroll, behavior: 'instant' });
         }
@@ -12142,6 +12328,9 @@
 
           updateModalAllFourVideos(prod, product);
           renderModalGalleryState();
+          if (typeof applyWordFormattingToDOM === 'function') {
+            applyWordFormattingToDOM();
+          }
         }
 
         function applyInlineProductEditorChanges(extraOpts = {}) {
@@ -14019,22 +14208,34 @@
           saveStateEverywhere({ immediate: true });
         }
 
-        function setCustomStoreCategoryColor(catId, { textColor, bgColor, reset = false } = {}) {
+        function setCustomStoreCategoryColor(catId, { textColor, bgColor, fontSize, isBold, isUnderline, reset = false } = {}) {
           if (catId === 'all') {
             if (reset) {
               storeSettings.catAllTextColor = '';
               storeSettings.catAllBgColor = '';
+              storeSettings.catAllFontSize = 0;
+              storeSettings.catAllBold = false;
+              storeSettings.catAllUnderline = false;
             } else {
               if (textColor !== undefined) storeSettings.catAllTextColor = String(textColor || '').trim();
               if (bgColor !== undefined) storeSettings.catAllBgColor = String(bgColor || '').trim();
+              if (fontSize !== undefined) storeSettings.catAllFontSize = Number(fontSize) || 0;
+              if (isBold !== undefined) storeSettings.catAllBold = Boolean(isBold);
+              if (isUnderline !== undefined) storeSettings.catAllUnderline = Boolean(isUnderline);
             }
           } else if (catId === 'wishlist') {
             if (reset) {
               storeSettings.catWishlistTextColor = '';
               storeSettings.catWishlistBgColor = '';
+              storeSettings.catWishlistFontSize = 0;
+              storeSettings.catWishlistBold = false;
+              storeSettings.catWishlistUnderline = false;
             } else {
               if (textColor !== undefined) storeSettings.catWishlistTextColor = String(textColor || '').trim();
               if (bgColor !== undefined) storeSettings.catWishlistBgColor = String(bgColor || '').trim();
+              if (fontSize !== undefined) storeSettings.catWishlistFontSize = Number(fontSize) || 0;
+              if (isBold !== undefined) storeSettings.catWishlistBold = Boolean(isBold);
+              if (isUnderline !== undefined) storeSettings.catWishlistUnderline = Boolean(isUnderline);
             }
           } else {
             const cats = ensureStoreCategories();
@@ -14043,9 +14244,15 @@
             if (reset) {
               target.textColor = '';
               target.bgColor = '';
+              target.fontSize = 0;
+              target.isBold = false;
+              target.isUnderline = false;
             } else {
               if (textColor !== undefined) target.textColor = String(textColor || '').trim();
               if (bgColor !== undefined) target.bgColor = String(bgColor || '').trim();
+              if (fontSize !== undefined) target.fontSize = Number(fontSize) || 0;
+              if (isBold !== undefined) target.isBold = Boolean(isBold);
+              if (isUnderline !== undefined) target.isUnderline = Boolean(isUnderline);
             }
           }
           updateCategoryTabCounts();
@@ -14180,11 +14387,42 @@
             }
           });
           listEl.addEventListener('change', (e) => {
+            const fontSizeSel = e.target.closest('[data-cat-font-size]');
+            if (fontSizeSel) {
+              const catId = fontSizeSel.getAttribute('data-cat-font-size');
+              setCustomStoreCategoryColor(catId, { fontSize: Number(fontSizeSel.value) || 12 });
+              return;
+            }
             if (e.target.closest('[data-cat-text-color]') || e.target.closest('[data-cat-bg-color]')) {
               renderCategoryManagerLists();
             }
           });
           listEl.addEventListener('click', (e) => {
+            const fontStepBtn = e.target.closest('[data-cat-font-step]');
+            if (fontStepBtn) {
+              const catId = fontStepBtn.getAttribute('data-cat-font-step');
+              const dir = Number(fontStepBtn.getAttribute('data-step')) || 1;
+              const cur = getCategoryColorsById(catId).fontSize || 12;
+              const idx = WORD_FONT_SIZES_LIST.findIndex((s) => s >= cur);
+              const baseIdx = idx === -1 ? WORD_FONT_SIZES_LIST.length - 1 : idx;
+              const nextIdx = Math.max(0, Math.min(WORD_FONT_SIZES_LIST.length - 1, baseIdx + dir));
+              setCustomStoreCategoryColor(catId, { fontSize: WORD_FONT_SIZES_LIST[nextIdx] });
+              return;
+            }
+            const toggleBoldBtn = e.target.closest('[data-cat-toggle-bold]');
+            if (toggleBoldBtn) {
+              const catId = toggleBoldBtn.getAttribute('data-cat-toggle-bold');
+              const cur = getCategoryColorsById(catId).isBold;
+              setCustomStoreCategoryColor(catId, { isBold: !cur });
+              return;
+            }
+            const toggleUnderlineBtn = e.target.closest('[data-cat-toggle-underline]');
+            if (toggleUnderlineBtn) {
+              const catId = toggleUnderlineBtn.getAttribute('data-cat-toggle-underline');
+              const cur = getCategoryColorsById(catId).isUnderline;
+              setCustomStoreCategoryColor(catId, { isUnderline: !cur });
+              return;
+            }
             const quickTxtBtn = e.target.closest('[data-cat-quick-text]');
             if (quickTxtBtn) {
               const catId = quickTxtBtn.getAttribute('data-cat-quick-text');
@@ -14367,6 +14605,13 @@
             }
           });
           listEl.addEventListener('change', (e) => {
+            const fontSizeSel = e.target.closest('[data-lb-item-font-size]');
+            if (fontSizeSel) {
+              setLiveBannerItemColor(fontSizeSel.getAttribute('data-lb-item-font-size'), {
+                fontSize: Number(fontSizeSel.value) || 12
+              });
+              return;
+            }
             if (
               e.target.closest('[data-lb-item-text-color]') ||
               e.target.closest('[data-lb-item-bg-color]') ||
@@ -14376,6 +14621,35 @@
             }
           });
           listEl.addEventListener('click', (e) => {
+            const fontStepBtn = e.target.closest('[data-lb-item-font-step]');
+            if (fontStepBtn) {
+              const id = fontStepBtn.getAttribute('data-lb-item-font-step');
+              const dir = Number(fontStepBtn.getAttribute('data-step')) || 1;
+              const items = ensureLiveBannerItems();
+              const found = items.find((it) => it.id === id);
+              const cur = (found && Number(found.fontSize)) || 12;
+              const idx = WORD_FONT_SIZES_LIST.findIndex((s) => s >= cur);
+              const baseIdx = idx === -1 ? WORD_FONT_SIZES_LIST.length - 1 : idx;
+              const nextIdx = Math.max(0, Math.min(WORD_FONT_SIZES_LIST.length - 1, baseIdx + dir));
+              setLiveBannerItemColor(id, { fontSize: WORD_FONT_SIZES_LIST[nextIdx] });
+              return;
+            }
+            const toggleBoldBtn = e.target.closest('[data-lb-item-toggle-bold]');
+            if (toggleBoldBtn) {
+              const id = toggleBoldBtn.getAttribute('data-lb-item-toggle-bold');
+              const items = ensureLiveBannerItems();
+              const found = items.find((it) => it.id === id);
+              setLiveBannerItemColor(id, { isBold: !(found && found.isBold) });
+              return;
+            }
+            const toggleUnderlineBtn = e.target.closest('[data-lb-item-toggle-underline]');
+            if (toggleUnderlineBtn) {
+              const id = toggleUnderlineBtn.getAttribute('data-lb-item-toggle-underline');
+              const items = ensureLiveBannerItems();
+              const found = items.find((it) => it.id === id);
+              setLiveBannerItemColor(id, { isUnderline: !(found && found.isUnderline) });
+              return;
+            }
             const moveBtn = e.target.closest('[data-lb-move-order]');
             if (moveBtn) {
               const id = moveBtn.getAttribute('data-lb-move-order');
@@ -16064,6 +16338,741 @@
             showCpToast('დააწკაპუნეთ ნებისმიერ მონიშნულ წარწერაზე საიტზე და შეცვალეთ ტექსტი ხელით!');
           });
         }
+
+        // =========================================================================
+        // UNIVERSAL MICROSOFT WORD TEXT FORMATTING ENGINE
+        // (Numeric Font Size Dropdown 8..72, A+/A-, Bold B, Prominent Word Underline U)
+        // =========================================================================
+        let activeWordTargetKey = 'id:header-brand-name';
+        let activeWordSelectedSubstring = '';
+        let activeWordTargetLabel = 'მთავარი სათაური';
+        let activeWordUnderlineColor = '';
+
+        const WORD_PRESET_TARGETS = {
+          'id:header-brand-name': { selector: '#header-brand-name', label: 'მთავარი სათაური („იყიდება საინტერესო ნივთები“)' },
+          'id:header-phone-under-brand': { selector: '#header-phone-under-brand', label: 'ტელეფონის ნომერი სათაურის ქვეშ' },
+          'sel:#live-info-banner [data-lb-chip-id]': { selector: '#live-info-banner [data-lb-chip-id]', label: 'საათის და ამინდის ზოლის წარწერები' },
+          'sel:.category-tab-btn': { selector: '.category-tab-btn', label: 'კატეგორიის გრაფების ღილაკები' },
+          'id:fb-banner-title': { selector: '#fb-banner-title', label: 'Facebook ბანერის სათაური' },
+          'id:fb-banner-subtitle': { selector: '#fb-banner-subtitle', label: 'Facebook ბანერის აღწერა' },
+          'id:catalog-heading-title': { selector: '#catalog-heading-title', label: 'კატალოგის სათაური' },
+          'sel:.card-title-el': { selector: '.card-title-el', label: 'პროდუქტის ბარათების სათაურები' },
+          'sel:.card-meta-el': { selector: '.card-meta-el', label: 'პროდუქტის ბარათების მოკლე აღწერა' },
+          'sel:.card-new-price-el': { selector: '.card-new-price-el', label: 'პროდუქტის ბარათების ფასები' },
+          'id:modal-product-title': { selector: '#modal-product-title', label: 'გახსნილი პროდუქტის სათაური' },
+          'id:modal-product-desc': { selector: '#modal-product-desc', label: 'გახსნილი პროდუქტის სრული აღწერა' },
+          'id:modal-new-price': { selector: '#modal-new-price', label: 'გახსნილი პროდუქტის ფასი' },
+          'sel:#service-cards-grid h3, #service-cards-grid p': { selector: '#service-cards-grid h3, #service-cards-grid p', label: 'მიწოდების და გარანტიის ტექსტები' }
+        };
+
+        const INPUT_TO_PREVIEW_TARGET_MAP = {
+          'mie-name': { key: 'id:modal-product-title', label: 'პროდუქტის სათაური' },
+          'mie-short-meta': { key: 'id:modal-sku-caption', label: 'პროდუქტის მოკლე აღწერა' },
+          'mie-desc': { key: 'id:modal-product-desc', label: 'პროდუქტის სრული აღწერა' },
+          'mie-new-price': { key: 'id:modal-new-price', label: 'პროდუქტის ახალი ფასი' },
+          'mie-old-price': { key: 'id:modal-old-price', label: 'პროდუქტის ძველი ფასი' },
+          'mie-badge': { key: 'sel:.card-badge-el', label: 'პროდუქტის ბეიჯი / წარწერა' },
+          'cp-prod-name': { key: 'sel:.card-title-el', label: 'პროდუქტის სათაური' },
+          'cp-prod-short-meta': { key: 'sel:.card-meta-el', label: 'პროდუქტის მოკლე აღწერა' },
+          'cp-prod-desc': { key: 'id:modal-product-desc', label: 'პროდუქტის სრული აღწერა' },
+          'cp-prod-new-price': { key: 'sel:.card-new-price-el', label: 'პროდუქტის ფასი' },
+          'cp-set-brand': { key: 'id:header-brand-name', label: 'მთავარი სათაური' },
+          'cp-set-catalog-title': { key: 'id:catalog-heading-title', label: 'კატალოგის სათაური' }
+        };
+
+        function ensureWordFormattingObjects() {
+          if (!storeSettings.wordElementStyles || typeof storeSettings.wordElementStyles !== 'object') {
+            storeSettings.wordElementStyles = {};
+          }
+          if (!storeSettings.wordSubstringsMap || typeof storeSettings.wordSubstringsMap !== 'object') {
+            storeSettings.wordSubstringsMap = {};
+          }
+        }
+
+        function resolveElementsForWordTargetKey(targetKey) {
+          if (!targetKey) return [];
+          if (WORD_PRESET_TARGETS[targetKey]) {
+            return Array.from(document.querySelectorAll(WORD_PRESET_TARGETS[targetKey].selector));
+          }
+          if (targetKey.startsWith('id:')) {
+            const id = targetKey.slice(3);
+            const el = document.getElementById(id);
+            return el ? [el] : [];
+          }
+          if (targetKey.startsWith('lb:')) {
+            const lbId = targetKey.slice(3);
+            return Array.from(document.querySelectorAll(`[data-lb-chip-id="${CSS.escape ? CSS.escape(lbId) : lbId}"]`));
+          }
+          if (targetKey.startsWith('cat:')) {
+            const catId = targetKey.slice(4);
+            const el = document.getElementById(`cat-btn-${catId}`);
+            return el ? [el] : [];
+          }
+          if (targetKey.startsWith('sel:')) {
+            const sel = targetKey.slice(4);
+            try {
+              return Array.from(document.querySelectorAll(sel));
+            } catch (e) {
+              return [];
+            }
+          }
+          return [];
+        }
+
+        function unwrapWordInlineSpans(rootEl) {
+          if (!rootEl) return;
+          const spans = rootEl.querySelectorAll('span.word-inline-fmt');
+          if (spans.length === 0) return;
+          spans.forEach((sp) => {
+            const parent = sp.parentNode;
+            if (!parent) return;
+            while (sp.firstChild) {
+              parent.insertBefore(sp.firstChild, sp);
+            }
+            parent.removeChild(sp);
+            parent.normalize();
+          });
+        }
+
+        function applySubstringFormattingOnElement(rootEl, rulesList) {
+          if (!rootEl || !Array.isArray(rulesList) || rulesList.length === 0) return;
+          unwrapWordInlineSpans(rootEl);
+
+          const validRules = rulesList.filter(
+            (r) => r && r.word && String(r.word).trim().length > 0 && (r.fontSize || r.isBold || r.isUnderline)
+          );
+          if (validRules.length === 0) return;
+
+          validRules.forEach((rule) => {
+            const targetWord = String(rule.word).trim();
+            if (!targetWord) return;
+
+            const walker = document.createTreeWalker(rootEl, NodeFilter.SHOW_TEXT, {
+              acceptNode(node) {
+                if (!node.nodeValue || !node.nodeValue.includes(targetWord)) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                const p = node.parentElement;
+                if (!p) return NodeFilter.FILTER_REJECT;
+                const tag = p.tagName;
+                if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT') {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                if (p.closest('.owner-only-admin-el')) {
+                  return NodeFilter.FILTER_REJECT;
+                }
+                return NodeFilter.FILTER_ACCEPT;
+              }
+            });
+
+            const textNodes = [];
+            let current;
+            while ((current = walker.nextNode())) {
+              textNodes.push(current);
+            }
+
+            textNodes.forEach((tNode) => {
+              let workNode = tNode;
+              let safety = 0;
+              while (workNode && workNode.nodeValue && safety < 25) {
+                safety++;
+                const idx = workNode.nodeValue.indexOf(targetWord);
+                if (idx === -1) break;
+
+                const matchedNode = workNode.splitText(idx);
+                workNode = matchedNode.splitText(targetWord.length);
+
+                const existingParent = matchedNode.parentElement;
+                if (
+                  existingParent &&
+                  existingParent.classList.contains('word-inline-fmt') &&
+                  existingParent.textContent === targetWord
+                ) {
+                  if (rule.fontSize && Number(rule.fontSize) >= 8) {
+                    existingParent.style.fontSize = `${Number(rule.fontSize)}px`;
+                  }
+                  if (rule.isBold !== undefined) {
+                    existingParent.setAttribute('data-word-b', rule.isBold ? '1' : '0');
+                    existingParent.style.fontWeight = rule.isBold ? '900' : '';
+                  }
+                  if (rule.isUnderline !== undefined) {
+                    existingParent.setAttribute('data-word-u', rule.isUnderline ? '1' : '0');
+                    if (rule.underlineColor) {
+                      existingParent.style.setProperty('--word-u-color', rule.underlineColor);
+                    }
+                  }
+                } else {
+                  const span = document.createElement('span');
+                  span.className = 'word-inline-fmt';
+                  if (rule.fontSize && Number(rule.fontSize) >= 8) {
+                    span.style.fontSize = `${Number(rule.fontSize)}px`;
+                    span.style.lineHeight = '1.2';
+                  }
+                  if (rule.isBold) {
+                    span.setAttribute('data-word-b', '1');
+                  }
+                  if (rule.isUnderline) {
+                    span.setAttribute('data-word-u', '1');
+                    if (rule.underlineColor) {
+                      span.style.setProperty('--word-u-color', rule.underlineColor);
+                    }
+                  }
+                  matchedNode.parentNode.insertBefore(span, matchedNode);
+                  span.appendChild(matchedNode);
+                }
+              }
+            });
+          });
+        }
+
+        function applyElementStyleObjectToNode(el, styleObj) {
+          if (!el) return;
+          if (!styleObj || (!styleObj.fontSize && !styleObj.isBold && !styleObj.isUnderline)) {
+            if (el.dataset.wordStyled === '1') {
+              el.style.removeProperty('font-size');
+              el.style.removeProperty('font-weight');
+              el.style.removeProperty('text-decoration-line');
+              el.style.removeProperty('text-decoration-thickness');
+              el.style.removeProperty('text-underline-offset');
+              el.style.removeProperty('text-decoration-color');
+              el.classList.remove('word-bold-active', 'word-underline-active');
+              delete el.dataset.wordStyled;
+            }
+            return;
+          }
+
+          el.dataset.wordStyled = '1';
+          if (styleObj.fontSize && Number(styleObj.fontSize) >= 8) {
+            el.style.setProperty('font-size', `${Number(styleObj.fontSize)}px`, 'important');
+            el.style.setProperty('line-height', '1.28', 'important');
+          } else {
+            el.style.removeProperty('font-size');
+          }
+
+          if (styleObj.isBold) {
+            el.classList.add('word-bold-active');
+            el.style.setProperty('font-weight', '900', 'important');
+          } else {
+            el.classList.remove('word-bold-active');
+            el.style.removeProperty('font-weight');
+          }
+
+          if (styleObj.isUnderline) {
+            el.classList.add('word-underline-active');
+            if (styleObj.underlineColor) {
+              el.style.setProperty('--word-u-color', styleObj.underlineColor);
+              el.style.setProperty('text-decoration-color', styleObj.underlineColor, 'important');
+            } else {
+              el.style.removeProperty('--word-u-color');
+              el.style.removeProperty('text-decoration-color');
+            }
+          } else {
+            el.classList.remove('word-underline-active');
+            el.style.removeProperty('text-decoration-line');
+            el.style.removeProperty('text-decoration-thickness');
+            el.style.removeProperty('text-underline-offset');
+            el.style.removeProperty('text-decoration-color');
+          }
+        }
+
+        function applyWordFormattingToDOM() {
+          ensureWordFormattingObjects();
+
+          // 1. Apply element-level styles
+          Object.keys(storeSettings.wordElementStyles).forEach((targetKey) => {
+            const styleObj = storeSettings.wordElementStyles[targetKey];
+            const nodes = resolveElementsForWordTargetKey(targetKey);
+            nodes.forEach((node) => applyElementStyleObjectToNode(node, styleObj));
+          });
+
+          // 2. Apply single-word / substring styles
+          Object.keys(storeSettings.wordSubstringsMap).forEach((targetKey) => {
+            const rulesList = storeSettings.wordSubstringsMap[targetKey];
+            const nodes = resolveElementsForWordTargetKey(targetKey);
+            nodes.forEach((node) => applySubstringFormattingOnElement(node, rulesList));
+          });
+        }
+
+        function getCurrentTargetFormattingState() {
+          ensureWordFormattingObjects();
+
+          // Check if activeWordTargetKey is a category or live banner item
+          if (activeWordTargetKey.startsWith('cat:') && !activeWordSelectedSubstring) {
+            const catId = activeWordTargetKey.slice(4);
+            const st = getCategoryColorsById(catId);
+            return {
+              fontSize: st.fontSize || 14,
+              isBold: Boolean(st.isBold),
+              isUnderline: Boolean(st.isUnderline),
+              underlineColor: activeWordUnderlineColor || ''
+            };
+          }
+          if (activeWordTargetKey.startsWith('lb:') && !activeWordSelectedSubstring) {
+            const lbId = activeWordTargetKey.slice(3);
+            const items = ensureLiveBannerItems();
+            const found = items.find((it) => it.id === lbId);
+            if (found) {
+              return {
+                fontSize: Number(found.fontSize) || 13,
+                isBold: Boolean(found.isBold),
+                isUnderline: Boolean(found.isUnderline),
+                underlineColor: activeWordUnderlineColor || ''
+              };
+            }
+          }
+
+          if (activeWordSelectedSubstring) {
+            const list = storeSettings.wordSubstringsMap[activeWordTargetKey] || [];
+            const rule = list.find((r) => r && r.word === activeWordSelectedSubstring);
+            if (rule) {
+              return {
+                fontSize: Number(rule.fontSize) || getComputedFontSizeForTarget(activeWordTargetKey),
+                isBold: Boolean(rule.isBold),
+                isUnderline: Boolean(rule.isUnderline),
+                underlineColor: rule.underlineColor || activeWordUnderlineColor || ''
+              };
+            }
+          }
+
+          const elStyle = storeSettings.wordElementStyles[activeWordTargetKey];
+          if (elStyle) {
+            return {
+              fontSize: Number(elStyle.fontSize) || getComputedFontSizeForTarget(activeWordTargetKey),
+              isBold: Boolean(elStyle.isBold),
+              isUnderline: Boolean(elStyle.isUnderline),
+              underlineColor: elStyle.underlineColor || activeWordUnderlineColor || ''
+            };
+          }
+
+          return {
+            fontSize: getComputedFontSizeForTarget(activeWordTargetKey),
+            isBold: false,
+            isUnderline: false,
+            underlineColor: activeWordUnderlineColor || ''
+          };
+        }
+
+        function getComputedFontSizeForTarget(targetKey) {
+          const nodes = resolveElementsForWordTargetKey(targetKey);
+          if (nodes.length > 0) {
+            try {
+              const px = parseFloat(window.getComputedStyle(nodes[0]).fontSize);
+              if (px && !isNaN(px)) return Math.round(px);
+            } catch (e) {}
+          }
+          return 16;
+        }
+
+        function syncAllWordToolbarsUI() {
+          const state = getCurrentTargetFormattingState();
+          const nearestSize =
+            WORD_FONT_SIZES_LIST.reduce((prev, curr) =>
+              Math.abs(curr - state.fontSize) < Math.abs(prev - state.fontSize) ? curr : prev
+            ) || 16;
+
+          const topPresetSel = document.getElementById('word-toolbar-target-preset');
+          if (topPresetSel && WORD_PRESET_TARGETS[activeWordTargetKey]) {
+            topPresetSel.value = activeWordTargetKey;
+          }
+
+          const displayBadgeText = activeWordSelectedSubstring
+            ? `სიტყვა: „${activeWordSelectedSubstring.slice(0, 24)}“ (${activeWordTargetLabel})`
+            : activeWordTargetLabel || 'მთავარი სათაური';
+
+          document.querySelectorAll('[data-word-toolbar-instance="1"]').forEach((bar) => {
+            const badge = bar.querySelector('[data-word-target-badge]');
+            if (badge) {
+              badge.textContent = displayBadgeText;
+            }
+            const sizeSel = bar.querySelector('[data-word-font-size-select]');
+            if (sizeSel) {
+              sizeSel.value = String(nearestSize);
+            }
+            const boldBtn = bar.querySelector('[data-word-cmd="toggle-bold"]');
+            if (boldBtn) {
+              if (state.isBold) {
+                boldBtn.classList.add('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
+                boldBtn.classList.remove('text-white', 'text-zinc-900');
+              } else {
+                boldBtn.classList.remove('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
+              }
+            }
+            const underBtn = bar.querySelector('[data-word-cmd="toggle-underline"]');
+            if (underBtn) {
+              if (state.isUnderline) {
+                underBtn.classList.add('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
+                underBtn.classList.remove('text-white', 'text-zinc-900');
+              } else {
+                underBtn.classList.remove('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
+              }
+            }
+          });
+        }
+
+        function updateWordFormattingState(changes = {}) {
+          ensureWordFormattingObjects();
+          const current = getCurrentTargetFormattingState();
+
+          if (changes.reset) {
+            if (activeWordSelectedSubstring && storeSettings.wordSubstringsMap[activeWordTargetKey]) {
+              storeSettings.wordSubstringsMap[activeWordTargetKey] = storeSettings.wordSubstringsMap[
+                activeWordTargetKey
+              ].filter((r) => r && r.word !== activeWordSelectedSubstring);
+              activeWordSelectedSubstring = '';
+            } else {
+              delete storeSettings.wordElementStyles[activeWordTargetKey];
+              delete storeSettings.wordSubstringsMap[activeWordTargetKey];
+              if (activeWordTargetKey.startsWith('cat:')) {
+                setCustomStoreCategoryColor(activeWordTargetKey.slice(4), { reset: true });
+              } else if (activeWordTargetKey.startsWith('lb:')) {
+                setLiveBannerItemColor(activeWordTargetKey.slice(3), { reset: true });
+              }
+            }
+            const nodes = resolveElementsForWordTargetKey(activeWordTargetKey);
+            nodes.forEach((n) => {
+              unwrapWordInlineSpans(n);
+              applyElementStyleObjectToNode(n, null);
+            });
+            applyWordFormattingToDOM();
+            syncAllWordToolbarsUI();
+            saveStateEverywhere({ immediate: true });
+            showWishlistToast('↺ ტექსტის შრიფტი და ხაზი დაუბრუნდა საწყის ზომას');
+            return;
+          }
+
+          const nextFontSize =
+            changes.fontSize !== undefined ? Number(changes.fontSize) || 0 : Number(current.fontSize) || 0;
+          const nextBold = changes.isBold !== undefined ? Boolean(changes.isBold) : Boolean(current.isBold);
+          const nextUnderline =
+            changes.isUnderline !== undefined ? Boolean(changes.isUnderline) : Boolean(current.isUnderline);
+          const nextUnderlineColor =
+            changes.underlineColor !== undefined
+              ? String(changes.underlineColor || '').trim()
+              : current.underlineColor || '';
+
+          if (changes.underlineColor !== undefined) {
+            activeWordUnderlineColor = nextUnderlineColor;
+          }
+
+          // Case 1: Specific word / substring is selected
+          if (activeWordSelectedSubstring && activeWordSelectedSubstring.trim().length > 0) {
+            const cleanWord = activeWordSelectedSubstring.trim();
+            if (!Array.isArray(storeSettings.wordSubstringsMap[activeWordTargetKey])) {
+              storeSettings.wordSubstringsMap[activeWordTargetKey] = [];
+            }
+            const list = storeSettings.wordSubstringsMap[activeWordTargetKey];
+            const existingIdx = list.findIndex((r) => r && r.word === cleanWord);
+            const updatedRule = {
+              word: cleanWord,
+              fontSize: nextFontSize,
+              isBold: nextBold,
+              isUnderline: nextUnderline,
+              underlineColor: nextUnderlineColor
+            };
+            if (existingIdx !== -1) {
+              list[existingIdx] = updatedRule;
+            } else {
+              list.push(updatedRule);
+            }
+            applyWordFormattingToDOM();
+            syncAllWordToolbarsUI();
+            saveStateEverywhere({ immediate: true });
+            return;
+          }
+
+          // Case 2: Category button whole element
+          if (activeWordTargetKey.startsWith('cat:')) {
+            const catId = activeWordTargetKey.slice(4);
+            setCustomStoreCategoryColor(catId, {
+              fontSize: nextFontSize,
+              isBold: nextBold,
+              isUnderline: nextUnderline
+            });
+          }
+
+          // Case 3: Live Banner chip whole element
+          if (activeWordTargetKey.startsWith('lb:')) {
+            const lbId = activeWordTargetKey.slice(3);
+            setLiveBannerItemColor(lbId, {
+              fontSize: nextFontSize,
+              isBold: nextBold,
+              isUnderline: nextUnderline
+            });
+          }
+
+          // Case 4: Generic element or preset selector
+          storeSettings.wordElementStyles[activeWordTargetKey] = {
+            fontSize: nextFontSize,
+            isBold: nextBold,
+            isUnderline: nextUnderline,
+            underlineColor: nextUnderlineColor
+          };
+
+          applyWordFormattingToDOM();
+          syncAllWordToolbarsUI();
+          saveStateEverywhere({ immediate: true });
+        }
+
+        function handleWordFormatCommand(cmd, value) {
+          const cur = getCurrentTargetFormattingState();
+          if (cmd === 'font-size') {
+            const sz = Number(value) || 16;
+            updateWordFormattingState({ fontSize: sz });
+          } else if (cmd === 'size-up' || cmd === 'size-down') {
+            const dir = cmd === 'size-up' ? 1 : -1;
+            const curSz = Number(cur.fontSize) || 16;
+            const idx = WORD_FONT_SIZES_LIST.findIndex((s) => s >= curSz);
+            const baseIdx = idx === -1 ? WORD_FONT_SIZES_LIST.length - 1 : idx;
+            const nextIdx = Math.max(0, Math.min(WORD_FONT_SIZES_LIST.length - 1, baseIdx + dir));
+            updateWordFormattingState({ fontSize: WORD_FONT_SIZES_LIST[nextIdx] });
+          } else if (cmd === 'toggle-bold') {
+            updateWordFormattingState({ isBold: !cur.isBold });
+          } else if (cmd === 'toggle-underline') {
+            updateWordFormattingState({ isUnderline: !cur.isUnderline });
+          } else if (cmd === 'underline-color') {
+            updateWordFormattingState({ isUnderline: true, underlineColor: value });
+          } else if (cmd === 'reset-word-fmt') {
+            updateWordFormattingState({ reset: true });
+          }
+        }
+
+        function identifyTargetKeyAndLabelFromElement(el) {
+          if (!el || el.nodeType !== 1) return null;
+          if (
+            el.closest('[data-word-toolbar-instance="1"]') ||
+            el.closest('#floating-word-mini-toolbar') ||
+            el.closest('#owner-admin-toolbar-row')
+          ) {
+            return null;
+          }
+
+          // Check if inside an input or textarea with mapped preview target
+          const inputEl = el.closest('input[type="text"], input[type="number"], textarea');
+          if (inputEl) {
+            if (inputEl.id && INPUT_TO_PREVIEW_TARGET_MAP[inputEl.id]) {
+              return INPUT_TO_PREVIEW_TARGET_MAP[inputEl.id];
+            }
+            if (inputEl.hasAttribute('data-cat-rename-id')) {
+              const catId = inputEl.getAttribute('data-cat-rename-id');
+              return { key: `cat:${catId}`, label: `გრაფა: ${inputEl.value || catId}` };
+            }
+            if (inputEl.hasAttribute('data-lb-item-text')) {
+              const lbId = inputEl.getAttribute('data-lb-item-text');
+              return { key: `lb:${lbId}`, label: `ზედა ზოლის წარწერა: ${inputEl.value || lbId}` };
+            }
+            if (inputEl.hasAttribute('data-mie-spec-label') || inputEl.hasAttribute('data-mie-spec-value') || inputEl.hasAttribute('data-spec-label') || inputEl.hasAttribute('data-spec-value')) {
+              return { key: 'sel:#modal-specs-grid div', label: 'ტექნიკური მახასიათებლები' };
+            }
+          }
+
+          // Check Live Banner chip
+          const lbChip = el.closest('[data-lb-chip-id]');
+          if (lbChip) {
+            const lbId = lbChip.getAttribute('data-lb-chip-id');
+            return {
+              key: `lb:${lbId}`,
+              label: `საათის ზოლი: ${(lbChip.textContent || '').trim().slice(0, 22)}`
+            };
+          }
+
+          // Check Category Tab Button
+          const catBtn = el.closest('.category-tab-btn[data-category]');
+          if (catBtn) {
+            const catId = catBtn.getAttribute('data-category');
+            return {
+              key: `cat:${catId}`,
+              label: `კატეგორია: ${(catBtn.textContent || '').trim().slice(0, 22)}`
+            };
+          }
+
+          // Check Product Card elements
+          if (el.closest('.card-title-el')) {
+            return { key: 'sel:.card-title-el', label: 'პროდუქტის ბარათების სათაურები' };
+          }
+          if (el.closest('.card-meta-el')) {
+            return { key: 'sel:.card-meta-el', label: 'პროდუქტის ბარათების მოკლე აღწერა' };
+          }
+          if (el.closest('.card-new-price-el')) {
+            return { key: 'sel:.card-new-price-el', label: 'პროდუქტის ბარათების ფასები' };
+          }
+          if (el.closest('.card-badge-el')) {
+            return { key: 'sel:.card-badge-el', label: 'პროდუქტის ბეიჯი' };
+          }
+
+          // Check element with ID (or ancestor with ID)
+          const textContainer = el.closest('h1, h2, h3, h4, p, span, a, button, label, div[id]');
+          if (textContainer) {
+            if (textContainer.id && textContainer.id !== 'app' && textContainer.id !== 'main-catalog-content') {
+              return {
+                key: `id:${textContainer.id}`,
+                label: (textContainer.textContent || '').trim().slice(0, 26) || textContainer.id
+              };
+            }
+            const parentWithId = textContainer.closest('[id]');
+            if (
+              parentWithId &&
+              parentWithId.id &&
+              parentWithId.id !== 'product-grid' &&
+              parentWithId.id !== 'product-modal-backdrop' &&
+              parentWithId.id !== 'control-panel-backdrop' &&
+              parentWithId.id !== 'home-movable-sections-container'
+            ) {
+              return {
+                key: `id:${parentWithId.id}`,
+                label: (textContainer.textContent || '').trim().slice(0, 26) || parentWithId.id
+              };
+            }
+          }
+
+          return null;
+        }
+
+        // Bind all Word Formatting Toolbars ([data-word-toolbar-instance="1"])
+        const floatingWordMiniToolbar = document.getElementById('floating-word-mini-toolbar');
+        const closeFloatingWordToolbarBtn = document.getElementById('close-floating-word-toolbar-btn');
+        if (closeFloatingWordToolbarBtn && floatingWordMiniToolbar) {
+          closeFloatingWordToolbarBtn.addEventListener('click', () => {
+            floatingWordMiniToolbar.classList.add('hidden');
+          });
+        }
+
+        const topWordTargetPresetSel = document.getElementById('word-toolbar-target-preset');
+        if (topWordTargetPresetSel) {
+          topWordTargetPresetSel.addEventListener('change', () => {
+            const val = topWordTargetPresetSel.value;
+            if (val && WORD_PRESET_TARGETS[val]) {
+              activeWordTargetKey = val;
+              activeWordSelectedSubstring = '';
+              activeWordTargetLabel = WORD_PRESET_TARGETS[val].label;
+              syncAllWordToolbarsUI();
+            }
+          });
+        }
+
+        document.querySelectorAll('[data-word-toolbar-instance="1"]').forEach((bar) => {
+          // Prevent losing text selection when clicking toolbar buttons
+          bar.addEventListener('mousedown', (e) => {
+            if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') {
+              e.preventDefault();
+            }
+          });
+
+          const sizeSel = bar.querySelector('[data-word-font-size-select]');
+          if (sizeSel) {
+            sizeSel.addEventListener('change', (e) => {
+              handleWordFormatCommand('font-size', e.target.value);
+            });
+          }
+
+          bar.addEventListener('click', (e) => {
+            const cmdBtn = e.target.closest('[data-word-cmd]');
+            if (cmdBtn) {
+              const cmd = cmdBtn.getAttribute('data-word-cmd');
+              handleWordFormatCommand(cmd);
+              return;
+            }
+            const uColBtn = e.target.closest('[data-word-u-color]');
+            if (uColBtn) {
+              const col = uColBtn.getAttribute('data-word-u-color') || '';
+              handleWordFormatCommand('underline-color', col);
+            }
+          });
+        });
+
+        function showFloatingWordToolbarNearRect(rect) {
+          if (!floatingWordMiniToolbar || document.body.classList.contains('customer-view-mode')) return;
+          if (!rect || (rect.width === 0 && rect.height === 0)) return;
+          floatingWordMiniToolbar.classList.remove('hidden');
+          const tbWidth = floatingWordMiniToolbar.offsetWidth || 320;
+          const tbHeight = floatingWordMiniToolbar.offsetHeight || 48;
+          let left = rect.left + rect.width / 2 - tbWidth / 2;
+          let top = rect.top - tbHeight - 10;
+          if (top < 8) {
+            top = rect.bottom + 10;
+          }
+          left = Math.max(8, Math.min((window.innerWidth || 1024) - tbWidth - 8, left));
+          floatingWordMiniToolbar.style.left = `${Math.round(left)}px`;
+          floatingWordMiniToolbar.style.top = `${Math.round(top)}px`;
+        }
+
+        // Detect text selection in inputs/textareas OR on page elements
+        document.addEventListener('mouseup', (e) => {
+          if (document.body.classList.contains('customer-view-mode')) return;
+          if (e.target.closest('[data-word-toolbar-instance="1"]')) return;
+
+          const activeEl = document.activeElement;
+          if (
+            activeEl &&
+            (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA') &&
+            typeof activeEl.selectionStart === 'number' &&
+            typeof activeEl.selectionEnd === 'number'
+          ) {
+            const mapped = identifyTargetKeyAndLabelFromElement(activeEl);
+            if (mapped) {
+              activeWordTargetKey = mapped.key;
+              activeWordTargetLabel = mapped.label;
+              const selectedStr = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd).trim();
+              activeWordSelectedSubstring = selectedStr.length > 0 && selectedStr.length <= 80 ? selectedStr : '';
+              syncAllWordToolbarsUI();
+              if (activeWordSelectedSubstring) {
+                showFloatingWordToolbarNearRect(activeEl.getBoundingClientRect());
+              }
+              return;
+            }
+          }
+
+          const sel = window.getSelection ? window.getSelection() : null;
+          if (sel && !sel.isCollapsed) {
+            const selText = String(sel.toString() || '').trim();
+            if (selText.length > 0 && selText.length <= 90) {
+              const anchorEl =
+                sel.anchorNode && sel.anchorNode.nodeType === 1
+                  ? sel.anchorNode
+                  : sel.anchorNode
+                    ? sel.anchorNode.parentElement
+                    : null;
+              const info = identifyTargetKeyAndLabelFromElement(anchorEl || e.target);
+              if (info) {
+                activeWordTargetKey = info.key;
+                activeWordTargetLabel = info.label;
+                activeWordSelectedSubstring = selText;
+                syncAllWordToolbarsUI();
+                try {
+                  const range = sel.getRangeAt(0);
+                  showFloatingWordToolbarNearRect(range.getBoundingClientRect());
+                } catch (err) {}
+                return;
+              }
+            }
+          }
+
+          // If user clicked on an element when Live Edit mode is active, or focused an input
+          const clickedInfo = identifyTargetKeyAndLabelFromElement(e.target);
+          if (clickedInfo && (isLiveVisualEditActive || e.target.closest('input, textarea'))) {
+            activeWordTargetKey = clickedInfo.key;
+            activeWordTargetLabel = clickedInfo.label;
+            activeWordSelectedSubstring = '';
+            syncAllWordToolbarsUI();
+          }
+        });
+
+        document.addEventListener('focusin', (e) => {
+          if (document.body.classList.contains('customer-view-mode')) return;
+          if (e.target.closest('[data-word-toolbar-instance="1"]')) return;
+          const info = identifyTargetKeyAndLabelFromElement(e.target);
+          if (info) {
+            activeWordTargetKey = info.key;
+            activeWordTargetLabel = info.label;
+            activeWordSelectedSubstring = '';
+            syncAllWordToolbarsUI();
+          }
+        });
+
+        // Initial apply of saved Word formatting
+        setTimeout(() => {
+          applyWordFormattingToDOM();
+          syncAllWordToolbarsUI();
+        }, 50);
 
         // =========================================================================
         // MANUAL DRAG & REORDER ENGINE FOR ALL SECTIONS, BOXES & PRODUCT CARDS
