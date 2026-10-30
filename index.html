@@ -16764,16 +16764,16 @@
             ? `სიტყვა: „${activeWordSelectedSubstring.slice(0, 24)}“ (${activeWordTargetLabel})`
             : activeWordTargetLabel || 'მთავარი სათაური';
 
-          document.querySelectorAll('[data-word-toolbar-instance="1"]').forEach((bar) => {
+          document.querySelectorAll('[data-word-toolbar-instance="1"], #floating-word-mini-toolbar').forEach((bar) => {
             const badge = bar.querySelector('[data-word-target-badge]');
             if (badge) {
               badge.textContent = displayBadgeText;
             }
-            const sizeSel = bar.querySelector('[data-word-font-size-select]');
+            const sizeSel = bar.querySelector('[data-word-font-size-select], [data-word-size-select]');
             if (sizeSel) {
               sizeSel.value = String(nearestSize);
             }
-            const boldBtn = bar.querySelector('[data-word-cmd="toggle-bold"]');
+            const boldBtn = bar.querySelector('[data-word-cmd="toggle-bold"], [data-word-toggle-bold]');
             if (boldBtn) {
               if (state.isBold) {
                 boldBtn.classList.add('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
@@ -16782,7 +16782,7 @@
                 boldBtn.classList.remove('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
               }
             }
-            const underBtn = bar.querySelector('[data-word-cmd="toggle-underline"]');
+            const underBtn = bar.querySelector('[data-word-cmd="toggle-underline"], [data-word-toggle-underline]');
             if (underBtn) {
               if (state.isUnderline) {
                 underBtn.classList.add('bg-amber-400', 'text-zinc-950', 'ring-2', 'ring-amber-300');
@@ -17012,7 +17012,7 @@
           return null;
         }
 
-        // Bind all Word Formatting Toolbars ([data-word-toolbar-instance="1"])
+        // Bind all Word Formatting Toolbars ([data-word-toolbar-instance="1"] and #floating-word-mini-toolbar)
         const floatingWordMiniToolbar = document.getElementById('floating-word-mini-toolbar');
         const closeFloatingWordToolbarBtn = document.getElementById('close-floating-word-toolbar-btn');
         if (closeFloatingWordToolbarBtn && floatingWordMiniToolbar) {
@@ -17034,7 +17034,7 @@
           });
         }
 
-        document.querySelectorAll('[data-word-toolbar-instance="1"]').forEach((bar) => {
+        document.querySelectorAll('[data-word-toolbar-instance="1"], #floating-word-mini-toolbar').forEach((bar) => {
           // Prevent losing text selection when clicking toolbar buttons
           bar.addEventListener('mousedown', (e) => {
             if (e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') {
@@ -17042,10 +17042,14 @@
             }
           });
 
-          const sizeSel = bar.querySelector('[data-word-font-size-select]');
+          const sizeSel = bar.querySelector('[data-word-font-size-select], [data-word-size-select]');
           if (sizeSel) {
             sizeSel.addEventListener('change', (e) => {
-              handleWordFormatCommand('font-size', e.target.value);
+              if (!e.target.value) {
+                handleWordFormatCommand('reset-word-fmt');
+              } else {
+                handleWordFormatCommand('font-size', e.target.value);
+              }
             });
           }
 
@@ -17054,6 +17058,27 @@
             if (cmdBtn) {
               const cmd = cmdBtn.getAttribute('data-word-cmd');
               handleWordFormatCommand(cmd);
+              return;
+            }
+            const stepBtn = e.target.closest('[data-word-size-step]');
+            if (stepBtn) {
+              const dir = Number(stepBtn.getAttribute('data-word-size-step')) || 0;
+              handleWordFormatCommand(dir > 0 ? 'size-up' : 'size-down');
+              return;
+            }
+            const boldBtn = e.target.closest('[data-word-toggle-bold]');
+            if (boldBtn) {
+              handleWordFormatCommand('toggle-bold');
+              return;
+            }
+            const underBtn = e.target.closest('[data-word-toggle-underline]');
+            if (underBtn) {
+              handleWordFormatCommand('toggle-underline');
+              return;
+            }
+            const resetBtn = e.target.closest('[data-word-reset-fmt]');
+            if (resetBtn) {
+              handleWordFormatCommand('reset-word-fmt');
               return;
             }
             const uColBtn = e.target.closest('[data-word-u-color]');
@@ -17080,10 +17105,10 @@
           floatingWordMiniToolbar.style.top = `${Math.round(top)}px`;
         }
 
-        // Detect text selection in inputs/textareas OR on page elements
+        // Detect text selection in inputs/textareas OR on page elements (when Live Edit is active)
         document.addEventListener('mouseup', (e) => {
           if (document.body.classList.contains('customer-view-mode')) return;
-          if (e.target.closest('[data-word-toolbar-instance="1"]')) return;
+          if (e.target.closest('[data-word-toolbar-instance="1"]') || e.target.closest('#floating-word-mini-toolbar')) return;
 
           const activeEl = document.activeElement;
           if (
@@ -17106,27 +17131,29 @@
             }
           }
 
-          const sel = window.getSelection ? window.getSelection() : null;
-          if (sel && !sel.isCollapsed) {
-            const selText = String(sel.toString() || '').trim();
-            if (selText.length > 0 && selText.length <= 90) {
-              const anchorEl =
-                sel.anchorNode && sel.anchorNode.nodeType === 1
-                  ? sel.anchorNode
-                  : sel.anchorNode
-                    ? sel.anchorNode.parentElement
-                    : null;
-              const info = identifyTargetKeyAndLabelFromElement(anchorEl || e.target);
-              if (info) {
-                activeWordTargetKey = info.key;
-                activeWordTargetLabel = info.label;
-                activeWordSelectedSubstring = selText;
-                syncAllWordToolbarsUI();
-                try {
-                  const range = sel.getRangeAt(0);
-                  showFloatingWordToolbarNearRect(range.getBoundingClientRect());
-                } catch (err) {}
-                return;
+          if (isLiveVisualEditActive) {
+            const sel = window.getSelection ? window.getSelection() : null;
+            if (sel && !sel.isCollapsed) {
+              const selText = String(sel.toString() || '').trim();
+              if (selText.length > 0 && selText.length <= 90) {
+                const anchorEl =
+                  sel.anchorNode && sel.anchorNode.nodeType === 1
+                    ? sel.anchorNode
+                    : sel.anchorNode
+                      ? sel.anchorNode.parentElement
+                      : null;
+                const info = identifyTargetKeyAndLabelFromElement(anchorEl || e.target);
+                if (info) {
+                  activeWordTargetKey = info.key;
+                  activeWordTargetLabel = info.label;
+                  activeWordSelectedSubstring = selText;
+                  syncAllWordToolbarsUI();
+                  try {
+                    const range = sel.getRangeAt(0);
+                    showFloatingWordToolbarNearRect(range.getBoundingClientRect());
+                  } catch (err) {}
+                  return;
+                }
               }
             }
           }
@@ -17143,7 +17170,7 @@
 
         document.addEventListener('focusin', (e) => {
           if (document.body.classList.contains('customer-view-mode')) return;
-          if (e.target.closest('[data-word-toolbar-instance="1"]')) return;
+          if (e.target.closest('[data-word-toolbar-instance="1"]') || e.target.closest('#floating-word-mini-toolbar')) return;
           const info = identifyTargetKeyAndLabelFromElement(e.target);
           if (info) {
             activeWordTargetKey = info.key;
@@ -17216,6 +17243,12 @@
           if (!storeSettings.blockOffsets || typeof storeSettings.blockOffsets !== 'object') {
             storeSettings.blockOffsets = {};
           }
+          // One-time cleanup of any accidental negative Y offsets that caused product cards to overlap header/titles
+          if (!storeSettings._clearedOverlapOffsetsV2) {
+            delete storeSettings.blockOffsets['product-grid'];
+            delete storeSettings.blockOffsets['catalog-header'];
+            storeSettings._clearedOverlapOffsetsV2 = true;
+          }
         }
 
         function applySavedLayoutOrderAndOffsets() {
@@ -17248,17 +17281,20 @@
             });
           }
 
-          // 4. Apply any free X/Y drag offsets
+          // 4. Apply any free X/Y drag offsets (prevent product-grid from having negative Y offset that overlaps header)
           document.querySelectorAll('[data-home-block], [data-modal-block], [data-service-card]').forEach((el) => {
             const key =
               el.getAttribute('data-home-block') ||
               el.getAttribute('data-modal-block') ||
               el.getAttribute('data-service-card');
             const off = key && storeSettings.blockOffsets ? storeSettings.blockOffsets[key] : null;
-            if (off && (Number(off.x) || Number(off.y))) {
-              el.style.transform = `translate(${Number(off.x) || 0}px, ${Number(off.y) || 0}px)`;
+            const rawX = off ? Number(off.x) || 0 : 0;
+            const rawY = off ? Number(off.y) || 0 : 0;
+            const safeY = key === 'product-grid' || key === 'catalog-header' ? Math.max(0, rawY) : rawY;
+            if (rawX || safeY) {
+              el.style.transform = `translate(${rawX}px, ${safeY}px)`;
               el.style.position = 'relative';
-              el.style.zIndex = '15';
+              el.style.zIndex = key === 'product-grid' ? '' : '10';
             } else {
               el.style.transform = '';
               el.style.zIndex = '';
