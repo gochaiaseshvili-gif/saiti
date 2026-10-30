@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793339858310,
+  "updatedAt": 1793339863593,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -89,7 +89,7 @@
         "align": "right",
         "fontSize": 16,
         "isBold": true,
-        "isUnderline": false
+        "isUnderline": true
       },
       {
         "id": "weather",
