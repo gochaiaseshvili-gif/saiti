@@ -1137,6 +1137,129 @@
           </div>
         </div>
 
+        <!-- Row 1.6: Microsoft Word-Style Text Formatting Ribbon (Font Size Dropdown by Numbers 8–72, A-/A+, Bold B, Prominent Word Underline U) -->
+        <div
+          id="owner-word-toolbar-row"
+          data-word-toolbar-instance="1"
+          class="owner-only-admin-el flex flex-wrap items-center justify-between gap-2.5 px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-amber-50/90 via-white to-blue-50/80 border-2 border-amber-300/90 shadow-xs"
+        >
+          <div class="flex flex-wrap items-center gap-2 min-w-0">
+            <span class="text-xs font-extrabold text-zinc-950 flex items-center gap-1.5 shrink-0">
+              <span class="px-2 py-0.5 rounded-md bg-blue-700 text-white font-black text-[11px] tracking-tight shadow-2xs">W</span>
+              <span>Word-ის შრიფტი (ნებისმიერ ტექსტზე და სიტყვაზე):</span>
+            </span>
+            <span
+              data-word-target-badge="1"
+              class="px-2.5 py-1 rounded-lg bg-amber-100/90 text-amber-950 border border-amber-300 text-[11px] font-bold truncate max-w-[260px] sm:max-w-[340px]"
+              title="დააწკაპუნეთ ნებისმიერ ტექსტზე საიტზე ან მონიშნეთ ერთი სიტყვა მაუსით"
+            >
+              🎯 მონიშნეთ სიტყვა ან დააწკაპუნეთ ტექსტზე
+            </span>
+            <button
+              type="button"
+              data-word-switch-whole="1"
+              class="hidden px-2 py-0.5 rounded-md bg-white hover:bg-stone-100 text-zinc-700 border border-zinc-300 text-[10px] font-extrabold cursor-pointer shrink-0"
+              title="მთლიან წარწერაზე გადართვა"
+            >
+              მთლიანი ტექსტი
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+            <!-- Font Size Dropdown with Numbers (Like MS Word) -->
+            <div class="flex items-center gap-1 bg-white px-2 py-1 rounded-xl border border-zinc-300 shadow-2xs">
+              <label class="text-[11px] font-extrabold text-zinc-700 whitespace-nowrap">შრიფტის ზომა:</label>
+              <select
+                data-word-size-select="1"
+                class="min-h-[30px] px-2 py-0.5 rounded-lg bg-stone-50 hover:bg-stone-100 border border-zinc-300 font-mono-num text-xs font-extrabold text-zinc-950 focus:outline-none focus:border-blue-600 cursor-pointer"
+                title="აირჩიეთ შრიფტის ზომა ციფრებით (როგორც Word-ში)"
+              >
+                <option value="">ავტო</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="18">18</option>
+                <option value="20">20</option>
+                <option value="22">22</option>
+                <option value="24">24</option>
+                <option value="26">26</option>
+                <option value="28">28</option>
+                <option value="32">32</option>
+                <option value="36">36</option>
+                <option value="42">42</option>
+                <option value="48">48</option>
+                <option value="56">56</option>
+                <option value="72">72</option>
+              </select>
+              <button
+                type="button"
+                data-word-size-step="-1"
+                class="min-h-[30px] px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300 text-xs font-black active:scale-95 fast-transition cursor-pointer"
+                title="შრიფტის დაპატარავება (A-)"
+              >
+                A-
+              </button>
+              <button
+                type="button"
+                data-word-size-step="1"
+                class="min-h-[30px] px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300 text-xs font-black active:scale-95 fast-transition cursor-pointer"
+                title="შრიფტის გაზრდა (A+)"
+              >
+                A+
+              </button>
+            </div>
+
+            <!-- Bold (გამსხვილება — B) Button -->
+            <button
+              type="button"
+              data-word-toggle-bold="1"
+              class="min-h-[36px] px-3 py-1 rounded-xl bg-white hover:bg-amber-50 text-zinc-900 border border-zinc-300 text-xs font-bold flex items-center gap-1.5 shadow-2xs active:scale-95 fast-transition cursor-pointer"
+              title="ტექსტის ან მონიშნული სიტყვის გამსხვილება (Bold)"
+            >
+              <span class="font-serif text-sm font-black leading-none">B</span>
+              <span>გამსხვილება</span>
+            </button>
+
+            <!-- Prominent Underline (სიტყვის ქვევით ხაზის გავლება — U) Button -->
+            <button
+              type="button"
+              data-word-toggle-underline="1"
+              class="min-h-[36px] px-3 py-1 rounded-xl bg-white hover:bg-amber-50 text-zinc-900 border border-zinc-300 text-xs font-bold flex items-center gap-1.5 shadow-2xs active:scale-95 fast-transition cursor-pointer"
+              title="სიტყვის ან ტექსტის ქვევით გამოკვეთილი ხაზის გავლება (Underline)"
+            >
+              <span class="font-serif text-sm font-black word-underline-active leading-none">U</span>
+              <span class="word-underline-active">ხაზის გავლება</span>
+            </button>
+
+            <!-- Underline Accent Color Swatches (So underlined words stand out even more if desired) -->
+            <div class="inline-flex items-center gap-1 bg-white px-2 py-1 rounded-xl border border-zinc-300 shadow-2xs" title="ხაზის ფერი (სურვილისამებრ)">
+              <span class="text-[10px] font-bold text-zinc-600">ხაზი:</span>
+              <button type="button" data-word-u-color="" class="px-1.5 py-0.5 rounded text-[10px] font-extrabold bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 cursor-pointer" title="ტექსტის ფერის ხაზი">ავტო</button>
+              <button type="button" data-word-u-color="#ef4444" class="w-4 h-4 rounded-full bg-[#ef4444] border border-zinc-400 hover:scale-125 fast-transition cursor-pointer" title="წითელი გამოკვეთილი ხაზი"></button>
+              <button type="button" data-word-u-color="#f59e0b" class="w-4 h-4 rounded-full bg-[#f59e0b] border border-zinc-400 hover:scale-125 fast-transition cursor-pointer" title="ოქროსფერი გამოკვეთილი ხაზი"></button>
+              <button type="button" data-word-u-color="#2563eb" class="w-4 h-4 rounded-full bg-[#2563eb] border border-zinc-400 hover:scale-125 fast-transition cursor-pointer" title="ლურჯი გამოკვეთილი ხაზი"></button>
+              <button type="button" data-word-u-color="#10b981" class="w-4 h-4 rounded-full bg-[#10b981] border border-zinc-400 hover:scale-125 fast-transition cursor-pointer" title="მწვანე გამოკვეთილი ხაზი"></button>
+            </div>
+
+            <!-- Reset Formatting on Selected Text / Word -->
+            <button
+              type="button"
+              data-word-reset-fmt="1"
+              class="min-h-[36px] px-2.5 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold flex items-center gap-1 active:scale-95 fast-transition cursor-pointer"
+              title="მონიშნულ ტექსტზე/სიტყვაზე ზომის, გამსხვილების და ხაზის მოხსნა"
+            >
+              <span>↺</span>
+              <span>სტილის მოხსნა</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Collapsible Theme & Full Color Customization Panel -->
         <div
           id="theme-customizer-panel"
