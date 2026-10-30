@@ -255,6 +255,31 @@
         text-underline-offset: 4px !important;
         text-decoration-skip-ink: none !important;
       }
+
+      /* Rich Description Editor Box (B / I / U / Font Size + 4000/4000 counter) */
+      .desc-rich-editor:empty:before {
+        content: attr(data-placeholder);
+        color: #9ca3af;
+        pointer-events: none;
+      }
+      .desc-rich-editor b,
+      .desc-rich-editor strong,
+      #modal-product-desc b,
+      #modal-product-desc strong {
+        font-weight: 800;
+      }
+      .desc-rich-editor i,
+      .desc-rich-editor em,
+      #modal-product-desc i,
+      #modal-product-desc em {
+        font-style: italic;
+      }
+      .desc-rich-editor u,
+      #modal-product-desc u {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
     </style>
   </head>
 
@@ -2335,19 +2360,115 @@
                   </div>
                 </div>
 
-                <!-- Full Description -->
+                <!-- Full Description (Screenshot-Style Rich Text Box: B, I, U, Font Size A-/A+, Divider & 4000/4000 Counter) -->
                 <div class="sm:col-span-12">
                   <div data-mie-field-active="description">
-                    <div class="flex items-center justify-between gap-1 mb-1">
-                      <label for="mie-desc" class="block text-xs font-extrabold text-zinc-800">სრული აღწერა:</label>
+                    <div class="flex items-center justify-between gap-1 mb-1.5">
+                      <label for="mie-desc-rich" class="block text-sm font-extrabold text-zinc-900">სრული აღწერა</label>
                       <button type="button" data-mie-close-field="description" class="text-[10px] font-bold text-rose-600 hover:underline cursor-pointer">✕ დახურვა / გაუქმება</button>
                     </div>
-                    <textarea
-                      id="mie-desc"
-                      rows="3"
-                      placeholder="პროდუქტის დეტალური აღწერა..."
-                      class="w-full px-3 py-2 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs sm:text-sm text-zinc-900 focus:outline-none focus:border-zinc-900"
-                    ></textarea>
+                    <div
+                      data-desc-rich-box="mie"
+                      class="rounded-2xl border border-zinc-200/90 bg-white focus-within:border-zinc-400 shadow-2xs transition-colors"
+                    >
+                      <!-- Top Formatting Toolbar Inside Box (B I U + Font Size Grow/Shrink) -->
+                      <div class="px-4 pt-3 pb-2.5 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                          <button
+                            type="button"
+                            data-desc-btn-bold="1"
+                            title="ტექსტის გასქელება / გამსხვილება (Bold)"
+                            class="w-8 h-8 rounded-lg text-sm font-bold text-zinc-500 hover:text-zinc-950 hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer select-none"
+                          >
+                            B
+                          </button>
+                          <button
+                            type="button"
+                            data-desc-btn-italic="1"
+                            title="ტექსტის დახრა (Italic)"
+                            class="w-8 h-8 rounded-lg text-sm italic font-serif font-semibold text-zinc-500 hover:text-zinc-950 hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer select-none"
+                          >
+                            I
+                          </button>
+                          <button
+                            type="button"
+                            data-desc-btn-underline="1"
+                            title="ქვეშ ხაზის გავლება (Underline)"
+                            class="w-8 h-8 rounded-lg text-sm underline underline-offset-2 text-zinc-500 hover:text-zinc-950 hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer select-none"
+                          >
+                            U
+                          </button>
+
+                          <span class="h-5 w-px bg-zinc-200 mx-1"></span>
+
+                          <button
+                            type="button"
+                            data-desc-btn-step="-2"
+                            title="ტექსტის დაპატარავება"
+                            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-200 text-xs font-extrabold flex items-center justify-center transition-colors cursor-pointer select-none"
+                          >
+                            A-
+                          </button>
+                          <select
+                            data-desc-size-select="1"
+                            title="ტექსტის ზომის არჩევა"
+                            class="min-h-[32px] px-2 py-1 rounded-lg bg-stone-50 hover:bg-stone-100 border border-zinc-200 font-mono-num text-xs font-extrabold text-zinc-900 cursor-pointer focus:outline-none"
+                          >
+                            <option value="12">12</option>
+                            <option value="14">14</option>
+                            <option value="15" selected>15</option>
+                            <option value="16">16</option>
+                            <option value="18">18</option>
+                            <option value="20">20</option>
+                            <option value="22">22</option>
+                            <option value="24">24</option>
+                            <option value="28">28</option>
+                            <option value="32">32</option>
+                            <option value="36">36</option>
+                            <option value="42">42</option>
+                            <option value="48">48</option>
+                          </select>
+                          <button
+                            type="button"
+                            data-desc-btn-step="2"
+                            title="ტექსტის გაზრდა"
+                            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-200 text-xs font-extrabold flex items-center justify-center transition-colors cursor-pointer select-none"
+                          >
+                            A+
+                          </button>
+                        </div>
+
+                        <button
+                          type="button"
+                          data-desc-btn-reset="1"
+                          title="შრიფტის ზომის და სისქის საწყისზე დაბრუნება"
+                          class="px-2 py-1 rounded-lg text-[11px] font-semibold text-zinc-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer select-none"
+                        >
+                          ↺ სტილის მოხსნა
+                        </button>
+                      </div>
+
+                      <!-- Divider Line (Matches Screenshot) -->
+                      <div class="mx-4 border-b border-zinc-200"></div>
+
+                      <!-- Rich Editable Description Area -->
+                      <div
+                        id="mie-desc-rich"
+                        contenteditable="true"
+                        role="textbox"
+                        aria-multiline="true"
+                        data-placeholder="პროდუქტის დეტალური აღწერა..."
+                        class="desc-rich-editor w-full min-h-[115px] px-4 pt-3 pb-1 text-sm text-zinc-900 focus:outline-none leading-relaxed whitespace-pre-wrap break-words"
+                      ></div>
+
+                      <!-- Synchronized Hidden Textarea for Compatibility -->
+                      <textarea id="mie-desc" rows="3" class="hidden"></textarea>
+
+                      <!-- Bottom-Right Character Counter (4000 / 4000) -->
+                      <div class="px-4 pb-3 pt-1 flex items-center justify-end">
+                        <span data-desc-char-counter="1" class="font-mono-num text-xs sm:text-sm font-medium text-zinc-500 select-none">4000 / 4000</span>
+                      </div>
+                    </div>
                   </div>
                   <div data-mie-field-closed="description" class="hidden min-h-[42px] px-3 py-2 rounded-xl bg-stone-100 border border-dashed border-zinc-300 flex items-center justify-between gap-2">
                     <span class="text-[11px] font-bold text-zinc-500">სრული აღწერის გრაფა გაუქმებულია (არ გამოჩნდება გვერდზე)</span>
@@ -2860,15 +2981,84 @@
             data-block-label="აღწერის გრაფა"
             class="movable-modal-block rounded-2xl bg-white border border-zinc-200/90 p-4 sm:p-6 space-y-4 shadow-sm"
           >
-            <div class="flex items-center gap-2 pb-2 border-b border-zinc-100">
-              <span class="w-2.5 h-2.5 rounded-full theme-bg shrink-0"></span>
-              <h3 id="modal-desc-heading" class="text-sm sm:text-base font-bold text-zinc-950">
-                აღწერა და ტექნიკური მახასიათებლები
-              </h3>
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-zinc-100">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full theme-bg shrink-0"></span>
+                <h3 id="modal-desc-heading" class="text-sm sm:text-base font-bold text-zinc-950">
+                  აღწერა და ტექნიკური მახასიათებლები
+                </h3>
+              </div>
+
+              <!-- Owner Quick Formatting Controls directly on Description Card (B, I, U, A-, Size, A+) -->
+              <div
+                data-desc-rich-box="modal-direct"
+                class="owner-only-admin-el flex flex-wrap items-center gap-1 bg-stone-50 px-2.5 py-1 rounded-xl border border-zinc-200"
+              >
+                <button
+                  type="button"
+                  data-desc-btn-bold="1"
+                  title="ტექსტის გასქელება (Bold)"
+                  class="w-7 h-7 rounded-lg text-xs font-bold text-zinc-600 hover:text-zinc-950 hover:bg-white flex items-center justify-center cursor-pointer"
+                >
+                  B
+                </button>
+                <button
+                  type="button"
+                  data-desc-btn-italic="1"
+                  title="ტექსტის დახრა (Italic)"
+                  class="w-7 h-7 rounded-lg text-xs italic font-serif font-semibold text-zinc-600 hover:text-zinc-950 hover:bg-white flex items-center justify-center cursor-pointer"
+                >
+                  I
+                </button>
+                <button
+                  type="button"
+                  data-desc-btn-underline="1"
+                  title="ქვეშ ხაზის გავლება (Underline)"
+                  class="w-7 h-7 rounded-lg text-xs underline underline-offset-2 text-zinc-600 hover:text-zinc-950 hover:bg-white flex items-center justify-center cursor-pointer"
+                >
+                  U
+                </button>
+                <span class="h-4 w-px bg-zinc-300 mx-0.5"></span>
+                <button
+                  type="button"
+                  data-desc-btn-step="-2"
+                  title="ტექსტის დაპატარავება"
+                  class="px-2 py-0.5 rounded-lg bg-white hover:bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer"
+                >
+                  A-
+                </button>
+                <select
+                  data-desc-size-select="1"
+                  title="ტექსტის ზომა"
+                  class="min-h-[26px] px-1.5 py-0.5 rounded-lg bg-white border border-zinc-200 font-mono-num text-[11px] font-extrabold text-zinc-900 cursor-pointer"
+                >
+                  <option value="12">12</option>
+                  <option value="14">14</option>
+                  <option value="15" selected>15</option>
+                  <option value="16">16</option>
+                  <option value="18">18</option>
+                  <option value="20">20</option>
+                  <option value="22">22</option>
+                  <option value="24">24</option>
+                  <option value="28">28</option>
+                  <option value="32">32</option>
+                  <option value="36">36</option>
+                  <option value="42">42</option>
+                  <option value="48">48</option>
+                </select>
+                <button
+                  type="button"
+                  data-desc-btn-step="2"
+                  title="ტექსტის გაზრდა"
+                  class="px-2 py-0.5 rounded-lg bg-white hover:bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer"
+                >
+                  A+
+                </button>
+              </div>
             </div>
 
             <!-- Full Description Paragraph -->
-            <p id="modal-product-desc" class="text-sm sm:text-base text-zinc-700 leading-relaxed"></p>
+            <div id="modal-product-desc" class="text-sm sm:text-base text-zinc-700 leading-relaxed whitespace-pre-wrap break-words"></div>
           </div>
 
           <!-- 4. THEN VIDEO REVIEW SECTION (COMPACT TIKTOK, FACEBOOK, YOUTUBE & INSTAGRAM CARDS) -->
@@ -4582,59 +4772,6 @@
 
             <!-- Basic Info Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
-              <!-- Microsoft Word-Style Formatting Bar inside Control Panel Product Form -->
-              <div
-                data-word-toolbar-instance="1"
-                class="sm:col-span-12 flex flex-wrap items-center justify-between gap-2 p-3 rounded-xl bg-gradient-to-r from-blue-50/90 via-white to-amber-50/80 border border-blue-200"
-              >
-                <div class="flex flex-wrap items-center gap-1.5 min-w-0">
-                  <span class="px-1.5 py-0.5 rounded bg-blue-700 text-white font-black text-[10px]">W</span>
-                  <span class="text-xs font-extrabold text-zinc-900">Word შრიფტი (მონიშნეთ სიტყვა ან დააწკაპუნეთ ველში):</span>
-                  <span data-word-target-badge="1" class="px-2 py-0.5 rounded bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-bold truncate max-w-[240px]">🎯 აირჩიეთ ტექსტი ან სიტყვა</span>
-                  <button type="button" data-word-switch-whole="1" class="hidden px-1.5 py-0.5 rounded bg-white text-zinc-700 border border-zinc-300 text-[10px] font-bold cursor-pointer">მთლიანი ტექსტი</button>
-                </div>
-                <div class="flex flex-wrap items-center gap-1.5">
-                  <div class="flex items-center gap-1 bg-white px-2 py-0.5 rounded-lg border border-zinc-300">
-                    <span class="text-[11px] font-bold text-zinc-600">ზომა:</span>
-                    <select data-word-size-select="1" class="min-h-[28px] px-1.5 py-0.5 rounded bg-stone-50 border border-zinc-300 font-mono-num text-xs font-extrabold text-zinc-950 cursor-pointer">
-                      <option value="">ავტო</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12</option>
-                      <option value="13">13</option>
-                      <option value="14">14</option>
-                      <option value="15">15</option>
-                      <option value="16">16</option>
-                      <option value="18">18</option>
-                      <option value="20">20</option>
-                      <option value="22">22</option>
-                      <option value="24">24</option>
-                      <option value="26">26</option>
-                      <option value="28">28</option>
-                      <option value="32">32</option>
-                      <option value="36">36</option>
-                      <option value="42">42</option>
-                      <option value="48">48</option>
-                      <option value="56">56</option>
-                      <option value="72">72</option>
-                    </select>
-                    <button type="button" data-word-size-step="-1" class="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 border border-zinc-300 text-xs font-black cursor-pointer">A-</button>
-                    <button type="button" data-word-size-step="1" class="px-1.5 py-0.5 rounded bg-stone-100 hover:bg-stone-200 border border-zinc-300 text-xs font-black cursor-pointer">A+</button>
-                  </div>
-                  <button type="button" data-word-toggle-bold="1" class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 border border-zinc-300 text-xs font-bold flex items-center gap-1 cursor-pointer">
-                    <span class="font-serif font-black">B</span>
-                    <span>გამსხვილება</span>
-                  </button>
-                  <button type="button" data-word-toggle-underline="1" class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-50 border border-zinc-300 text-xs font-bold flex items-center gap-1 cursor-pointer">
-                    <span class="font-serif font-black word-underline-active">U</span>
-                    <span class="word-underline-active">ხაზის გავლება</span>
-                  </button>
-                  <button type="button" data-word-reset-fmt="1" class="px-2 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold cursor-pointer">↺ მოხსნა</button>
-                </div>
-              </div>
-
               <div class="sm:col-span-6 space-y-1.5">
                 <label for="cp-prod-name" class="block text-xs font-semibold text-zinc-800">
                   პროდუქტის დასახელება *
@@ -4760,15 +4897,111 @@
               </div>
 
               <div class="space-y-1.5">
-                <label for="cp-prod-desc" class="block text-xs font-semibold text-zinc-800">
+                <label for="cp-prod-desc-rich" class="block text-sm font-extrabold text-zinc-900">
                   სრული აღწერა *
                 </label>
-                <textarea
-                  id="cp-prod-desc"
-                  rows="3"
-                  placeholder="შეიყვანეთ პროდუქტის დეტალური აღწერა..."
-                  class="w-full p-3.5 rounded-xl border border-zinc-300 text-sm focus:outline-none focus:border-zinc-900"
-                ></textarea>
+                <div
+                  data-desc-rich-box="cp"
+                  class="rounded-2xl border border-zinc-200/90 bg-white focus-within:border-zinc-400 shadow-2xs transition-colors"
+                >
+                  <!-- Top Formatting Toolbar Inside Box (B I U + Font Size Grow/Shrink) -->
+                  <div class="px-4 pt-3 pb-2.5 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                      <button
+                        type="button"
+                        data-desc-btn-bold="1"
+                        title="ტექსტის გასქელება / გამსხვილება (Bold)"
+                        class="w-8 h-8 rounded-lg text-sm font-bold text-zinc-500 hover:text-zinc-950 hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer select-none"
+                      >
+                        B
+                      </button>
+                      <button
+                        type="button"
+                        data-desc-btn-italic="1"
+                        title="ტექსტის დახრა (Italic)"
+                        class="w-8 h-8 rounded-lg text-sm italic font-serif font-semibold text-zinc-500 hover:text-zinc-950 hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer select-none"
+                      >
+                        I
+                      </button>
+                      <button
+                        type="button"
+                        data-desc-btn-underline="1"
+                        title="ქვეშ ხაზის გავლება (Underline)"
+                        class="w-8 h-8 rounded-lg text-sm underline underline-offset-2 text-zinc-500 hover:text-zinc-950 hover:bg-stone-100 flex items-center justify-center transition-colors cursor-pointer select-none"
+                      >
+                        U
+                      </button>
+
+                      <span class="h-5 w-px bg-zinc-200 mx-1"></span>
+
+                      <button
+                        type="button"
+                        data-desc-btn-step="-2"
+                        title="ტექსტის დაპატარავება"
+                        class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-200 text-xs font-extrabold flex items-center justify-center transition-colors cursor-pointer select-none"
+                      >
+                        A-
+                      </button>
+                      <select
+                        data-desc-size-select="1"
+                        title="ტექსტის ზომის არჩევა"
+                        class="min-h-[32px] px-2 py-1 rounded-lg bg-stone-50 hover:bg-stone-100 border border-zinc-200 font-mono-num text-xs font-extrabold text-zinc-900 cursor-pointer focus:outline-none"
+                      >
+                        <option value="12">12</option>
+                        <option value="14">14</option>
+                        <option value="15" selected>15</option>
+                        <option value="16">16</option>
+                        <option value="18">18</option>
+                        <option value="20">20</option>
+                        <option value="22">22</option>
+                        <option value="24">24</option>
+                        <option value="28">28</option>
+                        <option value="32">32</option>
+                        <option value="36">36</option>
+                        <option value="42">42</option>
+                        <option value="48">48</option>
+                      </select>
+                      <button
+                        type="button"
+                        data-desc-btn-step="2"
+                        title="ტექსტის გაზრდა"
+                        class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-200 text-xs font-extrabold flex items-center justify-center transition-colors cursor-pointer select-none"
+                      >
+                        A+
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      data-desc-btn-reset="1"
+                      title="შრიფტის ზომის და სისქის საწყისზე დაბრუნება"
+                      class="px-2 py-1 rounded-lg text-[11px] font-semibold text-zinc-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer select-none"
+                    >
+                      ↺ სტილის მოხსნა
+                    </button>
+                  </div>
+
+                  <!-- Divider Line (Matches Screenshot) -->
+                  <div class="mx-4 border-b border-zinc-200"></div>
+
+                  <!-- Rich Editable Description Area -->
+                  <div
+                    id="cp-prod-desc-rich"
+                    contenteditable="true"
+                    role="textbox"
+                    aria-multiline="true"
+                    data-placeholder="შეიყვანეთ პროდუქტის დეტალური აღწერა..."
+                    class="desc-rich-editor w-full min-h-[115px] px-4 pt-3 pb-1 text-sm text-zinc-900 focus:outline-none leading-relaxed whitespace-pre-wrap break-words"
+                  ></div>
+
+                  <!-- Synchronized Hidden Textarea for Compatibility -->
+                  <textarea id="cp-prod-desc" rows="3" class="hidden"></textarea>
+
+                  <!-- Bottom-Right Character Counter (4000 / 4000) -->
+                  <div class="px-4 pb-3 pt-1 flex items-center justify-end">
+                    <span data-desc-char-counter="1" class="font-mono-num text-xs sm:text-sm font-medium text-zinc-500 select-none">4000 / 4000</span>
+                  </div>
+                </div>
               </div>
             </div>
 
