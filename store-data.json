@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793386583128,
+  "updatedAt": 1793386584433,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -11,7 +11,7 @@
         "underlineColor": ""
       },
       "id:modal-edit-product-btn": {
-        "fontSize": 15,
+        "fontSize": 16,
         "isBold": false,
         "isUnderline": false,
         "underlineColor": ""
