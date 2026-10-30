@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793339863593,
+  "updatedAt": 1793339954564,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -111,13 +111,13 @@
         "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
         "text": "⏰",
         "textColor": "#ffffff",
-        "bgColor": "#2563eb",
-        "offsetX": 56,
+        "bgColor": "#172554",
+        "offsetX": 0,
         "offsetY": 0,
-        "align": "center",
-        "fontSize": 20,
-        "isBold": true,
-        "isUnderline": true
+        "align": "right",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "cities",
