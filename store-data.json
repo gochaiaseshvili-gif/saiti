@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793341306531,
+  "updatedAt": 1793341332229,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -3666,11 +3666,10 @@
       "youtubeCaption": "StreetBeat 500W კომპაქტური კარაოკეს ტესტი",
       "tiktokUrl": "",
       "tiktokCaption": "StreetBeat 500W ბუნებაში მეგობრებთან ერთად",
-      "closedFields": {
-        "badge": true
-      },
+      "closedFields": {},
       "facebookUrl": "",
-      "instagramUrl": ""
+      "instagramUrl": "",
+      "youtubeUrl": ""
     },
     {
       "id": "offgrid-event-combo",
