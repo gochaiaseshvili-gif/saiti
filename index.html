@@ -18026,9 +18026,177 @@
           });
         }
 
+        // =========================================================================
+        // PROMINENT MAIN-SCREEN AI CONSULTANT & INTERACTIVE CHAT ENGINE
+        // =========================================================================
+        function initHeroAiChatWidget() {
+          const form = document.getElementById('hero-ai-form');
+          const input = document.getElementById('hero-ai-input');
+          const submitBtn = document.getElementById('hero-ai-submit-btn');
+          const dialogueBox = document.getElementById('hero-ai-dialogue-box');
+          const dialogueStream = document.getElementById('hero-ai-dialogue-stream');
+          const typingIndicator = document.getElementById('hero-ai-typing-indicator');
+          const openFullChatBtn = document.getElementById('hero-ai-open-full-chat-btn');
+
+          if (openFullChatBtn) {
+            openFullChatBtn.addEventListener('click', () => {
+              const homeChatDrawer = document.getElementById('home-seller-chat-box');
+              if (homeChatDrawer) {
+                homeChatDrawer.classList.remove('hidden');
+                renderAllChatWidgets();
+                const inp = document.getElementById('home-chat-text-input');
+                if (inp) setTimeout(() => inp.focus(), 120);
+              }
+            });
+          }
+
+          async function askHeroAi(questionText) {
+            const q = String(questionText || '').trim();
+            if (!q) {
+              if (input) input.focus();
+              return;
+            }
+
+            if (input) input.value = '';
+            if (dialogueBox) dialogueBox.classList.remove('hidden');
+
+            // Render customer question bubble into hero dialogue
+            if (dialogueStream) {
+              const userBubble = document.createElement('div');
+              userBubble.className = 'flex justify-end';
+              userBubble.innerHTML = `
+                <div class="max-w-[85%] rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white px-4 py-2.5 font-bold shadow-md break-words">
+                  <div class="text-[10px] text-violet-200 uppercase tracking-wider mb-0.5">თქვენი შეკითხვა</div>
+                  <div>${escapeHtmlSafe(q)}</div>
+                </div>
+              `;
+              dialogueStream.appendChild(userBubble);
+              if (dialogueBox) dialogueBox.scrollTop = dialogueBox.scrollHeight;
+            }
+
+            if (typingIndicator) typingIndicator.classList.remove('hidden');
+            if (submitBtn) submitBtn.disabled = true;
+
+            const nowIso = new Date().toISOString();
+            if (!chatCustomerConversation) {
+              chatCustomerConversation = {
+                sessionId: chatCustomerSessionId,
+                customerName: chatCustomerName || 'კლიენტი',
+                customerPhone: chatCustomerPhone || '',
+                updatedAt: nowIso,
+                unreadForSeller: 1,
+                unreadForCustomer: 0,
+                messages: []
+              };
+            }
+            chatCustomerConversation.messages.push({
+              id: 'msg_' + Date.now(),
+              sender: 'customer',
+              senderName: chatCustomerName || 'კლიენტი',
+              senderPhone: chatCustomerPhone || '',
+              text: q,
+              createdAt: nowIso
+            });
+            renderAllChatWidgets();
+
+            let botReply = '';
+            try {
+              // 1. Post to chat API so session and sync are preserved across devices
+              fetch('/api/chat/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  sessionId: chatCustomerSessionId,
+                  sender: 'customer',
+                  senderName: chatCustomerName || 'კლიენტი',
+                  senderPhone: chatCustomerPhone || '',
+                  text: q,
+                  createdAt: nowIso
+                })
+              }).catch(() => {});
+
+              // 2. Query AI Bot test / reply endpoint
+              const resp = await fetch('/api/ai-bot/test', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question: q })
+              });
+              if (resp.ok) {
+                const data = await resp.json();
+                if (data && data.ok && data.reply) {
+                  botReply = data.reply;
+                }
+              }
+            } catch (err) {
+              console.warn('Hero AI query failed, using intelligent fallback:', err);
+            }
+
+            if (!botReply) {
+              botReply = generateClientFallbackBotReply(q, '');
+            }
+
+            if (typingIndicator) typingIndicator.classList.add('hidden');
+            if (submitBtn) submitBtn.disabled = false;
+
+            // Render bot answer bubble into hero dialogue
+            if (dialogueStream) {
+              const botBubble = document.createElement('div');
+              botBubble.className = 'flex justify-start';
+              botBubble.innerHTML = `
+                <div class="max-w-[90%] rounded-2xl bg-white text-zinc-950 border-2 border-violet-400/80 px-4 py-3 shadow-xl break-words">
+                  <div class="flex items-center justify-between gap-2 pb-1 mb-1.5 border-b border-zinc-100">
+                    <span class="text-xs font-black text-violet-700 flex items-center gap-1">
+                      <span>🤖</span>
+                      <span>${escapeHtmlSafe(aiBotConfig.botName || 'AI ასისტენტი')}</span>
+                    </span>
+                    <span class="text-[10px] font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">მყისიერი პასუხი</span>
+                  </div>
+                  <div class="text-xs sm:text-sm text-zinc-800 leading-relaxed whitespace-pre-wrap">${escapeHtmlSafe(botReply)}</div>
+                  <div class="flex flex-wrap items-center gap-2 mt-2 pt-1.5 border-t border-zinc-100 text-[11px]">
+                    <a href="tel:+995551588579" class="text-amber-800 font-extrabold hover:underline">📞 დარეკვა: 551 58 85 79</a>
+                    <span class="text-zinc-300">•</span>
+                    <a href="https://wa.me/995551588579?text=${encodeURIComponent('გამარჯობა, ' + q)}" target="_blank" rel="noopener noreferrer" class="text-emerald-700 font-extrabold hover:underline">💬 WhatsApp</a>
+                  </div>
+                </div>
+              `;
+              dialogueStream.appendChild(botBubble);
+              if (dialogueBox) dialogueBox.scrollTop = dialogueBox.scrollHeight;
+            }
+
+            // Sync into chat conversation history
+            chatCustomerConversation.messages.push({
+              id: 'local_bot_' + Date.now(),
+              sender: 'seller',
+              senderName: aiBotConfig.botName || '🤖 AI ასისტენტი',
+              text: botReply,
+              createdAt: new Date().toISOString(),
+              isAiBot: true
+            });
+            renderAllChatWidgets();
+          }
+
+          if (form) {
+            form.addEventListener('submit', (e) => {
+              e.preventDefault();
+              if (input) askHeroAi(input.value);
+            });
+          }
+
+          document.querySelectorAll('[data-hero-ai-chip]').forEach((chip) => {
+            chip.addEventListener('click', () => {
+              const promptText = chip.getAttribute('data-hero-ai-chip');
+              if (promptText) {
+                if (input) input.value = promptText;
+                askHeroAi(promptText);
+              }
+            });
+          });
+        }
+
         bindChatWidgetEvents('home');
         bindChatWidgetEvents('modal');
         initAiBotStudioAndDrawerEvents();
+        initHeroAiChatWidget();
         fetchAiBotConfigFromServer();
         fetchChatStateFromServer();
         connectChatWebSocket();
