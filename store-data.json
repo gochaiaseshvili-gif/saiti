@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793341019058,
+  "updatedAt": 1793341079414,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -92,20 +92,6 @@
         "isUnderline": false
       },
       {
-        "id": "clock",
-        "type": "clock",
-        "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
-        "text": "⏰",
-        "textColor": "#ef4444",
-        "bgColor": "#172554",
-        "offsetX": 0,
-        "offsetY": -4,
-        "align": "right",
-        "fontSize": 18,
-        "isBold": false,
-        "isUnderline": false
-      },
-      {
         "id": "date",
         "type": "date",
         "badgeTitle": "📅 თარიღი და კვირის დღე",
@@ -117,6 +103,20 @@
         "align": "right",
         "fontSize": 16,
         "isBold": true,
+        "isUnderline": false
+      },
+      {
+        "id": "clock",
+        "type": "clock",
+        "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
+        "text": "⏰",
+        "textColor": "#ef4444",
+        "bgColor": "#172554",
+        "offsetX": 0,
+        "offsetY": -4,
+        "align": "right",
+        "fontSize": 18,
+        "isBold": false,
         "isUnderline": false
       },
       {
