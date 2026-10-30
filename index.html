@@ -11698,11 +11698,18 @@
 
         cpProductForm.addEventListener('input', (e) => {
           if (e.target.closest('[data-slot-file]')) return;
+          if (e.target.closest('[data-desc-text-color]') || e.target.closest('[data-desc-bg-color]')) return;
           autoSaveFormProductLive();
         });
         cpProductForm.addEventListener('change', (e) => {
           if (e.target.closest('[data-slot-file]')) return;
-          if (e.target.closest('[data-desc-size-select]')) return;
+          if (
+            e.target.closest('[data-desc-size-select]') ||
+            e.target.closest('[data-desc-text-color]') ||
+            e.target.closest('[data-desc-bg-color]')
+          ) {
+            return;
+          }
           autoSaveFormProductLive();
         });
 
@@ -13301,6 +13308,7 @@
           });
           modalInlineEditorPanel.addEventListener('input', (e) => {
             if (e.target.closest('[data-mie-slot-file]') || e.target === mieMultiPhotoInput) return;
+            if (e.target.closest('[data-desc-text-color]') || e.target.closest('[data-desc-bg-color]')) return;
             applyInlineProductEditorChanges();
           });
           modalInlineEditorPanel.addEventListener('change', (e) => {
