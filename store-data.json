@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793338604601,
+  "updatedAt": 1793338633719,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {},
@@ -88,7 +88,7 @@
         "id": "clock",
         "type": "clock",
         "badgeTitle": "⏰ საათი (ცოცხალი დრო)",
-        "text": "⏰🎶",
+        "text": "⏰",
         "textColor": "#ffffff",
         "bgColor": "#e11d48",
         "offsetX": 0,
