@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793341546037,
+  "updatedAt": 1793341547121,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -3638,7 +3638,7 @@
       "specs": [
         {
           "label": "სიმძლავრე ვატი",
-          "value": "200ვა"
+          "value": "200ვატი"
         },
         {
           "label": "დინამიკები",
