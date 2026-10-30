@@ -11214,6 +11214,166 @@
 
         const fCategoryLabel = document.getElementById('cp-prod-category-label');
         const fYtDuration = document.getElementById('cp-prod-yt-duration');
+        const cpDescRichEl = document.getElementById('cp-prod-desc-rich');
+        const mieDescRichEl = document.getElementById('mie-desc-rich');
+
+        let formDescHtml = '';
+        let formDescStyle = { fontSize: 15, isBold: false, isItalic: false, isUnderline: false };
+
+        function normalizeDescStyle(rawStyle) {
+          const s = rawStyle && typeof rawStyle === 'object' ? rawStyle : {};
+          const fs = Number(s.fontSize);
+          return {
+            fontSize: fs >= 10 && fs <= 72 ? fs : 15,
+            isBold: Boolean(s.isBold),
+            isItalic: Boolean(s.isItalic),
+            isUnderline: Boolean(s.isUnderline)
+          };
+        }
+
+        function escapeDescPlainTextToHtml(text) {
+          if (!text) return '';
+          return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\r?\n/g, '<br>');
+        }
+
+        function sanitizeDescRichHtml(rawHtml) {
+          if (!rawHtml || typeof rawHtml !== 'string') return '';
+          const temp = document.createElement('div');
+          temp.innerHTML = rawHtml;
+          temp.querySelectorAll('script, style, iframe, object, embed').forEach((n) => n.remove());
+          temp.querySelectorAll('*').forEach((el) => {
+            Array.from(el.attributes).forEach((attr) => {
+              const name = attr.name.toLowerCase();
+              if (name.startsWith('on') || (name !== 'style' && name !== 'class')) {
+                el.removeAttribute(attr.name);
+              }
+            });
+          });
+          return temp.innerHTML.trim();
+        }
+
+        function applyDescStyleToElement(el, rawStyle) {
+          if (!el) return;
+          const st = normalizeDescStyle(rawStyle);
+          el.style.fontSize = `${st.fontSize}px`;
+          el.style.fontWeight = st.isBold ? '800' : '';
+          el.style.fontStyle = st.isItalic ? 'italic' : '';
+          el.style.textDecoration = st.isUnderline ? 'underline' : '';
+          if (st.isUnderline) {
+            el.style.textDecorationThickness = '2px';
+            el.style.textUnderlineOffset = '3px';
+          } else {
+            el.style.textDecorationThickness = '';
+            el.style.textUnderlineOffset = '';
+          }
+        }
+
+        function syncDescToolbarUI(boxType, rawStyle, currentLength) {
+          const st = normalizeDescStyle(rawStyle);
+          const types = boxType === 'mie' || boxType === 'modal-direct' ? ['mie', 'modal-direct'] : [boxType];
+          types.forEach((t) => {
+            const box = document.querySelector(`[data-desc-rich-box="${t}"]`);
+            if (!box) return;
+            const boldBtn = box.querySelector('[data-desc-btn-bold]');
+            const italicBtn = box.querySelector('[data-desc-btn-italic]');
+            const underlineBtn = box.querySelector('[data-desc-btn-underline]');
+            const sizeSel = box.querySelector('[data-desc-size-select]');
+            const counterEl = box.querySelector('[data-desc-char-counter]');
+
+            const setBtnActive = (btn, isActive) => {
+              if (!btn) return;
+              if (isActive) {
+                btn.classList.add('bg-zinc-900', 'text-white', 'shadow-2xs');
+                btn.classList.remove('text-zinc-500', 'text-zinc-600', 'hover:bg-stone-100', 'hover:bg-white');
+              } else {
+                btn.classList.remove('bg-zinc-900', 'text-white', 'shadow-2xs');
+                btn.classList.add(t === 'modal-direct' ? 'text-zinc-600' : 'text-zinc-500');
+              }
+            };
+
+            setBtnActive(boldBtn, st.isBold);
+            setBtnActive(italicBtn, st.isItalic);
+            setBtnActive(underlineBtn, st.isUnderline);
+
+            if (sizeSel) {
+              const strSize = String(st.fontSize);
+              if (!Array.from(sizeSel.options).some((o) => o.value === strSize)) {
+                const opt = document.createElement('option');
+                opt.value = strSize;
+                opt.textContent = strSize;
+                sizeSel.appendChild(opt);
+              }
+              sizeSel.value = strSize;
+            }
+
+            if (counterEl && typeof currentLength === 'number') {
+              const remaining = Math.max(0, 4000 - currentLength);
+              counterEl.textContent = `${remaining} / 4000`;
+            }
+          });
+        }
+
+        function setDescRichEditorContent(boxType, prod) {
+          const isMie = boxType === 'mie';
+          const richEl = isMie ? mieDescRichEl : cpDescRichEl;
+          const textareaEl = isMie ? document.getElementById('mie-desc') : fDesc;
+          const plain = prod && prod.description ? String(prod.description) : '';
+          const html =
+            prod && prod.descHtml && String(prod.descHtml).trim()
+              ? sanitizeDescRichHtml(prod.descHtml)
+              : escapeDescPlainTextToHtml(plain);
+          const st = normalizeDescStyle(prod && prod.descStyle);
+
+          if (!isMie) {
+            formDescHtml = html;
+            formDescStyle = Object.assign({}, st);
+          }
+
+          if (textareaEl) textareaEl.value = plain;
+          if (richEl && document.activeElement !== richEl) {
+            richEl.innerHTML = html;
+          }
+          if (richEl) {
+            applyDescStyleToElement(richEl, st);
+          }
+          syncDescToolbarUI(boxType, st, plain.length);
+        }
+
+        function readDescRichEditorContent(boxType) {
+          const isMie = boxType === 'mie';
+          const richEl = isMie ? mieDescRichEl : cpDescRichEl;
+          const textareaEl = isMie ? document.getElementById('mie-desc') : fDesc;
+          const currentStyle = isMie
+            ? normalizeDescStyle(activeModalProduct && activeModalProduct.descStyle)
+            : normalizeDescStyle(formDescStyle);
+
+          let rawText = richEl ? richEl.innerText || '' : (textareaEl ? textareaEl.value : '');
+          rawText = rawText.replace(/\r\n/g, '\n');
+          if (rawText.length > 4000) {
+            rawText = rawText.slice(0, 4000);
+          }
+          const cleanText = rawText.trim();
+          if (textareaEl) textareaEl.value = cleanText;
+
+          const cleanHtml = cleanText
+            ? sanitizeDescRichHtml(richEl ? richEl.innerHTML : escapeDescPlainTextToHtml(cleanText))
+            : '';
+
+          if (!isMie) {
+            formDescHtml = cleanHtml;
+          }
+
+          syncDescToolbarUI(boxType, currentStyle, rawText.length);
+          return {
+            description: cleanText,
+            descHtml: cleanHtml,
+            descStyle: Object.assign({}, currentStyle)
+          };
+        }
 
         function resetProductForm(preferredCategory) {
           const cats = ensureStoreCategories();
@@ -11234,6 +11394,7 @@
           fSku.value = 'PRO-1000';
           fShortMeta.value = '';
           fDesc.value = '';
+          setDescRichEditorContent('cp', { description: '', descHtml: '', descStyle: { fontSize: 15, isBold: false, isItalic: false, isUnderline: false } });
           fYoutube.value = '';
           if (fYtDuration) fYtDuration.value = '08:45';
           fYtCaption.value = '';
@@ -11269,6 +11430,7 @@
           fSku.value = prod.sku || '';
           fShortMeta.value = prod.shortMeta || '';
           fDesc.value = prod.description || '';
+          setDescRichEditorContent('cp', prod);
           const cleanYt = extractCleanYoutubeUrl(prod.youtubeUrl || prod.youtubeId);
           fYoutube.value = cleanYt || '';
           if (fYtDuration) fYtDuration.value = prod.youtubeDuration || '08:45';
@@ -11325,6 +11487,7 @@
           const catValue = fCategory.value || 'karaoke';
           const customCatLabel = fCategoryLabel ? fCategoryLabel.value.trim() : '';
           const displayName = nameVal || 'ახალი პროდუქტი';
+          const cpDescData = readDescRichEditorContent('cp');
 
           const updatedProductObj = {
             id: existingId,
@@ -11337,7 +11500,9 @@
             oldPrice: Number(fOldPrice.value) || 0,
             newPrice: Number(fNewPrice.value) || 0,
             images: formFiveImages.slice(0, 5),
-            description: fDesc.value.trim(),
+            description: cpDescData.description,
+            descHtml: cpDescData.descHtml,
+            descStyle: cpDescData.descStyle,
             specs: specsCollected,
             closedFields: existingProd && existingProd.closedFields ? Object.assign({}, existingProd.closedFields) : {},
             youtubeId: extractYoutubeId(fYoutube.value),
@@ -12457,6 +12622,7 @@
           if (mieBadgeInput) mieBadgeInput.value = prod.badgeText || '';
           if (mieSkuInput) mieSkuInput.value = prod.sku || '';
           if (mieDescInput) mieDescInput.value = prod.description || '';
+          setDescRichEditorContent('mie', prod);
           if (mieYoutubeInput) {
             mieYoutubeInput.value = extractCleanYoutubeUrl(prod.youtubeUrl || prod.youtubeId) || '';
           }
@@ -12518,8 +12684,18 @@
 
           const descSecEl = document.getElementById('modal-sec-specs');
           const showDesc = !cf.description && Boolean(product.description && String(product.description).trim());
-          if (modalProductDesc) modalProductDesc.textContent = showDesc ? product.description : '';
+          if (modalProductDesc) {
+            if (!showDesc) {
+              modalProductDesc.innerHTML = '';
+            } else if (currentLang === 'ka' && prod.descHtml && String(prod.descHtml).trim()) {
+              modalProductDesc.innerHTML = sanitizeDescRichHtml(prod.descHtml);
+            } else {
+              modalProductDesc.innerHTML = escapeDescPlainTextToHtml(product.description);
+            }
+            applyDescStyleToElement(modalProductDesc, prod.descStyle);
+          }
           if (descSecEl) descSecEl.classList.toggle('hidden', !showDesc);
+          syncDescToolbarUI('modal-direct', prod.descStyle, (prod.description || '').length);
 
           const specsArr = Array.isArray(product.specs) ? product.specs : [];
           const visibleSpecs = specsArr.filter((s, idx) => {
@@ -12580,8 +12756,11 @@
           if (!cf.sku && mieSkuInput) {
             prod.sku = mieSkuInput.value.trim();
           }
-          if (!cf.description && mieDescInput) {
-            prod.description = mieDescInput.value.trim();
+          if (!cf.description) {
+            const mieDescData = readDescRichEditorContent('mie');
+            prod.description = mieDescData.description;
+            prod.descHtml = mieDescData.descHtml;
+            prod.descStyle = mieDescData.descStyle;
           }
 
           if (mieSpecsContainer) {
