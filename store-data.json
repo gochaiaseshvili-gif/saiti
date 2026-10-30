@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793339605872,
+  "updatedAt": 1793339607763,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -54,7 +54,7 @@
         "type": "text",
         "badgeTitle": "🛡️ გარანტიის ტექსტი",
         "text": "🛡️ 24 თვე გარანტია",
-        "textColor": "#09090b",
+        "textColor": "#ffffff",
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
