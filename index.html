@@ -15967,7 +15967,25 @@
           }
         }
 
+        function mapForecastCodeToSiteWeatherMode(wmoCode, tempC) {
+          const code = Number(wmoCode);
+          // Snow codes: 71, 73, 75, 77, 85, 86 (or freezing precipitation)
+          if ([71, 73, 75, 77, 85, 86, 56, 57, 66, 67].includes(code)) {
+            return 'snow';
+          }
+          // Rain / drizzle / showers / thunderstorm codes
+          if ([51, 53, 55, 61, 63, 65, 80, 81, 82, 95, 96, 99].includes(code)) {
+            if (typeof tempC === 'number' && tempC <= 0) {
+              return 'snow';
+            }
+            return 'rain';
+          }
+          // Clear, sunny, partly cloudy, cloudy, fog -> Sun effect
+          return 'sun';
+        }
+
         function updateWeatherButtonsUI() {
+          const isAutoSync = Boolean(storeSettings.weatherAutoSync);
           document.querySelectorAll('[data-weather-btn]').forEach((btn) => {
             const mode = btn.getAttribute('data-weather-btn');
             const isActive = mode === activeWeatherMode;
@@ -15988,6 +16006,25 @@
             } else {
               btn.className =
                 'weather-mode-btn min-h-[34px] px-2.5 py-1 rounded-xl text-xs font-bold text-zinc-700 hover:bg-white/80 flex items-center gap-1 cursor-pointer fast-transition';
+            }
+          });
+
+          // Update Auto-Sync (ავტომატური / სინქრონიზებული) buttons across all bars
+          document.querySelectorAll('[data-weather-auto-sync-btn]').forEach((btn) => {
+            const isCompact = btn.getAttribute('data-weather-auto-compact') === '1';
+            const lbl = btn.querySelector('[data-weather-auto-sync-label]');
+            if (isCompact) {
+              btn.className = isAutoSync
+                ? 'px-2 py-0.5 rounded-md border text-[10px] font-extrabold inline-flex items-center gap-1 cursor-pointer active:scale-95 fast-transition bg-emerald-500 text-white border-emerald-300 ring-1 ring-emerald-200 shadow-2xs'
+                : 'px-2 py-0.5 rounded-md border text-[10px] font-extrabold inline-flex items-center gap-1 cursor-pointer active:scale-95 fast-transition bg-black/30 hover:bg-black/45 text-emerald-200 border-emerald-400/50';
+              if (lbl) lbl.textContent = isAutoSync ? 'ავტომატური ✓' : 'ავტომატური';
+            } else {
+              btn.className = isAutoSync
+                ? 'min-h-[36px] px-3 py-1 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 border border-emerald-700 bg-emerald-600 text-white shadow-sm ring-2 ring-emerald-300 active:scale-95 fast-transition cursor-pointer'
+                : 'min-h-[36px] px-3 py-1 rounded-xl text-xs font-extrabold flex items-center justify-center gap-1.5 border border-emerald-400 bg-emerald-50 hover:bg-emerald-100 text-emerald-950 active:scale-95 fast-transition cursor-pointer shadow-2xs';
+              if (lbl) {
+                lbl.textContent = isAutoSync ? 'ავტომატური: ჩართულია ✓' : 'ავტომატური (სინქრონიზებული)';
+              }
             }
           });
 
@@ -16146,10 +16183,13 @@
           }
         }
 
-        function setWeatherMode(mode, shouldSave = true) {
+        function setWeatherMode(mode, shouldSave = true, isFromAutoSync = false) {
           const validModes = ['sun', 'rain', 'snow', 'off'];
           activeWeatherMode = validModes.includes(mode) ? mode : 'off';
           storeSettings.weatherMode = activeWeatherMode;
+          if (!isFromAutoSync) {
+            storeSettings.weatherAutoSync = false;
+          }
           isWeatherExplicitlySetByUser = true;
           try {
             localStorage.setItem('vv_weather_user_set', '1');
@@ -16167,6 +16207,55 @@
           }
         }
 
+        function syncSiteWeatherWithLiveForecast(showNotification = false) {
+          if (!storeSettings.weatherAutoSync) return;
+          const code = cachedWeatherData && cachedWeatherData.code !== undefined ? cachedWeatherData.code : 0;
+          const temp = cachedWeatherData && cachedWeatherData.temp !== undefined ? cachedWeatherData.temp : 18;
+          const mappedMode = mapForecastCodeToSiteWeatherMode(code, temp);
+          isWeatherExplicitlySetByUser = true;
+          try {
+            localStorage.setItem('vv_weather_user_set', '1');
+          } catch (e) {}
+          if (activeWeatherMode !== mappedMode || !weatherAnimFrameId) {
+            activeWeatherMode = mappedMode;
+            storeSettings.weatherMode = mappedMode;
+            startOrStopWeatherLoop();
+          } else {
+            updateWeatherButtonsUI();
+          }
+          if (showNotification) {
+            const modeNames = {
+              sun: '☀️ მზე',
+              rain: '🌧️ წვიმა',
+              snow: '❄️ თოვლი'
+            };
+            const msg = `🔄 ჩაირთო ავტომატური ამინდი პროგნოზის მიხედვით: ${modeNames[mappedMode] || '☀️ მზე'}`;
+            showCpToast(msg);
+            if (typeof showWishlistToast === 'function') {
+              showWishlistToast(msg);
+            }
+          }
+        }
+
+        function toggleWeatherAutoSync(forceState) {
+          const nextState = typeof forceState === 'boolean' ? forceState : !storeSettings.weatherAutoSync;
+          storeSettings.weatherAutoSync = nextState;
+          if (nextState) {
+            syncSiteWeatherWithLiveForecast(true);
+            saveStateEverywhere({ immediate: true });
+          } else {
+            setWeatherMode('off', false, true);
+            storeSettings.weatherAutoSync = false;
+            updateWeatherButtonsUI();
+            saveStateEverywhere({ immediate: true });
+            const offMsg = '🌤️ ავტომატური ამინდის სინქრონიზაცია გამოირთო';
+            showCpToast(offMsg);
+            if (typeof showWishlistToast === 'function') {
+              showWishlistToast(offMsg);
+            }
+          }
+        }
+
         function setWeatherIntensity(val, shouldSave = true) {
           activeWeatherIntensity = Math.max(15, Math.min(100, Number(val) || 65));
           storeSettings.weatherIntensity = activeWeatherIntensity;
@@ -16178,6 +16267,10 @@
         }
 
         function syncWeatherStateFromSettings() {
+          if (storeSettings.weatherAutoSync) {
+            syncSiteWeatherWithLiveForecast(false);
+            return;
+          }
           if (!isWeatherExplicitlySetByUser) {
             storeSettings.weatherMode = 'off';
           }
@@ -16193,10 +16286,17 @@
         }
 
         document.addEventListener('click', (e) => {
+          const autoSyncBtn = e.target.closest('[data-weather-auto-sync-btn]');
+          if (autoSyncBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWeatherAutoSync();
+            return;
+          }
           const weatherBtn = e.target.closest('[data-weather-btn]');
           if (weatherBtn) {
             const mode = weatherBtn.getAttribute('data-weather-btn');
-            setWeatherMode(mode, true);
+            setWeatherMode(mode, true, false);
           }
         });
 
