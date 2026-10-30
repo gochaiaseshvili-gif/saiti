@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793387511755,
+  "updatedAt": 1793387514705,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -339,7 +339,7 @@
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1793295846921_ztwj.jpg",
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_5_1793295849501_osk7.jpg"
       ],
-      "description": "პატარა და",
+      "description": "პატარა და მუშა",
       "specs": [
         {
           "label": "სიმძლავრე ვატი",
@@ -377,7 +377,7 @@
       "facebookCaption": "ახალი პროდუქტი",
       "instagramUrl": "",
       "instagramCaption": "ახალი პროდუქტი",
-      "descHtml": "პატარა და",
+      "descHtml": "პატარა და მუშა",
       "descStyle": {
         "fontSize": 15,
         "isBold": false,
