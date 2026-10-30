@@ -2494,9 +2494,9 @@
                       <!-- Synchronized Hidden Textarea for Compatibility -->
                       <textarea id="mie-desc" rows="3" class="hidden"></textarea>
 
-                      <!-- Bottom-Right Character Counter (4000 / 4000) -->
+                      <!-- Bottom-Right Character Counter (Unlimited) -->
                       <div class="px-4 pb-3 pt-1 flex items-center justify-end">
-                        <span data-desc-char-counter="1" class="font-mono-num text-xs sm:text-sm font-medium text-zinc-500 select-none">4000 / 4000</span>
+                        <span data-desc-char-counter="1" class="font-mono-num text-xs sm:text-sm font-medium text-zinc-500 select-none">0 ასო • ∞ ულიმიტო</span>
                       </div>
                     </div>
                   </div>
@@ -5092,9 +5092,9 @@
                   <!-- Synchronized Hidden Textarea for Compatibility -->
                   <textarea id="cp-prod-desc" rows="3" class="hidden"></textarea>
 
-                  <!-- Bottom-Right Character Counter (4000 / 4000) -->
+                  <!-- Bottom-Right Character Counter (Unlimited) -->
                   <div class="px-4 pb-3 pt-1 flex items-center justify-end">
-                    <span data-desc-char-counter="1" class="font-mono-num text-xs sm:text-sm font-medium text-zinc-500 select-none">4000 / 4000</span>
+                    <span data-desc-char-counter="1" class="font-mono-num text-xs sm:text-sm font-medium text-zinc-500 select-none">0 ასო • ∞ ულიმიტო</span>
                   </div>
                 </div>
               </div>
@@ -11457,8 +11457,7 @@
             }
 
             if (counterEl && typeof currentLength === 'number') {
-              const remaining = Math.max(0, 4000 - currentLength);
-              counterEl.textContent = `${remaining} / 4000`;
+              counterEl.textContent = `${currentLength} ასო • ∞ ულიმიტო`;
             }
           });
         }
@@ -11499,9 +11498,6 @@
 
           let rawText = richEl ? richEl.innerText || '' : (textareaEl ? textareaEl.value : '');
           rawText = rawText.replace(/\r\n/g, '\n');
-          if (rawText.length > 4000) {
-            rawText = rawText.slice(0, 4000);
-          }
           const cleanText = rawText.trim();
           if (textareaEl) textareaEl.value = cleanText;
 
