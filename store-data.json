@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340338490,
+  "updatedAt": 1793340347636,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -110,7 +110,7 @@
         "type": "date",
         "badgeTitle": "📅 თარიღი და კვირის დღე",
         "text": "📅",
-        "textColor": "#09090b",
+        "textColor": "#ffffff",
         "bgColor": "#059669",
         "offsetX": 0,
         "offsetY": 0,
