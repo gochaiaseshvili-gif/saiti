@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340081938,
+  "updatedAt": 1793340109145,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -78,20 +78,6 @@
         "isUnderline": false
       },
       {
-        "id": "date",
-        "type": "date",
-        "badgeTitle": "📅 თარიღი და კვირის დღე",
-        "text": "📅",
-        "textColor": "#ea3ee4",
-        "bgColor": "#ffffff",
-        "offsetX": 0,
-        "offsetY": 0,
-        "align": "right",
-        "fontSize": 16,
-        "isBold": true,
-        "isUnderline": true
-      },
-      {
         "id": "weather",
         "type": "weather",
         "badgeTitle": "☀️ ამინდის პროგნოზი",
@@ -104,6 +90,20 @@
         "fontSize": 15,
         "isBold": false,
         "isUnderline": false
+      },
+      {
+        "id": "date",
+        "type": "date",
+        "badgeTitle": "📅 თარიღი და კვირის დღე",
+        "text": "📅",
+        "textColor": "#ea3ee4",
+        "bgColor": "#ffffff",
+        "offsetX": 0,
+        "offsetY": 0,
+        "align": "right",
+        "fontSize": 16,
+        "isBold": true,
+        "isUnderline": true
       },
       {
         "id": "clock",
