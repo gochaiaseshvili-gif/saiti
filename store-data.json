@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793339349310,
+  "updatedAt": 1793339481991,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -31,7 +31,7 @@
     "priceTextColor": "#059669",
     "titleTextColor": "#09090b",
     "cardFrameStyle": "gold-glow",
-    "liveBannerBgColor": "#f8f1f4",
+    "liveBannerBgColor": "#065f46",
     "liveBannerHidden": false,
     "liveBannerCustomized": true,
     "liveBannerItems": [
