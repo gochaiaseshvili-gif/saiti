@@ -11556,6 +11556,7 @@
         });
         cpProductForm.addEventListener('change', (e) => {
           if (e.target.closest('[data-slot-file]')) return;
+          if (e.target.closest('[data-desc-size-select]')) return;
           autoSaveFormProductLive();
         });
 
@@ -17271,6 +17272,7 @@
 
           // 1. Apply element-level styles
           Object.keys(storeSettings.wordElementStyles).forEach((targetKey) => {
+            if (targetKey === 'id:modal-product-desc') return;
             const styleObj = storeSettings.wordElementStyles[targetKey];
             const nodes = resolveElementsForWordTargetKey(targetKey);
             nodes.forEach((node) => applyElementStyleObjectToNode(node, styleObj));
