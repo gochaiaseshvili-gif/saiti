@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793341338353,
+  "updatedAt": 1793341342762,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -3619,7 +3619,7 @@
     },
     {
       "id": "streetbeat-500w",
-      "sku": "500W IPX5",
+      "sku": "",
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
@@ -3666,7 +3666,9 @@
       "youtubeCaption": "StreetBeat 500W კომპაქტური კარაოკეს ტესტი",
       "tiktokUrl": "",
       "tiktokCaption": "StreetBeat 500W ბუნებაში მეგობრებთან ერთად",
-      "closedFields": {},
+      "closedFields": {
+        "sku": true
+      },
       "facebookUrl": "",
       "instagramUrl": "",
       "youtubeUrl": ""
