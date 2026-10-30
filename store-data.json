@@ -1,8 +1,10 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793338379510,
+  "updatedAt": 1793338540849,
   "themeColor": "#ea580c",
   "storeSettings": {
+    "wordElementStyles": {},
+    "wordSubstringsMap": {},
     "brandName": "იყიდება საინტერესო ნივთები",
     "contactName": "გოჩა",
     "phoneDigits": "995551588579",
@@ -35,7 +37,10 @@
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "left"
+        "align": "left",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "warranty",
@@ -46,7 +51,10 @@
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "left"
+        "align": "left",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "installment",
@@ -57,7 +65,10 @@
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "left"
+        "align": "left",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "date",
@@ -68,7 +79,10 @@
         "bgColor": "#ffffff",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "right"
+        "align": "right",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "clock",
@@ -79,7 +93,10 @@
         "bgColor": "#e11d48",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "right"
+        "align": "right",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "weather",
@@ -90,7 +107,10 @@
         "bgColor": "#059669",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "right"
+        "align": "right",
+        "fontSize": 11,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "cities",
@@ -101,7 +121,10 @@
         "bgColor": "#172554",
         "offsetX": 0,
         "offsetY": 0,
-        "align": "right"
+        "align": "right",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       }
     ],
     "homeBlocksOrder": [
@@ -147,37 +170,55 @@
         "id": "karaoke",
         "label": "კარაოკე დინამიკები",
         "textColor": "",
-        "bgColor": "#2563eb"
+        "bgColor": "#2563eb",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "solar",
         "label": "სოლარ გენერატორები",
         "textColor": "#ffffff",
-        "bgColor": "#d97706"
+        "bgColor": "#d97706",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "bundle",
         "label": "სათამაშოები",
         "textColor": "",
-        "bgColor": "#d97706"
+        "bgColor": "#d97706",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "microphone",
         "label": "მიკროფონი",
         "textColor": "#ffffff",
-        "bgColor": "#0284c7"
+        "bgColor": "#0284c7",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "cat_mvtimg2e_3dy",
         "label": "ფანრები",
         "textColor": "",
-        "bgColor": "#d97706"
+        "bgColor": "#d97706",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       },
       {
         "id": "cat_mvtipf68_yrn",
         "label": "ანტენები",
         "textColor": "",
-        "bgColor": "#e11d48"
+        "bgColor": "#e11d48",
+        "fontSize": 0,
+        "isBold": false,
+        "isUnderline": false
       }
     ],
     "microphoneDefaultAdded": true,
