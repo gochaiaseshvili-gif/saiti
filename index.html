@@ -13036,7 +13036,9 @@
                 if (mieSkuInput) mieSkuInput.value = '';
               } else if (fieldKey === 'description') {
                 activeModalProduct.description = '';
+                activeModalProduct.descHtml = '';
                 if (mieDescInput) mieDescInput.value = '';
+                if (mieDescRichEl) mieDescRichEl.innerHTML = '';
               } else if (fieldKey === 'tiktok') {
                 activeModalProduct.tiktokUrl = '';
                 if (mieTiktokInput) mieTiktokInput.value = '';
@@ -13156,9 +13158,201 @@
           });
           modalInlineEditorPanel.addEventListener('change', (e) => {
             if (e.target.closest('[data-mie-slot-file]') || e.target === mieMultiPhotoInput) return;
+            if (e.target.closest('[data-desc-size-select]')) return;
             applyInlineProductEditorChanges({ immediate: true });
           });
         }
+
+        // =========================================================================
+        // INTERACTIVE HANDLERS FOR SCREENSHOT-STYLE RICH DESCRIPTION BOXES (B, I, U, A-, A+, Size Select)
+        // =========================================================================
+        function hasPartialSelectionInsideEditor(editorEl) {
+          if (!editorEl || !window.getSelection) return false;
+          const sel = window.getSelection();
+          if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return false;
+          const selText = sel.toString().trim();
+          if (!selText) return false;
+          const range = sel.getRangeAt(0);
+          if (!editorEl.contains(range.commonAncestorContainer)) return false;
+          const fullText = (editorEl.innerText || '').trim();
+          return selText.length < fullText.length;
+        }
+
+        function wrapSelectedRangeWithFontSize(editorEl, pxSize) {
+          if (!editorEl || !window.getSelection) return false;
+          const sel = window.getSelection();
+          if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return false;
+          const range = sel.getRangeAt(0);
+          if (!editorEl.contains(range.commonAncestorContainer)) return false;
+          try {
+            const span = document.createElement('span');
+            span.style.fontSize = `${pxSize}px`;
+            span.style.lineHeight = '1.35';
+            const contents = range.extractContents();
+            span.querySelectorAll && contents.querySelectorAll('span').forEach((inner) => {
+              if (inner.style && inner.style.fontSize) {
+                inner.style.fontSize = `${pxSize}px`;
+              }
+            });
+            span.appendChild(contents);
+            range.insertNode(span);
+            sel.removeAllRanges();
+            const newRange = document.createRange();
+            newRange.selectNodeContents(span);
+            sel.addRange(newRange);
+            return true;
+          } catch (err) {
+            return false;
+          }
+        }
+
+        function handleDescBoxAction(boxType, actionFn) {
+          const isCp = boxType === 'cp';
+          const editorEl = isCp ? cpDescRichEl : mieDescRichEl;
+          let styleObj = isCp
+            ? normalizeDescStyle(formDescStyle)
+            : normalizeDescStyle(activeModalProduct && activeModalProduct.descStyle);
+
+          actionFn(styleObj, editorEl);
+
+          if (isCp) {
+            formDescStyle = Object.assign({}, styleObj);
+            if (cpDescRichEl) applyDescStyleToElement(cpDescRichEl, formDescStyle);
+            autoSaveFormProductLive({ immediate: true });
+          } else if (activeModalProduct) {
+            activeModalProduct.descStyle = Object.assign({}, styleObj);
+            if (mieDescRichEl) applyDescStyleToElement(mieDescRichEl, activeModalProduct.descStyle);
+            if (boxType === 'modal-direct') {
+              refreshOpenProductModalView(activeModalProduct);
+              saveStateEverywhere({ immediate: true });
+            } else {
+              applyInlineProductEditorChanges({ immediate: true });
+            }
+          }
+        }
+
+        document.addEventListener('mousedown', (e) => {
+          const btn = e.target.closest(
+            '[data-desc-btn-bold], [data-desc-btn-italic], [data-desc-btn-underline], [data-desc-btn-step], [data-desc-btn-reset]'
+          );
+          if (btn && btn.closest('[data-desc-rich-box]')) {
+            e.preventDefault();
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          const box = e.target.closest('[data-desc-rich-box]');
+          if (!box) return;
+          const boxType = box.getAttribute('data-desc-rich-box');
+
+          const boldBtn = e.target.closest('[data-desc-btn-bold]');
+          if (boldBtn) {
+            e.preventDefault();
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+                document.execCommand('bold', false, null);
+              } else {
+                st.isBold = !st.isBold;
+              }
+            });
+            return;
+          }
+
+          const italicBtn = e.target.closest('[data-desc-btn-italic]');
+          if (italicBtn) {
+            e.preventDefault();
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+                document.execCommand('italic', false, null);
+              } else {
+                st.isItalic = !st.isItalic;
+              }
+            });
+            return;
+          }
+
+          const underlineBtn = e.target.closest('[data-desc-btn-underline]');
+          if (underlineBtn) {
+            e.preventDefault();
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+                document.execCommand('underline', false, null);
+              } else {
+                st.isUnderline = !st.isUnderline;
+              }
+            });
+            return;
+          }
+
+          const stepBtn = e.target.closest('[data-desc-btn-step]');
+          if (stepBtn) {
+            e.preventDefault();
+            const delta = Number(stepBtn.getAttribute('data-desc-btn-step')) || 2;
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              const nextSize = Math.max(12, Math.min(48, (Number(st.fontSize) || 15) + delta));
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+                wrapSelectedRangeWithFontSize(editorEl, nextSize);
+              } else {
+                st.fontSize = nextSize;
+                if (editorEl) {
+                  editorEl.querySelectorAll('span').forEach((sp) => {
+                    if (sp.style && sp.style.fontSize) sp.style.removeProperty('font-size');
+                  });
+                }
+              }
+            });
+            return;
+          }
+
+          const resetBtn = e.target.closest('[data-desc-btn-reset]');
+          if (resetBtn) {
+            e.preventDefault();
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              st.fontSize = 15;
+              st.isBold = false;
+              st.isItalic = false;
+              st.isUnderline = false;
+              if (editorEl) {
+                const plain = (editorEl.innerText || '').replace(/\r\n/g, '\n').trim();
+                editorEl.innerHTML = escapeDescPlainTextToHtml(plain);
+              } else if (boxType === 'modal-direct' && activeModalProduct) {
+                activeModalProduct.descHtml = escapeDescPlainTextToHtml(activeModalProduct.description || '');
+              }
+            });
+          }
+        });
+
+        document.addEventListener('change', (e) => {
+          const sizeSel = e.target.closest('[data-desc-size-select]');
+          if (!sizeSel) return;
+          const box = sizeSel.closest('[data-desc-rich-box]');
+          if (!box) return;
+          const boxType = box.getAttribute('data-desc-rich-box');
+          const chosenSize = Math.max(12, Math.min(72, Number(sizeSel.value) || 15));
+          handleDescBoxAction(boxType, (st, editorEl) => {
+            if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+              wrapSelectedRangeWithFontSize(editorEl, chosenSize);
+            } else {
+              st.fontSize = chosenSize;
+              if (editorEl) {
+                editorEl.querySelectorAll('span').forEach((sp) => {
+                  if (sp.style && sp.style.fontSize) sp.style.removeProperty('font-size');
+                });
+              }
+            }
+          });
+        });
+
+        [mieDescRichEl, cpDescRichEl].forEach((richEl) => {
+          if (!richEl) return;
+          richEl.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const text = (e.clipboardData || window.clipboardData)?.getData('text/plain') || '';
+            if (text) {
+              document.execCommand('insertText', false, text);
+            }
+          });
+        });
 
         if (mieMultiPhotoInput) {
           mieMultiPhotoInput.addEventListener('change', async (e) => {
