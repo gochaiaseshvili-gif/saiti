@@ -801,6 +801,21 @@
               </svg>
               <span>გაზიარება</span>
             </button>
+
+            <!-- Live In-Site Chat & AI Assistant Bot Button -->
+            <button
+              id="toolbar-open-chat-btn"
+              type="button"
+              class="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white border border-emerald-500/80 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="მისწერეთ გამყიდველს ან ხელოვნური ინტელექტის (AI) ბოტს პირდაპირ საიტზე"
+            >
+              <span>🤖💬</span>
+              <span id="toolbar-open-chat-label">ჩატი / AI ბოტი</span>
+              <span
+                id="toolbar-chat-unread-badge"
+                class="hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-red-600 text-white leading-none"
+              >0</span>
+            </button>
           </div>
         </div>
 
@@ -1158,6 +1173,28 @@
             >
               <span>✏️</span>
               <span id="live-edit-btn-label">საიტზე ტექსტების ხელით ჩასწორება: გამორთულია</span>
+            </button>
+
+            <!-- AI Bot Training & Customization Button (Owner Only) -->
+            <button
+              type="button"
+              data-open-ai-bot-modal="1"
+              class="min-h-[36px] px-3 py-1 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white border border-violet-500 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer"
+              title="ხელოვნური ინტელექტის ბოტის სწავლება, კითხვა-პასუხის დამატება და საიტზე მორგება"
+            >
+              <span>🤖🎓</span>
+              <span>AI ბოტის სწავლება</span>
+            </button>
+
+            <!-- 1-Click Seller Away / Online Toggle for AI Auto-Reply -->
+            <button
+              id="toolbar-seller-away-toggle-btn"
+              type="button"
+              class="min-h-[36px] px-3 py-1 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-400 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs active:scale-95 fast-transition cursor-pointer"
+              title="როცა ჩართულია „საიტზე არ ვარ“, კლიენტებს ჩატში ავტომატურად უპასუხებს თქვენი ნასწავლი AI ბოტი"
+            >
+              <span id="toolbar-seller-away-icon">🤖🌙</span>
+              <span id="toolbar-seller-away-label">საიტზე არ ვარ (ბოტი პასუხობს)</span>
             </button>
 
             <!-- Direct Live Sync to iyidebaa.ge Button -->
@@ -3517,26 +3554,44 @@
                 </div>
               </div>
 
-              <!-- Role Switcher: Customer vs Seller (Gocha) -->
-              <div class="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800 shrink-0">
+              <!-- Role Switcher: Customer vs Seller (Gocha) + AI Bot Training -->
+              <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+                <span
+                  data-ai-bot-status-pill="1"
+                  class="px-2.5 py-1 rounded-lg bg-emerald-950/90 border border-emerald-500/50 text-emerald-300 text-[10px] font-extrabold flex items-center gap-1"
+                >
+                  <span>🤖</span>
+                  <span data-ai-bot-status-text="1">AI ბოტი მზადაა</span>
+                </span>
                 <button
                   type="button"
-                  id="modal-chat-role-customer"
-                  class="min-h-[32px] px-2.5 py-1 rounded-lg text-[11px] font-bold theme-bg text-white flex items-center gap-1 cursor-pointer fast-transition"
+                  data-open-ai-bot-modal="1"
+                  class="owner-only-admin-el min-h-[32px] px-2.5 py-1 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[11px] font-extrabold flex items-center gap-1 cursor-pointer fast-transition"
+                  title="ბოტის სწავლება და მორგება"
                 >
-                  <span>👤</span>
-                  <span id="modal-chat-role-cust-label">კლიენტი</span>
-                  <span id="modal-chat-cust-unread" class="hidden px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">0</span>
+                  <span>🤖🎓</span>
+                  <span>ბოტის სწავლება</span>
                 </button>
-                <button
-                  type="button"
-                  id="modal-chat-role-seller"
-                  class="min-h-[32px] px-2.5 py-1 rounded-lg text-[11px] font-bold text-zinc-300 hover:text-white flex items-center gap-1 cursor-pointer fast-transition"
-                >
-                  <span>👨💼</span>
-                  <span id="modal-chat-role-seller-label">გამყიდველი (პასუხის გაცემა)</span>
-                  <span id="modal-chat-seller-unread" class="hidden px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">0</span>
-                </button>
+                <div class="flex items-center gap-1 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
+                  <button
+                    type="button"
+                    id="modal-chat-role-customer"
+                    class="min-h-[32px] px-2.5 py-1 rounded-lg text-[11px] font-bold theme-bg text-white flex items-center gap-1 cursor-pointer fast-transition"
+                  >
+                    <span>👤</span>
+                    <span id="modal-chat-role-cust-label">კლიენტი</span>
+                    <span id="modal-chat-cust-unread" class="hidden px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">0</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="modal-chat-role-seller"
+                    class="min-h-[32px] px-2.5 py-1 rounded-lg text-[11px] font-bold text-zinc-300 hover:text-white flex items-center gap-1 cursor-pointer fast-transition"
+                  >
+                    <span>👨💼</span>
+                    <span id="modal-chat-role-seller-label">გამყიდველი (პასუხის გაცემა)</span>
+                    <span id="modal-chat-seller-unread" class="hidden px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">0</span>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -3558,8 +3613,27 @@
 
             <!-- Seller Customer Selector Bar (Shown in Seller Mode) -->
             <div id="modal-chat-seller-bar" class="hidden px-3.5 py-2.5 bg-amber-50/90 border-b border-amber-200 space-y-1.5">
-              <div class="flex items-center justify-between gap-2 text-[11px] font-bold text-amber-950">
+              <div class="flex flex-wrap items-center justify-between gap-2 text-[11px] font-bold text-amber-950">
                 <span id="modal-chat-seller-bar-title">👨💼 გამყიდველის რეჟიმი (გოჩა) — აირჩიეთ კლიენტი პასუხის, სურათის ან ვიდეოს გასაგზავნად:</span>
+                <div class="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    data-trigger-ai-reply-btn="modal"
+                    class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-extrabold flex items-center gap-1 cursor-pointer shadow-2xs"
+                    title="ხელოვნური ინტელექტის ბოტმა ახლავე გასცეს პასუხი არჩეულ კლიენტს"
+                  >
+                    <span>🤖</span>
+                    <span>ბოტმა უპასუხოს ახლა</span>
+                  </button>
+                  <button
+                    type="button"
+                    data-open-ai-bot-modal="1"
+                    class="px-2.5 py-1 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-[11px] font-extrabold flex items-center gap-1 cursor-pointer shadow-2xs"
+                  >
+                    <span>🎓</span>
+                    <span>ბოტის სწავლება</span>
+                  </button>
+                </div>
               </div>
               <div id="modal-chat-threads-list" class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5"></div>
             </div>
@@ -4406,6 +4480,21 @@
         <span id="floating-back-label">უკან</span>
       </button>
 
+      <!-- Floating AI Bot & Live Store Chat Button -->
+      <button
+        id="floating-open-chat-btn"
+        type="button"
+        class="min-h-[40px] sm:min-h-[44px] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-violet-600 via-indigo-600 to-emerald-600 hover:opacity-95 text-white text-xs sm:text-sm font-extrabold flex items-center gap-1.5 shadow-lg border border-white/30 active:scale-95 fast-transition cursor-pointer shrink-0"
+        title="მისწერეთ გამყიდველს ან AI ასისტენტ ბოტს პირდაპირ საიტზე"
+      >
+        <span>🤖💬</span>
+        <span id="floating-open-chat-label">AI ბოტი / ჩატი</span>
+        <span
+          id="floating-chat-unread-badge"
+          class="hidden px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-black leading-none"
+        >0</span>
+      </button>
+
       <a
         id="floating-wa-btn"
         href="https://wa.me/995551588579?text=გამარჯობა,%20მინდა%20კონსულტაცია%20პროდუქტზე"
@@ -4433,6 +4522,428 @@
         <span class="text-amber-400">📞</span>
         <span id="floating-call-label">დარეკვა</span>
       </a>
+    </div>
+
+    <!-- ======================================================================================== -->
+    <!-- FLOATING MAIN-PAGE CHAT & AI ASSISTANT DRAWER (#home-seller-chat-box)                    -->
+    <!-- ======================================================================================== -->
+    <div
+      id="home-seller-chat-box"
+      class="fixed bottom-16 right-2 sm:bottom-20 sm:right-4 z-[65] hidden w-[96vw] sm:w-[460px] rounded-3xl bg-white border-2 theme-border shadow-2xl overflow-hidden"
+      role="dialog"
+      aria-label="მისწერე გამყიდველს ან AI ასისტენტ ბოტს"
+    >
+      <!-- Header -->
+      <div class="bg-zinc-950 text-white px-4 py-3 flex flex-wrap items-center justify-between gap-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="relative flex h-3 w-3 shrink-0">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <h3 class="text-xs sm:text-sm font-extrabold text-white">🤖💬 ჩატი & AI ასისტენტი</h3>
+              <span
+                data-ai-bot-status-pill="1"
+                class="px-2 py-0.5 rounded-md bg-emerald-950 border border-emerald-500/50 text-emerald-300 text-[10px] font-extrabold"
+              >
+                <span data-ai-bot-status-text="1">AI ბოტი ჩართულია</span>
+              </span>
+            </div>
+            <p class="text-[10px] text-amber-400 truncate">
+              გოჩა ან ნასწავლი AI ბოტი გიპასუხებთ მყისიერად
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <button
+            type="button"
+            data-open-ai-bot-modal="1"
+            class="owner-only-admin-el px-2 py-1 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[10px] font-extrabold flex items-center gap-1 cursor-pointer"
+            title="AI ბოტის სწავლება და მორგება"
+          >
+            <span>🎓</span>
+            <span>სწავლება</span>
+          </button>
+          <button
+            type="button"
+            id="home-chat-close-drawer-btn"
+            class="w-7 h-7 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 flex items-center justify-center text-xs font-black cursor-pointer"
+            title="ჩატის დახურვა"
+          >✕</button>
+        </div>
+      </div>
+
+      <!-- Role Switcher Bar -->
+      <div class="bg-zinc-900 px-3.5 py-1.5 border-b border-zinc-800 flex items-center justify-between gap-2">
+        <span class="text-[10px] text-zinc-400 font-semibold">რეჟიმი:</span>
+        <div class="flex items-center gap-1">
+          <button
+            type="button"
+            id="home-chat-role-customer"
+            class="min-h-[24px] px-2 py-0.5 rounded-md text-[10px] font-bold theme-bg text-white flex items-center gap-1 cursor-pointer fast-transition"
+          >
+            <span>👤</span>
+            <span>კლიენტი</span>
+            <span id="home-chat-cust-unread" class="hidden px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">0</span>
+          </button>
+          <button
+            type="button"
+            id="home-chat-role-seller"
+            class="min-h-[24px] px-2 py-0.5 rounded-md text-[10px] font-bold text-zinc-300 hover:text-white flex items-center gap-1 cursor-pointer fast-transition"
+          >
+            <span>👨💼</span>
+            <span>გამყიდველი (გოჩა)</span>
+            <span id="home-chat-seller-unread" class="hidden px-1.5 py-0.2 rounded-full bg-red-600 text-white text-[10px] font-black">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="home-chat-body">
+        <!-- Customer Name/Phone -->
+        <div id="home-chat-customer-bar" class="px-3 py-2 bg-stone-100 border-b border-zinc-200 grid grid-cols-2 gap-1.5">
+          <input
+            id="home-chat-name-input"
+            type="text"
+            placeholder="თქვენი სახელი"
+            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
+          />
+          <input
+            id="home-chat-phone-input"
+            type="tel"
+            placeholder="ტელეფონი (სურვილისამებრ)"
+            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-white border border-zinc-200 text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none"
+          />
+        </div>
+
+        <!-- Seller Bar -->
+        <div id="home-chat-seller-bar" class="hidden px-3 py-2 bg-amber-50 border-b border-amber-200 space-y-1.5">
+          <div class="flex flex-wrap items-center justify-between gap-1.5 text-[11px] font-bold text-amber-950">
+            <span>👨💼 აირჩიეთ კლიენტი:</span>
+            <div class="flex items-center gap-1">
+              <button
+                type="button"
+                data-trigger-ai-reply-btn="home"
+                class="px-2 py-0.5 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-extrabold cursor-pointer"
+              >🤖 ბოტმა უპასუხოს</button>
+              <button
+                type="button"
+                data-open-ai-bot-modal="1"
+                class="px-2 py-0.5 rounded-md bg-violet-600 hover:bg-violet-700 text-white text-[10px] font-extrabold cursor-pointer"
+              >🎓 სწავლება</button>
+            </div>
+          </div>
+          <div id="home-chat-threads-list" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5"></div>
+        </div>
+
+        <!-- Messages -->
+        <div
+          id="home-chat-messages"
+          class="max-h-[260px] min-h-[160px] overflow-y-auto px-3 py-2.5 bg-stone-50 space-y-2"
+          aria-live="polite"
+        ></div>
+
+        <!-- Media Preview -->
+        <div
+          id="home-chat-media-preview"
+          class="hidden px-3 py-1.5 bg-amber-50 border-t border-amber-200 flex items-center justify-between gap-2"
+        >
+          <div id="home-chat-media-preview-content" class="flex items-center gap-2 min-w-0 text-xs font-semibold text-zinc-900"></div>
+          <button
+            type="button"
+            id="home-chat-media-clear-btn"
+            class="px-2 py-0.5 rounded bg-red-100 text-red-800 text-[10px] font-bold cursor-pointer"
+          >✕</button>
+        </div>
+
+        <!-- Quick Emojis -->
+        <div class="px-2.5 py-1 bg-stone-100 border-t border-zinc-200 flex items-center justify-between gap-1.5">
+          <div id="home-chat-quick-emojis" class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5"></div>
+          <button
+            type="button"
+            id="home-chat-emoji-toggle-btn"
+            class="px-2 py-0.5 rounded bg-amber-100 text-amber-950 border border-amber-300 text-[10px] font-extrabold shrink-0 cursor-pointer"
+          >😊</button>
+        </div>
+
+        <div id="home-chat-emoji-panel" class="hidden px-3 py-2 bg-amber-50 border-t border-amber-200 space-y-1.5">
+          <div class="flex items-center justify-between text-[10px] font-bold text-zinc-700">
+            <span>აირჩიეთ სმაილი:</span>
+            <button type="button" id="home-chat-emoji-close-btn" class="cursor-pointer">✕</button>
+          </div>
+          <div id="home-chat-emoji-grid" class="grid grid-cols-8 gap-1 max-h-[120px] overflow-y-auto p-1 bg-white rounded-lg border border-zinc-200"></div>
+        </div>
+
+        <!-- Input Row -->
+        <div class="p-2.5 bg-white border-t border-zinc-200 flex items-center gap-1.5">
+          <input id="home-chat-photo-file" type="file" accept="image/*" class="hidden" />
+          <input id="home-chat-video-file" type="file" accept="video/*" class="hidden" />
+          <button
+            type="button"
+            id="home-chat-attach-photo-btn"
+            class="min-h-[36px] px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-xs font-bold cursor-pointer"
+            title="სურათის გაგზავნა"
+          >📷</button>
+          <button
+            type="button"
+            id="home-chat-attach-video-btn"
+            class="min-h-[36px] px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-xs font-bold cursor-pointer"
+            title="ვიდეოს გაგზავნა"
+          >🎬</button>
+          <input
+            id="home-chat-text-input"
+            type="text"
+            placeholder="დაწერეთ კითხვა (გიპასუხებთ გოჩა ან AI ბოტი)..."
+            class="flex-1 min-w-0 min-h-[36px] px-3 py-1.5 rounded-xl bg-stone-50 border border-zinc-300 text-xs text-zinc-900 focus:outline-none focus:bg-white focus:border-zinc-900"
+          />
+          <button
+            type="button"
+            id="home-chat-send-btn"
+            class="min-h-[36px] px-3.5 py-1.5 rounded-xl theme-bg text-white text-xs font-extrabold cursor-pointer shrink-0"
+          >გაგზავნა</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
+    <!-- AI BOT TRAINING & CUSTOMIZATION STUDIO MODAL (#ai-bot-training-modal)                    -->
+    <!-- ======================================================================================== -->
+    <div
+      id="ai-bot-training-modal"
+      class="fixed inset-0 z-[92] hidden bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ai-bot-modal-title"
+    >
+      <div class="bg-white w-full sm:max-w-4xl max-h-[94vh] rounded-t-3xl sm:rounded-3xl shadow-2xl border border-zinc-200 flex flex-col overflow-hidden">
+        <!-- Modal Header -->
+        <div class="px-5 py-4 bg-gradient-to-r from-zinc-950 via-violet-950 to-zinc-900 text-white flex items-center justify-between gap-3 shrink-0">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-violet-600/30 border border-violet-400/40 flex items-center justify-center text-xl shrink-0">
+              🤖
+            </div>
+            <div>
+              <h2 id="ai-bot-modal-title" class="text-base sm:text-lg font-extrabold tracking-tight">
+                ხელოვნური ინტელექტის (AI) ბოტის სწავლება და საიტზე მორგება
+              </h2>
+              <p class="text-xs text-violet-200">
+                როცა საიტზე არ იქნებით, ბოტი ავტომატურად გასცემს პასუხს კლიენტებს თქვენი ნასწავლი წესებითა და პროდუქციის კატალოგით
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-ai-bot-modal-btn"
+            class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-extrabold cursor-pointer shrink-0"
+          >✕ დახურვა</button>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 bg-stone-50/60">
+          <!-- 1. Bot Operating Mode & Seller Presence Switch -->
+          <div class="p-4 rounded-2xl bg-white border-2 border-violet-200 shadow-xs space-y-3.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-extrabold text-zinc-950 flex items-center gap-1.5">
+                  <span>⚡ 1. როდის უპასუხოს AI ბოტმა კლიენტებს?</span>
+                </h3>
+                <p class="text-xs text-zinc-600">
+                  აირჩიეთ რეჟიმი და მიუთითეთ, ამჟამად საიტზე ხართ თუ არა:
+                </p>
+              </div>
+              <button
+                type="button"
+                id="ai-bot-modal-away-switch-btn"
+                class="min-h-[40px] px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 border-2 border-amber-400 text-xs font-extrabold flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+              >
+                <span id="ai-bot-modal-away-icon">🌙</span>
+                <span id="ai-bot-modal-away-text">ახლა საიტზე არ ვარ (ბოტი პასუხობს)</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <button
+                type="button"
+                data-ai-bot-mode-btn="when_away"
+                class="p-3 rounded-xl border-2 text-left transition cursor-pointer space-y-1"
+              >
+                <div class="text-xs sm:text-sm font-extrabold flex items-center justify-between">
+                  <span>🌙 როცა საიტზე არ ვარ</span>
+                  <span data-ai-mode-check="when_away" class="text-xs">✅</span>
+                </div>
+                <p class="text-[11px] opacity-80 leading-snug">
+                  თუ საიტზე არ ხართ (ან ჩართულია „საიტზე არ ვარ“), ბოტი ავტომატურად უპასუხებს კლიენტებს.
+                </p>
+              </button>
+
+              <button
+                type="button"
+                data-ai-bot-mode-btn="always"
+                class="p-3 rounded-xl border-2 text-left transition cursor-pointer space-y-1"
+              >
+                <div class="text-xs sm:text-sm font-extrabold flex items-center justify-between">
+                  <span>🤖 ყოველთვის ჩართული (24/7)</span>
+                  <span data-ai-mode-check="always" class="text-xs hidden">✅</span>
+                </div>
+                <p class="text-[11px] opacity-80 leading-snug">
+                  ბოტი მყისიერად უპასუხებს ყველა კლიენტის შეკითხვას ნებისმიერ დროს.
+                </p>
+              </button>
+
+              <button
+                type="button"
+                data-ai-bot-mode-btn="off"
+                class="p-3 rounded-xl border-2 text-left transition cursor-pointer space-y-1"
+              >
+                <div class="text-xs sm:text-sm font-extrabold flex items-center justify-between">
+                  <span>⏸️ გამორთული</span>
+                  <span data-ai-mode-check="off" class="text-xs hidden">✅</span>
+                </div>
+                <p class="text-[11px] opacity-80 leading-snug">
+                  ავტომატური პასუხი გამორთულია — მხოლოდ თქვენ პასუხობთ ხელით.
+                </p>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Bot Identity & Greeting -->
+          <div class="p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <div class="space-y-1.5">
+              <label for="ai-bot-name-input" class="block text-xs font-extrabold text-zinc-900">
+                🤖 2. ბოტის სახელი (რაც გამოჩნდება ჩატში):
+              </label>
+              <input
+                id="ai-bot-name-input"
+                type="text"
+                placeholder="მაგ: 🤖 AI ასისტენტი (გოჩას დამხმარე)"
+                class="w-full min-h-[40px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs sm:text-sm font-bold text-zinc-900 focus:outline-none focus:border-violet-600"
+              />
+            </div>
+            <div class="space-y-1.5">
+              <label for="ai-bot-greeting-input" class="block text-xs font-extrabold text-zinc-900">
+                👋 მისალმების / სტანდარტული ტექსტი:
+              </label>
+              <input
+                id="ai-bot-greeting-input"
+                type="text"
+                placeholder="მაგ: გამარჯობა! გოჩა ამ წუთას საიტზე არ არის, მე გაგცემთ პასუხს..."
+                class="w-full min-h-[40px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs sm:text-sm text-zinc-900 focus:outline-none focus:border-violet-600"
+              />
+            </div>
+          </div>
+
+          <!-- 3. Main Bot Knowledge / Custom Instructions -->
+          <div class="p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs space-y-2.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+              <label for="ai-bot-instructions-input" class="text-xs sm:text-sm font-extrabold text-zinc-950">
+                📚 3. ასწავლეთ ბოტს თქვენი მაღაზიის წესები, პირობები და ინსტრუქცია:
+              </label>
+              <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                ✓ ბოტმა უკვე ავტომატურად იცის საიტზე არსებული ყველა პროდუქტი და ფასი!
+              </span>
+            </div>
+            <p class="text-xs text-zinc-500">
+              ჩაწერეთ ნებისმიერი ინფორმაცია, რაც გსურთ რომ ბოტმა იცოდეს (მაგ: მიტანის პირობები, ფასდაკლება, მისამართი, განვადება, სამუშაო საათები, როგორ ესაუბროს კლიენტს):
+            </p>
+            <textarea
+              id="ai-bot-instructions-input"
+              rows="5"
+              placeholder="ჩაწერეთ ბოტის მთავარი ცოდნა და წესები..."
+              class="w-full p-3.5 rounded-xl border border-zinc-300 bg-stone-50 focus:bg-white text-xs sm:text-sm text-zinc-900 leading-relaxed focus:outline-none focus:border-violet-600"
+            ></textarea>
+          </div>
+
+          <!-- 4. Custom Q&A Training Builder -->
+          <div class="p-4 rounded-2xl bg-white border border-zinc-200 shadow-xs space-y-3.5">
+            <div>
+              <h3 class="text-xs sm:text-sm font-extrabold text-zinc-950">
+                ❓ 4. კითხვა–პასუხის სწავლება (ასწავლეთ კონკრეტულ კითხვებზე ზუსტი პასუხები):
+              </h3>
+              <p class="text-xs text-zinc-500">
+                დაამატეთ კითხვები, რომლებსაც კლიენტები ხშირად გისვამენ, და მიუთითეთ ზუსტი პასუხი:
+              </p>
+            </div>
+
+            <!-- Add New Q&A Box -->
+            <div class="p-3 rounded-xl bg-violet-50/70 border border-violet-200 space-y-2.5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <input
+                  id="ai-bot-new-q-input"
+                  type="text"
+                  placeholder="კლიენტის კითხვა (მაგ: ბათუმში თუ აგზავნით?)"
+                  class="min-h-[40px] px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm text-zinc-900 focus:outline-none focus:border-violet-600"
+                />
+                <input
+                  id="ai-bot-new-a-input"
+                  type="text"
+                  placeholder="ბოტის პასუხი (მაგ: დიახ, ბათუმში ვაგზავნით 24 საათში!)"
+                  class="min-h-[40px] px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm text-zinc-900 focus:outline-none focus:border-violet-600"
+                />
+              </div>
+              <div class="flex justify-end">
+                <button
+                  type="button"
+                  id="ai-bot-add-qa-btn"
+                  class="min-h-[38px] px-4 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-xs font-extrabold cursor-pointer active:scale-95 fast-transition"
+                >
+                  + კითხვა–პასუხის დამატება
+                </button>
+              </div>
+            </div>
+
+            <!-- Existing Q&A List -->
+            <div id="ai-bot-qa-list" class="space-y-2 max-h-[260px] overflow-y-auto pr-1"></div>
+          </div>
+
+          <!-- 5. Live Bot Test Playground -->
+          <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50 via-white to-teal-50 border-2 border-emerald-200 space-y-3">
+            <h3 class="text-xs sm:text-sm font-extrabold text-emerald-950 flex items-center gap-1.5">
+              <span>🧪 5. შეამოწმეთ თქვენი ბოტი ახლავე (სატესტო მიწერა):</span>
+            </h3>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+              <input
+                id="ai-bot-test-question-input"
+                type="text"
+                placeholder="დაუსვით ბოტს სატესტო კითხვა (მაგ: რა ღირს კარაოკე დინამიკი და განვადება თუ გაქვთ?)..."
+                class="flex-1 min-h-[42px] px-3.5 py-2 rounded-xl border border-emerald-300 bg-white text-xs sm:text-sm text-zinc-900 focus:outline-none focus:border-emerald-600"
+              />
+              <button
+                type="button"
+                id="ai-bot-test-send-btn"
+                class="min-h-[42px] px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-extrabold cursor-pointer shrink-0 active:scale-95 fast-transition"
+              >
+                🤖 პასუხის შემოწმება
+              </button>
+            </div>
+            <div
+              id="ai-bot-test-reply-box"
+              class="hidden p-3.5 rounded-xl bg-white border border-emerald-300 text-xs sm:text-sm text-zinc-900 leading-relaxed whitespace-pre-wrap"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="px-5 py-3.5 bg-white border-t border-zinc-200 flex flex-wrap items-center justify-between gap-2 shrink-0">
+          <span id="ai-bot-save-status" class="text-xs font-bold text-emerald-700"></span>
+          <div class="flex items-center gap-2 ml-auto">
+            <button
+              type="button"
+              id="cancel-ai-bot-modal-btn"
+              class="min-h-[42px] px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 text-xs sm:text-sm font-bold cursor-pointer"
+            >
+              დახურვა
+            </button>
+            <button
+              type="button"
+              id="save-ai-bot-config-btn"
+              class="min-h-[42px] px-6 py-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-extrabold shadow-md cursor-pointer active:scale-95 fast-transition"
+            >
+              💾 ბოტის ცოდნის და პარამეტრების შენახვა
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ======================================================================================== -->
@@ -16033,13 +16544,22 @@
           }
 
           const toolbarBadge = document.getElementById('toolbar-chat-unread-badge');
+          const floatingBadge = document.getElementById('floating-chat-unread-badge');
+          const combinedUnread = chatActiveRole === 'seller' ? totalSellerUnread : totalCustomerUnread;
           if (toolbarBadge) {
-            const combinedUnread = chatActiveRole === 'seller' ? totalSellerUnread : totalCustomerUnread;
             if (combinedUnread > 0) {
               toolbarBadge.textContent = String(combinedUnread);
               toolbarBadge.classList.remove('hidden');
             } else {
               toolbarBadge.classList.add('hidden');
+            }
+          }
+          if (floatingBadge) {
+            if (combinedUnread > 0) {
+              floatingBadge.textContent = String(combinedUnread);
+              floatingBadge.classList.remove('hidden');
+            } else {
+              floatingBadge.classList.add('hidden');
             }
           }
 
@@ -16145,12 +16665,17 @@
                   (chatActiveRole === 'customer' && !isSeller) ||
                   (chatActiveRole === 'seller' && isSeller);
 
+                const isAiBotMsg = Boolean(m.isAiBot);
                 const bubbleClass = isSeller
-                  ? 'bg-zinc-900 text-white border border-zinc-800'
+                  ? isAiBotMsg
+                    ? 'bg-gradient-to-br from-zinc-900 via-indigo-950 to-emerald-950 text-white border border-emerald-500/40 shadow-sm'
+                    : 'bg-zinc-900 text-white border border-zinc-800'
                   : 'theme-bg text-white shadow-sm';
 
                 const roleBadge = isSeller
-                  ? `<span class="px-1.5 py-0.5 rounded bg-amber-400 text-zinc-950 text-[10px] font-black">გამყიდველი • ${escapeHtmlSafe(storeSettings.contactName || 'გოჩა')}</span>`
+                  ? isAiBotMsg
+                    ? `<span class="px-1.5 py-0.5 rounded bg-emerald-400 text-zinc-950 text-[10px] font-black">${escapeHtmlSafe(m.senderName || aiBotConfig.botName || '🤖 AI ასისტენტი')}</span>`
+                    : `<span class="px-1.5 py-0.5 rounded bg-amber-400 text-zinc-950 text-[10px] font-black">გამყიდველი • ${escapeHtmlSafe(storeSettings.contactName || 'გოჩა')}</span>`
                   : `<span class="px-1.5 py-0.5 rounded bg-black/20 text-white text-[10px] font-bold">👤 ${escapeHtmlSafe(m.senderName || 'კლიენტი')}</span>`;
 
                 const productTagHtml = m.productName
@@ -16337,10 +16862,67 @@
                   chatAllConversations = data.conversations;
                 }
                 renderAllChatWidgets();
+                if (data.aiAutoReplyScheduled) {
+                  setTimeout(() => {
+                    fetchChatStateFromServer();
+                  }, 1500);
+                  setTimeout(() => {
+                    fetchChatStateFromServer();
+                  }, 3200);
+                }
               }
+            } else {
+              throw new Error('Chat API non-200');
             }
           } catch (err) {
-            console.error('Failed to send chat message:', err);
+            // Offline / Static Hosting Fallback (e.g., GitHub Pages / iyidebaa.ge static) with Local Trained AI Bot
+            if (textInput) textInput.value = '';
+            stagedChatMedia[prefix] = null;
+            const nowIso = new Date().toISOString();
+            if (!chatCustomerConversation) {
+              chatCustomerConversation = {
+                sessionId: targetSessionId,
+                customerName: chatCustomerName || 'მომხმარებელი',
+                customerPhone: chatCustomerPhone,
+                updatedAt: nowIso,
+                unreadForSeller: 0,
+                unreadForCustomer: 0,
+                messages: []
+              };
+            }
+            chatCustomerConversation.messages.push({
+              id: 'local_' + Date.now(),
+              sender: chatActiveRole,
+              senderName:
+                chatActiveRole === 'seller'
+                  ? `${storeSettings.contactName || 'გოჩა'} (გამყიდველი)`
+                  : chatCustomerName || 'მომხმარებელი',
+              text: rawText,
+              productId: activeModalProduct ? activeModalProduct.id : undefined,
+              productName: contextProduct ? contextProduct.name : undefined,
+              createdAt: nowIso
+            });
+            renderAllChatWidgets();
+
+            if (chatActiveRole === 'customer' && shouldClientBotReplyNow()) {
+              setTimeout(() => {
+                const replyText = generateClientFallbackBotReply(
+                  rawText,
+                  contextProduct ? contextProduct.name : ''
+                );
+                chatCustomerConversation.messages.push({
+                  id: 'local_bot_' + Date.now(),
+                  sender: 'seller',
+                  senderName: aiBotConfig.botName || '🤖 AI ასისტენტი',
+                  text: replyText,
+                  productId: activeModalProduct ? activeModalProduct.id : undefined,
+                  productName: contextProduct ? contextProduct.name : undefined,
+                  createdAt: new Date().toISOString(),
+                  isAiBot: true
+                });
+                renderAllChatWidgets();
+              }, 700);
+            }
           } finally {
             if (sendBtn) sendBtn.disabled = false;
           }
@@ -16707,6 +17289,12 @@
                   renderAllChatWidgets();
                 }
 
+                if (data.type === 'aibot:config' && data.config) {
+                  aiBotConfig = Object.assign({}, aiBotConfig, data.config);
+                  saveAiBotConfigToLocal(aiBotConfig);
+                  renderAiBotStatusUI();
+                }
+
                 // Real-time synchronization of products & photos across devices (Phone, PC 1, PC 2)
                 if (data.type === 'store:sync') {
                   if (Array.isArray(data.productsList) && data.productsList.length > 0) {
@@ -16758,6 +17346,548 @@
             });
           } catch (e) {}
         }
+
+        // =========================================================================
+        // AI ASSISTANT BOT & OWNER TRAINING STUDIO ENGINE
+        // =========================================================================
+        const DEFAULT_CLIENT_AI_BOT_CONFIG = {
+          enabled: true,
+          mode: 'when_away',
+          sellerAway: true,
+          botName: '🤖 AI ასისტენტი (გოჩას დამხმარე)',
+          greetingMessage:
+            'გამარჯობა! მე ვარ მაღაზია „იყიდება საინტერესო ნივთები“-ს ხელოვნური ინტელექტის ასისტენტი. გოჩა ამ წუთას საიტზე არ იმყოფება, თუმცა მე შემიძლია გაგცეთ ზუსტი პასუხი ნებისმიერ პროდუქტზე, ფასზე, მიწოდებასა და გარანტიაზე!',
+          customInstructions:
+            'მაღაზიის სახელია „იყიდება საინტერესო ნივთები“ (iyidebaa.ge). მფლობელი და საკონტაქტო პირია გოჩა, ტელეფონი / WhatsApp / Viber: +995 551 58 85 79.\n' +
+            'ჩვენ ვყიდით პროფესიონალურ კარაოკე დინამიკებს, LiFePO4 სოლარ გენერატორებს, დასაკეც მზის პანელებს და სცენის აპარატურას.\n' +
+            'მიწოდება თბილისში ხდება იმავე დღეს (უფასოდ), ხოლო რეგიონებში — 24-48 საათში.\n' +
+            'ყველა პროდუქტზე ვრცელდება 24-თვიანი ოფიციალური გარანტია და 0%-იანი განვადება (BOG, TBC, Credo).',
+          qaPairs: [
+            {
+              id: 'qa_1',
+              question: 'ადგილზე მიტანა გაქვთ? რა ღირს მიწოდება?',
+              answer:
+                'დიახ! თბილისში გვაქვს უფასო საკურიერო მიწოდება შეკვეთის დღესვე (ადგილზე შემოწმებით), ხოლო საქართველოს ყველა რეგიონში ვაგზავნით 24–48 საათში.'
+            },
+            {
+              id: 'qa_2',
+              question: 'განვადება თუ მოქმედებს და რომელ ბანკებთან?',
+              answer:
+                'დიახ, მოქმედებს 0%-იანი ონლაინ და ადგილზე განვადება საქართველოს ბანკში, თიბისი ბანკში და კრედო ბანკში.'
+            },
+            {
+              id: 'qa_3',
+              question: 'გარანტია რამდენი ხანი აქვს პროდუქციას?',
+              answer:
+                'ყველა კარაოკე დინამიკსა და სოლარ გენერატორს მოყვება 24-თვიანი (2 წლიანი) ოფიციალური გარანტია.'
+            },
+            {
+              id: 'qa_4',
+              question: 'დინამიკებს მიკროფონები მოყვება?',
+              answer:
+                'დიახ, ჩვენს კარაოკე დინამიკებს კომპლექტში მოყვება 2 უკაბელო UHF მიკროფონი, სამართავი პულტი და დამტენი კაბელი.'
+            },
+            {
+              id: 'qa_5',
+              question: 'როგორ შევუკვეთო ან როგორ დაგიკავშირდეთ?',
+              answer:
+                'შეკვეთისთვის შეგიძლიათ პირდაპირ აქ ჩატში დაგვიტოვოთ თქვენი ტელეფონის ნომერი და სასურველი ნივთის სახელი, ან დაუკავშირდეთ გოჩას ნომერზე: +995 551 58 85 79 (ზარი, WhatsApp, Viber).'
+            }
+          ]
+        };
+
+        let aiBotConfig = Object.assign({}, DEFAULT_CLIENT_AI_BOT_CONFIG);
+        try {
+          const savedBotRaw = localStorage.getItem('vv_ai_bot_config_v1');
+          if (savedBotRaw) {
+            const parsedBot = JSON.parse(savedBotRaw);
+            if (parsedBot && typeof parsedBot === 'object') {
+              aiBotConfig = Object.assign({}, DEFAULT_CLIENT_AI_BOT_CONFIG, parsedBot);
+            }
+          }
+        } catch (e) {}
+
+        function saveAiBotConfigToLocal(cfg) {
+          try {
+            localStorage.setItem('vv_ai_bot_config_v1', JSON.stringify(cfg));
+          } catch (e) {}
+        }
+
+        function shouldClientBotReplyNow() {
+          if (!aiBotConfig.enabled || aiBotConfig.mode === 'off') return false;
+          if (aiBotConfig.mode === 'always') return true;
+          return Boolean(aiBotConfig.sellerAway);
+        }
+
+        function generateClientFallbackBotReply(questionText, productName) {
+          const qLower = String(questionText || '').toLowerCase();
+          const phone = storeSettings.phoneDisplay || '+995 551 58 85 79';
+          const seller = storeSettings.contactName || 'გოჩა';
+
+          if (Array.isArray(aiBotConfig.qaPairs)) {
+            for (const pair of aiBotConfig.qaPairs) {
+              if (!pair || !pair.question || !pair.answer) continue;
+              const words = pair.question
+                .toLowerCase()
+                .split(/[\s,?.!-]+/)
+                .filter((w) => w.length >= 3);
+              if (words.some((w) => qLower.includes(w))) {
+                return pair.answer;
+              }
+            }
+          }
+
+          if (productName) {
+            const p = productsList.find((item) => {
+              const loc = getLocalizedProduct(item, 'ka');
+              return loc.name && loc.name.toLowerCase() === productName.toLowerCase();
+            });
+            if (p) {
+              const loc = getLocalizedProduct(p, 'ka');
+              return `📦 „${loc.name}“ მარაგშია! ფასი: ${p.price} ₾. მოყვება 24-თვიანი გარანტია და უფასო მიწოდება თბილისში (რეგიონებში 24-48 სთ). შეკვეთისთვის დაგვიტოვეთ ნომერი ან დარეკეთ: ${phone} (${seller}).`;
+            }
+          }
+
+          for (const item of productsList) {
+            const loc = getLocalizedProduct(item, 'ka');
+            const title = String(loc.name || '');
+            const tokens = title
+              .toLowerCase()
+              .split(/[\s,/-]+/)
+              .filter((t) => t.length >= 4);
+            if (tokens.some((t) => qLower.includes(t))) {
+              return `📦 „${title}“ ხელმისაწვდომია — ფასი: ${item.price} ₾. მოქმედებს 24-თვიანი გარანტია, უფასო მიწოდება თბილისში და 0%-იანი განვადება. დაგვიტოვეთ ტელეფონის ნომერი ან დაუკავშირდით ${seller}-ს: ${phone}.`;
+            }
+          }
+
+          if (qLower.includes('მიტან') || qLower.includes('მიწოდებ') || qLower.includes('კურიერ')) {
+            return `🚚 მიწოდება თბილისში უფასოა შეკვეთის დღესვე, ხოლო რეგიონებში — 24-48 საათში. საკონტაქტო: ${phone}.`;
+          }
+          if (qLower.includes('განვადებ') || qLower.includes('ბანკ')) {
+            return `💳 მოქმედებს 0%-იანი განვადება საქართველოს ბანკში, თიბისი ბანკში და კრედო ბანკში. დაგვიკავშირდით: ${phone}.`;
+          }
+
+          return (
+            aiBotConfig.greetingMessage ||
+            `გამარჯობა! მე ვარ ${aiBotConfig.botName}. ${seller} მალე გიპასუხებთ, მანამდე შეგიძლიათ მკითხოთ ნებისმიერი ნივთის ფასი, მონაცემები ან დაგვიტოვოთ თქვენი ტელეფონის ნომერი (${phone}).`
+          );
+        }
+
+        function renderAiBotStatusUI() {
+          const isBotActiveNow = shouldClientBotReplyNow();
+          document.querySelectorAll('[data-ai-bot-status-text="1"]').forEach((el) => {
+            if (!aiBotConfig.enabled || aiBotConfig.mode === 'off') {
+              el.textContent = 'AI ბოტი გამორთულია';
+            } else if (aiBotConfig.mode === 'always') {
+              el.textContent = 'AI ბოტი ჩართულია 24/7';
+            } else if (aiBotConfig.sellerAway) {
+              el.textContent = 'AI ბოტი პასუხობს (ავტო-რეჟიმი)';
+            } else {
+              el.textContent = 'გოჩა ხაზზეა (ბოტი მოლოდინშია)';
+            }
+          });
+
+          const toolbarAwayBtn = document.getElementById('toolbar-seller-away-toggle-btn');
+          const toolbarAwayIcon = document.getElementById('toolbar-seller-away-icon');
+          const toolbarAwayLabel = document.getElementById('toolbar-seller-away-label');
+          if (toolbarAwayBtn && toolbarAwayIcon && toolbarAwayLabel) {
+            if (aiBotConfig.sellerAway) {
+              toolbarAwayBtn.className =
+                'min-h-[36px] px-3 py-1 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 border border-amber-400 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs active:scale-95 fast-transition cursor-pointer';
+              toolbarAwayIcon.textContent = '🤖🌙';
+              toolbarAwayLabel.textContent = 'საიტზე არ ვარ (ბოტი პასუხობს)';
+            } else {
+              toolbarAwayBtn.className =
+                'min-h-[36px] px-3 py-1 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 border border-emerald-400 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs active:scale-95 fast-transition cursor-pointer';
+              toolbarAwayIcon.textContent = '🟢👨💼';
+              toolbarAwayLabel.textContent = 'საიტზე ვარ (მე ვპასუხობ)';
+            }
+          }
+
+          const modalAwayBtn = document.getElementById('ai-bot-modal-away-switch-btn');
+          const modalAwayIcon = document.getElementById('ai-bot-modal-away-icon');
+          const modalAwayText = document.getElementById('ai-bot-modal-away-text');
+          if (modalAwayBtn && modalAwayIcon && modalAwayText) {
+            if (aiBotConfig.sellerAway) {
+              modalAwayBtn.className =
+                'min-h-[40px] px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-950 border-2 border-amber-400 text-xs font-extrabold flex items-center gap-2 cursor-pointer self-start sm:self-auto';
+              modalAwayIcon.textContent = '🌙🤖';
+              modalAwayText.textContent = 'ახლა საიტზე არ ვარ (ბოტი პასუხობს)';
+            } else {
+              modalAwayBtn.className =
+                'min-h-[40px] px-4 py-2 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-950 border-2 border-emerald-400 text-xs font-extrabold flex items-center gap-2 cursor-pointer self-start sm:self-auto';
+              modalAwayIcon.textContent = '🟢👨💼';
+              modalAwayText.textContent = 'ახლა საიტზე ვარ (მე ვპასუხობ)';
+            }
+          }
+
+          document.querySelectorAll('[data-ai-bot-mode-btn]').forEach((btn) => {
+            const m = btn.getAttribute('data-ai-bot-mode-btn');
+            const isSelected = aiBotConfig.mode === m;
+            btn.className = isSelected
+              ? 'p-3 rounded-xl border-2 border-violet-600 bg-violet-50 text-violet-950 text-left transition cursor-pointer space-y-1 shadow-xs'
+              : 'p-3 rounded-xl border-2 border-zinc-200 bg-white hover:bg-stone-50 text-zinc-700 text-left transition cursor-pointer space-y-1';
+            const checkEl = btn.querySelector(`[data-ai-mode-check="${m}"]`);
+            if (checkEl) {
+              checkEl.classList.toggle('hidden', !isSelected);
+            }
+          });
+        }
+
+        function renderAiBotQaPairsList() {
+          const listEl = document.getElementById('ai-bot-qa-list');
+          if (!listEl) return;
+          const pairs = Array.isArray(aiBotConfig.qaPairs) ? aiBotConfig.qaPairs : [];
+          if (pairs.length === 0) {
+            listEl.innerHTML = `
+              <div class="p-3 rounded-xl bg-stone-100 border border-dashed border-zinc-300 text-xs text-zinc-500 text-center">
+                ჯერ კითხვა-პასუხი არ არის დამატებული — ჩაწერეთ ზემოთ და დააჭირეთ „+ კითხვა–პასუხის დამატება“.
+              </div>
+            `;
+            return;
+          }
+
+          listEl.innerHTML = pairs
+            .map(
+              (item, idx) => `
+              <div class="p-3 rounded-xl bg-stone-50 border border-zinc-200 space-y-2" data-qa-row-idx="${idx}">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-extrabold text-violet-800 bg-violet-100 px-2 py-0.5 rounded-md">
+                    კითხვა–პასუხი #${idx + 1}
+                  </span>
+                  <button
+                    type="button"
+                    data-delete-qa-idx="${idx}"
+                    class="px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 text-[11px] font-extrabold cursor-pointer"
+                  >🗑️ წაშლა</button>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label class="block text-[10px] font-bold text-zinc-500 mb-0.5">კლიენტის კითხვა:</label>
+                    <input
+                      type="text"
+                      data-edit-qa-q="${idx}"
+                      value="${escapeHtmlSafe(item.question || '')}"
+                      class="w-full min-h-[36px] px-3 py-1.5 rounded-lg border border-zinc-300 bg-white text-xs font-bold text-zinc-900 focus:outline-none focus:border-violet-600"
+                    />
+                  </div>
+                  <div>
+                    <label class="block text-[10px] font-bold text-zinc-500 mb-0.5">ბოტის პასუხი:</label>
+                    <input
+                      type="text"
+                      data-edit-qa-a="${idx}"
+                      value="${escapeHtmlSafe(item.answer || '')}"
+                      class="w-full min-h-[36px] px-3 py-1.5 rounded-lg border border-zinc-300 bg-white text-xs text-zinc-900 focus:outline-none focus:border-violet-600"
+                    />
+                  </div>
+                </div>
+              </div>
+            `
+            )
+            .join('');
+        }
+
+        function populateAiBotModalInputs() {
+          const nameInp = document.getElementById('ai-bot-name-input');
+          const greetInp = document.getElementById('ai-bot-greeting-input');
+          const instInp = document.getElementById('ai-bot-instructions-input');
+          if (nameInp) nameInp.value = aiBotConfig.botName || '';
+          if (greetInp) greetInp.value = aiBotConfig.greetingMessage || '';
+          if (instInp) instInp.value = aiBotConfig.customInstructions || '';
+          renderAiBotStatusUI();
+          renderAiBotQaPairsList();
+        }
+
+        async function fetchAiBotConfigFromServer() {
+          try {
+            const resp = await fetch('/api/ai-bot/config');
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data && data.ok && data.config) {
+                aiBotConfig = Object.assign({}, DEFAULT_CLIENT_AI_BOT_CONFIG, data.config);
+                saveAiBotConfigToLocal(aiBotConfig);
+                renderAiBotStatusUI();
+              }
+            }
+          } catch (e) {
+            renderAiBotStatusUI();
+          }
+        }
+
+        async function persistAiBotConfigToServer(showToastMsg = true) {
+          const nameInp = document.getElementById('ai-bot-name-input');
+          const greetInp = document.getElementById('ai-bot-greeting-input');
+          const instInp = document.getElementById('ai-bot-instructions-input');
+
+          if (nameInp && nameInp.value.trim()) aiBotConfig.botName = nameInp.value.trim();
+          if (greetInp) aiBotConfig.greetingMessage = greetInp.value.trim();
+          if (instInp) aiBotConfig.customInstructions = instInp.value.trim();
+          aiBotConfig.enabled = aiBotConfig.mode !== 'off';
+
+          saveAiBotConfigToLocal(aiBotConfig);
+          renderAiBotStatusUI();
+
+          try {
+            const resp = await fetch('/api/ai-bot/config', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(aiBotConfig)
+            });
+            if (resp.ok) {
+              const data = await resp.json();
+              if (data && data.ok && data.config) {
+                aiBotConfig = Object.assign({}, aiBotConfig, data.config);
+                saveAiBotConfigToLocal(aiBotConfig);
+                renderAiBotStatusUI();
+              }
+            }
+          } catch (e) {}
+
+          const statusEl = document.getElementById('ai-bot-save-status');
+          if (statusEl) {
+            statusEl.textContent = '✅ ბოტის ცოდნა და პარამეტრები შენახულია!';
+            setTimeout(() => {
+              statusEl.textContent = '';
+            }, 3500);
+          }
+          if (showToastMsg && typeof showCpToast === 'function') {
+            showCpToast('🤖✅ AI ბოტის სწავლება და პარამეტრები შენახულია!');
+          }
+        }
+
+        function initAiBotStudioAndDrawerEvents() {
+          const homeChatDrawer = document.getElementById('home-seller-chat-box');
+          const floatingOpenChatBtn = document.getElementById('floating-open-chat-btn');
+          const closeHomeDrawerBtn = document.getElementById('home-chat-close-drawer-btn');
+          const aiBotModal = document.getElementById('ai-bot-training-modal');
+          const closeAiBotModalBtn = document.getElementById('close-ai-bot-modal-btn');
+          const cancelAiBotModalBtn = document.getElementById('cancel-ai-bot-modal-btn');
+          const saveAiBotBtn = document.getElementById('save-ai-bot-config-btn');
+          const toolbarAwayToggleBtn = document.getElementById('toolbar-seller-away-toggle-btn');
+          const modalAwaySwitchBtn = document.getElementById('ai-bot-modal-away-switch-btn');
+          const addQaBtn = document.getElementById('ai-bot-add-qa-btn');
+          const qaListEl = document.getElementById('ai-bot-qa-list');
+          const testSendBtn = document.getElementById('ai-bot-test-send-btn');
+          const testQInput = document.getElementById('ai-bot-test-question-input');
+          const testReplyBox = document.getElementById('ai-bot-test-reply-box');
+
+          function openHomeChatDrawer() {
+            if (!homeChatDrawer) return;
+            homeChatDrawer.classList.remove('hidden');
+            renderAllChatWidgets();
+            const inp = document.getElementById('home-chat-text-input');
+            if (inp) setTimeout(() => inp.focus(), 120);
+          }
+
+          if (floatingOpenChatBtn) {
+            floatingOpenChatBtn.addEventListener('click', () => {
+              if (homeChatDrawer && !homeChatDrawer.classList.contains('hidden')) {
+                homeChatDrawer.classList.add('hidden');
+              } else {
+                openHomeChatDrawer();
+              }
+            });
+          }
+
+          if (toolbarOpenChatBtn) {
+            toolbarOpenChatBtn.addEventListener('click', () => {
+              openHomeChatDrawer();
+            });
+          }
+
+          if (closeHomeDrawerBtn && homeChatDrawer) {
+            closeHomeDrawerBtn.addEventListener('click', () => {
+              homeChatDrawer.classList.add('hidden');
+            });
+          }
+
+          document.querySelectorAll('[data-open-ai-bot-modal="1"]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              populateAiBotModalInputs();
+              if (aiBotModal) aiBotModal.classList.remove('hidden');
+            });
+          });
+
+          function closeAiBotModal() {
+            if (aiBotModal) aiBotModal.classList.add('hidden');
+          }
+
+          if (closeAiBotModalBtn) closeAiBotModalBtn.addEventListener('click', closeAiBotModal);
+          if (cancelAiBotModalBtn) cancelAiBotModalBtn.addEventListener('click', closeAiBotModal);
+
+          if (toolbarAwayToggleBtn) {
+            toolbarAwayToggleBtn.addEventListener('click', () => {
+              aiBotConfig.sellerAway = !aiBotConfig.sellerAway;
+              if (aiBotConfig.sellerAway && aiBotConfig.mode === 'off') {
+                aiBotConfig.mode = 'when_away';
+                aiBotConfig.enabled = true;
+              }
+              persistAiBotConfigToServer(false);
+              if (typeof showCpToast === 'function') {
+                showCpToast(
+                  aiBotConfig.sellerAway
+                    ? '🌙 ჩაირთო „საიტზე არ ვარ“ — კლიენტებს უპასუხებს თქვენი AI ბოტი!'
+                    : '🟢 ჩაირთო „საიტზე ვარ“ — კლიენტებს თქვენ პასუხობთ!'
+                );
+              }
+            });
+          }
+
+          if (modalAwaySwitchBtn) {
+            modalAwaySwitchBtn.addEventListener('click', () => {
+              aiBotConfig.sellerAway = !aiBotConfig.sellerAway;
+              renderAiBotStatusUI();
+            });
+          }
+
+          document.querySelectorAll('[data-ai-bot-mode-btn]').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const mode = btn.getAttribute('data-ai-bot-mode-btn');
+              if (mode === 'when_away' || mode === 'always' || mode === 'off') {
+                aiBotConfig.mode = mode;
+                aiBotConfig.enabled = mode !== 'off';
+                renderAiBotStatusUI();
+              }
+            });
+          });
+
+          if (addQaBtn) {
+            addQaBtn.addEventListener('click', () => {
+              const qInp = document.getElementById('ai-bot-new-q-input');
+              const aInp = document.getElementById('ai-bot-new-a-input');
+              const qVal = qInp ? qInp.value.trim() : '';
+              const aVal = aInp ? aInp.value.trim() : '';
+              if (!qVal || !aVal) {
+                if (qInp && !qVal) qInp.focus();
+                else if (aInp) aInp.focus();
+                return;
+              }
+              if (!Array.isArray(aiBotConfig.qaPairs)) aiBotConfig.qaPairs = [];
+              aiBotConfig.qaPairs.unshift({
+                id: 'qa_' + Date.now(),
+                question: qVal,
+                answer: aVal
+              });
+              if (qInp) qInp.value = '';
+              if (aInp) aInp.value = '';
+              renderAiBotQaPairsList();
+              persistAiBotConfigToServer(false);
+            });
+          }
+
+          if (qaListEl) {
+            qaListEl.addEventListener('input', (e) => {
+              const qIdx = e.target.getAttribute('data-edit-qa-q');
+              const aIdx = e.target.getAttribute('data-edit-qa-a');
+              if (qIdx !== null && aiBotConfig.qaPairs[Number(qIdx)]) {
+                aiBotConfig.qaPairs[Number(qIdx)].question = e.target.value;
+              }
+              if (aIdx !== null && aiBotConfig.qaPairs[Number(aIdx)]) {
+                aiBotConfig.qaPairs[Number(aIdx)].answer = e.target.value;
+              }
+            });
+
+            qaListEl.addEventListener('click', (e) => {
+              const delBtn = e.target.closest('[data-delete-qa-idx]');
+              if (!delBtn) return;
+              const idx = Number(delBtn.getAttribute('data-delete-qa-idx'));
+              if (!Number.isNaN(idx) && Array.isArray(aiBotConfig.qaPairs)) {
+                aiBotConfig.qaPairs.splice(idx, 1);
+                renderAiBotQaPairsList();
+                persistAiBotConfigToServer(false);
+              }
+            });
+          }
+
+          if (saveAiBotBtn) {
+            saveAiBotBtn.addEventListener('click', () => {
+              persistAiBotConfigToServer(true);
+            });
+          }
+
+          if (testSendBtn && testQInput && testReplyBox) {
+            const runBotTest = async () => {
+              const q = testQInput.value.trim();
+              if (!q) {
+                testQInput.focus();
+                return;
+              }
+              await persistAiBotConfigToServer(false);
+              testReplyBox.classList.remove('hidden');
+              testReplyBox.textContent = '🤖 ბოტი ფიქრობს და ამზადებს პასუხს...';
+              testSendBtn.disabled = true;
+              try {
+                const resp = await fetch('/api/ai-bot/test', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ question: q })
+                });
+                if (resp.ok) {
+                  const data = await resp.json();
+                  if (data && data.ok && data.reply) {
+                    testReplyBox.textContent = `🤖 ${aiBotConfig.botName}:\n${data.reply}`;
+                    return;
+                  }
+                }
+                const localReply = generateClientFallbackBotReply(q, '');
+                testReplyBox.textContent = `🤖 ${aiBotConfig.botName}:\n${localReply}`;
+              } catch (err) {
+                const localReply = generateClientFallbackBotReply(q, '');
+                testReplyBox.textContent = `🤖 ${aiBotConfig.botName}:\n${localReply}`;
+              } finally {
+                testSendBtn.disabled = false;
+              }
+            };
+
+            testSendBtn.addEventListener('click', runBotTest);
+            testQInput.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                runBotTest();
+              }
+            });
+          }
+
+          document.querySelectorAll('[data-trigger-ai-reply-btn]').forEach((btn) => {
+            btn.addEventListener('click', async () => {
+              const targetSessionId =
+                chatActiveRole === 'seller'
+                  ? chatSellerSelectedSessionId || chatCustomerSessionId
+                  : chatCustomerSessionId;
+              btn.disabled = true;
+              try {
+                const resp = await fetch('/api/ai-bot/reply-session', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    sessionId: targetSessionId,
+                    productId: activeModalProduct ? activeModalProduct.id : undefined
+                  })
+                });
+                if (resp.ok) {
+                  const d = await resp.json();
+                  if (d && d.ok) {
+                    if (d.conversation && d.conversation.sessionId === chatCustomerSessionId) {
+                      chatCustomerConversation = d.conversation;
+                    }
+                    if (Array.isArray(d.conversations)) {
+                      chatAllConversations = d.conversations;
+                    }
+                    renderAllChatWidgets();
+                  }
+                }
+              } catch (e) {}
+              btn.disabled = false;
+            });
+          });
+        }
+
+        bindChatWidgetEvents('home');
+        bindChatWidgetEvents('modal');
+        initAiBotStudioAndDrawerEvents();
+        fetchAiBotConfigFromServer();
+        fetchChatStateFromServer();
+        connectChatWebSocket();
 
         // =========================================================================
         // INTERACTIVE SITE WEATHER ENGINE (SUN ☀️, RAIN 🌧️, SNOW ❄️, OFF 🌤️)
