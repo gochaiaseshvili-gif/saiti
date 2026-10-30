@@ -17891,6 +17891,13 @@
               : '';
             detailsEl.textContent = `• ${windPart}${rangePart}`;
           }
+
+          // If Auto-Sync with live weather forecast is active, automatically sync screen weather (Sun / Rain / Snow)
+          if (storeSettings.weatherAutoSync && typeof syncSiteWeatherWithLiveForecast === 'function') {
+            syncSiteWeatherWithLiveForecast(false);
+          } else if (typeof updateWeatherButtonsUI === 'function') {
+            updateWeatherButtonsUI();
+          }
         }
 
         async function fetchLiveWeather(force = false) {
