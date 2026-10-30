@@ -2436,6 +2436,36 @@
                           >
                             A+
                           </button>
+
+                          <span class="h-5 w-px bg-zinc-200 mx-1"></span>
+
+                          <label
+                            title="ნაწერის ფერის არჩევა (ფერის წერა)"
+                            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-200 text-xs font-extrabold flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+                          >
+                            <span class="underline decoration-2 underline-offset-2 font-black" data-desc-text-color-preview="1">A</span>
+                            <span>ნაწერის ფერი</span>
+                            <input
+                              type="color"
+                              data-desc-text-color="1"
+                              value="#18181b"
+                              class="w-5 h-5 rounded border border-zinc-300 cursor-pointer bg-transparent p-0"
+                            />
+                          </label>
+
+                          <label
+                            title="ფერის ჩასხმა (გრაფის ფონის ან მონიშნული ტექსტის გაფერადება)"
+                            class="min-h-[32px] px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-zinc-900 border border-amber-200 text-xs font-extrabold flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+                          >
+                            <span>🪣</span>
+                            <span>ფერის ჩასხმა</span>
+                            <input
+                              type="color"
+                              data-desc-bg-color="1"
+                              value="#ffffff"
+                              class="w-5 h-5 rounded border border-zinc-300 cursor-pointer bg-transparent p-0"
+                            />
+                          </label>
                         </div>
 
                         <button
@@ -3053,6 +3083,41 @@
                   class="px-2 py-0.5 rounded-lg bg-white hover:bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 cursor-pointer"
                 >
                   A+
+                </button>
+                <span class="h-4 w-px bg-zinc-300 mx-0.5"></span>
+                <label
+                  title="ნაწერის ფერი (ფერის წერა)"
+                  class="px-2 py-0.5 rounded-lg bg-white hover:bg-stone-100 border border-zinc-200 text-[11px] font-extrabold text-zinc-800 flex items-center gap-1 cursor-pointer select-none"
+                >
+                  <span class="underline decoration-2 underline-offset-2 font-black" data-desc-text-color-preview="1">A</span>
+                  <span class="hidden sm:inline">ფერი</span>
+                  <input
+                    type="color"
+                    data-desc-text-color="1"
+                    value="#18181b"
+                    class="w-4 h-4 rounded border border-zinc-300 cursor-pointer bg-transparent p-0"
+                  />
+                </label>
+                <label
+                  title="ფერის ჩასხმა გრაფაში"
+                  class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-200 text-[11px] font-extrabold text-zinc-900 flex items-center gap-1 cursor-pointer select-none"
+                >
+                  <span>🪣</span>
+                  <span class="hidden sm:inline">ჩასხმა</span>
+                  <input
+                    type="color"
+                    data-desc-bg-color="1"
+                    value="#ffffff"
+                    class="w-4 h-4 rounded border border-zinc-300 cursor-pointer bg-transparent p-0"
+                  />
+                </label>
+                <button
+                  type="button"
+                  data-desc-btn-reset="1"
+                  title="სტილის და ფერის მოხსნა"
+                  class="px-1.5 py-0.5 rounded-lg text-[11px] font-bold text-zinc-400 hover:text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer select-none"
+                >
+                  ↺
                 </button>
               </div>
             </div>
@@ -4969,6 +5034,36 @@
                       >
                         A+
                       </button>
+
+                      <span class="h-5 w-px bg-zinc-200 mx-1"></span>
+
+                      <label
+                        title="ნაწერის ფერის არჩევა (ფერის წერა)"
+                        class="min-h-[32px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-200 text-xs font-extrabold flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+                      >
+                        <span class="underline decoration-2 underline-offset-2 font-black" data-desc-text-color-preview="1">A</span>
+                        <span>ნაწერის ფერი</span>
+                        <input
+                          type="color"
+                          data-desc-text-color="1"
+                          value="#18181b"
+                          class="w-5 h-5 rounded border border-zinc-300 cursor-pointer bg-transparent p-0"
+                        />
+                      </label>
+
+                      <label
+                        title="ფერის ჩასხმა (გრაფის ფონის ან მონიშნული ტექსტის გაფერადება)"
+                        class="min-h-[32px] px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-zinc-900 border border-amber-200 text-xs font-extrabold flex items-center gap-1.5 transition-colors cursor-pointer select-none"
+                      >
+                        <span>🪣</span>
+                        <span>ფერის ჩასხმა</span>
+                        <input
+                          type="color"
+                          data-desc-bg-color="1"
+                          value="#ffffff"
+                          class="w-5 h-5 rounded border border-zinc-300 cursor-pointer bg-transparent p-0"
+                        />
+                      </label>
                     </div>
 
                     <button
@@ -11218,7 +11313,7 @@
         const mieDescRichEl = document.getElementById('mie-desc-rich');
 
         let formDescHtml = '';
-        let formDescStyle = { fontSize: 15, isBold: false, isItalic: false, isUnderline: false };
+        let formDescStyle = { fontSize: 15, isBold: false, isItalic: false, isUnderline: false, textColor: '', bgColor: '' };
 
         function normalizeDescStyle(rawStyle) {
           const s = rawStyle && typeof rawStyle === 'object' ? rawStyle : {};
@@ -11227,8 +11322,22 @@
             fontSize: fs >= 10 && fs <= 72 ? fs : 15,
             isBold: Boolean(s.isBold),
             isItalic: Boolean(s.isItalic),
-            isUnderline: Boolean(s.isUnderline)
+            isUnderline: Boolean(s.isUnderline),
+            textColor: typeof s.textColor === 'string' ? s.textColor.trim() : '',
+            bgColor: typeof s.bgColor === 'string' ? s.bgColor.trim() : ''
           };
+        }
+
+        function isDescColorDark(hexColor) {
+          if (!hexColor || typeof hexColor !== 'string') return false;
+          const clean = hexColor.replace('#', '').trim();
+          if (clean.length !== 6) return false;
+          const r = parseInt(clean.slice(0, 2), 16);
+          const g = parseInt(clean.slice(2, 4), 16);
+          const b = parseInt(clean.slice(4, 6), 16);
+          if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) return false;
+          const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+          return lum < 0.45;
         }
 
         function escapeDescPlainTextToHtml(text) {
@@ -11248,7 +11357,7 @@
           temp.querySelectorAll('*').forEach((el) => {
             Array.from(el.attributes).forEach((attr) => {
               const name = attr.name.toLowerCase();
-              if (name.startsWith('on') || (name !== 'style' && name !== 'class')) {
+              if (name.startsWith('on') || (name !== 'style' && name !== 'class' && name !== 'color' && name !== 'face' && name !== 'size')) {
                 el.removeAttribute(attr.name);
               }
             });
@@ -11270,6 +11379,29 @@
             el.style.textDecorationThickness = '';
             el.style.textUnderlineOffset = '';
           }
+
+          const effectiveTextColor = st.textColor
+            ? st.textColor
+            : st.bgColor && isDescColorDark(st.bgColor)
+            ? '#ffffff'
+            : '';
+          el.style.color = effectiveTextColor;
+
+          if (el.id === 'modal-product-desc') {
+            const secSpecs = el.closest('#modal-sec-specs');
+            const headingEl = document.getElementById('modal-desc-heading');
+            if (secSpecs) {
+              secSpecs.style.backgroundColor = st.bgColor || '';
+              secSpecs.style.borderColor = st.bgColor ? 'rgba(0,0,0,0.12)' : '';
+            }
+            if (headingEl) {
+              headingEl.style.color = st.bgColor && isDescColorDark(st.bgColor) ? 'rgba(255,255,255,0.8)' : '';
+            }
+            el.style.backgroundColor = '';
+          } else {
+            el.style.backgroundColor = st.bgColor || '';
+            el.style.borderRadius = st.bgColor ? '0 0 1rem 1rem' : '';
+          }
         }
 
         function syncDescToolbarUI(boxType, rawStyle, currentLength) {
@@ -11282,6 +11414,9 @@
             const italicBtn = box.querySelector('[data-desc-btn-italic]');
             const underlineBtn = box.querySelector('[data-desc-btn-underline]');
             const sizeSel = box.querySelector('[data-desc-size-select]');
+            const textColorInput = box.querySelector('[data-desc-text-color]');
+            const textColorPreview = box.querySelector('[data-desc-text-color-preview]');
+            const bgColorInput = box.querySelector('[data-desc-bg-color]');
             const counterEl = box.querySelector('[data-desc-char-counter]');
 
             const setBtnActive = (btn, isActive) => {
@@ -11308,6 +11443,17 @@
                 sizeSel.appendChild(opt);
               }
               sizeSel.value = strSize;
+            }
+
+            if (textColorInput && document.activeElement !== textColorInput) {
+              textColorInput.value = st.textColor && /^#[0-9a-fA-F]{6}$/.test(st.textColor) ? st.textColor : '#18181b';
+            }
+            if (textColorPreview) {
+              textColorPreview.style.color = st.textColor || '#18181b';
+              textColorPreview.style.textDecorationColor = st.textColor || '#f59e0b';
+            }
+            if (bgColorInput && document.activeElement !== bgColorInput) {
+              bgColorInput.value = st.bgColor && /^#[0-9a-fA-F]{6}$/.test(st.bgColor) ? st.bgColor : '#ffffff';
             }
 
             if (counterEl && typeof currentLength === 'number') {
@@ -13159,52 +13305,107 @@
           });
           modalInlineEditorPanel.addEventListener('change', (e) => {
             if (e.target.closest('[data-mie-slot-file]') || e.target === mieMultiPhotoInput) return;
-            if (e.target.closest('[data-desc-size-select]')) return;
+            if (
+              e.target.closest('[data-desc-size-select]') ||
+              e.target.closest('[data-desc-text-color]') ||
+              e.target.closest('[data-desc-bg-color]')
+            ) {
+              return;
+            }
             applyInlineProductEditorChanges({ immediate: true });
           });
         }
 
         // =========================================================================
-        // INTERACTIVE HANDLERS FOR SCREENSHOT-STYLE RICH DESCRIPTION BOXES (B, I, U, A-, A+, Size Select)
+        // INTERACTIVE HANDLERS FOR SCREENSHOT-STYLE RICH DESCRIPTION BOXES (B, I, U, A-, A+, Size Select, Text Color, Paint Fill)
         // =========================================================================
-        function hasPartialSelectionInsideEditor(editorEl) {
-          if (!editorEl || !window.getSelection) return false;
+        const savedDescEditorRanges = { mie: null, cp: null };
+
+        function captureDescEditorSelection(boxType, editorEl) {
+          if (!editorEl || !window.getSelection) return;
           const sel = window.getSelection();
-          if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return false;
-          const selText = sel.toString().trim();
-          if (!selText) return false;
+          if (!sel || sel.rangeCount === 0) return;
           const range = sel.getRangeAt(0);
-          if (!editorEl.contains(range.commonAncestorContainer)) return false;
+          if (!editorEl.contains(range.commonAncestorContainer)) return;
+          const text = sel.toString().trim();
           const fullText = (editorEl.innerText || '').trim();
-          return selText.length < fullText.length;
+          if (text && text.length < fullText.length) {
+            savedDescEditorRanges[boxType] = range.cloneRange();
+          } else {
+            savedDescEditorRanges[boxType] = null;
+          }
         }
 
-        function wrapSelectedRangeWithFontSize(editorEl, pxSize) {
-          if (!editorEl || !window.getSelection) return false;
+        function getActiveOrSavedPartialRange(boxType, editorEl) {
+          if (!editorEl || !window.getSelection) return null;
           const sel = window.getSelection();
-          if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return false;
-          const range = sel.getRangeAt(0);
-          if (!editorEl.contains(range.commonAncestorContainer)) return false;
-          try {
-            const span = document.createElement('span');
-            span.style.fontSize = `${pxSize}px`;
-            span.style.lineHeight = '1.35';
-            const contents = range.extractContents();
-            span.querySelectorAll && contents.querySelectorAll('span').forEach((inner) => {
-              if (inner.style && inner.style.fontSize) {
-                inner.style.fontSize = `${pxSize}px`;
+          if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+            const r = sel.getRangeAt(0);
+            if (editorEl.contains(r.commonAncestorContainer)) {
+              const selText = sel.toString().trim();
+              const fullText = (editorEl.innerText || '').trim();
+              if (selText && selText.length < fullText.length) {
+                return r;
               }
+            }
+          }
+          const saved = savedDescEditorRanges[boxType];
+          if (saved && editorEl.contains(saved.commonAncestorContainer)) {
+            const savedText = saved.toString().trim();
+            const fullText = (editorEl.innerText || '').trim();
+            if (savedText && savedText.length < fullText.length) {
+              return saved;
+            }
+          }
+          return null;
+        }
+
+        function hasPartialSelectionInsideEditor(editorEl, boxType) {
+          if (!editorEl) return false;
+          const key = boxType || (editorEl === cpDescRichEl ? 'cp' : 'mie');
+          return Boolean(getActiveOrSavedPartialRange(key, editorEl));
+        }
+
+        function wrapSelectedRangeWithStyle(boxType, editorEl, styleProps) {
+          const targetRange = getActiveOrSavedPartialRange(boxType, editorEl);
+          if (!targetRange || !window.getSelection) return false;
+          try {
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(targetRange);
+            const span = document.createElement('span');
+            Object.keys(styleProps).forEach((prop) => {
+              span.style[prop] = styleProps[prop];
             });
+            const contents = targetRange.extractContents();
+            if (contents.querySelectorAll) {
+              contents.querySelectorAll('span').forEach((inner) => {
+                Object.keys(styleProps).forEach((prop) => {
+                  if (inner.style && inner.style[prop]) {
+                    inner.style[prop] = styleProps[prop];
+                  }
+                });
+              });
+            }
             span.appendChild(contents);
-            range.insertNode(span);
+            targetRange.insertNode(span);
             sel.removeAllRanges();
             const newRange = document.createRange();
             newRange.selectNodeContents(span);
             sel.addRange(newRange);
+            savedDescEditorRanges[boxType] = newRange.cloneRange();
             return true;
           } catch (err) {
             return false;
           }
+        }
+
+        function wrapSelectedRangeWithFontSize(editorEl, pxSize, boxType) {
+          const key = boxType || (editorEl === cpDescRichEl ? 'cp' : 'mie');
+          return wrapSelectedRangeWithStyle(key, editorEl, {
+            fontSize: `${pxSize}px`,
+            lineHeight: '1.35'
+          });
         }
 
         function handleDescBoxAction(boxType, actionFn) {
@@ -13250,7 +13451,7 @@
           if (boldBtn) {
             e.preventDefault();
             handleDescBoxAction(boxType, (st, editorEl) => {
-              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, boxType)) {
                 document.execCommand('bold', false, null);
               } else {
                 st.isBold = !st.isBold;
@@ -13263,7 +13464,7 @@
           if (italicBtn) {
             e.preventDefault();
             handleDescBoxAction(boxType, (st, editorEl) => {
-              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, boxType)) {
                 document.execCommand('italic', false, null);
               } else {
                 st.isItalic = !st.isItalic;
@@ -13276,7 +13477,7 @@
           if (underlineBtn) {
             e.preventDefault();
             handleDescBoxAction(boxType, (st, editorEl) => {
-              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, boxType)) {
                 document.execCommand('underline', false, null);
               } else {
                 st.isUnderline = !st.isUnderline;
@@ -13291,8 +13492,8 @@
             const delta = Number(stepBtn.getAttribute('data-desc-btn-step')) || 2;
             handleDescBoxAction(boxType, (st, editorEl) => {
               const nextSize = Math.max(12, Math.min(48, (Number(st.fontSize) || 15) + delta));
-              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
-                wrapSelectedRangeWithFontSize(editorEl, nextSize);
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, boxType)) {
+                wrapSelectedRangeWithFontSize(editorEl, nextSize, boxType);
               } else {
                 st.fontSize = nextSize;
                 if (editorEl) {
@@ -13313,6 +13514,10 @@
               st.isBold = false;
               st.isItalic = false;
               st.isUnderline = false;
+              st.textColor = '';
+              st.bgColor = '';
+              savedDescEditorRanges.mie = null;
+              savedDescEditorRanges.cp = null;
               if (editorEl) {
                 const plain = (editorEl.innerText || '').replace(/\r\n/g, '\n').trim();
                 editorEl.innerHTML = escapeDescPlainTextToHtml(plain);
@@ -13323,7 +13528,62 @@
           }
         });
 
+        function applyDescColorInputEvent(e) {
+          const textColorInput = e.target.closest('[data-desc-text-color]');
+          if (textColorInput) {
+            const box = textColorInput.closest('[data-desc-rich-box]');
+            if (!box) return;
+            const boxType = box.getAttribute('data-desc-rich-box');
+            const chosenColor = String(textColorInput.value || '#18181b').trim();
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              const editorKey = boxType === 'cp' ? 'cp' : 'mie';
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, editorKey)) {
+                wrapSelectedRangeWithStyle(editorKey, editorEl, { color: chosenColor });
+              } else {
+                st.textColor = chosenColor;
+                if (editorEl) {
+                  editorEl.querySelectorAll('span, font').forEach((sp) => {
+                    if (sp.style && sp.style.color) sp.style.removeProperty('color');
+                    if (sp.hasAttribute && sp.hasAttribute('color')) sp.removeAttribute('color');
+                  });
+                }
+              }
+            });
+            return;
+          }
+
+          const bgColorInput = e.target.closest('[data-desc-bg-color]');
+          if (bgColorInput) {
+            const box = bgColorInput.closest('[data-desc-rich-box]');
+            if (!box) return;
+            const boxType = box.getAttribute('data-desc-rich-box');
+            const chosenBg = String(bgColorInput.value || '#ffffff').trim();
+            handleDescBoxAction(boxType, (st, editorEl) => {
+              const editorKey = boxType === 'cp' ? 'cp' : 'mie';
+              if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, editorKey)) {
+                wrapSelectedRangeWithStyle(editorKey, editorEl, {
+                  backgroundColor: chosenBg,
+                  padding: '1px 4px',
+                  borderRadius: '4px'
+                });
+              } else {
+                st.bgColor = chosenBg;
+              }
+            });
+          }
+        }
+
+        document.addEventListener('input', (e) => {
+          if (e.target.closest('[data-desc-text-color]') || e.target.closest('[data-desc-bg-color]')) {
+            applyDescColorInputEvent(e);
+          }
+        });
+
         document.addEventListener('change', (e) => {
+          if (e.target.closest('[data-desc-text-color]') || e.target.closest('[data-desc-bg-color]')) {
+            applyDescColorInputEvent(e);
+            return;
+          }
           const sizeSel = e.target.closest('[data-desc-size-select]');
           if (!sizeSel) return;
           const box = sizeSel.closest('[data-desc-rich-box]');
@@ -13331,8 +13591,8 @@
           const boxType = box.getAttribute('data-desc-rich-box');
           const chosenSize = Math.max(12, Math.min(72, Number(sizeSel.value) || 15));
           handleDescBoxAction(boxType, (st, editorEl) => {
-            if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl)) {
-              wrapSelectedRangeWithFontSize(editorEl, chosenSize);
+            if (boxType !== 'modal-direct' && hasPartialSelectionInsideEditor(editorEl, boxType)) {
+              wrapSelectedRangeWithFontSize(editorEl, chosenSize, boxType);
             } else {
               st.fontSize = chosenSize;
               if (editorEl) {
@@ -13344,8 +13604,14 @@
           });
         });
 
-        [mieDescRichEl, cpDescRichEl].forEach((richEl) => {
+        [
+          { key: 'mie', el: mieDescRichEl },
+          { key: 'cp', el: cpDescRichEl }
+        ].forEach(({ key, el: richEl }) => {
           if (!richEl) return;
+          ['mouseup', 'keyup', 'touchend'].forEach((evName) => {
+            richEl.addEventListener(evName, () => captureDescEditorSelection(key, richEl));
+          });
           richEl.addEventListener('paste', (e) => {
             e.preventDefault();
             const text = (e.clipboardData || window.clipboardData)?.getData('text/plain') || '';
