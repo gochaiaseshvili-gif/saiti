@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793386282045,
+  "updatedAt": 1793386296609,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -11,7 +11,17 @@
         "underlineColor": ""
       }
     },
-    "wordSubstringsMap": {},
+    "wordSubstringsMap": {
+      "id:modal-product-desc": [
+        {
+          "word": "551 588-579 გოჩა",
+          "fontSize": 16,
+          "isBold": false,
+          "isUnderline": true,
+          "underlineColor": "#ef4444"
+        }
+      ]
+    },
     "brandName": "იყიდება საინტერესო ნივთები",
     "contactName": "გოჩა",
     "phoneDigits": "995551588579",
