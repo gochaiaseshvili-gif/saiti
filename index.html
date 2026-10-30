@@ -1780,6 +1780,150 @@
 
         <div id="home-movable-sections-container" class="space-y-6">
 
+          <!-- MOVABLE BLOCK: PROMINENT MAIN-SCREEN AI CONSULTANT & CHAT PROMPT (ხელოვნური ინტელექტის მისაწერი მთავარ ეკრანზე) -->
+          <div
+            id="hero-ai-chat-box"
+            data-home-block="hero-ai-chat"
+            data-block-label="ხელოვნური ინტელექტის (AI) კონსულტანტის გრაფა"
+            class="movable-page-block rounded-3xl bg-gradient-to-br from-slate-950 via-zinc-900 to-indigo-950 text-white border-2 border-violet-500/80 shadow-xl p-4 sm:p-6 space-y-4 relative overflow-hidden"
+          >
+            <!-- Ambient luminous background accent -->
+            <div class="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-violet-600/20 blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-16 -bottom-16 w-56 h-56 rounded-full bg-amber-500/15 blur-3xl pointer-events-none"></div>
+
+            <!-- Top Header & Live Status Row -->
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-white/10">
+              <div class="flex items-center gap-3">
+                <div class="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 text-white shadow-md text-2xl shrink-0">
+                  <span>🤖</span>
+                  <span class="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-zinc-950"></span>
+                  </span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h2 class="text-base sm:text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
+                      <span>ხელოვნური ინტელექტის (AI) კონსულტანტი</span>
+                      <span class="px-2 py-0.5 rounded-full bg-violet-500/30 border border-violet-400/40 text-violet-200 text-[10px] font-black uppercase tracking-wider">Online 24/7</span>
+                    </h2>
+                  </div>
+                  <p class="text-xs sm:text-sm text-zinc-300">
+                    იკითხეთ ნებისმიერი რამ კარაოკე დინამიკებზე, სოლარ გენერატორებზე, ფასებზე, მიწოდებასა თუ 0%-იან განვადებაზე
+                  </p>
+                </div>
+              </div>
+
+              <!-- Quick Control Actions -->
+              <div class="flex flex-wrap items-center gap-2 self-start md:self-auto">
+                <button
+                  type="button"
+                  data-open-ai-bot-modal="1"
+                  class="owner-only-admin-el min-h-[34px] px-3 py-1 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-extrabold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 fast-transition"
+                  title="ხელოვნური ინტელექტის ბოტის სწავლება და საიტზე მორგება"
+                >
+                  <span>🤖🎓</span>
+                  <span>AI სწავლება</span>
+                </button>
+                <button
+                  type="button"
+                  id="hero-ai-open-full-chat-btn"
+                  class="min-h-[34px] px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 fast-transition"
+                  title="სრული ჩატის ფანჯრის გახსნა"
+                >
+                  <span>💬</span>
+                  <span>სრული ჩატი</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Prominent Input Bar with Send Action -->
+            <div class="relative z-10 space-y-2.5">
+              <form id="hero-ai-form" class="flex flex-col sm:flex-row items-stretch gap-2">
+                <div class="relative flex-1">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-lg pointer-events-none select-none">💬</span>
+                  <input
+                    id="hero-ai-input"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="ჩაწერეთ თქვენი შეკითხვა აქ (მაგ: რა ღირს 1200W დინამიკი? მიტანა უფასოა?)..."
+                    class="w-full min-h-[50px] sm:min-h-[54px] pl-11 pr-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 focus:bg-white text-white focus:text-zinc-950 placeholder:text-zinc-400 focus:placeholder:text-zinc-400 border border-violet-400/40 focus:border-violet-500 text-xs sm:text-sm font-semibold shadow-inner focus:outline-none transition-all"
+                  />
+                </div>
+                <button
+                  id="hero-ai-submit-btn"
+                  type="submit"
+                  class="min-h-[50px] sm:min-h-[54px] px-6 rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-600 to-amber-500 hover:brightness-110 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                >
+                  <span class="text-base">🚀</span>
+                  <span>გაგზავნა</span>
+                </button>
+              </form>
+
+              <!-- Clickable 1-Click Sample Prompt Chips -->
+              <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                <span class="text-[11px] font-bold text-amber-300 shrink-0 flex items-center gap-1">
+                  <span>💡</span>
+                  <span>სწრაფი შეკითხვა:</span>
+                </span>
+                <button
+                  type="button"
+                  data-hero-ai-chip="რა ღირს კარაოკე დინამიკები და რომელია საუკეთესო?"
+                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                >
+                  🎤 რა ღირს კარაოკე დინამიკები?
+                </button>
+                <button
+                  type="button"
+                  data-hero-ai-chip="რომელი სოლარ გენერატორი გაქვთ მარაგში და რა სიმძლავრის?"
+                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                >
+                  ⚡ სოლარ გენერატორები
+                </button>
+                <button
+                  type="button"
+                  data-hero-ai-chip="ადგილზე მიტანა გაქვთ და რამდენი ხანი სჭირდება?"
+                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                >
+                  🚚 მიტანის პირობები
+                </button>
+                <button
+                  type="button"
+                  data-hero-ai-chip="როგორ მოქმედებს 0%-იანი განვადება?"
+                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                >
+                  💳 განვადება
+                </button>
+                <button
+                  type="button"
+                  data-hero-ai-chip="რამდენი თვეა გარანტია?"
+                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                >
+                  🛡️ გარანტია
+                </button>
+                <button
+                  type="button"
+                  data-hero-ai-chip="მაღაზიის ტელეფონი და გოჩას საკონტაქტო ნომერი"
+                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                >
+                  📞 კონტაქტი
+                </button>
+              </div>
+            </div>
+
+            <!-- Dialogue & Real-Time Answer Stream Container -->
+            <div
+              id="hero-ai-dialogue-box"
+              class="relative z-10 hidden rounded-2xl bg-black/45 border border-white/10 p-3 sm:p-4 space-y-3 max-h-[320px] overflow-y-auto"
+            >
+              <div id="hero-ai-dialogue-stream" class="space-y-2.5 text-xs sm:text-sm"></div>
+              <div id="hero-ai-typing-indicator" class="hidden items-center gap-2 text-violet-300 text-xs font-bold">
+                <span class="inline-block w-2 h-2 rounded-full bg-violet-400 animate-pulse"></span>
+                <span>🤖 AI ასისტენტი ფიქრობს და ამზადებს პასუხს...</span>
+              </div>
+            </div>
+          </div>
+
           <!-- MOVABLE BLOCK 2: CATALOG HEADER BAR -->
           <div
             id="catalog-header-box"
