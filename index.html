@@ -4804,16 +4804,16 @@
 
           <!-- TAB 3: COMPLETE MANUAL SITE CUSTOMIZATION, WEATHER & CONTACT SETTINGS -->
           <div id="cp-settings-form" class="hidden space-y-6">
-            <!-- Section A: Weather Effects Control Card (☀️ მზე • 🌧️ წვიმა • ❄️ თოვლი • 🌤️ ჩვეულებრივი) -->
+            <!-- Section A: Weather Effects Control Card (☀️ მზე • 🌧️ წვიმა • ❄️ თოვლი • 🌤️ ჩვეულებრივი • 🔄 ავტომატური) -->
             <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-amber-50 via-sky-50 to-indigo-50 border-2 theme-border space-y-3.5">
               <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <h3 class="text-base font-extrabold text-zinc-950 flex items-center gap-2">
                     <span>🌦️</span>
-                    <span>საიტის ამინდის მართვა (თოვლი, წვიმა, მზე)</span>
+                    <span>საიტის ამინდის მართვა (თოვლი, წვიმა, მზე და ავტომატური სინქრონიზაცია)</span>
                   </h3>
                   <p class="text-xs text-zinc-600">
-                    აირჩიეთ რა ამინდი იყოს საიტზე — ცვლილება მყისიერად აისახება და შეინახება ყველა ვიზიტორისთვის
+                    აირჩიეთ რა ამინდი იყოს საიტზე ხელით, ან ჩართეთ <strong>🔄 ავტომატური (სინქრონიზებული)</strong> რეალური ამინდის პროგნოზის მიხედვით
                   </p>
                 </div>
                 <div class="flex items-center gap-2">
@@ -4831,7 +4831,7 @@
                 </div>
               </div>
 
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
                 <button
                   type="button"
                   data-weather-btn="sun"
@@ -4867,6 +4867,88 @@
                   <span class="text-lg">🌤️</span>
                   <span>გამორთული</span>
                 </button>
+
+                <button
+                  type="button"
+                  data-weather-auto-sync-btn="1"
+                  class="min-h-[48px] px-4 py-2.5 rounded-xl border border-emerald-400 bg-emerald-50 hover:bg-emerald-100 text-xs sm:text-sm font-extrabold text-emerald-950 flex items-center justify-center gap-2 shadow-sm active:scale-95 fast-transition cursor-pointer col-span-2 sm:col-span-1"
+                  title="როცა ჩართულია, საიტზე ავტომატურად ჩაირთვება მზე ☀️, წვიმა 🌧️ ან თოვლი ❄️ რეალური ამინდის პროგნოზის მიხედვით"
+                >
+                  <span class="text-lg">🔄</span>
+                  <span data-weather-auto-sync-label="1">ავტომატური</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Section A.2: Word Font Formatting Bar (Moved inside Control Panel Tab 3 so it never covers main page products) -->
+            <div
+              data-word-toolbar-instance="1"
+              class="p-4 rounded-2xl bg-gradient-to-r from-amber-50/90 via-white to-blue-50/80 border border-amber-300/90 space-y-3"
+            >
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="px-2 py-0.5 rounded-md bg-blue-700 text-white font-black text-xs">W</span>
+                  <span class="text-xs sm:text-sm font-extrabold text-zinc-950">საიტის წარწერების შრიფტის ზომა (8–72), გამსხვილება (B) და ხაზგასმა (U):</span>
+                </div>
+                <select
+                  id="word-toolbar-target-preset"
+                  class="min-h-[34px] px-2.5 py-1 rounded-xl bg-white border border-zinc-300 text-xs font-extrabold text-zinc-900 cursor-pointer"
+                >
+                  <option value="id:header-brand-name">მთავარი სათაური („იყიდება საინტერესო ნივთები“)</option>
+                  <option value="id:header-phone-under-brand">ტელეფონის ნომერი სათაურის ქვეშ</option>
+                  <option value="sel:#live-info-banner [data-lb-chip-id]">საათის და ამინდის ზოლის წარწერები</option>
+                  <option value="sel:.category-tab-btn">კატეგორიის გრაფების ღილაკები</option>
+                  <option value="id:fb-banner-title">Facebook ბანერის სათაური</option>
+                  <option value="id:catalog-heading-title">კატალოგის სათაური</option>
+                  <option value="sel:.card-title-el">პროდუქტის ბარათების სათაურები</option>
+                  <option value="sel:.card-meta-el">პროდუქტის ბარათების მოკლე აღწერა</option>
+                  <option value="sel:.card-new-price-el">პროდუქტის ბარათების ფასები</option>
+                </select>
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <span data-word-target-badge="1" class="px-2.5 py-1 rounded-lg bg-amber-100/90 text-amber-950 border border-amber-300 text-xs font-bold">
+                  მთავარი სათაური
+                </span>
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <div class="flex items-center gap-1 bg-white px-2 py-1 rounded-xl border border-zinc-300">
+                    <span class="text-xs font-bold text-zinc-700">ზომა:</span>
+                    <select data-word-size-select="1" class="min-h-[30px] px-2 py-0.5 rounded-lg bg-stone-50 border border-zinc-300 font-mono-num text-xs font-extrabold text-zinc-950 cursor-pointer">
+                      <option value="">ავტო</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="18">18</option>
+                      <option value="20">20</option>
+                      <option value="22">22</option>
+                      <option value="24">24</option>
+                      <option value="26">26</option>
+                      <option value="28">28</option>
+                      <option value="32">32</option>
+                      <option value="36">36</option>
+                      <option value="42">42</option>
+                      <option value="48">48</option>
+                      <option value="56">56</option>
+                      <option value="72">72</option>
+                    </select>
+                    <button type="button" data-word-size-step="-1" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 border border-zinc-300 text-xs font-black cursor-pointer">A-</button>
+                    <button type="button" data-word-size-step="1" class="px-2 py-0.5 rounded-lg bg-stone-100 hover:bg-stone-200 border border-zinc-300 text-xs font-black cursor-pointer">A+</button>
+                  </div>
+                  <button type="button" data-word-toggle-bold="1" class="min-h-[34px] px-3 py-1 rounded-xl bg-white hover:bg-amber-50 border border-zinc-300 text-xs font-bold flex items-center gap-1 cursor-pointer">
+                    <span class="font-serif font-black">B</span>
+                    <span>გამსხვილება</span>
+                  </button>
+                  <button type="button" data-word-toggle-underline="1" class="min-h-[34px] px-3 py-1 rounded-xl bg-white hover:bg-amber-50 border border-zinc-300 text-xs font-bold flex items-center gap-1 cursor-pointer">
+                    <span class="font-serif font-black word-underline-active">U</span>
+                    <span class="word-underline-active">ხაზის გავლება</span>
+                  </button>
+                  <button type="button" data-word-reset-fmt="1" class="min-h-[34px] px-2.5 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-bold cursor-pointer">↺ სტილის მოხსნა</button>
+                </div>
               </div>
             </div>
 
