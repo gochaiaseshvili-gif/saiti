@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793339573602,
+  "updatedAt": 1793339605872,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -40,7 +40,7 @@
         "type": "text",
         "badgeTitle": "🚚 მიწოდების ტექსტი",
         "text": "🚚 მიწოდება მთელ საქართველოში",
-        "textColor": "#09090b",
+        "textColor": "#ffffff",
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
