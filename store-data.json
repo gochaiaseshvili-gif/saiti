@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793296344965,
+  "updatedAt": 1793338379510,
   "themeColor": "#ea580c",
   "storeSettings": {
     "brandName": "იყიდება საინტერესო ნივთები",
@@ -3519,7 +3519,7 @@
       "id": "nomadpower-300w",
       "sku": "300W MINI",
       "category": "solar",
-      "categoryLabel": "სოლარ გენერატორი",
+      "categoryLabel": "სოლარ გენერატორები",
       "badgeText": "ულტრა-მსუბუქი",
       "name": "NomadPower 300W / 296Wh კომპაქტური მინი სოლარ გენერატორი",
       "shortMeta": "300W 220V · USB-C 100W PD · 3.2 კგ წონა",
@@ -3562,9 +3562,12 @@
       "youtubeId": "",
       "youtubeDuration": "05:54",
       "youtubeCaption": "NomadPower 300W მინი გენერატორის მიმოხილვა",
-      "tiktokUrl": "https://www.tiktok.com/embed/v2/7234567890123456789",
+      "tiktokUrl": "",
       "tiktokCaption": "NomadPower 300W — სარეზერვო 220V ნებისმიერ დროს",
-      "closedFields": {}
+      "closedFields": {},
+      "youtubeUrl": "",
+      "facebookUrl": "",
+      "instagramUrl": ""
     },
     {
       "id": "streetbeat-500w",
