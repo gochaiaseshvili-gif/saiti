@@ -19353,10 +19353,11 @@
         const cpResetLayoutOrderBtn = document.getElementById('cp-reset-layout-order-btn');
 
         const HOME_BLOCK_TITLES = {
-          'fb-banner': '1. Facebook გვერდის გრაფა',
-          'catalog-header': '2. კატალოგის სათაურის გრაფა',
-          'product-grid': '3. პროდუქციის კატალოგის გრაფა',
-          'service-standards': '4. მიწოდების და გარანტიის გრაფა'
+          'hero-ai-chat': '1. ხელოვნური ინტელექტის (AI) კონსულტანტი',
+          'fb-banner': '2. Facebook გვერდის გრაფა',
+          'catalog-header': '3. კატალოგის სათაურის გრაფა',
+          'product-grid': '4. პროდუქციის კატალოგის გრაფა',
+          'service-standards': '5. მიწოდების და გარანტიის გრაფა'
         };
 
         function ensureLayoutSettingsArrays() {
@@ -19364,6 +19365,9 @@
             storeSettings.homeBlocksOrder = [...DEFAULT_SETTINGS.homeBlocksOrder];
           }
           storeSettings.homeBlocksOrder = storeSettings.homeBlocksOrder.filter((key) => key !== 'home-chat');
+          if (!storeSettings.homeBlocksOrder.includes('hero-ai-chat')) {
+            storeSettings.homeBlocksOrder.unshift('hero-ai-chat');
+          }
           DEFAULT_SETTINGS.homeBlocksOrder.forEach((key) => {
             if (!storeSettings.homeBlocksOrder.includes(key)) {
               storeSettings.homeBlocksOrder.push(key);
