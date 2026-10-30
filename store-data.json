@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793340567959,
+  "updatedAt": 1793340568948,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -138,7 +138,7 @@
         "type": "text",
         "badgeTitle": "✨ დამატებული ნაწერი",
         "text": "საცდელი",
-        "textColor": "#ffffff",
+        "textColor": "#fde047",
         "bgColor": "#059669",
         "offsetX": 0,
         "offsetY": 0,
