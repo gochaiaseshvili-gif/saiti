@@ -435,6 +435,22 @@
 
         <!-- Pinned Right Controls Inside the Big Clock Banner: Wishlist (რჩეულები) + Language Switcher (ენების გრაფა) -->
         <div class="flex flex-wrap items-center justify-end gap-1.5 sm:gap-2 shrink-0 ml-auto pl-1 sm:pl-2 border-l border-white/20">
+          <!-- Header Calculator Quick Access Button -->
+          <button
+            id="header-calculator-btn"
+            type="button"
+            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            title="ფასის გამომთვლელი (კალკულატორი • 2+ ნივთის დაჯამება)"
+            aria-label="ფასის გამომთვლელი კალკულატორი"
+          >
+            <span class="text-sm">🧮</span>
+            <span id="header-calculator-label" class="inline">კალკულატორი</span>
+            <span
+              id="header-calc-badge"
+              class="calc-count-badge hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-amber-600 text-white leading-none"
+            >0</span>
+          </button>
+
           <!-- Header Wishlist Quick Access Button with Counter -->
           <button
             id="header-wishlist-btn"
