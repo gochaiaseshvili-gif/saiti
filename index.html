@@ -1956,6 +1956,163 @@
             </div>
           </div>
 
+          <!-- MOVABLE BLOCK: SHOPPING PRICE CALCULATOR (ფასის გამომთვლელი კალკულატორი 2 ან მეტი ნივთის დაჯამებისთვის) -->
+          <div
+            id="shopping-calculator-box"
+            data-home-block="price-calculator"
+            data-block-label="🧮 ფასის გამომთვლელი (კალკულატორი)"
+            class="movable-page-block rounded-3xl bg-white border-2 border-amber-400 shadow-xl p-4 sm:p-6 space-y-5 relative overflow-hidden transition-all duration-300"
+          >
+            <!-- Top Header & Badge -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-100">
+              <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-amber-500 text-white shadow-md text-2xl shrink-0">
+                  <span>🧮</span>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h2 class="text-base sm:text-lg font-black text-zinc-950 tracking-tight flex items-center gap-2">
+                      <span>ფასის გამომთვლელი (კალკულატორი)</span>
+                      <span class="px-2 py-0.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-[11px] font-black uppercase tracking-wider">2+ ნივთის დაჯამება</span>
+                    </h2>
+                  </div>
+                  <p class="text-xs sm:text-sm text-zinc-600">
+                    აირჩიეთ 2 ან მეტი ნივთი ერთად შესაძენად — იხილეთ საერთო ფასი, ფასდაკლების ჯამი და 0%-იანი განვადება
+                  </p>
+                </div>
+              </div>
+
+              <!-- Top Action: Clear -->
+              <div class="flex items-center gap-2 self-start sm:self-auto">
+                <button
+                  type="button"
+                  id="calc-clear-btn"
+                  class="min-h-[34px] px-3 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 hover:text-red-700 text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 fast-transition"
+                  title="კალკულატორის გასუფთავება"
+                >
+                  <span>🗑️</span>
+                  <span>გასუფთავება</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Product Selection Row & 1-Click Popular Combos -->
+            <div class="space-y-3 bg-amber-50/70 p-3.5 sm:p-4 rounded-2xl border border-amber-200">
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <label for="calc-product-select" class="text-xs font-extrabold text-amber-950 shrink-0 flex items-center gap-1">
+                  <span>➕</span>
+                  <span>ნივთის დამატება:</span>
+                </label>
+                <div class="flex-1 flex gap-2">
+                  <select
+                    id="calc-product-select"
+                    class="flex-1 min-h-[42px] px-3 py-2 bg-white rounded-xl border border-amber-300 text-xs sm:text-sm font-semibold text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                  >
+                    <option value="">-- აირჩიეთ პროდუქტი კატალოგიდან --</option>
+                  </select>
+                  <button
+                    type="button"
+                    id="calc-add-selected-btn"
+                    class="min-h-[42px] px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs sm:text-sm font-black flex items-center gap-1 shadow-sm active:scale-95 fast-transition cursor-pointer shrink-0"
+                  >
+                    <span>+ დამატება</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Popular 1-Click Combo Presets -->
+              <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+                <span class="text-zinc-500 font-bold text-[11px]">პოპულარული წყვილები:</span>
+                <button
+                  type="button"
+                  data-calc-combo="karaoke-mic"
+                  class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-bold shadow-2xs active:scale-95 fast-transition cursor-pointer"
+                >
+                  🎤 კარაოკე + მიკროფონი
+                </button>
+                <button
+                  type="button"
+                  data-calc-combo="solar-karaoke"
+                  class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-bold shadow-2xs active:scale-95 fast-transition cursor-pointer"
+                >
+                  ⚡ სოლარ გენერატორი + კარაოკე
+                </button>
+                <button
+                  type="button"
+                  data-calc-combo="double-karaoke"
+                  class="px-2.5 py-1 rounded-lg bg-white hover:bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-bold shadow-2xs active:scale-95 fast-transition cursor-pointer"
+                >
+                  🔊 2 ცალი დინამიკი (TWS წყვილი)
+                </button>
+              </div>
+            </div>
+
+            <!-- Dynamic List of Added Items -->
+            <div id="calc-items-list" class="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
+              <!-- Rendered via JS -->
+            </div>
+
+            <!-- Summary & Grand Total Calculations Panel -->
+            <div id="calc-summary-panel" class="rounded-2xl bg-gradient-to-br from-amber-500 via-amber-600 to-orange-600 text-white p-4 sm:p-5 shadow-lg space-y-4">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                <!-- Col 1: Quantity and Savings -->
+                <div class="space-y-1 text-amber-100 text-xs sm:text-sm">
+                  <div class="flex items-center justify-between md:justify-start md:gap-2">
+                    <span>არჩეული ნივთები:</span>
+                    <strong id="calc-sum-items-count" class="text-white font-mono-num font-bold text-sm sm:text-base">0 ნივთი</strong>
+                  </div>
+                  <div class="flex items-center justify-between md:justify-start md:gap-2">
+                    <span>საერთო ეკონომია:</span>
+                    <strong id="calc-sum-savings" class="text-emerald-200 font-mono-num font-extrabold text-sm sm:text-base">0 ₾</strong>
+                  </div>
+                  <div class="text-[11px] text-amber-100 flex items-center gap-1 pt-0.5">
+                    <span>🚚</span>
+                    <span>უფასო მიწოდება მთელ საქართველოში</span>
+                  </div>
+                </div>
+
+                <!-- Col 2: Total Price and Monthly Installment -->
+                <div class="bg-black/20 rounded-xl p-3 text-center md:text-left space-y-1 border border-white/20">
+                  <div class="text-xs text-amber-200 uppercase font-black tracking-wider">ჯამური გადასახდელი თანხა:</div>
+                  <div class="flex items-baseline justify-center md:justify-start gap-2">
+                    <span id="calc-sum-total-price" class="text-3xl sm:text-4xl font-black font-mono-num tracking-tight text-white drop-shadow-sm">
+                      0 ₾
+                    </span>
+                    <span id="calc-sum-old-price" class="text-sm font-semibold text-amber-200/80 line-through decoration-red-400 decoration-2 font-mono-num hidden">
+                      0 ₾
+                    </span>
+                  </div>
+                  <div id="calc-installment-note" class="text-xs font-bold text-emerald-200 pt-0.5">
+                    💳 0%-იანი განვადებით: თვეში ~ <span id="calc-sum-monthly" class="font-mono-num font-extrabold text-white">0 ₾</span> (12 თვეზე)
+                  </div>
+                </div>
+
+                <!-- Col 3: 1-Click Order Buttons for Selected Items -->
+                <div class="flex flex-col gap-2">
+                  <button
+                    type="button"
+                    id="calc-order-whatsapp-btn"
+                    class="w-full min-h-[46px] px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-md active:scale-95 fast-transition cursor-pointer"
+                  >
+                    <svg class="w-5 h-5 shrink-0 fill-current" viewBox="0 0 24 24">
+                      <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.664-.699c.983.536 1.777.814 2.796.814 3.179 0 5.767-2.587 5.767-5.766.001-3.181-2.585-5.766-5.767-5.766zm9.969 5.766c0 5.485-4.464 9.948-9.969 9.948-1.745 0-3.376-.452-4.797-1.241l-5.234 1.371 1.397-5.099c-.917-1.488-1.435-3.238-1.435-5.079 0-5.485 4.464-9.948 9.969-9.948s9.969 4.463 9.969 9.948z" />
+                    </svg>
+                    <span>შეკვეთა WhatsApp-ით (1 დაჭერით)</span>
+                  </button>
+
+                  <a
+                    id="calc-call-gocha-link"
+                    href="tel:+995551588579"
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl bg-white/95 hover:bg-white text-zinc-900 text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm active:scale-95 fast-transition"
+                  >
+                    <span>📞</span>
+                    <span>დარეკვა გოჩასთან: +995 551 58 85 79</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- MOVABLE BLOCK 2: CATALOG HEADER BAR -->
           <div
             id="catalog-header-box"
