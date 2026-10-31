@@ -15098,7 +15098,7 @@
               } else if (currentLang === 'ru') {
                 waMsg = `Здравствуйте! Хочу заказать товары из Избранного (${totalCount} шт.):\n\n${lines.join('\n')}\n\nИтого: ${formatGel(totalSum)}`;
               } else {
-                waMsg = `გამარჯობა! მსურს შევუკვეთო ჩემი რჩეული პროდუქტები (${totalCount} ერთეული):\n\n${lines.join('\n')}\n\nსულ ჯამი: ${formatGel(totalSum)}`;
+                waMsg = `გამარჯობა! მსურს შევუკვეთო ჩემი შენახული პროდუქტები (${totalCount} ერთეული):\n\n${lines.join('\n')}\n\nსულ ჯამი: ${formatGel(totalSum)}`;
               }
               wishlistOrderAllWaBtn.href = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(waMsg)}`;
             }
@@ -15158,7 +15158,7 @@
                   ? `Hello, I want to order from my wishlist: ${loc.name} (${formatGel(rawProd.newPrice)})`
                   : currentLang === 'ru'
                   ? `Здравствуйте, хочу заказать из избранного: ${loc.name} (${formatGel(rawProd.newPrice)})`
-                  : `გამარჯობა, მსურს რჩეულებიდან შევუკვეთო: ${loc.name} (${formatGel(rawProd.newPrice)})`
+                  : `გამარჯობა, მსურს შენახულებიდან შევუკვეთო: ${loc.name} (${formatGel(rawProd.newPrice)})`
               );
               const itemWaHref = `https://wa.me/${cleanDigits}?text=${itemWaText}`;
 
