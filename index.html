@@ -19747,10 +19747,11 @@
 
         const HOME_BLOCK_TITLES = {
           'hero-ai-chat': '1. ხელოვნური ინტელექტის (AI) კონსულტანტი',
-          'fb-banner': '2. Facebook გვერდის გრაფა',
-          'catalog-header': '3. კატალოგის სათაურის გრაფა',
-          'product-grid': '4. პროდუქციის კატალოგის გრაფა',
-          'service-standards': '5. მიწოდების და გარანტიის გრაფა'
+          'price-calculator': '2. 🧮 ფასის გამომთვლელი (კალკულატორი • 2+ ნივთის დაჯამება)',
+          'fb-banner': '3. Facebook გვერდის გრაფა',
+          'catalog-header': '4. კატალოგის სათაურის გრაფა',
+          'product-grid': '5. პროდუქციის კატალოგის გრაფა',
+          'service-standards': '6. მიწოდების და გარანტიის გრაფა'
         };
 
         function ensureLayoutSettingsArrays() {
@@ -19760,6 +19761,14 @@
           storeSettings.homeBlocksOrder = storeSettings.homeBlocksOrder.filter((key) => key !== 'home-chat');
           if (!storeSettings.homeBlocksOrder.includes('hero-ai-chat')) {
             storeSettings.homeBlocksOrder.unshift('hero-ai-chat');
+          }
+          if (!storeSettings.homeBlocksOrder.includes('price-calculator')) {
+            const catIdx = storeSettings.homeBlocksOrder.indexOf('catalog-header');
+            if (catIdx !== -1) {
+              storeSettings.homeBlocksOrder.splice(catIdx, 0, 'price-calculator');
+            } else {
+              storeSettings.homeBlocksOrder.push('price-calculator');
+            }
           }
           DEFAULT_SETTINGS.homeBlocksOrder.forEach((key) => {
             if (!storeSettings.homeBlocksOrder.includes(key)) {
