@@ -14762,6 +14762,15 @@
             }, 120);
             return;
           }
+          const calcAddBtn = e.target.closest('[data-calc-add-id]');
+          if (calcAddBtn) {
+            e.stopPropagation();
+            const prodId = calcAddBtn.getAttribute('data-calc-add-id');
+            if (typeof addCalculatorItem === 'function') {
+              addCalculatorItem(prodId);
+            }
+            return;
+          }
           const cardScreenshotBtn = e.target.closest('[data-card-screenshot]');
           if (cardScreenshotBtn) {
             e.stopPropagation();
