@@ -18064,6 +18064,9 @@
           try {
             const payload = {
               sessionId: targetSessionId,
+              userId: (chatActiveRole === 'customer' && currentUser) ? currentUser.id : undefined,
+              customerAvatar: (chatActiveRole === 'customer' && currentUser) ? currentUser.avatar : undefined,
+              customerEmail: (chatActiveRole === 'customer' && currentUser) ? currentUser.email : undefined,
               sender: chatActiveRole,
               senderName:
                 chatActiveRole === 'seller'
