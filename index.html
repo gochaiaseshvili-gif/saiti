@@ -17977,9 +17977,21 @@
           const nameInp = document.getElementById('ai-bot-name-input');
           const greetInp = document.getElementById('ai-bot-greeting-input');
           const instInp = document.getElementById('ai-bot-instructions-input');
+          const universalToggle = document.getElementById('ai-bot-universal-gemini-toggle');
+          const universalStatus = document.getElementById('ai-bot-universal-gemini-status');
+
           if (nameInp) nameInp.value = aiBotConfig.botName || '';
           if (greetInp) greetInp.value = aiBotConfig.greetingMessage || '';
           if (instInp) instInp.value = aiBotConfig.customInstructions || '';
+          if (universalToggle) {
+            universalToggle.checked = aiBotConfig.universalGeminiMode !== false;
+            if (universalStatus) {
+              universalStatus.textContent = universalToggle.checked ? 'ჩართულია' : 'გამორთულია';
+              universalStatus.className = universalToggle.checked
+                ? 'ml-2.5 text-xs font-black text-violet-950'
+                : 'ml-2.5 text-xs font-bold text-zinc-500';
+            }
+          }
           renderAiBotStatusUI();
           renderAiBotQaPairsList();
         }
@@ -18004,10 +18016,14 @@
           const nameInp = document.getElementById('ai-bot-name-input');
           const greetInp = document.getElementById('ai-bot-greeting-input');
           const instInp = document.getElementById('ai-bot-instructions-input');
+          const universalToggle = document.getElementById('ai-bot-universal-gemini-toggle');
 
           if (nameInp && nameInp.value.trim()) aiBotConfig.botName = nameInp.value.trim();
           if (greetInp) aiBotConfig.greetingMessage = greetInp.value.trim();
           if (instInp) aiBotConfig.customInstructions = instInp.value.trim();
+          if (universalToggle) {
+            aiBotConfig.universalGeminiMode = Boolean(universalToggle.checked);
+          }
           aiBotConfig.enabled = aiBotConfig.mode !== 'off';
 
           saveAiBotConfigToLocal(aiBotConfig);
