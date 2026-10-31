@@ -18427,6 +18427,439 @@
         connectChatWebSocket();
 
         // =========================================================================
+        // SHOPPING PRICE CALCULATOR ENGINE (ფასის გამომთვლელი 2 ან მეტი ნივთისთვის)
+        // =========================================================================
+        let calculatorItems = [];
+        try {
+          const savedCalc = localStorage.getItem('vv_shopping_calc_items');
+          if (savedCalc) {
+            const parsed = JSON.parse(savedCalc);
+            if (Array.isArray(parsed)) {
+              calculatorItems = parsed.filter((it) => it && it.productId);
+            }
+          }
+        } catch (e) {
+          calculatorItems = [];
+        }
+
+        function saveCalculatorState() {
+          try {
+            localStorage.setItem('vv_shopping_calc_items', JSON.stringify(calculatorItems));
+          } catch (e) {}
+          updateCalculatorBadge();
+        }
+
+        function updateCalculatorBadge() {
+          const totalQty = calculatorItems.reduce((acc, it) => acc + (Math.max(1, Number(it.qty) || 1)), 0);
+          const headerBadge = document.getElementById('header-calc-badge');
+          const toolbarBadge = document.getElementById('toolbar-calc-badge');
+          if (headerBadge) {
+            headerBadge.textContent = String(totalQty);
+            if (totalQty > 0) {
+              headerBadge.classList.remove('hidden');
+            } else {
+              headerBadge.classList.add('hidden');
+            }
+          }
+          if (toolbarBadge) {
+            toolbarBadge.textContent = String(totalQty);
+            if (totalQty > 0) {
+              toolbarBadge.classList.remove('hidden');
+            } else {
+              toolbarBadge.classList.add('hidden');
+            }
+          }
+        }
+
+        function populateCalculatorProductSelect() {
+          const sel = document.getElementById('calc-product-select');
+          if (!sel) return;
+          const currentVal = sel.value;
+          const activeTheme = typeof activeThemeColor !== 'undefined' ? activeThemeColor : 'amber';
+          let html = '<option value="">-- აირჩიეთ პროდუქტი კატალოგიდან --</option>';
+
+          const sortedProds = [...(productsList || [])].sort((a, b) => {
+            const catA = String(a.categoryLabel || a.category || '');
+            const catB = String(b.categoryLabel || b.category || '');
+            if (catA !== catB) return catA.localeCompare(catB, 'ka');
+            return Number(a.newPrice || 0) - Number(b.newPrice || 0);
+          });
+
+          sortedProds.forEach((prod) => {
+            const pName = String(prod.name || '').trim();
+            const pPrice = Number(prod.newPrice) || 0;
+            const pCat = String(prod.categoryLabel || prod.category || '').trim();
+            html += `<option value="${prod.id}">[${pCat || 'პროდუქტი'}] ${pName} — ${pPrice} ₾</option>`;
+          });
+          sel.innerHTML = html;
+          if (currentVal && productsList.some((p) => p.id === currentVal)) {
+            sel.value = currentVal;
+          }
+        }
+
+        function scrollToCalculator() {
+          const calcBox = document.getElementById('shopping-calculator-box');
+          if (calcBox) {
+            calcBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            calcBox.classList.add('ring-4', 'ring-amber-400');
+            setTimeout(() => {
+              calcBox.classList.remove('ring-4', 'ring-amber-400');
+            }, 1800);
+          }
+        }
+
+        function addCalculatorItem(productId, qty = 1, opts = { scroll: true, toast: true }) {
+          if (!productId) return;
+          const product = productsList.find((p) => p.id === productId);
+          if (!product) return;
+
+          const existing = calculatorItems.find((it) => it.productId === productId);
+          if (existing) {
+            existing.qty = (Number(existing.qty) || 1) + (Number(qty) || 1);
+          } else {
+            calculatorItems.push({ productId, qty: Math.max(1, Number(qty) || 1) });
+          }
+
+          saveCalculatorState();
+          renderCalculatorUI();
+
+          if (opts.toast !== false && typeof showCpToast === 'function') {
+            showCpToast(`🧮 ${product.name} დაემატა კალკულატორში!`);
+          }
+          if (opts.scroll !== false) {
+            scrollToCalculator();
+          }
+        }
+
+        function updateCalculatorItemQty(productId, delta) {
+          const item = calculatorItems.find((it) => it.productId === productId);
+          if (!item) return;
+          const nextQty = (Number(item.qty) || 1) + delta;
+          if (nextQty <= 0) {
+            calculatorItems = calculatorItems.filter((it) => it.productId !== productId);
+            if (typeof showCpToast === 'function') {
+              showCpToast('🗑️ ნივთი წაიშალა კალკულატორიდან');
+            }
+          } else {
+            item.qty = nextQty;
+          }
+          saveCalculatorState();
+          renderCalculatorUI();
+        }
+
+        function removeCalculatorItem(productId) {
+          calculatorItems = calculatorItems.filter((it) => it.productId !== productId);
+          saveCalculatorState();
+          renderCalculatorUI();
+          if (typeof showCpToast === 'function') {
+            showCpToast('🗑️ ნივთი წაიშალა კალკულატორიდან');
+          }
+        }
+
+        function clearCalculator() {
+          calculatorItems = [];
+          saveCalculatorState();
+          renderCalculatorUI();
+          if (typeof showCpToast === 'function') {
+            showCpToast('🗑️ კალკულატორი გასუფთავდა');
+          }
+        }
+
+        function renderCalculatorUI() {
+          const listEl = document.getElementById('calc-items-list');
+          const sumItemsCountEl = document.getElementById('calc-sum-items-count');
+          const sumSavingsEl = document.getElementById('calc-sum-savings');
+          const sumTotalPriceEl = document.getElementById('calc-sum-total-price');
+          const sumOldPriceEl = document.getElementById('calc-sum-old-price');
+          const sumMonthlyEl = document.getElementById('calc-sum-monthly');
+          const waBtn = document.getElementById('calc-order-whatsapp-btn');
+          const callLink = document.getElementById('calc-call-gocha-link');
+
+          if (!listEl) return;
+
+          // Filter out any stale items that don't exist in productsList
+          const validItems = [];
+          for (const it of calculatorItems) {
+            const p = productsList.find((prod) => prod.id === it.productId);
+            if (p) validItems.push({ ...it, product: p });
+          }
+
+          let grandTotal = 0;
+          let grandOldTotal = 0;
+          let totalPieces = 0;
+
+          if (validItems.length === 0) {
+            listEl.innerHTML = `
+              <div class="rounded-2xl border-2 border-dashed border-amber-200 bg-amber-50/50 p-6 text-center space-y-3">
+                <div class="text-3xl">🧮</div>
+                <div class="text-sm font-extrabold text-amber-950">კალკულატორი ცარიელია</div>
+                <p class="text-xs text-zinc-600 max-w-md mx-auto">
+                  აირჩიეთ ნივთები ზემოთ ჩამოსაშლელი სიიდან ან დააჭირეთ <strong>„+ კალკულატორში“</strong> ღილაკს ნებისმიერი პროდუქტის ბარათზე 2 ან მეტი ნივთის დასაჯამებლად.
+                </p>
+                <div class="pt-1 flex flex-wrap justify-center gap-2">
+                  <button
+                    type="button"
+                    data-calc-combo="karaoke-mic"
+                    class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-xs active:scale-95 fast-transition cursor-pointer"
+                  >
+                    + სცადეთ: კარაოკე + მიკროფონი
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            let itemsHtml = '';
+            validItems.forEach(({ productId, qty, product }) => {
+              const unitPrice = Number(product.newPrice) || 0;
+              const unitOldPrice = Number(product.oldPrice) || unitPrice;
+              const subtotal = unitPrice * qty;
+              const subtotalOld = unitOldPrice * qty;
+
+              grandTotal += subtotal;
+              grandOldTotal += subtotalOld;
+              totalPieces += qty;
+
+              const imgSrc = typeof getProductImageSrc === 'function'
+                ? getProductImageSrc(product, typeof activeThemeColor !== 'undefined' ? activeThemeColor : 'amber')
+                : (product.images && product.images[0]) || '';
+
+              itemsHtml += `
+                <div class="flex items-center justify-between gap-3 p-3 rounded-2xl bg-amber-50/50 hover:bg-amber-50 border border-amber-200/90 shadow-2xs fast-transition">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <img
+                      src="${imgSrc}"
+                      alt="${product.name}"
+                      class="w-12 h-12 sm:w-14 sm:h-14 rounded-xl object-contain bg-white border border-amber-200 p-1 shrink-0"
+                    />
+                    <div class="min-w-0 flex-1">
+                      <div class="text-[11px] font-bold text-amber-800 truncate">${product.categoryLabel || product.category || 'პროდუქტი'}</div>
+                      <h4 class="text-xs sm:text-sm font-black text-zinc-900 truncate leading-snug">${product.name}</h4>
+                      <div class="flex items-center gap-2 text-xs text-zinc-500 font-mono-num mt-0.5">
+                        <span class="font-bold text-zinc-900">${unitPrice} ₾</span>
+                        <span>×</span>
+                        <span>${qty} ცალი</span>
+                        <span>=</span>
+                        <strong class="text-amber-900 font-black text-sm">${subtotal} ₾</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Quantity Controls & Remove -->
+                  <div class="flex items-center gap-2 shrink-0">
+                    <div class="inline-flex items-center bg-white rounded-xl border border-amber-300 shadow-2xs p-0.5">
+                      <button
+                        type="button"
+                        data-calc-qty-action="minus"
+                        data-calc-id="${productId}"
+                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-amber-100 text-zinc-800 font-black text-sm flex items-center justify-center cursor-pointer active:scale-90 fast-transition"
+                        title="რაოდენობის დაკლება"
+                      >−</button>
+                      <span class="w-7 sm:w-8 text-center font-mono-num font-black text-xs sm:text-sm text-zinc-950">${qty}</span>
+                      <button
+                        type="button"
+                        data-calc-qty-action="plus"
+                        data-calc-id="${productId}"
+                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg hover:bg-amber-100 text-zinc-800 font-black text-sm flex items-center justify-center cursor-pointer active:scale-90 fast-transition"
+                        title="რაოდენობის მომატება"
+                      >+</button>
+                    </div>
+
+                    <button
+                      type="button"
+                      data-calc-remove-id="${productId}"
+                      class="w-8 h-8 rounded-xl bg-stone-100 hover:bg-rose-100 text-zinc-500 hover:text-rose-700 flex items-center justify-center font-bold text-sm cursor-pointer active:scale-90 fast-transition"
+                      title="ნივთის ამოშლა კალკულატორიდან"
+                    >✕</button>
+                  </div>
+                </div>
+              `;
+            });
+            listEl.innerHTML = itemsHtml;
+          }
+
+          const savings = Math.max(0, grandOldTotal - grandTotal);
+          const monthly = Math.round(grandTotal / 12);
+
+          if (sumItemsCountEl) {
+            sumItemsCountEl.textContent = `${validItems.length} ნივთი (სულ ${totalPieces} ცალი)`;
+          }
+          if (sumSavingsEl) {
+            sumSavingsEl.textContent = savings > 0 ? `-${savings} ₾ (ეკონომია)` : '0 ₾';
+          }
+          if (sumTotalPriceEl) {
+            sumTotalPriceEl.textContent = `${grandTotal} ₾`;
+          }
+          if (sumOldPriceEl) {
+            if (savings > 0) {
+              sumOldPriceEl.textContent = `${grandOldTotal} ₾`;
+              sumOldPriceEl.classList.remove('hidden');
+            } else {
+              sumOldPriceEl.classList.add('hidden');
+            }
+          }
+          if (sumMonthlyEl) {
+            sumMonthlyEl.textContent = `${monthly} ₾`;
+          }
+
+          // Update WhatsApp Order and Call Buttons
+          const contactName = String(storeSettings.contactName || 'გოჩა').trim() || 'გოჩა';
+          const cleanDigits = String(storeSettings.phoneDigits || '995551588579').replace(/\D/g, '');
+          const displayPhone = typeof formatPhoneNumber === 'function'
+            ? formatPhoneNumber(storeSettings.phoneDigits || '995551588579')
+            : '+995 551 58 85 79';
+
+          if (callLink) {
+            callLink.href = `tel:+${cleanDigits}`;
+            callLink.textContent = `📞 დარეკვა ${contactName}სთან: ${displayPhone}`;
+          }
+
+          if (waBtn) {
+            waBtn.onclick = () => {
+              if (validItems.length === 0) {
+                if (typeof showCpToast === 'function') {
+                  showCpToast('⚠️ გთხოვთ ჯერ დაამატოთ 2 ან მეტი ნივთი კალკულატორში');
+                }
+                return;
+              }
+              const lines = [
+                `გამარჯობა ${contactName}, მსურს ${validItems.length} ნივთის ერთად შეკვეთა კალკულატორიდან:`
+              ];
+              validItems.forEach(({ qty, product }, idx) => {
+                const sub = (Number(product.newPrice) || 0) * qty;
+                lines.push(`${idx + 1}. ${product.name} — ${qty} ცალი (${sub} ₾)`);
+              });
+              lines.push(`---------------------------`);
+              lines.push(`ჯამური გადასახდელი თანხა: ${grandTotal} ₾`);
+              if (savings > 0) {
+                lines.push(`ფასდაკლების საერთო ეკონომია: -${savings} ₾`);
+              }
+              lines.push(`(თვეში 0%-ით: ~${monthly} ₾/თვე)`);
+              lines.push(`გთხოვთ დამიდასტუროთ შეკვეთა და მიწოდების დრო.`);
+
+              const waUrl = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(lines.join('\n'))}`;
+              window.open(waUrl, '_blank', 'noopener,noreferrer');
+            };
+          }
+        }
+
+        function initShoppingPriceCalculator() {
+          populateCalculatorProductSelect();
+          updateCalculatorBadge();
+          renderCalculatorUI();
+
+          // Add selected from dropdown
+          const addSelectedBtn = document.getElementById('calc-add-selected-btn');
+          const sel = document.getElementById('calc-product-select');
+          if (addSelectedBtn && sel) {
+            addSelectedBtn.addEventListener('click', () => {
+              const pId = sel.value;
+              if (!pId) {
+                if (typeof showCpToast === 'function') {
+                  showCpToast('⚠️ გთხოვთ აირჩიოთ პროდუქტი სიიდან');
+                }
+                return;
+              }
+              addCalculatorItem(pId, 1, { scroll: false, toast: true });
+            });
+          }
+
+          // Clear button
+          const clearBtn = document.getElementById('calc-clear-btn');
+          if (clearBtn) {
+            clearBtn.addEventListener('click', clearCalculator);
+          }
+
+          // Quick Jump Buttons
+          const headerCalcBtn = document.getElementById('header-calculator-btn');
+          if (headerCalcBtn) {
+            headerCalcBtn.addEventListener('click', scrollToCalculator);
+          }
+          const toolbarCalcBtn = document.getElementById('toolbar-calculator-btn');
+          if (toolbarCalcBtn) {
+            toolbarCalcBtn.addEventListener('click', scrollToCalculator);
+          }
+
+          // Modal Add to Calculator Button
+          const modalAddCalcBtn = document.getElementById('modal-add-to-calc-btn');
+          if (modalAddCalcBtn) {
+            modalAddCalcBtn.addEventListener('click', () => {
+              if (activeModalProduct) {
+                addCalculatorItem(activeModalProduct.id, 1, { scroll: true, toast: true });
+                closeProductModal();
+              }
+            });
+          }
+
+          // Event Delegation inside Calculator Container for Quantities and Remove
+          const calcBox = document.getElementById('shopping-calculator-box');
+          if (calcBox) {
+            calcBox.addEventListener('click', (e) => {
+              const qtyBtn = e.target.closest('[data-calc-qty-action]');
+              if (qtyBtn) {
+                const action = qtyBtn.getAttribute('data-calc-qty-action');
+                const pId = qtyBtn.getAttribute('data-calc-id');
+                if (pId) {
+                  updateCalculatorItemQty(pId, action === 'plus' ? 1 : -1);
+                }
+                return;
+              }
+
+              const removeBtn = e.target.closest('[data-calc-remove-id]');
+              if (removeBtn) {
+                const pId = removeBtn.getAttribute('data-calc-remove-id');
+                if (pId) {
+                  removeCalculatorItem(pId);
+                }
+                return;
+              }
+
+              const comboBtn = e.target.closest('[data-calc-combo]');
+              if (comboBtn) {
+                const comboType = comboBtn.getAttribute('data-calc-combo');
+                handlePopularCombo(comboType);
+                return;
+              }
+            });
+          }
+        }
+
+        function handlePopularCombo(type) {
+          if (!productsList || productsList.length === 0) return;
+
+          if (type === 'karaoke-mic') {
+            const speaker = productsList.find((p) => p.category === 'karaoke' || String(p.name).toLowerCase().includes('კარაოკე')) || productsList[0];
+            const mic = productsList.find((p) => p.category === 'microphone' || String(p.name).toLowerCase().includes('მიკროფონ')) || productsList[1];
+            if (speaker) addCalculatorItem(speaker.id, 1, { scroll: false, toast: false });
+            if (mic && mic.id !== (speaker && speaker.id)) addCalculatorItem(mic.id, 1, { scroll: false, toast: false });
+            if (typeof showCpToast === 'function') {
+              showCpToast('🎤 კარაოკე + მიკროფონის კომპლექტი დაემატა კალკულატორში!');
+            }
+            scrollToCalculator();
+          } else if (type === 'solar-karaoke') {
+            const solar = productsList.find((p) => p.category === 'solar' || String(p.name).toLowerCase().includes('სოლარ')) || productsList[0];
+            const speaker = productsList.find((p) => p.category === 'karaoke' || String(p.name).toLowerCase().includes('კარაოკე')) || productsList[1];
+            if (solar) addCalculatorItem(solar.id, 1, { scroll: false, toast: false });
+            if (speaker && speaker.id !== (solar && solar.id)) addCalculatorItem(speaker.id, 1, { scroll: false, toast: false });
+            if (typeof showCpToast === 'function') {
+              showCpToast('⚡ სოლარ გენერატორი + კარაოკე დაემატა კალკულატორში!');
+            }
+            scrollToCalculator();
+          } else if (type === 'double-karaoke') {
+            const speaker = productsList.find((p) => p.category === 'karaoke' || String(p.name).toLowerCase().includes('კარაოკე')) || productsList[0];
+            if (speaker) {
+              addCalculatorItem(speaker.id, 2, { scroll: false, toast: false });
+              if (typeof showCpToast === 'function') {
+                showCpToast('🔊 2 ცალი დინამიკი (TWS წყვილი) დაემატა კალკულატორში!');
+              }
+              scrollToCalculator();
+            }
+          }
+        }
+
+        // Initialize Calculator
+        initShoppingPriceCalculator();
+
+        // =========================================================================
         // INTERACTIVE SITE WEATHER ENGINE (SUN ☀️, RAIN 🌧️, SNOW ❄️, OFF 🌤️)
         // =========================================================================
         const weatherCanvas = document.getElementById('weather-canvas');
