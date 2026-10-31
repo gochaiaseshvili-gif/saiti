@@ -483,6 +483,86 @@
             </select>
             <span class="pointer-events-none absolute right-2 text-zinc-600 text-[10px] font-black select-none">▼</span>
           </div>
+
+          <!-- User Authentication & Social Profile Header Button -->
+          <div id="header-user-auth-zone" class="relative inline-flex items-center">
+            <!-- Logged Out Button -->
+            <button
+              id="header-user-login-btn"
+              type="button"
+              class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:brightness-110 text-white border border-violet-400 text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="მარტივი რეგისტრაცია / შესვლა სოციალური ქსელით (Google / Facebook)"
+              aria-label="მომხმარებლის პროფილი და ავტორიზაცია"
+            >
+              <span class="text-sm">👤</span>
+              <span id="header-user-btn-label">შესვლა</span>
+            </button>
+
+            <!-- Logged In Chip with Avatar & Dropdown -->
+            <div id="header-user-logged-wrap" class="relative inline-flex items-center hidden">
+              <button
+                id="header-user-logged-btn"
+                type="button"
+                class="min-h-[34px] sm:min-h-[36px] pl-1.5 pr-2.5 py-1 rounded-xl bg-white hover:bg-stone-50 text-zinc-950 border border-violet-300 shadow-sm text-xs font-black flex items-center gap-1.5 cursor-pointer active:scale-[0.98] fast-transition whitespace-nowrap"
+                title="ჩემი პროფილი და მიმოწერის ისტორია"
+              >
+                <img id="header-user-avatar" src="" alt="avatar" class="w-6 h-6 rounded-full object-cover border border-violet-400 shrink-0" />
+                <span id="header-user-name" class="max-w-[75px] sm:max-w-[110px] truncate text-xs font-black text-zinc-950">...</span>
+                <span class="text-[9px] text-zinc-500">▼</span>
+              </button>
+
+              <!-- Quick Dropdown Menu -->
+              <div
+                id="header-user-dropdown"
+                class="hidden absolute right-0 top-full mt-2 w-64 rounded-2xl bg-white border border-zinc-200 shadow-2xl p-2.5 space-y-2 z-50 text-zinc-900"
+              >
+                <div class="p-2.5 rounded-xl bg-violet-50 border border-violet-100 flex items-center gap-2.5">
+                  <img id="dropdown-user-avatar" src="" alt="avatar" class="w-10 h-10 rounded-full object-cover border-2 border-violet-400 shrink-0" />
+                  <div class="min-w-0 flex-1">
+                    <div id="dropdown-user-name" class="text-xs font-black text-zinc-950 truncate">...</div>
+                    <div id="dropdown-user-info" class="text-[11px] text-zinc-500 truncate">...</div>
+                    <span id="dropdown-user-badge" class="inline-block mt-0.5 text-[9px] font-extrabold px-1.5 py-0.2 rounded bg-violet-200 text-violet-900">Google</span>
+                  </div>
+                </div>
+
+                <div class="space-y-1">
+                  <button
+                    type="button"
+                    id="dropdown-open-chat-btn"
+                    class="w-full text-left px-3 py-2 rounded-xl hover:bg-violet-50 text-xs font-extrabold text-violet-950 flex items-center justify-between cursor-pointer fast-transition"
+                  >
+                    <span class="flex items-center gap-2">💬 ჩემი მიმოწერა</span>
+                    <span id="dropdown-chat-count" class="px-1.5 py-0.5 text-[10px] rounded-full bg-violet-600 text-white font-black">0</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="dropdown-open-wishlist-btn"
+                    class="w-full text-left px-3 py-2 rounded-xl hover:bg-rose-50 text-xs font-extrabold text-rose-950 flex items-center justify-between cursor-pointer fast-transition"
+                  >
+                    <span class="flex items-center gap-2">❤️ ჩემი შენახული</span>
+                    <span id="dropdown-wishlist-count" class="px-1.5 py-0.5 text-[10px] rounded-full bg-rose-600 text-white font-black">0</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="dropdown-open-profile-btn"
+                    class="w-full text-left px-3 py-2 rounded-xl hover:bg-stone-100 text-xs font-extrabold text-zinc-800 flex items-center gap-2 cursor-pointer fast-transition"
+                  >
+                    <span>⚙️ პროფილის რედაქტირება</span>
+                  </button>
+                </div>
+
+                <div class="pt-1.5 border-t border-zinc-100">
+                  <button
+                    type="button"
+                    id="dropdown-logout-btn"
+                    class="w-full text-left px-3 py-2 rounded-xl hover:bg-rose-50 text-xs font-extrabold text-rose-700 flex items-center gap-2 cursor-pointer fast-transition"
+                  >
+                    <span>🚪 გამოსვლა</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
