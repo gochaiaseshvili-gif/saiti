@@ -17898,7 +17898,9 @@
                   ? isAiBotMsg
                     ? `<span class="px-1.5 py-0.5 rounded bg-emerald-400 text-zinc-950 text-[10px] font-black">${escapeHtmlSafe(m.senderName || aiBotConfig.botName || '🤖 AI ასისტენტი')}</span>`
                     : `<span class="px-1.5 py-0.5 rounded bg-amber-400 text-zinc-950 text-[10px] font-black">გამყიდველი • ${escapeHtmlSafe(storeSettings.contactName || 'გოჩა')}</span>`
-                  : `<span class="px-1.5 py-0.5 rounded bg-black/20 text-white text-[10px] font-bold">👤 ${escapeHtmlSafe(m.senderName || 'კლიენტი')}</span>`;
+                  : m.customerAvatar
+                    ? `<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/20 text-white text-[10px] font-bold"><img src="${escapeHtmlSafe(m.customerAvatar)}" class="w-3.5 h-3.5 rounded-full object-cover inline" /> ${escapeHtmlSafe(m.senderName || 'კლიენტი')}</span>`
+                    : `<span class="px-1.5 py-0.5 rounded bg-black/20 text-white text-[10px] font-bold">👤 ${escapeHtmlSafe(m.senderName || 'კლიენტი')}</span>`;
 
                 const productTagHtml = m.productName
                   ? `<button type="button" data-chat-open-prod="${escapeHtmlSafe(m.productId || '')}" class="mt-1 inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-black/25 hover:bg-black/40 text-[11px] font-semibold text-amber-200 cursor-pointer max-w-full truncate">
