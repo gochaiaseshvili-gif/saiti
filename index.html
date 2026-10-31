@@ -18153,6 +18153,28 @@
             });
           });
 
+          const universalGeminiToggle = document.getElementById('ai-bot-universal-gemini-toggle');
+          const universalGeminiStatus = document.getElementById('ai-bot-universal-gemini-status');
+          if (universalGeminiToggle) {
+            universalGeminiToggle.addEventListener('change', () => {
+              aiBotConfig.universalGeminiMode = Boolean(universalGeminiToggle.checked);
+              if (universalGeminiStatus) {
+                universalGeminiStatus.textContent = universalGeminiToggle.checked ? 'ჩართულია' : 'გამორთულია';
+                universalGeminiStatus.className = universalGeminiToggle.checked
+                  ? 'ml-2.5 text-xs font-black text-violet-950'
+                  : 'ml-2.5 text-xs font-bold text-zinc-500';
+              }
+              persistAiBotConfigToServer(false);
+              if (typeof showCpToast === 'function') {
+                showCpToast(
+                  universalGeminiToggle.checked
+                    ? '🧠 უნივერსალური Gemini რეჟიმი გააქტიურებულია (ბოტი ფიქრობს და პასუხობს ყველა თემაზე)!'
+                    : 'ℹ️ უნივერსალური Gemini რეჟიმი გამორთულია.'
+                );
+              }
+            });
+          }
+
           if (addQaBtn) {
             addQaBtn.addEventListener('click', () => {
               const qInp = document.getElementById('ai-bot-new-q-input');
