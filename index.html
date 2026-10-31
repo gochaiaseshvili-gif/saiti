@@ -5004,6 +5004,34 @@
       </div>
 
       <div id="home-chat-body">
+        <!-- Customer Auth & Correspondence Protection Ribbon -->
+        <div id="home-chat-auth-ribbon" class="px-3 py-1.5 bg-gradient-to-r from-violet-50 to-indigo-50 border-b border-violet-200/80 flex items-center justify-between gap-2 text-xs">
+          <!-- Unauthenticated state -->
+          <div id="home-chat-unauth-msg" class="flex items-center justify-between gap-2 w-full text-[11px] text-zinc-700">
+            <span class="flex items-center gap-1.5">
+              <span>💡</span>
+              <span>შედით სოციალური ქსელით, რათა მიმოწერა არ დაგეკარგოთ:</span>
+            </span>
+            <button
+              type="button"
+              id="home-chat-login-trigger-btn"
+              class="px-2.5 py-0.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white font-extrabold text-[11px] cursor-pointer whitespace-nowrap shadow-2xs"
+            >
+              👤 შესვლა
+            </button>
+          </div>
+          <!-- Authenticated state -->
+          <div id="home-chat-auth-msg" class="hidden flex items-center justify-between gap-2 w-full text-[11px] font-bold text-violet-950">
+            <div class="flex items-center gap-2 min-w-0">
+              <img id="home-chat-user-badge-avatar" src="" alt="avatar" class="w-5 h-5 rounded-full object-cover border border-violet-400 shrink-0" />
+              <span class="truncate">
+                მიმოწერა დაცულია: <strong id="home-chat-user-badge-name" class="text-violet-900">...</strong>
+              </span>
+            </div>
+            <span id="home-chat-user-provider-tag" class="px-1.5 py-0.2 rounded bg-violet-200 text-violet-800 text-[9px] font-black uppercase shrink-0">Google</span>
+          </div>
+        </div>
+
         <!-- Customer Name/Phone -->
         <div id="home-chat-customer-bar" class="px-3 py-2 bg-stone-100 border-b border-zinc-200 grid grid-cols-2 gap-1.5">
           <input
