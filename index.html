@@ -11171,6 +11171,17 @@
                           <span>${strings.cardShareBtn}</span>
                         </button>
                       </div>
+
+                      <!-- 1-Click Add to Shopping Price Calculator Button -->
+                      <button
+                        type="button"
+                        data-calc-add-id="${rawProduct.id}"
+                        class="w-full min-h-[36px] px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 fast-transition shadow-2xs cursor-pointer"
+                        title="დაამატეთ ფასის გამომთვლელში (კალკულატორში) 2 ან მეტი ნივთის დასაჯამებლად"
+                      >
+                        <span class="text-sm">🧮</span>
+                        <span>+ კალკულატორში დამატება</span>
+                      </button>
                     </div>
                   </div>
                 </article>
@@ -11183,6 +11194,12 @@
           }
           if (typeof applyWordFormattingToDOM === 'function') {
             applyWordFormattingToDOM();
+          }
+          if (typeof populateCalculatorProductSelect === 'function') {
+            populateCalculatorProductSelect();
+          }
+          if (typeof renderCalculatorUI === 'function') {
+            renderCalculatorUI();
           }
           window.scrollTo({ top: prevScroll, behavior: 'instant' });
         }
