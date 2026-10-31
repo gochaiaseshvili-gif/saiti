@@ -17810,15 +17810,26 @@
           const phone = storeSettings.phoneDisplay || '+995 551 58 85 79';
           const seller = storeSettings.contactName || 'გოჩა';
 
+          const STOP_WORDS = new Set([
+            'როგორ', 'რამდენი', 'არის', 'რა', 'თუ', 'და', 'ან', 'მაქვს', 'გაქვთ',
+            'ხართ', 'ვარ', 'ხდება', 'მინდა', 'გვაქვს', 'ჩემი', 'თქვენი', 'გთხოვთ'
+          ]);
+
           if (Array.isArray(aiBotConfig.qaPairs)) {
             for (const pair of aiBotConfig.qaPairs) {
               if (!pair || !pair.question || !pair.answer) continue;
-              const words = pair.question
-                .toLowerCase()
-                .split(/[\s,?.!-]+/)
-                .filter((w) => w.length >= 3);
-              if (words.some((w) => qLower.includes(w))) {
+              const qClean = pair.question.toLowerCase().trim();
+              if (qLower === qClean || (qClean.length >= 10 && qLower.includes(qClean))) {
                 return pair.answer;
+              }
+              const words = qClean
+                .split(/[\s,?.!-]+/)
+                .filter((w) => w.length >= 3 && !STOP_WORDS.has(w));
+              if (words.length >= 2) {
+                const matchCount = words.filter((w) => qLower.includes(w)).length;
+                if (matchCount >= 2 && matchCount >= Math.ceil(words.length * 0.5)) {
+                  return pair.answer;
+                }
               }
             }
           }
@@ -17852,10 +17863,16 @@
           if (qLower.includes('განვადებ') || qLower.includes('ბანკ')) {
             return `💳 მოქმედებს 0%-იანი განვადება საქართველოს ბანკში, თიბისი ბანკში და კრედო ბანკში. დაგვიკავშირდით: ${phone}.`;
           }
+          if (qLower.includes('ვატ') || qLower.includes('rms') || qLower.includes('pmpo') || qLower.includes('სიმძლავრ')) {
+            return `🔊 RMS არის რეალური უწყვეტი სუფთა სიმძლავრე, ხოლო PMPO წამიერი პიკური მაჩვენებელი. ჩვენი აკუსტიკა შექმნილია მაღალი ეფექტურობის გამაძლიერებლებითა და სუფთა ჟღერადობით! საკონტაქტო: ${phone}.`;
+          }
+          if (qLower.includes('გამოთვლ') || qLower.includes('კალკულატორ') || qLower.includes('wh') || qLower.includes('საათ')) {
+            return `⚡ ენერგიის გამოთვლა: დრო (საათებში) = (ბატარეის Wh × 0.85) / დატვირთვის W. მაგალითად, 1000Wh ბატარეა 100W ტელევიზორს ამუშავებს ~8.5 საათს. საიტზე დამატებული გვაქვს გამომთვლელი კალკულატორიც!`;
+          }
 
           return (
             aiBotConfig.greetingMessage ||
-            `გამარჯობა! მე ვარ ${aiBotConfig.botName}. ${seller} მალე გიპასუხებთ, მანამდე შეგიძლიათ მკითხოთ ნებისმიერი ნივთის ფასი, მონაცემები ან დაგვიტოვოთ თქვენი ტელეფონის ნომერი (${phone}).`
+            `გამარჯობა! მე ვარ ${aiBotConfig.botName}. მზად ვარ გიპასუხოთ ნებისმიერ შეკითხვაზე როგორც ჩვენს პროდუქციაზე, ასევე ზოგად ტექნიკურ საკითხებზე. საკონტაქტო: ${phone} (${seller}).`
           );
         }
 
