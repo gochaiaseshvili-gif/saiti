@@ -9039,7 +9039,11 @@
             }
           });
 
-          // Switcher UI buttons active classes
+          // Switcher UI buttons & compact dropdown sync
+          const headerLangSelect = document.getElementById('header-lang-select');
+          if (headerLangSelect && headerLangSelect.value !== currentLang) {
+            headerLangSelect.value = currentLang;
+          }
           const kaBtn = document.getElementById('lang-btn-ka');
           const enBtn = document.getElementById('lang-btn-en');
           const ruBtn = document.getElementById('lang-btn-ru');
