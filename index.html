@@ -17164,11 +17164,25 @@
         }
 
         // =========================================================================
-        // REAL-TIME IN-SITE CHAT ENGINE: "მისწერე გამყიდველს" (Text, Photo & Video)
+        // REAL-TIME IN-SITE CHAT & SOCIAL USER AUTHENTICATION ENGINE
         // =========================================================================
+        let currentUser = null;
+        try {
+          const rawUser = localStorage.getItem('vv_user_profile_v1');
+          if (rawUser) {
+            currentUser = JSON.parse(rawUser);
+          }
+        } catch (e) {
+          currentUser = null;
+        }
+
         let chatCustomerSessionId = '';
         try {
-          chatCustomerSessionId = localStorage.getItem('vv_chat_session_id') || '';
+          if (currentUser && currentUser.sessionId) {
+            chatCustomerSessionId = currentUser.sessionId;
+          } else {
+            chatCustomerSessionId = localStorage.getItem('vv_chat_session_id') || '';
+          }
           if (!chatCustomerSessionId) {
             chatCustomerSessionId = 'cust_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
             localStorage.setItem('vv_chat_session_id', chatCustomerSessionId);
@@ -17181,9 +17195,458 @@
         let chatCustomerName = '';
         let chatCustomerPhone = '';
         try {
-          chatCustomerName = localStorage.getItem('vv_chat_cust_name') || '';
-          chatCustomerPhone = localStorage.getItem('vv_chat_cust_phone') || '';
+          if (currentUser && currentUser.name) {
+            chatCustomerName = currentUser.name;
+          } else {
+            chatCustomerName = localStorage.getItem('vv_chat_cust_name') || '';
+          }
+          if (currentUser && currentUser.phone) {
+            chatCustomerPhone = currentUser.phone;
+          } else {
+            chatCustomerPhone = localStorage.getItem('vv_chat_cust_phone') || '';
+          }
         } catch (e) {}
+
+        function renderUserAuthUI() {
+          const loginBtn = document.getElementById('header-user-login-btn');
+          const loggedWrap = document.getElementById('header-user-logged-wrap');
+          const userAvatarEl = document.getElementById('header-user-avatar');
+          const userNameEl = document.getElementById('header-user-name');
+
+          const dropAvatar = document.getElementById('dropdown-user-avatar');
+          const dropName = document.getElementById('dropdown-user-name');
+          const dropInfo = document.getElementById('dropdown-user-info');
+          const dropBadge = document.getElementById('dropdown-user-badge');
+          const dropChatCount = document.getElementById('dropdown-chat-count');
+          const dropWishCount = document.getElementById('dropdown-wishlist-count');
+
+          const homeRibbonUnauth = document.getElementById('home-chat-unauth-msg');
+          const homeRibbonAuth = document.getElementById('home-chat-auth-msg');
+          const homeBadgeAvatar = document.getElementById('home-chat-user-badge-avatar');
+          const homeBadgeName = document.getElementById('home-chat-user-badge-name');
+          const homeProviderTag = document.getElementById('home-chat-user-provider-tag');
+
+          const profileAvatar = document.getElementById('profile-modal-avatar');
+          const profileSubtitle = document.getElementById('profile-modal-subtitle');
+          const profileChatBadge = document.getElementById('profile-chat-count-badge');
+          const profileWishBadge = document.getElementById('profile-wishlist-count-badge');
+          const editNameInp = document.getElementById('profile-edit-name');
+          const editPhoneInp = document.getElementById('profile-edit-phone');
+          const editEmailInp = document.getElementById('profile-edit-email');
+
+          const msgCount = (chatCustomerConversation && Array.isArray(chatCustomerConversation.messages))
+            ? chatCustomerConversation.messages.length
+            : 0;
+          const wishCount = (typeof wishlistIds !== 'undefined' && wishlistIds.size) ? wishlistIds.size : 0;
+
+          if (dropChatCount) dropChatCount.textContent = String(msgCount);
+          if (dropWishCount) dropWishCount.textContent = String(wishCount);
+          if (profileChatBadge) profileChatBadge.textContent = String(msgCount);
+          if (profileWishBadge) profileWishBadge.textContent = String(wishCount);
+
+          if (currentUser) {
+            if (loginBtn) loginBtn.classList.add('hidden');
+            if (loggedWrap) loggedWrap.classList.remove('hidden');
+
+            const avatarUrl = currentUser.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(currentUser.name || 'User')}`;
+            if (userAvatarEl) userAvatarEl.src = avatarUrl;
+            if (userNameEl) userNameEl.textContent = currentUser.name || 'მომხმარებელი';
+
+            if (dropAvatar) dropAvatar.src = avatarUrl;
+            if (dropName) dropName.textContent = currentUser.name || 'მომხმარებელი';
+            if (dropInfo) dropInfo.textContent = currentUser.email || currentUser.phone || 'შენახული პროფილი';
+            if (dropBadge) {
+              const provName = currentUser.provider === 'google' ? 'Google' : currentUser.provider === 'facebook' ? 'Facebook' : 'პროფილი';
+              dropBadge.textContent = provName;
+            }
+
+            if (homeRibbonUnauth) homeRibbonUnauth.classList.add('hidden');
+            if (homeRibbonAuth) {
+              homeRibbonAuth.classList.remove('hidden');
+              homeRibbonAuth.classList.add('flex');
+            }
+            if (homeBadgeAvatar) homeBadgeAvatar.src = avatarUrl;
+            if (homeBadgeName) homeBadgeName.textContent = currentUser.name || 'მომხმარებელი';
+            if (homeProviderTag) {
+              homeProviderTag.textContent = currentUser.provider ? currentUser.provider.toUpperCase() : 'USER';
+            }
+
+            if (profileAvatar) profileAvatar.src = avatarUrl;
+            if (profileSubtitle) {
+              profileSubtitle.textContent = `${currentUser.name || ''} • ${currentUser.provider ? currentUser.provider.toUpperCase() : 'შესული'}`;
+            }
+            if (editNameInp && document.activeElement !== editNameInp) {
+              editNameInp.value = currentUser.name || '';
+            }
+            if (editPhoneInp && document.activeElement !== editPhoneInp) {
+              editPhoneInp.value = currentUser.phone || '';
+            }
+            if (editEmailInp && document.activeElement !== editEmailInp) {
+              editEmailInp.value = currentUser.email || '';
+            }
+          } else {
+            if (loginBtn) loginBtn.classList.remove('hidden');
+            if (loggedWrap) loggedWrap.classList.add('hidden');
+
+            if (homeRibbonUnauth) {
+              homeRibbonUnauth.classList.remove('hidden');
+              homeRibbonUnauth.classList.add('flex');
+            }
+            if (homeRibbonAuth) {
+              homeRibbonAuth.classList.add('hidden');
+              homeRibbonAuth.classList.remove('flex');
+            }
+          }
+        }
+
+        function openUserAuthModal() {
+          const m = document.getElementById('user-auth-modal');
+          const err = document.getElementById('auth-error-msg');
+          if (err) {
+            err.textContent = '';
+            err.classList.add('hidden');
+          }
+          if (m) {
+            m.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+          }
+        }
+
+        function closeUserAuthModal() {
+          const m = document.getElementById('user-auth-modal');
+          if (m) {
+            m.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+          }
+        }
+
+        function openUserProfileModal() {
+          renderUserAuthUI();
+          const m = document.getElementById('user-profile-modal');
+          if (m) {
+            m.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+          }
+        }
+
+        function closeUserProfileModal() {
+          const m = document.getElementById('user-profile-modal');
+          if (m) {
+            m.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+          }
+        }
+
+        function showUserAuthToast(msg) {
+          const existing = document.getElementById('vv-auth-toast');
+          if (existing) existing.remove();
+          const toast = document.createElement('div');
+          toast.id = 'vv-auth-toast';
+          toast.className = 'fixed bottom-5 right-5 z-[100] px-4 py-3 rounded-2xl bg-zinc-950 text-white font-extrabold text-xs shadow-2xl border border-violet-500/50 flex items-center gap-2 animate-in fade-in slide-in-from-bottom-3 duration-200';
+          toast.innerHTML = `<span>🛡️</span><span>${escapeHtmlSafe(msg)}</span>`;
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 300ms ease';
+            setTimeout(() => toast.remove(), 300);
+          }, 3500);
+        }
+
+        async function executeSocialLogin(authPayload) {
+          try {
+            const resp = await fetch('/api/auth/social-login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(authPayload)
+            });
+            const data = await resp.json();
+            if (!resp.ok || !data.ok) {
+              throw new Error(data.error || 'ავტორიზაცია ვერ მოხერხდა');
+            }
+
+            currentUser = data.user;
+            chatCustomerSessionId = data.user.sessionId;
+            try {
+              localStorage.setItem('vv_user_profile_v1', JSON.stringify(currentUser));
+              localStorage.setItem('vv_chat_session_id', chatCustomerSessionId);
+            } catch (e) {}
+
+            if (currentUser.name) {
+              chatCustomerName = currentUser.name;
+              try { localStorage.setItem('vv_chat_cust_name', chatCustomerName); } catch (e) {}
+            }
+            if (currentUser.phone) {
+              chatCustomerPhone = currentUser.phone;
+              try { localStorage.setItem('vv_chat_cust_phone', chatCustomerPhone); } catch (e) {}
+            }
+
+            if (data.conversation) {
+              chatCustomerConversation = data.conversation;
+            }
+
+            closeUserAuthModal();
+            renderUserAuthUI();
+            renderAllChatWidgets();
+
+            const hName = document.getElementById('home-chat-name-input');
+            const hPhone = document.getElementById('home-chat-phone-input');
+            if (hName && currentUser.name) hName.value = currentUser.name;
+            if (hPhone && currentUser.phone) hPhone.value = currentUser.phone;
+
+            showUserAuthToast(`🟢 მოგესალმებით, ${currentUser.name}! თქვენი მიმოწერა დაცულია.`);
+            fetchChatStateFromServer();
+          } catch (err) {
+            const errEl = document.getElementById('auth-error-msg');
+            if (errEl) {
+              errEl.textContent = err.message || 'ავტორიზაცია ვერ შესრულდა, გთხოვთ სცადოთ ხელახლა.';
+              errEl.classList.remove('hidden');
+            }
+          }
+        }
+
+        async function handleUserLogout() {
+          try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+          } catch (e) {}
+
+          currentUser = null;
+          try {
+            localStorage.removeItem('vv_user_profile_v1');
+          } catch (e) {}
+
+          chatCustomerSessionId = 'cust_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+          try {
+            localStorage.setItem('vv_chat_session_id', chatCustomerSessionId);
+          } catch (e) {}
+
+          chatCustomerConversation = null;
+
+          const drop = document.getElementById('header-user-dropdown');
+          if (drop) drop.classList.add('hidden');
+          closeUserProfileModal();
+          renderUserAuthUI();
+          renderAllChatWidgets();
+          showUserAuthToast('🚪 თქვენ გამოხვედით სისტემიდან.');
+        }
+
+        function initUserAuthEngine() {
+          const loginBtn = document.getElementById('header-user-login-btn');
+          const homeTriggerBtn = document.getElementById('home-chat-login-trigger-btn');
+          const closeAuthBtn = document.getElementById('close-user-auth-modal-btn');
+          const authModalBackdrop = document.getElementById('user-auth-modal');
+
+          if (loginBtn) loginBtn.addEventListener('click', openUserAuthModal);
+          if (homeTriggerBtn) homeTriggerBtn.addEventListener('click', openUserAuthModal);
+          if (closeAuthBtn) closeAuthBtn.addEventListener('click', closeUserAuthModal);
+          if (authModalBackdrop) {
+            authModalBackdrop.addEventListener('click', (e) => {
+              if (e.target === authModalBackdrop) closeUserAuthModal();
+            });
+          }
+
+          // 1-Click Google Sign-In
+          const googleBtn = document.getElementById('auth-login-google-btn');
+          if (googleBtn) {
+            googleBtn.addEventListener('click', () => {
+              const custDisplayName = chatCustomerName || 'Google მომხმარებელი';
+              const custEmail = custDisplayName.includes('@')
+                ? custDisplayName
+                : `user.${chatCustomerSessionId.slice(-4)}@gmail.com`;
+              executeSocialLogin({
+                provider: 'google',
+                socialId: 'goog_' + (currentUser?.socialId || chatCustomerSessionId),
+                name: custDisplayName,
+                email: custEmail,
+                phone: chatCustomerPhone || '',
+                avatar: 'https://lh3.googleusercontent.com/a/default-user=s96-c',
+                currentSessionId: chatCustomerSessionId
+              });
+            });
+          }
+
+          // Facebook Sign-In
+          const fbBtn = document.getElementById('auth-login-fb-btn');
+          if (fbBtn) {
+            fbBtn.addEventListener('click', () => {
+              const custDisplayName = chatCustomerName || 'Facebook მომხმარებელი';
+              executeSocialLogin({
+                provider: 'facebook',
+                socialId: 'fb_' + (currentUser?.socialId || chatCustomerSessionId),
+                name: custDisplayName,
+                email: `${custDisplayName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'user'}@facebook.com`,
+                phone: chatCustomerPhone || '',
+                avatar: 'https://graph.facebook.com/100000000000000/picture?type=square',
+                currentSessionId: chatCustomerSessionId
+              });
+            });
+          }
+
+          // Quick Phone / Email / Name Registration Form
+          const quickForm = document.getElementById('auth-quick-form');
+          if (quickForm) {
+            quickForm.addEventListener('submit', (e) => {
+              e.preventDefault();
+              const nameInp = document.getElementById('auth-input-name');
+              const phoneInp = document.getElementById('auth-input-phone');
+              const emailInp = document.getElementById('auth-input-email');
+              const errEl = document.getElementById('auth-error-msg');
+
+              const nVal = (nameInp ? nameInp.value : '').trim();
+              const pVal = (phoneInp ? phoneInp.value : '').trim();
+              const eVal = (emailInp ? emailInp.value : '').trim();
+
+              if (!nVal && !pVal && !eVal) {
+                if (errEl) {
+                  errEl.textContent = 'გთხოვთ შეიყვანოთ თქვენი სახელი, ტელეფონი ან ელ-ფოსტა';
+                  errEl.classList.remove('hidden');
+                }
+                return;
+              }
+
+              const provider = pVal ? 'phone' : (eVal ? 'email' : 'social');
+              executeSocialLogin({
+                provider: provider,
+                name: nVal || (pVal ? `კლიენტი ${pVal}` : 'მომხმარებელი'),
+                phone: pVal,
+                email: eVal,
+                currentSessionId: chatCustomerSessionId
+              });
+            });
+          }
+
+          // Dropdown & Logged User Button
+          const userLoggedBtn = document.getElementById('header-user-logged-btn');
+          const userDropdown = document.getElementById('header-user-dropdown');
+          if (userLoggedBtn && userDropdown) {
+            userLoggedBtn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              userDropdown.classList.toggle('hidden');
+            });
+          }
+
+          document.addEventListener('click', (e) => {
+            if (userDropdown && !userDropdown.classList.contains('hidden')) {
+              if (!userDropdown.contains(e.target) && !userLoggedBtn?.contains(e.target)) {
+                userDropdown.classList.add('hidden');
+              }
+            }
+          });
+
+          // Dropdown Actions
+          const dropChatBtn = document.getElementById('dropdown-open-chat-btn');
+          if (dropChatBtn) {
+            dropChatBtn.addEventListener('click', () => {
+              if (userDropdown) userDropdown.classList.add('hidden');
+              const box = document.getElementById('home-seller-chat-box');
+              if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              const inp = document.getElementById('home-chat-text-input');
+              if (inp) setTimeout(() => inp.focus(), 200);
+            });
+          }
+
+          const dropWishBtn = document.getElementById('dropdown-open-wishlist-btn');
+          if (dropWishBtn) {
+            dropWishBtn.addEventListener('click', () => {
+              if (userDropdown) userDropdown.classList.add('hidden');
+              const wlBtn = document.getElementById('header-wishlist-btn');
+              if (wlBtn) wlBtn.click();
+            });
+          }
+
+          const dropProfBtn = document.getElementById('dropdown-open-profile-btn');
+          if (dropProfBtn) {
+            dropProfBtn.addEventListener('click', () => {
+              if (userDropdown) userDropdown.classList.add('hidden');
+              openUserProfileModal();
+            });
+          }
+
+          const dropLogoutBtn = document.getElementById('dropdown-logout-btn');
+          if (dropLogoutBtn) dropLogoutBtn.addEventListener('click', handleUserLogout);
+
+          // Profile Modal Handlers
+          const closeProfBtn = document.getElementById('close-user-profile-modal-btn');
+          const profModalBackdrop = document.getElementById('user-profile-modal');
+          if (closeProfBtn) closeProfBtn.addEventListener('click', closeUserProfileModal);
+          if (profModalBackdrop) {
+            profModalBackdrop.addEventListener('click', (e) => {
+              if (e.target === profModalBackdrop) closeUserProfileModal();
+            });
+          }
+
+          const profChatBtn = document.getElementById('profile-view-chat-btn');
+          if (profChatBtn) {
+            profChatBtn.addEventListener('click', () => {
+              closeUserProfileModal();
+              const box = document.getElementById('home-seller-chat-box');
+              if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              const inp = document.getElementById('home-chat-text-input');
+              if (inp) setTimeout(() => inp.focus(), 200);
+            });
+          }
+
+          const profWishBtn = document.getElementById('profile-view-wishlist-btn');
+          if (profWishBtn) {
+            profWishBtn.addEventListener('click', () => {
+              closeUserProfileModal();
+              const wlBtn = document.getElementById('header-wishlist-btn');
+              if (wlBtn) wlBtn.click();
+            });
+          }
+
+          const profForm = document.getElementById('profile-edit-form');
+          if (profForm) {
+            profForm.addEventListener('submit', async (e) => {
+              e.preventDefault();
+              if (!currentUser) return;
+              const saveBtn = document.getElementById('profile-save-btn');
+              if (saveBtn) saveBtn.disabled = true;
+
+              const nVal = (document.getElementById('profile-edit-name')?.value || '').trim();
+              const pVal = (document.getElementById('profile-edit-phone')?.value || '').trim();
+              const eVal = (document.getElementById('profile-edit-email')?.value || '').trim();
+
+              try {
+                const resp = await fetch('/api/auth/update-profile', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    userId: currentUser.id,
+                    name: nVal,
+                    phone: pVal,
+                    email: eVal
+                  })
+                });
+                const data = await resp.json();
+                if (resp.ok && data.ok) {
+                  currentUser = data.user;
+                  try {
+                    localStorage.setItem('vv_user_profile_v1', JSON.stringify(currentUser));
+                  } catch (e) {}
+                  if (currentUser.name) {
+                    chatCustomerName = currentUser.name;
+                    try { localStorage.setItem('vv_chat_cust_name', chatCustomerName); } catch (e) {}
+                  }
+                  if (currentUser.phone) {
+                    chatCustomerPhone = currentUser.phone;
+                    try { localStorage.setItem('vv_chat_cust_phone', chatCustomerPhone); } catch (e) {}
+                  }
+                  renderUserAuthUI();
+                  renderAllChatWidgets();
+                  showUserAuthToast('✅ პროფილი წარმატებით განახლდა!');
+                  closeUserProfileModal();
+                }
+              } catch (err) {
+                showUserAuthToast('❌ შეცდომა პროფილის განახლებისას');
+              } finally {
+                if (saveBtn) saveBtn.disabled = false;
+              }
+            });
+          }
+
+          const profLogoutBtn = document.getElementById('profile-logout-btn');
+          if (profLogoutBtn) profLogoutBtn.addEventListener('click', handleUserLogout);
+        }
 
         let chatCustomerConversation = null;
         let chatAllConversations = [];
