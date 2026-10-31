@@ -16743,7 +16743,16 @@
           }
         });
 
-        // Language Switcher Button Event Listeners
+        // Language Switcher Event Listeners
+        const headerLangSelect = document.getElementById('header-lang-select');
+        if (headerLangSelect) {
+          headerLangSelect.addEventListener('change', (e) => {
+            const val = e.target.value;
+            if (val === 'ka' || val === 'en' || val === 'ru') {
+              setLanguage(val);
+            }
+          });
+        }
         const langBtnKa = document.getElementById('lang-btn-ka');
         const langBtnEn = document.getElementById('lang-btn-en');
         const langBtnRu = document.getElementById('lang-btn-ru');
