@@ -22039,11 +22039,18 @@
           fetchLiveWeather(false);
         }
 
+        initUserAuthEngine();
+        renderUserAuthUI();
         bindChatWidgetEvents('home');
         bindChatWidgetEvents('modal');
         renderAllChatWidgets();
         fetchChatStateFromServer();
         connectChatWebSocket();
+
+        // 5s background poll to keep chat messages immediately synced across devices
+        setInterval(() => {
+          fetchChatStateFromServer();
+        }, 5000);
 
         // Initial Boot
         resetProductForm();
