@@ -17970,14 +17970,23 @@
 
         async function fetchChatStateFromServer() {
           try {
+            const custUrl = currentUser && currentUser.id
+              ? `/api/chat?userId=${encodeURIComponent(currentUser.id)}&sessionId=${encodeURIComponent(chatCustomerSessionId)}`
+              : `/api/chat?sessionId=${encodeURIComponent(chatCustomerSessionId)}`;
             const [custResp, sellerResp] = await Promise.all([
-              fetch(`/api/chat?sessionId=${encodeURIComponent(chatCustomerSessionId)}`),
+              fetch(custUrl),
               fetch('/api/chat?role=seller')
             ]);
             if (custResp.ok) {
               const custData = await custResp.json();
               if (custData && custData.ok) {
                 chatCustomerConversation = custData.conversation || null;
+                if (custData.sessionId && custData.sessionId !== chatCustomerSessionId) {
+                  chatCustomerSessionId = custData.sessionId;
+                  try {
+                    localStorage.setItem('vv_chat_session_id', chatCustomerSessionId);
+                  } catch (e) {}
+                }
               }
             }
             if (sellerResp.ok) {
@@ -17993,6 +18002,7 @@
               }
             }
             renderAllChatWidgets();
+            renderUserAuthUI();
           } catch (err) {
             console.warn('Chat fetch warning:', err);
           }
