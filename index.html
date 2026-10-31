@@ -8712,6 +8712,9 @@
           const catWlBadge = document.getElementById('cat-wishlist-count-badge');
           if (catWlBadge) catWlBadge.textContent = String(count);
           syncModalWishlistButton();
+          if (typeof renderUserAuthUI === 'function') {
+            renderUserAuthUI();
+          }
         }
 
         function toggleWishlistProduct(productId, e) {
