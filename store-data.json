@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1793394836485,
+  "updatedAt": 1793550167632,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -39,8 +39,8 @@
     "tiktokHandle": "https://www.tiktok.com/@iyidebaiyide?is_from_webapp=1&sender_device=pc",
     "youtubeUrl": "https://www.youtube.com/@iyidebasainteresonivtebi",
     "igHandle": "https://www.instagram.com/iyideba_saintereso_nivtebi/",
-    "weatherMode": "off",
-    "weatherAutoSync": false,
+    "weatherMode": "rain",
+    "weatherAutoSync": true,
     "weatherIntensity": 100,
     "pageBgColor": "#fafaf9",
     "cardBgColor": "#fffbeb",
@@ -152,7 +152,9 @@
       }
     ],
     "homeBlocksOrder": [
+      "hero-ai-chat",
       "fb-banner",
+      "price-calculator",
       "catalog-header",
       "product-grid",
       "service-standards"
