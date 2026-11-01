@@ -5843,10 +5843,457 @@
           </div>
         </div>
       </div>
+    <!-- ======================================================================================== -->
+    <!-- DEDICATED PAGE: ABOUT US (ჩვენ შესახებ • მაღაზია «იყიდება საინტერესო ნივთები»)            -->
+    <!-- ======================================================================================== -->
+    <div
+      id="about-modal-backdrop"
+      class="fixed inset-0 z-[95] hidden bg-stone-50 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="about-modal-title"
+    >
+      <div class="bg-stone-50 w-full min-h-screen flex flex-col">
+        <!-- Sticky Top Navigation Bar -->
+        <div class="sticky top-0 z-30 px-3 sm:px-6 py-2.5 sm:py-3 border-b border-zinc-200 bg-white/95 backdrop-blur-md shrink-0 shadow-2xs">
+          <div class="max-w-5xl mx-auto flex items-center justify-between gap-2">
+            <button
+              id="back-from-about-btn"
+              type="button"
+              class="min-h-[40px] px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300/80 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition cursor-pointer"
+            >
+              <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>მთავარ გვერდზე</span>
+            </button>
+
+            <div class="hidden sm:flex items-center gap-2 text-xs font-bold text-zinc-600 truncate">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>მაღაზია „იყიდება საინტერესო ნივთები“</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <a
+                href="tel:+995551588579"
+                class="min-h-[38px] px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-extrabold flex items-center gap-1.5 shadow-2xs"
+              >
+                <span>📞</span>
+                <span class="font-mono-num">+995 551 58 85 79</span>
+              </a>
+              <button
+                id="close-about-modal-btn"
+                type="button"
+                class="min-h-[40px] min-w-[40px] rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 flex items-center justify-center active:scale-95 fast-transition cursor-pointer"
+                aria-label="დახურვა"
+              >✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Page Content -->
+        <div class="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 flex-1">
+          <!-- Hero Section -->
+          <div class="p-6 sm:p-10 rounded-3xl bg-gradient-to-br from-zinc-950 via-slate-900 to-indigo-950 text-white shadow-xl relative overflow-hidden space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-black">
+              <span>🇬🇪</span>
+              <span>ქართული ონლაინ მაღაზია • iyidebaa.ge</span>
+            </div>
+            <h1 id="about-modal-title" class="text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+              ჩვენ შესახებ — იყიდება საინტერესო ნივთები
+            </h1>
+            <p class="text-sm sm:text-base text-zinc-300 max-w-3xl leading-relaxed">
+              პროფესიონალური კომერციული კარაოკე აკუსტიკური სისტემების, LiFePO4 პორტატული სოლარ გენერატორებისა და ავტონომიური ენერგომომარაგების სპეციალიზებული ონლაინ მაღაზია საქართველოში.
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-3 text-xs font-bold text-zinc-200">
+              <span class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-xl border border-white/15">🚚 უფასო მიწოდება თბილისში</span>
+              <span class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-xl border border-white/15">🛡️ 24 თვე გარანტია</span>
+              <span class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-xl border border-white/15">💳 0% განვადება (BOG, TBC, Credo)</span>
+              <span class="inline-flex items-center gap-1.5 bg-white/10 px-3 py-1 rounded-xl border border-white/15">⭐️ 10,000+ კმაყოფილი კლიენტი</span>
+            </div>
+          </div>
+
+          <!-- Mission & Story -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-sm space-y-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center text-2xl font-black">
+                🎯
+              </div>
+              <h2 class="text-lg sm:text-xl font-black text-zinc-950">ჩვენი მისია და ისტორია</h2>
+              <p class="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                მაღაზია „იყიდება საინტერესო ნივთები“ დაფუძნდა მფლობელისა და ტექნიკური სპეციალისტის — <strong>გოჩა იასეშვილის</strong> მიერ, იმ მიზნით, რომ ქართველ მომხმარებელს ჰქონოდა პირდაპირი წვდომა უმაღლესი ხარისხის, დროში გამოცდილ და საიმედო ტექნიკაზე — შუამავლების, გადამყიდველებისა და გაუმართლებელი ფასნამატის გარეშე.
+              </p>
+              <p class="text-xs sm:text-sm text-zinc-700 leading-relaxed">
+                ჩვენ არ ვყიდით მასობრივ დაბალხარისხიან პროდუქციას. თითოეული მოდელი (StageMax, VoxMaster, AcousticPro, EcoVolt, SunCore) საიტზე განთავსებამდე გადის რეალურ ტესტირებას ხმის სიმძლავრეზე, ელემენტის გამძლეობასა და უსაფრთხოებაზე.
+              </p>
+            </div>
+
+            <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-sm space-y-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-500/15 text-indigo-600 flex items-center justify-center text-2xl font-black">
+                🤝
+              </div>
+              <h2 class="text-lg sm:text-xl font-black text-zinc-950">რატომ ირჩევენ ჩვენს მაღაზიას?</h2>
+              <ul class="space-y-2.5 text-xs sm:text-sm text-zinc-700">
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span><strong>პირადი კონსულტაცია:</strong> გოჩა პირადად პასუხობს თქვენს ზარებსა და შეტყობინებებს, დაგეხმარებათ სიმძლავრის სწორად შერჩევაში.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span><strong>ადგილზე შემოწმების უფლება:</strong> კურიერი მოგიტანთ ნივთს, ადგილზევე გახსნით, ჩართავთ, შეამოწმებთ და მხოლოდ ამის შემდეგ იხდით თანხას.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span><strong>24-თვიანი საგარანტიო სერვისი:</strong> პრობლემის შემთხვევაში არ გჭირდებათ თვეობით ლოდინი, სერვისი მოქმედებს მომენტალურად.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">✓</span>
+                  <span><strong>სრული კომპლექტაცია:</strong> დინამიკებს მოყვება 2 უკაბელო UHF მიკროფონი, პულტი და კაბელები — დამატებითი ხარჯების გარეშე.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 4 Pillars Grid -->
+          <div class="space-y-4">
+            <h2 class="text-lg sm:text-xl font-black text-zinc-950 text-center">
+              ჩვენი მომსახურების 4 მთავარი სტანდარტი
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-2">
+                <div class="text-2xl">🚚</div>
+                <h3 class="text-sm font-black text-zinc-950">სწრაფი მიწოდება</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                  თბილისში უფასო მიწოდება იმავე დღეს 3–4 საათში. საქართველოს ყველა ქალაქსა და სოფელში — 24–48 საათში.
+                </p>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-2">
+                <div class="text-2xl">🛡️</div>
+                <h3 class="text-sm font-black text-zinc-950">24 თვე გარანტია</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                  ოფიციალური 2-წლიანი გარანტია თითოეულ დინამიკსა და სოლარ გენერატორზე ოფიციალური საგარანტიო ტალონით.
+                </p>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-2">
+                <div class="text-2xl">💳</div>
+                <h3 class="text-sm font-black text-zinc-950">0% განვადება</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                  საქართველოს ბანკი, თიბისი და კრედო ბანკის ონლაინ განვადება 0%-იანი საპროცენტო განაკვეთით 5 წუთში.
+                </p>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-white border border-zinc-200/90 shadow-2xs space-y-2">
+                <div class="text-2xl">🤖</div>
+                <h3 class="text-sm font-black text-zinc-950">24/7 მხარდაჭერა</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                  როცა გოჩა საიტზე არ იმყოფება, Gemini-ს ხელოვნური ინტელექტის ბოტი მომენტალურად გასცემს პასუხს თქვენს კითხვებს.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Categories Overview -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-sm space-y-6">
+            <h2 class="text-lg sm:text-xl font-black text-zinc-950">
+              რას გთავაზობთ ჩვენს კატალოგში?
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="p-5 rounded-2xl bg-stone-50 border border-zinc-200 space-y-2.5">
+                <div class="text-xs font-black px-2 py-0.5 rounded bg-amber-200 text-amber-900 inline-block">
+                  🎤 კარაოკე აკუსტიკა
+                </div>
+                <h3 class="text-base font-black text-zinc-950">პროფესიონალური კარაოკე დინამიკები</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                  სიმძლავრე 500W-დან 1500W-მდე. 12" და 15" მძლავრი ბას-დრაივერები, ჩაშენებული DSP მიქშერი, Reverb/Echo ეფექტები, 2 UHF უსადენო მიკროფონი, Bluetooth 5.3, გიტარის პორტები და 12–14 საათიანი ავტონომიური მუშაობა. იდეალურია რესტორნების, ღონისძიებების, აგარაკისა და ოჯახისთვის.
+                </p>
+              </div>
+
+              <div class="p-5 rounded-2xl bg-stone-50 border border-zinc-200 space-y-2.5">
+                <div class="text-xs font-black px-2 py-0.5 rounded bg-emerald-200 text-emerald-900 inline-block">
+                  ☀️ სოლარ ენერგეტიკა
+                </div>
+                <h3 class="text-base font-black text-zinc-950">LiFePO4 პორტატული სოლარ გენერატორები</h3>
+                <p class="text-xs text-zinc-600 leading-relaxed">
+                  300W-დან 1200W-მდე (2400W პიკი) 220V სუფთა სინუსოიდური (Pure Sine Wave) ინვერტორით. უსაფრთხო LiFePO4 ელემენტები 3500+ დამუხტვის ციკლით. ამუშავებს მაცივარს, ტელევიზორს, გაზის ქვაბს, კომპიუტერს, განათებასა და აუდიო ტექნიკას. კომპლექტდება წყალგამძლე დასაკეცი მზის პანელებით.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact & Store Owner Details -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-stone-900 to-zinc-900 text-white shadow-lg space-y-4">
+            <h2 class="text-lg sm:text-xl font-black">საკონტაქტო ინფორმაცია და რეკვიზიტები</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+              <div class="space-y-1">
+                <div class="text-zinc-400">მფლობელი და კონსულტანტი:</div>
+                <div class="font-extrabold text-sm text-amber-300">გოჩა იასეშვილი</div>
+              </div>
+              <div class="space-y-1">
+                <div class="text-zinc-400">ტელეფონი / ცხელი ხაზი:</div>
+                <a href="tel:+995551588579" class="font-mono-num font-extrabold text-sm text-white hover:underline">
+                  +995 551 58 85 79
+                </a>
+              </div>
+              <div class="space-y-1">
+                <div class="text-zinc-400">ელექტრონული ფოსტა:</div>
+                <a href="mailto:gocha.iaseshvili@gmail.com" class="font-extrabold text-sm text-zinc-200 hover:underline">
+                  gocha.iaseshvili@gmail.com
+                </a>
+              </div>
+              <div class="space-y-1">
+                <div class="text-zinc-400">მისამართი / საწყობი:</div>
+                <div class="font-bold text-zinc-200">ქ. თბილისი, საქართველო</div>
+              </div>
+              <div class="space-y-1">
+                <div class="text-zinc-400">სამუშაო საათები:</div>
+                <div class="font-bold text-zinc-200">ყოველდღე: 09:00 – 22:00</div>
+              </div>
+              <div class="space-y-1">
+                <div class="text-zinc-400">ონლაინ ჩატი &amp; AI ასისტენტი:</div>
+                <div class="font-bold text-emerald-400">24 საათი უწყვეტ რეჟიმში</div>
+              </div>
+            </div>
+
+            <!-- Call to Actions -->
+            <div class="pt-4 border-t border-white/10 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                id="about-cta-catalog-btn"
+                class="min-h-[44px] px-6 py-2.5 rounded-xl theme-bg text-white font-extrabold text-xs sm:text-sm cursor-pointer active:scale-95 fast-transition shadow-sm"
+              >
+                📦 კატალოგის დათვალიერება
+              </button>
+              <button
+                type="button"
+                id="about-cta-chat-btn"
+                class="min-h-[44px] px-6 py-2.5 rounded-xl bg-white hover:bg-stone-100 text-zinc-950 font-extrabold text-xs sm:text-sm cursor-pointer active:scale-95 fast-transition shadow-sm"
+              >
+                💬 ონლაინ ჩატში მიწერა
+              </button>
+              <a
+                href="tel:+995551588579"
+                class="min-h-[44px] px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm inline-flex items-center gap-2 active:scale-95 fast-transition shadow-sm"
+              >
+                <span>📞</span>
+                <span>დარეკვა (+995 551 58 85 79)</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ======================================================================================== -->
-    <!-- STORE OWNER CONTROL PANEL MODAL (მართვის პანელი - ყველაფრის ხელით მართვა, 5 ფოტო & ამინდი) -->
+    <!-- DEDICATED PAGE: PRIVACY POLICY (კონფიდენციალურობის პოლიტიკა • თანამედროვე ქართული სტანდარტი) -->
+    <!-- ======================================================================================== -->
+    <div
+      id="privacy-modal-backdrop"
+      class="fixed inset-0 z-[95] hidden bg-stone-50 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="privacy-modal-title"
+    >
+      <div class="bg-stone-50 w-full min-h-screen flex flex-col">
+        <!-- Sticky Top Navigation Bar -->
+        <div class="sticky top-0 z-30 px-3 sm:px-6 py-2.5 sm:py-3 border-b border-zinc-200 bg-white/95 backdrop-blur-md shrink-0 shadow-2xs">
+          <div class="max-w-4xl mx-auto flex items-center justify-between gap-2">
+            <button
+              id="back-from-privacy-btn"
+              type="button"
+              class="min-h-[40px] px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-900 border border-zinc-300/80 text-xs font-bold flex items-center gap-1.5 active:scale-[0.96] fast-transition cursor-pointer"
+            >
+              <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>მთავარ გვერდზე</span>
+            </button>
+
+            <div class="hidden sm:flex items-center gap-1.5 text-xs font-bold text-zinc-600 truncate">
+              <span>🛡️</span>
+              <span>პერსონალურ მონაცემთა დაცვა</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <span class="hidden md:inline text-[11px] font-semibold text-zinc-500">კანონმდებლობასთან შესაბამისი</span>
+              <button
+                id="close-privacy-modal-btn"
+                type="button"
+                class="min-h-[40px] min-w-[40px] rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 flex items-center justify-center active:scale-95 fast-transition cursor-pointer"
+                aria-label="დახურვა"
+              >✕</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Content Container -->
+        <div class="max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 space-y-6 flex-1 text-zinc-800">
+          <!-- Document Header -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200 shadow-sm space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-black">
+              <span>📜</span>
+              <span>ოფიციალური დოკუმენტი • iyidebaa.ge</span>
+            </div>
+            <h1 id="privacy-modal-title" class="text-2xl sm:text-3xl font-black text-zinc-950 tracking-tight">
+              კონფიდენციალურობისა და პერსონალურ მონაცემთა დაცვის პოლიტიკა
+            </h1>
+            <p class="text-xs text-zinc-500 font-mono-num">
+              ძალაშია: 2026 წლის ნოემბრიდან • რედაქცია: 2.1
+            </p>
+            <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed border-t border-zinc-100 pt-3">
+              წინამდებარე კონფიდენციალურობის პოლიტიკა შედგენილია <strong>„პერსონალურ მონაცემთა დაცვის შესახებ“ საქართველოს კანონისა</strong> და ელექტრონული კომერციის თანამედროვე უსაფრთხოების სტანდარტების სრული დაცვით. დოკუმენტი არეგულირებს ონლაინ მაღაზია <strong>„იყიდება საინტერესო ნივთები“ (iyidebaa.ge)</strong>-ს მიერ მომხმარებელთა მონაცემების შეგროვების, დამუშავების, შენახვისა და უსაფრთხოების წესებს.
+            </p>
+          </div>
+
+          <!-- Section 1 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">1</span>
+              <span>ზოგადი დებულებები და პასუხისმგებელი პირი</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                1.1. წინამდებარე პოლიტიკა ვრცელდება საიტით (iyidebaa.ge) მოსარგებლე ნებისმიერ ფიზიკურ პირზე („მომხმარებელი“ ან „მყიდველი“).
+              </p>
+              <p>
+                1.2. პერსონალურ მონაცემთა დამუშავებაზე პასუხისმგებელი პირია მაღაზიის მფლობელი <strong>გოჩა იასეშვილი</strong> (საკონტაქტო ტელეფონი: +995 551 58 85 79, ელ-ფოსტა: gocha.iaseshvili@gmail.com, ფაქტობრივი მისამართი: ქ. თბილისი, საქართველო).
+              </p>
+              <p>
+                1.3. მაღაზია იღებს სრულ პასუხისმგებლობას, რომ მომხმარებლის მიერ მოწოდებული მონაცემები გამოყენებული იქნება მხოლოდ პირდაპირი დანიშნულებით — შეკვეთის შესასრულებლად და საკონსულტაციო მომსახურების გასაწევად.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 2 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">2</span>
+              <span>რა პერსონალურ მონაცემებს ვაგროვებთ</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>მაღაზია აგროვებს მხოლოდ იმ მინიმალურ მონაცემებს, რომლებიც აუცილებელია შეკვეთის ჩასაბარებლად:</p>
+              <ul class="list-disc list-inside space-y-1.5 pl-2 text-zinc-700">
+                <li><strong>მაიდენტიფიცირებელი მონაცემები:</strong> მომხმარებლის სახელი და გვარი;</li>
+                <li><strong>საკონტაქტო ნომერი:</strong> მობილური ტელეფონის ნომერი (კურიერთან დაკავშირებისა და WhatsApp/Viber შეტყობინებისთვის);</li>
+                <li><strong>მიწოდების მისამართი:</strong> ქალაქი, რეგიონი, ქუჩა, ბინა/სახლის ნომერი, სადაც უნდა მოხდეს ნივთის ჩაბარება;</li>
+                <li><strong>ელექტრონული ფოსტა:</strong> ელ-ფოსტის მისამართი (სურვილისამებრ, ინვოისის ან პროფილის აღსადგენად);</li>
+                <li><strong>მიმოწერის ისტორია:</strong> საიტის ჩატში გამოგზავნილი შეკითხვები, პროდუქტის მოდელის დაზუსტება, რათა მომხმარებელს საიტზე დაბრუნებისას წინა მიმოწერა არ დაეკარგოს;</li>
+                <li><strong>სოციალური ავტორიზაციის მონაცემები:</strong> Google ან Facebook ანგარიშით შესვლისას — პროფილის სახელი, საჯარო ავატარი და უნიკალური იდენტიფიკატორი (პაროლებზე წვდომა მაღაზიას არ გააჩნია);</li>
+                <li><strong>ტექნიკური მონაცემები:</strong> IP მისამართი, მოწყობილობის მოდელი, ბრაუზერის ტიპი და ენობრივი პრეფერენციები.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 3 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">3</span>
+              <span>მონაცემთა დამუშავების კანონიერი მიზნები</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>მონაცემთა დამუშავება ხორციელდება შემდეგი მკაფიო მიზნებისთვის:</p>
+              <ul class="list-disc list-inside space-y-1.5 pl-2 text-zinc-700">
+                <li>შეკვეთის გაფორმება, დამუშავება და კურიერის მიერ ადრესატამდე უსაფრთხო ჩაბარება;</li>
+                <li>24-თვიანი ოფიციალური საგარანტიო სერვისისა და საგარანტიო ტალონის წარმოება;</li>
+                <li>კლიენტთან ოპერატიული სატელეფონო და ჩატ-კონსულტაცია;</li>
+                <li>სოციალური ქსელით შესული მომხმარებლისთვის პირადი მიმოწერისა და შენახული ნივთების (Wishlist) შენარჩუნება სხვადასხვა მოწყობილობიდან შემოსვლისას;</li>
+                <li>საქართველოს კანონმდებლობით დადგენილი საგადასახადო და სამეწარმეო აღრიცხვის წარმოება.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 4 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">4</span>
+              <span>უსაფრთხოება და მესამე პირებზე ინფორმაციის არგაცემა</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                4.1. <strong>მკაცრი გარანტია:</strong> მაღაზია „იყიდება საინტერესო ნივთები“ არასოდეს ყიდის, არ ასხვისებს, არ აქირავებს და არ გადასცემს მომხმარებლის პერსონალურ ინფორმაციას მესამე პირებს მარკეტინგული, სარეკლამო ან სპამ-მიზნებისთვის.
+              </p>
+              <p>
+                4.2. საიტზე გამოყენებულია SSL (Secure Socket Layer) დაშიფვრა, რაც უზრუნველყოფს მონაცემთა გადაცემას დაცული არხით.
+              </p>
+              <p>
+                4.3. მომხმარებლის მონაცემები გადაეცემა მხოლოდ იმ პარტნიორებს, რომლებიც უშუალოდ მონაწილეობენ შეკვეთის შესრულებაში:
+              </p>
+              <ul class="list-disc list-inside space-y-1 pl-4 text-zinc-700">
+                <li><strong>საკურიერო სამსახურს:</strong> მხოლოდ მიმღების სახელი, ტელეფონის ნომერი და ჩაბარების მისამართი;</li>
+                <li><strong>პარტნიორ ბანკებს (საქართველოს ბანკი, თიბისი ბანკი, კრედო ბანკი):</strong> მხოლოდ იმ შემთხვევაში, თუ მომხმარებელი თავისი ნებით ირჩევს ონლაინ განვადებით სარგებლობას;</li>
+                <li><strong>სამართალდამცავ ორგანოებს:</strong> მხოლოდ საქართველოს კანონმდებლობით პირდაპირ განსაზღვრულ, იმპერატიულ შემთხვევებში (სასამართლო განჩინება და სხვ.).</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 5 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">5</span>
+              <span>ქუქი (Cookie) ფაილები და ლოკალური მეხსიერება</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                5.1. საიტი იყენებს Cookie და LocalStorage ტექნოლოგიებს, რათა უზრუნველყოფილი იყოს კომფორტული ნავიგაცია:
+              </p>
+              <ul class="list-disc list-inside space-y-1 pl-2 text-zinc-700">
+                <li>თქვენს მიერ არჩეული ენის დამახსოვრება (ქართული / English / Русский);</li>
+                <li>შენახული პროდუქტების სიის (Wishlist) შენარჩუნება;</li>
+                <li>ონლაინ ჩატის სესიის შენახვა, რათა გვერდის გადატვირთვისას მიმოწერა არ წაიშალოს;</li>
+                <li>ფასის კლების შეტყობინებების აქტიური სტატუსი.</li>
+              </ul>
+              <p>
+                5.2. მომხმარებელს ნებისმიერ დროს შეუძლია თავისი ბრაუზერის პარამეტრებიდან წაშალოს ან შეზღუდოს ქუქი-ფაილების გამოყენება.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 6 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">6</span>
+              <span>მომხმარებლის უფლებები (საქართველოს კანონმდებლობის შესაბამისად)</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>„პერსონალურ მონაცემთა დაცვის შესახებ“ საქართველოს კანონის თანახმად, თქვენ გაქვთ უფლება:</p>
+              <ul class="list-disc list-inside space-y-1.5 pl-2 text-zinc-700">
+                <li>მოითხოვოთ ინფორმაცია იმის შესახებ, თუ რა მონაცემები მუშავდება თქვენს შესახებ;</li>
+                <li>მოითხოვოთ არაზუსტი, შეცვლილი ან არასრული მონაცემების გასწორება ან განახლება;</li>
+                <li>მოითხოვოთ თქვენი პერსონალური მონაცემების დამუშავების შეწყვეტა, დაბლოკვა ან სრული წაშლა („დავიწყების უფლება“);</li>
+                <li>ნებისმიერ დროს გამოიხმოთ თქვენი თანხმობა მონაცემთა დამუშავებაზე.</li>
+              </ul>
+              <p class="pt-1">
+                აღნიშნული უფლებების რეალიზაციისთვის საკმარისია მოგვწეროთ საიტის ონლაინ ჩატში, ელ-ფოსტაზე (<strong>gocha.iaseshvili@gmail.com</strong>) ან დაგვიკავშირდეთ ტელეფონის ნომერზე: <strong>+995 551 58 85 79</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 7 -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200/90 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2">
+              <span class="w-6 h-6 rounded-lg bg-violet-100 text-violet-800 flex items-center justify-center text-xs">7</span>
+              <span>ცვლილებები და საკონტაქტო რეკვიზიტები</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                7.1. მაღაზია იტოვებს უფლებას, კანონმდებლობის ცვლილების ან სერვისების განვითარების შესაბამისად შეიტანოს ცვლილებები წინამდებარე პოლიტიკაში. განახლებული ვერსია მომენტალურად ხელმისაწვდომია ამავე გვერდზე.
+              </p>
+              <p>
+                7.2. ნებისმიერი შეკითხვის შემთხვევაში დაგვიკავშირდით:
+              </p>
+              <div class="p-4 rounded-2xl bg-stone-50 border border-zinc-200 text-xs font-semibold space-y-1">
+                <div>🏢 ონლაინ მაღაზია „იყიდება საინტერესო ნივთები“ (iyidebaa.ge)</div>
+                <div>👤 პასუხისმგებელი პირი: გოჩა იასეშვილი</div>
+                <div>📞 ტელეფონი: <a href="tel:+995551588579" class="font-mono-num font-bold text-amber-700 hover:underline">+995 551 58 85 79</a></div>
+                <div>✉️ ელ-ფოსტა: <a href="mailto:gocha.iaseshvili@gmail.com" class="font-bold text-indigo-700 hover:underline">gocha.iaseshvili@gmail.com</a></div>
+                <div>📍 ქ. თბილისი, საქართველო</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- ======================================================================================== -->
     <div
       id="control-panel-backdrop"
