@@ -17718,11 +17718,264 @@
                 modalBackdrop.scrollTop = savedModalScroll;
               }
             }
+
+            // Restore open About Us or Privacy Policy page across page refresh (?page=about / ?page=privacy)
+            const pageParam = params.get('page');
+            if (pageParam === 'about') {
+              openAboutModal({ isInitialRestore: true });
+            } else if (pageParam === 'privacy') {
+              openPrivacyModal({ isInitialRestore: true });
+            }
           } catch (e) {}
+        }
+
+        // =========================================================================
+        // DEDICATED PAGES CONTROLLER: ABOUT US & PRIVACY POLICY
+        // =========================================================================
+        const aboutModalBackdrop = document.getElementById('about-modal-backdrop');
+        const privacyModalBackdrop = document.getElementById('privacy-modal-backdrop');
+
+        function openAboutModal(opts = {}) {
+          if (!aboutModalBackdrop) return;
+          if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
+            closePrivacyModal({ immediate: true });
+          }
+          if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
+          if (typeof closeShareModal === 'function') closeShareModal();
+          if (typeof closeScreenshotModal === 'function') closeScreenshotModal();
+          if (typeof closeWishlistModal === 'function') closeWishlistModal();
+
+          aboutModalBackdrop.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+          aboutModalBackdrop.scrollTop = 0;
+
+          if (!opts.fromPopState && !opts.isInitialRestore) {
+            try {
+              const u = new URL(window.location.href);
+              u.searchParams.set('page', 'about');
+              u.searchParams.delete('product');
+              window.history.pushState({ page: 'about' }, '', u.toString());
+            } catch (e) {}
+          }
+        }
+
+        function closeAboutModal(opts = {}) {
+          if (!aboutModalBackdrop) return;
+          aboutModalBackdrop.classList.add('hidden');
+
+          const anyOtherModalOpen =
+            (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
+            (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) ||
+            (cpBackdrop && !cpBackdrop.classList.contains('hidden'));
+
+          if (!anyOtherModalOpen) {
+            document.body.classList.remove('overflow-hidden');
+          }
+
+          if (!opts.fromPopState && !opts.immediate) {
+            try {
+              const u = new URL(window.location.href);
+              if (u.searchParams.get('page') === 'about') {
+                u.searchParams.delete('page');
+                window.history.pushState({}, '', u.toString());
+              }
+            } catch (e) {}
+          }
+        }
+
+        function openPrivacyModal(opts = {}) {
+          if (!privacyModalBackdrop) return;
+          if (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) {
+            closeAboutModal({ immediate: true });
+          }
+          if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
+          if (typeof closeShareModal === 'function') closeShareModal();
+          if (typeof closeScreenshotModal === 'function') closeScreenshotModal();
+          if (typeof closeWishlistModal === 'function') closeWishlistModal();
+
+          privacyModalBackdrop.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+          privacyModalBackdrop.scrollTop = 0;
+
+          if (!opts.fromPopState && !opts.isInitialRestore) {
+            try {
+              const u = new URL(window.location.href);
+              u.searchParams.set('page', 'privacy');
+              u.searchParams.delete('product');
+              window.history.pushState({ page: 'privacy' }, '', u.toString());
+            } catch (e) {}
+          }
+        }
+
+        function closePrivacyModal(opts = {}) {
+          if (!privacyModalBackdrop) return;
+          privacyModalBackdrop.classList.add('hidden');
+
+          const anyOtherModalOpen =
+            (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
+            (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) ||
+            (cpBackdrop && !cpBackdrop.classList.contains('hidden'));
+
+          if (!anyOtherModalOpen) {
+            document.body.classList.remove('overflow-hidden');
+          }
+
+          if (!opts.fromPopState && !opts.immediate) {
+            try {
+              const u = new URL(window.location.href);
+              if (u.searchParams.get('page') === 'privacy') {
+                u.searchParams.delete('page');
+                window.history.pushState({}, '', u.toString());
+              }
+            } catch (e) {}
+          }
+        }
+
+        function initPagesNavigation() {
+          // Trigger buttons for About Us
+          const headerAboutBtn = document.getElementById('header-about-btn');
+          if (headerAboutBtn) {
+            headerAboutBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openAboutModal();
+            });
+          }
+
+          const dropdownAboutBtn = document.getElementById('dropdown-open-about-btn');
+          if (dropdownAboutBtn) {
+            dropdownAboutBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const profileDropdown = document.getElementById('user-profile-dropdown');
+              if (profileDropdown) profileDropdown.classList.add('hidden');
+              openAboutModal();
+            });
+          }
+
+          const footerAboutBtn = document.getElementById('footer-about-btn');
+          if (footerAboutBtn) {
+            footerAboutBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openAboutModal();
+            });
+          }
+
+          const footerBottomAboutBtn = document.getElementById('footer-bottom-about-btn');
+          if (footerBottomAboutBtn) {
+            footerBottomAboutBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openAboutModal();
+            });
+          }
+
+          // Trigger buttons for Privacy Policy
+          const dropdownPrivacyBtn = document.getElementById('dropdown-open-privacy-btn');
+          if (dropdownPrivacyBtn) {
+            dropdownPrivacyBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const profileDropdown = document.getElementById('user-profile-dropdown');
+              if (profileDropdown) profileDropdown.classList.add('hidden');
+              openPrivacyModal();
+            });
+          }
+
+          const footerPrivacyBtn = document.getElementById('footer-privacy-btn');
+          if (footerPrivacyBtn) {
+            footerPrivacyBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openPrivacyModal();
+            });
+          }
+
+          const footerBottomPrivacyBtn = document.getElementById('footer-bottom-privacy-btn');
+          if (footerBottomPrivacyBtn) {
+            footerBottomPrivacyBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openPrivacyModal();
+            });
+          }
+
+          // Close and Back buttons for About Us
+          const backFromAboutBtn = document.getElementById('back-from-about-btn');
+          if (backFromAboutBtn) {
+            backFromAboutBtn.addEventListener('click', () => closeAboutModal());
+          }
+          const closeAboutModalBtn = document.getElementById('close-about-modal-btn');
+          if (closeAboutModalBtn) {
+            closeAboutModalBtn.addEventListener('click', () => closeAboutModal());
+          }
+
+          // Close and Back buttons for Privacy Policy
+          const backFromPrivacyBtn = document.getElementById('back-from-privacy-btn');
+          if (backFromPrivacyBtn) {
+            backFromPrivacyBtn.addEventListener('click', () => closePrivacyModal());
+          }
+          const closePrivacyModalBtn = document.getElementById('close-privacy-modal-btn');
+          if (closePrivacyModalBtn) {
+            closePrivacyModalBtn.addEventListener('click', () => closePrivacyModal());
+          }
+
+          // About Us CTA buttons
+          const aboutCtaCatalogBtn = document.getElementById('about-cta-catalog-btn');
+          if (aboutCtaCatalogBtn) {
+            aboutCtaCatalogBtn.addEventListener('click', () => {
+              closeAboutModal();
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+          }
+          const aboutCtaChatBtn = document.getElementById('about-cta-chat-btn');
+          if (aboutCtaChatBtn) {
+            aboutCtaChatBtn.addEventListener('click', () => {
+              closeAboutModal();
+              const chatSection = document.getElementById('home-community-chat-section');
+              if (chatSection) {
+                chatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            });
+          }
+
+          // Footer additional jump buttons (services, chat, wishlist)
+          const footerServicesBtn = document.getElementById('footer-services-btn');
+          if (footerServicesBtn) {
+            footerServicesBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              openAboutModal();
+            });
+          }
+
+          const footerChatJumpBtn = document.getElementById('footer-chat-jump-btn');
+          if (footerChatJumpBtn) {
+            footerChatJumpBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              const chatSec = document.getElementById('home-community-chat-section');
+              if (chatSec) {
+                chatSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            });
+          }
+
+          const footerWishlistJumpBtn = document.getElementById('footer-wishlist-jump-btn');
+          if (footerWishlistJumpBtn) {
+            footerWishlistJumpBtn.addEventListener('click', (e) => {
+              e.preventDefault();
+              if (typeof openWishlistModal === 'function') {
+                openWishlistModal();
+              }
+            });
+          }
         }
 
         // Handle Phone Hardware Back Button & Desktop Browser Back/Forward Button (popstate)
         window.addEventListener('popstate', (e) => {
+          // 0. If About or Privacy modal is open, close it
+          if (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) {
+            closeAboutModal({ fromPopState: true });
+            return;
+          }
+          if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
+            closePrivacyModal({ fromPopState: true });
+            return;
+          }
+
           // 1. If Lightbox fullscreen photo is open, close Lightbox first and stay on Product Page
           if (lightboxModalBackdrop && !lightboxModalBackdrop.classList.contains('hidden')) {
             closeLightbox({ fromPopState: true });
@@ -17764,7 +18017,17 @@
             return;
           }
 
-          // 5. If Product Page is closed and user navigated forward to a product state, open that product
+          // 5. If navigated forward/back to a page or product state
+          const statePage = (e.state && e.state.page) || new URLSearchParams(window.location.search).get('page');
+          if (statePage === 'about') {
+            openAboutModal({ fromPopState: true });
+            return;
+          }
+          if (statePage === 'privacy') {
+            openPrivacyModal({ fromPopState: true });
+            return;
+          }
+
           const stateProdId = (e.state && e.state.productId) || new URLSearchParams(window.location.search).get('product');
           if (stateProdId && productsList.some((p) => p.id === stateProdId)) {
             openProductModal(stateProdId, { fromPopState: true });
