@@ -16736,6 +16736,14 @@
               closeShareModal();
               return;
             }
+            if (typeof aboutModalBackdrop !== 'undefined' && aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) {
+              closeAboutModal();
+              return;
+            }
+            if (typeof privacyModalBackdrop !== 'undefined' && privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
+              closePrivacyModal();
+              return;
+            }
             if (wishlistModalBackdrop && !wishlistModalBackdrop.classList.contains('hidden')) {
               closeWishlistModal();
               return;
