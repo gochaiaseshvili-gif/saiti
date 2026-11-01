@@ -17179,6 +17179,10 @@
               closeAboutModal();
               return;
             }
+            if (typeof warrantyModalBackdrop !== 'undefined' && warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) {
+              closeWarrantyModal();
+              return;
+            }
             if (typeof privacyModalBackdrop !== 'undefined' && privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
               closePrivacyModal();
               return;
@@ -18158,10 +18162,12 @@
               }
             }
 
-            // Restore open About Us or Privacy Policy page across page refresh (?page=about / ?page=privacy)
+            // Restore open About Us, Warranties, or Privacy Policy page across page refresh (?page=about / ?page=warranty / ?page=privacy)
             const pageParam = params.get('page');
             if (pageParam === 'about') {
               openAboutModal({ isInitialRestore: true });
+            } else if (pageParam === 'warranty' || pageParam === 'delivery') {
+              openWarrantyModal({ isInitialRestore: true });
             } else if (pageParam === 'privacy') {
               openPrivacyModal({ isInitialRestore: true });
             }
@@ -18169,13 +18175,17 @@
         }
 
         // =========================================================================
-        // DEDICATED PAGES CONTROLLER: ABOUT US & PRIVACY POLICY
+        // DEDICATED PAGES CONTROLLER: ABOUT US, WARRANTIES & PRIVACY POLICY
         // =========================================================================
         const aboutModalBackdrop = document.getElementById('about-modal-backdrop');
+        const warrantyModalBackdrop = document.getElementById('warranty-modal-backdrop');
         const privacyModalBackdrop = document.getElementById('privacy-modal-backdrop');
 
         function openAboutModal(opts = {}) {
           if (!aboutModalBackdrop) return;
+          if (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) {
+            closeWarrantyModal({ immediate: true });
+          }
           if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
             closePrivacyModal({ immediate: true });
           }
@@ -18204,6 +18214,7 @@
 
           const anyOtherModalOpen =
             (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
+            (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) ||
             (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) ||
             (cpBackdrop && !cpBackdrop.classList.contains('hidden'));
 
@@ -18222,10 +18233,65 @@
           }
         }
 
+        function openWarrantyModal(opts = {}) {
+          if (!warrantyModalBackdrop) return;
+          if (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) {
+            closeAboutModal({ immediate: true });
+          }
+          if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
+            closePrivacyModal({ immediate: true });
+          }
+          if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
+          if (typeof closeShareModal === 'function') closeShareModal();
+          if (typeof closeScreenshotModal === 'function') closeScreenshotModal();
+          if (typeof closeWishlistModal === 'function') closeWishlistModal();
+
+          warrantyModalBackdrop.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+          warrantyModalBackdrop.scrollTop = 0;
+
+          if (!opts.fromPopState && !opts.isInitialRestore) {
+            try {
+              const u = new URL(window.location.href);
+              u.searchParams.set('page', 'warranty');
+              u.searchParams.delete('product');
+              window.history.pushState({ page: 'warranty' }, '', u.toString());
+            } catch (e) {}
+          }
+        }
+
+        function closeWarrantyModal(opts = {}) {
+          if (!warrantyModalBackdrop) return;
+          warrantyModalBackdrop.classList.add('hidden');
+
+          const anyOtherModalOpen =
+            (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
+            (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) ||
+            (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) ||
+            (cpBackdrop && !cpBackdrop.classList.contains('hidden'));
+
+          if (!anyOtherModalOpen) {
+            document.body.classList.remove('overflow-hidden');
+          }
+
+          if (!opts.fromPopState && !opts.immediate) {
+            try {
+              const u = new URL(window.location.href);
+              if (u.searchParams.get('page') === 'warranty' || u.searchParams.get('page') === 'delivery') {
+                u.searchParams.delete('page');
+                window.history.pushState({}, '', u.toString());
+              }
+            } catch (e) {}
+          }
+        }
+
         function openPrivacyModal(opts = {}) {
           if (!privacyModalBackdrop) return;
           if (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) {
             closeAboutModal({ immediate: true });
+          }
+          if (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) {
+            closeWarrantyModal({ immediate: true });
           }
           if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
           if (typeof closeShareModal === 'function') closeShareModal();
@@ -18253,6 +18319,7 @@
           const anyOtherModalOpen =
             (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
             (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) ||
+            (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) ||
             (cpBackdrop && !cpBackdrop.classList.contains('hidden'));
 
           if (!anyOtherModalOpen) {
@@ -18270,88 +18337,71 @@
           }
         }
 
+        function jumpToStoreChat() {
+          closeAboutModal({ immediate: true });
+          closeWarrantyModal({ immediate: true });
+          closePrivacyModal({ immediate: true });
+          const chatSec =
+            document.getElementById('home-seller-chat-box') ||
+            document.getElementById('home-community-chat-section');
+          if (chatSec) {
+            chatSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => {
+              const chatInput = document.getElementById('home-chat-text-input');
+              if (chatInput) chatInput.focus();
+            }, 350);
+          }
+        }
+
+        // Expose globally so inline onclick handlers and external scripts always work
+        window.openAboutModal = openAboutModal;
+        window.closeAboutModal = closeAboutModal;
+        window.openWarrantyModal = openWarrantyModal;
+        window.closeWarrantyModal = closeWarrantyModal;
+        window.openPrivacyModal = openPrivacyModal;
+        window.closePrivacyModal = closePrivacyModal;
+        window.jumpToStoreChat = jumpToStoreChat;
+
         function initPagesNavigation() {
-          // Trigger buttons for About Us
-          const headerAboutBtn = document.getElementById('header-about-btn');
-          if (headerAboutBtn) {
-            headerAboutBtn.addEventListener('click', (e) => {
+          // Delegated click listener for any [data-open-info-page] or [data-close-info-page]
+          document.addEventListener('click', (e) => {
+            const openTrigger = e.target && e.target.closest ? e.target.closest('[data-open-info-page]') : null;
+            if (openTrigger) {
               e.preventDefault();
-              openAboutModal();
-            });
-          }
-
-          const dropdownAboutBtn = document.getElementById('dropdown-open-about-btn');
-          if (dropdownAboutBtn) {
-            dropdownAboutBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              const profileDropdown = document.getElementById('user-profile-dropdown');
+              const targetPage = openTrigger.getAttribute('data-open-info-page');
+              const profileDropdown = document.getElementById('header-user-dropdown') || document.getElementById('user-profile-dropdown');
               if (profileDropdown) profileDropdown.classList.add('hidden');
-              openAboutModal();
-            });
-          }
+              if (targetPage === 'about') openAboutModal();
+              else if (targetPage === 'warranty') openWarrantyModal();
+              else if (targetPage === 'privacy') openPrivacyModal();
+              return;
+            }
 
-          const footerAboutBtn = document.getElementById('footer-about-btn');
-          if (footerAboutBtn) {
-            footerAboutBtn.addEventListener('click', (e) => {
+            const closeTrigger = e.target && e.target.closest ? e.target.closest('[data-close-info-page]') : null;
+            if (closeTrigger) {
               e.preventDefault();
-              openAboutModal();
-            });
-          }
+              const closePage = closeTrigger.getAttribute('data-close-info-page');
+              if (closePage === 'about') closeAboutModal();
+              else if (closePage === 'warranty') closeWarrantyModal();
+              else if (closePage === 'privacy') closePrivacyModal();
+            }
+          });
 
-          const footerBottomAboutBtn = document.getElementById('footer-bottom-about-btn');
-          if (footerBottomAboutBtn) {
-            footerBottomAboutBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              openAboutModal();
-            });
-          }
-
-          // Trigger buttons for Privacy Policy
-          const dropdownPrivacyBtn = document.getElementById('dropdown-open-privacy-btn');
-          if (dropdownPrivacyBtn) {
-            dropdownPrivacyBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              const profileDropdown = document.getElementById('user-profile-dropdown');
-              if (profileDropdown) profileDropdown.classList.add('hidden');
-              openPrivacyModal();
-            });
-          }
-
-          const footerPrivacyBtn = document.getElementById('footer-privacy-btn');
-          if (footerPrivacyBtn) {
-            footerPrivacyBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              openPrivacyModal();
-            });
-          }
-
-          const footerBottomPrivacyBtn = document.getElementById('footer-bottom-privacy-btn');
-          if (footerBottomPrivacyBtn) {
-            footerBottomPrivacyBtn.addEventListener('click', (e) => {
-              e.preventDefault();
-              openPrivacyModal();
-            });
-          }
-
-          // Close and Back buttons for About Us
+          // Close and Back buttons for About Us, Warranty, and Privacy Policy
           const backFromAboutBtn = document.getElementById('back-from-about-btn');
-          if (backFromAboutBtn) {
-            backFromAboutBtn.addEventListener('click', () => closeAboutModal());
-          }
+          if (backFromAboutBtn) backFromAboutBtn.addEventListener('click', () => closeAboutModal());
           const closeAboutModalBtn = document.getElementById('close-about-modal-btn');
-          if (closeAboutModalBtn) {
-            closeAboutModalBtn.addEventListener('click', () => closeAboutModal());
-          }
+          if (closeAboutModalBtn) closeAboutModalBtn.addEventListener('click', () => closeAboutModal());
 
-          // Close and Back buttons for Privacy Policy
+          const backFromWarrantyBtn = document.getElementById('back-from-warranty-btn');
+          if (backFromWarrantyBtn) backFromWarrantyBtn.addEventListener('click', () => closeWarrantyModal());
+          const closeWarrantyModalBtn = document.getElementById('close-warranty-modal-btn');
+          if (closeWarrantyModalBtn) closeWarrantyModalBtn.addEventListener('click', () => closeWarrantyModal());
+
           const backFromPrivacyBtn = document.getElementById('back-from-privacy-btn');
-          if (backFromPrivacyBtn) {
-            backFromPrivacyBtn.addEventListener('click', () => closePrivacyModal());
-          }
+          if (backFromPrivacyBtn) backFromPrivacyBtn.addEventListener('click', () => closePrivacyModal());
           const closePrivacyModalBtn = document.getElementById('close-privacy-modal-btn');
-          if (closePrivacyModalBtn) {
-            closePrivacyModalBtn.addEventListener('click', () => closePrivacyModal());
-          }
+          if (closePrivacyModalBtn) closePrivacyModalBtn.addEventListener('click', () => closePrivacyModal());
 
           // About Us CTA buttons
           const aboutCtaCatalogBtn = document.getElementById('about-cta-catalog-btn');
@@ -18364,11 +18414,7 @@
           const aboutCtaChatBtn = document.getElementById('about-cta-chat-btn');
           if (aboutCtaChatBtn) {
             aboutCtaChatBtn.addEventListener('click', () => {
-              closeAboutModal();
-              const chatSection = document.getElementById('home-community-chat-section');
-              if (chatSection) {
-                chatSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
+              jumpToStoreChat();
             });
           }
 
@@ -18377,7 +18423,7 @@
           if (footerServicesBtn) {
             footerServicesBtn.addEventListener('click', (e) => {
               e.preventDefault();
-              openAboutModal();
+              openWarrantyModal();
             });
           }
 
@@ -18385,10 +18431,7 @@
           if (footerChatJumpBtn) {
             footerChatJumpBtn.addEventListener('click', (e) => {
               e.preventDefault();
-              const chatSec = document.getElementById('home-community-chat-section');
-              if (chatSec) {
-                chatSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
+              jumpToStoreChat();
             });
           }
 
@@ -18405,9 +18448,13 @@
 
         // Handle Phone Hardware Back Button & Desktop Browser Back/Forward Button (popstate)
         window.addEventListener('popstate', (e) => {
-          // 0. If About or Privacy modal is open, close it
+          // 0. If About, Warranty, or Privacy modal is open, close it
           if (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) {
             closeAboutModal({ fromPopState: true });
+            return;
+          }
+          if (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) {
+            closeWarrantyModal({ fromPopState: true });
             return;
           }
           if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
@@ -18460,6 +18507,10 @@
           const statePage = (e.state && e.state.page) || new URLSearchParams(window.location.search).get('page');
           if (statePage === 'about') {
             openAboutModal({ fromPopState: true });
+            return;
+          }
+          if (statePage === 'warranty' || statePage === 'delivery') {
+            openWarrantyModal({ fromPopState: true });
             return;
           }
           if (statePage === 'privacy') {
