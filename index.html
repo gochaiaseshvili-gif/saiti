@@ -469,16 +469,31 @@
             >0</span>
           </button>
 
-          <!-- Header About Us Button -->
+          <!-- Header About Us & Warranty/Policy Buttons -->
           <button
             id="header-about-btn"
             type="button"
+            data-open-info-page="about"
+            onclick="window.openAboutModal && window.openAboutModal()"
             class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-white/95 hover:bg-white text-zinc-950 border border-white/40 text-xs font-black flex items-center gap-1.5 shadow-xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
-            title="ჩვენ შესახებ — მაღაზიის ინფორმაცია, მიწოდება და გარანტია"
+            title="ჩვენ შესახებ — მაღაზიის ინფორმაცია, გარანტიები და პოლიტიკა"
             aria-label="ჩვენ შესახებ"
           >
             <span class="text-sm">ℹ️</span>
             <span class="hidden md:inline">ჩვენ შესახებ</span>
+          </button>
+
+          <button
+            id="header-warranty-btn"
+            type="button"
+            data-open-info-page="warranty"
+            onclick="window.openWarrantyModal && window.openWarrantyModal()"
+            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-emerald-500/95 hover:bg-emerald-600 text-white border border-emerald-300/60 text-xs font-black flex items-center gap-1.5 shadow-xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            title="ოფიციალური გარანტიები, მიწოდება და კონფიდენციალურობის პოლიტიკა"
+            aria-label="გარანტია და პოლიტიკა"
+          >
+            <span class="text-sm">🛡️</span>
+            <span class="hidden lg:inline">გარანტია &amp; პოლიტიკა</span>
           </button>
 
           <!-- Compact Language Switcher Dropdown (მხოლოდ არჩეული ენა ჩანს, ჩამოშლით გადართვა) -->
@@ -564,16 +579,29 @@
                   <button
                     type="button"
                     id="dropdown-open-about-btn"
+                    data-open-info-page="about"
+                    onclick="window.openAboutModal && window.openAboutModal()"
                     class="w-full text-left px-3 py-2 rounded-xl hover:bg-stone-100 text-xs font-extrabold text-zinc-800 flex items-center gap-2 cursor-pointer fast-transition"
                   >
                     <span>ℹ️ ჩვენ შესახებ</span>
                   </button>
                   <button
                     type="button"
-                    id="dropdown-open-privacy-btn"
+                    id="dropdown-open-warranty-btn"
+                    data-open-info-page="warranty"
+                    onclick="window.openWarrantyModal && window.openWarrantyModal()"
                     class="w-full text-left px-3 py-2 rounded-xl hover:bg-stone-100 text-xs font-extrabold text-zinc-800 flex items-center gap-2 cursor-pointer fast-transition"
                   >
-                    <span>📜 კონფიდენციალურობა</span>
+                    <span>🛡️ გარანტიები და მიწოდება</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="dropdown-open-privacy-btn"
+                    data-open-info-page="privacy"
+                    onclick="window.openPrivacyModal && window.openPrivacyModal()"
+                    class="w-full text-left px-3 py-2 rounded-xl hover:bg-stone-100 text-xs font-extrabold text-zinc-800 flex items-center gap-2 cursor-pointer fast-transition"
+                  >
+                    <span>📜 კონფიდენციალურობის პოლიტიკა</span>
                   </button>
                 </div>
 
