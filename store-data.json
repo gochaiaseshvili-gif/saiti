@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065885063,
+  "updatedAt": 1794065886449,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "NDR-1",
+      "name": "NDR-15",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "NDR-1",
+      "youtubeCaption": "NDR-15",
       "tiktokUrl": "",
-      "tiktokCaption": "NDR-1",
+      "tiktokCaption": "NDR-15",
       "facebookUrl": "",
-      "facebookCaption": "NDR-1",
+      "facebookCaption": "NDR-15",
       "instagramUrl": "",
-      "instagramCaption": "NDR-1"
+      "instagramCaption": "NDR-15"
     },
     {
       "id": "prod-1794065812913",
