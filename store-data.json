@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065818827,
+  "updatedAt": 1794065820220,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "RX13",
+      "name": "RX1",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "RX13",
+      "youtubeCaption": "RX1",
       "tiktokUrl": "",
-      "tiktokCaption": "RX13",
+      "tiktokCaption": "RX1",
       "facebookUrl": "",
-      "facebookCaption": "RX13",
+      "facebookCaption": "RX1",
       "instagramUrl": "",
-      "instagramCaption": "RX13"
+      "instagramCaption": "RX1"
     },
     {
       "id": "prod-1794065740058",
