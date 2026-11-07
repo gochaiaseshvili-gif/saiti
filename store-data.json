@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065741282,
+  "updatedAt": 1794065743797,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "RX",
+      "name": "RX-",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "RX",
+      "youtubeCaption": "RX-",
       "tiktokUrl": "",
-      "tiktokCaption": "RX",
+      "tiktokCaption": "RX-",
       "facebookUrl": "",
-      "facebookCaption": "RX",
+      "facebookCaption": "RX-",
       "instagramUrl": "",
-      "instagramCaption": "RX"
+      "instagramCaption": "RX-"
     },
     {
       "id": "prod-1794065646012",
