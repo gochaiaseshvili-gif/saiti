@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065880857,
+  "updatedAt": 1794065884022,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "NDR",
+      "name": "NDR-",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "NDR",
+      "youtubeCaption": "NDR-",
       "tiktokUrl": "",
-      "tiktokCaption": "NDR",
+      "tiktokCaption": "NDR-",
       "facebookUrl": "",
-      "facebookCaption": "NDR",
+      "facebookCaption": "NDR-",
       "instagramUrl": "",
-      "instagramCaption": "NDR"
+      "instagramCaption": "NDR-"
     },
     {
       "id": "prod-1794065812913",
