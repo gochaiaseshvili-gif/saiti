@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065972156,
+  "updatedAt": 1794065973067,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "MKF-",
+      "name": "MKF-0",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -282,7 +282,7 @@
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1794065963431_2rbv.jpg",
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1794065965849_fm6s.jpg",
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1794065967885_t2zt.jpg",
-        "",
+        "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1794065970136_dns0.jpg",
         ""
       ],
       "description": "",
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "MKF-",
+      "youtubeCaption": "MKF-0",
       "tiktokUrl": "",
-      "tiktokCaption": "MKF-",
+      "tiktokCaption": "MKF-0",
       "facebookUrl": "",
-      "facebookCaption": "MKF-",
+      "facebookCaption": "MKF-0",
       "instagramUrl": "",
-      "instagramCaption": "MKF-"
+      "instagramCaption": "MKF-0"
     },
     {
       "id": "prod-1794065879123",
@@ -4286,7 +4286,7 @@
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1794065963431_2rbv.jpg",
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1794065965849_fm6s.jpg",
       "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_3_1794065967885_t2zt.jpg",
-      "",
+      "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_4_1794065970136_dns0.jpg",
       ""
     ],
     "prod-1794065879123": [
