@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065681512,
+  "updatedAt": 1794065684423,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "MDL",
+      "name": "MDL-",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "MDL",
+      "youtubeCaption": "MDL-",
       "tiktokUrl": "",
-      "tiktokCaption": "MDL",
+      "tiktokCaption": "MDL-",
       "facebookUrl": "",
-      "facebookCaption": "MDL",
+      "facebookCaption": "MDL-",
       "instagramUrl": "",
-      "instagramCaption": "MDL"
+      "instagramCaption": "MDL-"
     },
     {
       "id": "prod-1794065587032",
