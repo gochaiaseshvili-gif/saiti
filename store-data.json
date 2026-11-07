@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065646219,
+  "updatedAt": 1794065671774,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "ახალი პროდუქტი",
+      "name": "მ",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "ახალი პროდუქტი",
+      "youtubeCaption": "მ",
       "tiktokUrl": "",
-      "tiktokCaption": "ახალი პროდუქტი",
+      "tiktokCaption": "მ",
       "facebookUrl": "",
-      "facebookCaption": "ახალი პროდუქტი",
+      "facebookCaption": "მ",
       "instagramUrl": "",
-      "instagramCaption": "ახალი პროდუქტი"
+      "instagramCaption": "მ"
     },
     {
       "id": "prod-1794065587032",
