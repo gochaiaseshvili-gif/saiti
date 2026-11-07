@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065671774,
+  "updatedAt": 1794065676206,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "მ",
+      "name": "მMD",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "მ",
+      "youtubeCaption": "მMD",
       "tiktokUrl": "",
-      "tiktokCaption": "მ",
+      "tiktokCaption": "მMD",
       "facebookUrl": "",
-      "facebookCaption": "მ",
+      "facebookCaption": "მMD",
       "instagramUrl": "",
-      "instagramCaption": "მ"
+      "instagramCaption": "მMD"
     },
     {
       "id": "prod-1794065587032",
