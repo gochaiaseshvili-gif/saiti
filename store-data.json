@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065813068,
+  "updatedAt": 1794065813891,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "ახალი პროდუქტი",
+      "name": "R",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "ახალი პროდუქტი",
+      "youtubeCaption": "R",
       "tiktokUrl": "",
-      "tiktokCaption": "ახალი პროდუქტი",
+      "tiktokCaption": "R",
       "facebookUrl": "",
-      "facebookCaption": "ახალი პროდუქტი",
+      "facebookCaption": "R",
       "instagramUrl": "",
-      "instagramCaption": "ახალი პროდუქტი"
+      "instagramCaption": "R"
     },
     {
       "id": "prod-1794065740058",
