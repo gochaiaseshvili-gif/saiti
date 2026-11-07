@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794065970894,
+  "updatedAt": 1794065972156,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -274,7 +274,7 @@
       "category": "karaoke",
       "categoryLabel": "კარაოკე დინამიკები",
       "badgeText": "აქცია",
-      "name": "MKF",
+      "name": "MKF-",
       "shortMeta": "",
       "oldPrice": 0,
       "newPrice": 0,
@@ -325,13 +325,13 @@
       "youtubeId": "",
       "youtubeUrl": "",
       "youtubeDuration": "08:45",
-      "youtubeCaption": "MKF",
+      "youtubeCaption": "MKF-",
       "tiktokUrl": "",
-      "tiktokCaption": "MKF",
+      "tiktokCaption": "MKF-",
       "facebookUrl": "",
-      "facebookCaption": "MKF",
+      "facebookCaption": "MKF-",
       "instagramUrl": "",
-      "instagramCaption": "MKF"
+      "instagramCaption": "MKF-"
     },
     {
       "id": "prod-1794065879123",
