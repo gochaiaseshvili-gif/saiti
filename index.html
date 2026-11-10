@@ -991,6 +991,20 @@
                 class="hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-red-600 text-white leading-none"
               >0</span>
             </button>
+
+            <button
+              id="toolbar-sales-notifications-btn"
+              type="button"
+              class="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white border border-amber-400/80 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="დამტკიცებული განვადებები და გაყიდვების შეტყობინებები"
+            >
+              <span>🔔🏦</span>
+              <span>განვადებები / გაყიდვები</span>
+              <span
+                id="toolbar-sales-unread-badge"
+                class="hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-red-600 text-white leading-none animate-bounce"
+              >0</span>
+            </button>
           </div>
         </div>
 
@@ -7254,6 +7268,87 @@
 
     
     <!-- ======================================================================================== -->
+    <!-- APPROVED INSTALLMENTS & BANK SALES NOTIFICATIONS MODAL (🔔 დამტკიცებული განვადებები)      -->
+    <!-- ======================================================================================== -->
+    <div
+      id="sales-notifications-modal"
+      class="fixed inset-0 z-[98] hidden bg-zinc-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="w-full max-w-2xl rounded-3xl bg-white shadow-2xl border-2 border-amber-400 overflow-hidden flex flex-col max-h-[90vh]">
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 text-white px-5 py-4 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <span class="w-10 h-10 rounded-2xl bg-amber-500 text-zinc-950 flex items-center justify-center text-xl font-black shadow-sm">
+              🔔
+            </span>
+            <div>
+              <h3 class="text-base sm:text-lg font-black text-white">
+                დამტკიცებული განვადებები და გაყიდვები
+              </h3>
+              <p class="text-[11px] text-amber-300 font-semibold">
+                საქართველოს ბანკი • კრედო ბანკი • ბარათით გადახდები (ავტომატური შეტყობინებები)
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-sales-notifications-modal-btn"
+            class="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-lg font-bold cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1 bg-stone-50">
+          <!-- Controls Bar: Test Alert + Mark Read -->
+          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 flex flex-wrap items-center justify-between gap-2">
+            <div class="text-xs font-bold text-amber-950">
+              🔊 როცა ბანკი განვადებას დაამტკიცებს, აქ და ჩატში ავტომატურად მოგივათ ხმოვანი შეტყობინება!
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                id="test-sale-notification-btn"
+                class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+              >
+                🔔 ტესტ-შეტყობინების შემოწმება
+              </button>
+              <button
+                type="button"
+                id="refresh-sales-notifications-btn"
+                class="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+              >
+                🔄 განახლება
+              </button>
+            </div>
+          </div>
+
+          <!-- Sales List Container -->
+          <div id="sales-notifications-list" class="space-y-2.5">
+            <div class="text-center py-8 text-zinc-400 text-sm font-semibold">
+              იტვირთება შეტყობინებები...
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 py-3.5 bg-white border-t border-zinc-200 flex items-center justify-between text-xs text-zinc-500">
+          <span>ავტომატური სინქრონიზაცია ჩართულია (ყოველ 15 წამში)</span>
+          <button
+            type="button"
+            id="close-sales-notifications-footer-btn"
+            class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-extrabold cursor-pointer"
+          >
+            დახურვა
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
     <!-- BANK OF GEORGIA OFFICIAL INSTALLMENT MONTH SELECTOR MODAL ("განვადებით ყიდვა" 3-48 თვე) -->
     <!-- ======================================================================================== -->
     <div
@@ -7321,6 +7416,19 @@
             <span id="bog-inst-monthly-amount" class="text-2xl sm:text-4xl font-extrabold text-zinc-900 font-mono-num">
               221.33₾
             </span>
+          </div>
+
+          <!-- Customer Phone Input for Delivery & Approval Notification -->
+          <div class="rounded-xl border border-zinc-300 px-4 py-2.5 bg-stone-50/70">
+            <label for="bog-inst-customer-phone" class="block text-[11px] sm:text-xs font-bold text-zinc-600 mb-1">
+              📱 თქვენი ტელეფონის ნომერი (დამტკიცების შემდეგ კურიერის დასაკავშირებლად):
+            </label>
+            <input
+              type="tel"
+              id="bog-inst-customer-phone"
+              placeholder="მაგ: 551 58 85 79"
+              class="w-full text-sm sm:text-base font-bold text-zinc-900 bg-white px-3 py-1.5 rounded-lg border border-zinc-300 focus:outline-none focus:border-[#FE5F00] font-mono-num"
+            />
           </div>
 
           <!-- Peach Installment Benefits Box -->
@@ -18107,6 +18215,11 @@
           activeBogInstMonth = 3;
           updateBogInstModalUi(3);
 
+          const phoneEl = document.getElementById('bog-inst-customer-phone');
+          try {
+            const savedPh = localStorage.getItem('vv_customer_phone') || '';
+            if (phoneEl && !phoneEl.value && savedPh) phoneEl.value = savedPh;
+          } catch (e) {}
           const modalEl = document.getElementById('bog-installment-calc-modal');
           if (modalEl) modalEl.classList.remove('hidden');
 
@@ -18133,6 +18246,240 @@
           return true;
         }
         window.openBogInstallmentCalculatorModal = openBogInstallmentCalculatorModal;
+
+        // =========================================================================
+        // APPROVED INSTALLMENTS & BANK SALES NOTIFICATION SYSTEM (🔔)
+        // =========================================================================
+        let allSalesNotifications = [];
+        let knownSaleIds = new Set();
+        let salesInitialLoadDone = false;
+
+        function playSaleApprovedChime() {
+          try {
+            const AudioCtx = window.AudioContext || window.webkitAudioContext;
+            if (!AudioCtx) return;
+            const ctx = new AudioCtx();
+            [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.12);
+              gain.gain.setValueAtTime(0.18, ctx.currentTime + idx * 0.12);
+              gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.12 + 0.35);
+              osc.connect(gain);
+              gain.connect(ctx.destination);
+              osc.start(ctx.currentTime + idx * 0.12);
+              osc.stop(ctx.currentTime + idx * 0.12 + 0.36);
+            });
+          } catch (e) {}
+        }
+
+        function renderSalesNotificationsModalList() {
+          const listEl = document.getElementById('sales-notifications-list');
+          const badgeEl = document.getElementById('toolbar-sales-unread-badge');
+          const unreadCount = allSalesNotifications.filter((s) => s.unread).length;
+          if (badgeEl) {
+            if (unreadCount > 0) {
+              badgeEl.textContent = String(unreadCount);
+              badgeEl.classList.remove('hidden');
+            } else {
+              badgeEl.classList.add('hidden');
+            }
+          }
+          if (!listEl) return;
+          if (allSalesNotifications.length === 0) {
+            listEl.innerHTML = `
+              <div class="rounded-2xl bg-white border border-zinc-200 p-8 text-center space-y-2">
+                <div class="text-3xl">🏦</div>
+                <div class="text-sm font-black text-zinc-900">ჯერ დამტკიცებული განვადების შეტყობინება არ არის</div>
+                <div class="text-xs text-zinc-500">როგორც კი ბანკი მომხმარებელს განვადებას დაუმტკიცებს, შეტყობინება მაშინვე გამოჩნდება აქ!</div>
+              </div>
+            `;
+            return;
+          }
+          listEl.innerHTML = allSalesNotifications
+            .map((s) => {
+              const isCredo = s.bank === 'credo';
+              const isInst = s.mode !== 'card';
+              const bankBadge = isCredo
+                ? '<span class="px-2 py-0.5 rounded-md bg-rose-600 text-white text-[10px] font-black">კრედო ბანკი</span>'
+                : '<span class="px-2 py-0.5 rounded-md bg-[#FE5F00] text-white text-[10px] font-black">საქართველოს ბანკი</span>';
+              const modeBadge = isInst
+                ? '<span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-black">✅ განვადება დამტკიცდა</span>'
+                : '<span class="px-2 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-black">💳 ბარათით გადახდილია</span>';
+              const dateStr = s.createdAt
+                ? new Date(s.createdAt).toLocaleString('ka-GE', { timeZone: 'Asia/Tbilisi' })
+                : '';
+              const phoneClean = String(s.customerPhone || '').replace(/[^0-9+]/g, '');
+              return `
+                <div class="rounded-2xl bg-white border-2 ${s.unread ? 'border-emerald-500 bg-emerald-50/20' : 'border-zinc-200'} p-4 shadow-xs space-y-2.5">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex flex-wrap items-center gap-1.5">
+                      ${modeBadge}
+                      ${bankBadge}
+                      ${s.months ? `<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-black">${s.months} თვე</span>` : ''}
+                    </div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-[11px] font-semibold text-zinc-400">${dateStr}</span>
+                      <button type="button" data-del-sale-id="${s.id}" class="text-xs text-rose-500 hover:text-rose-700 font-black px-1.5 py-0.5 rounded hover:bg-rose-50 cursor-pointer" title="წაშლა">✕</button>
+                    </div>
+                  </div>
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+                    <div>
+                      <div class="text-sm sm:text-base font-black text-zinc-950">${s.productName || 'პროდუქტი'}</div>
+                      ${s.customerPhone ? `<div class="text-xs font-extrabold text-emerald-800 mt-0.5">📞 მყიდველის ტელეფონი: <span class="font-mono-num">${s.customerPhone}</span></div>` : '<div class="text-[11px] text-zinc-500">მყიდველის ნომერი ბანკის ქვითარშია</div>'}
+                    </div>
+                    <div class="text-left sm:text-right">
+                      <div class="text-lg sm:text-xl font-black text-emerald-700 font-mono-num">${Number(s.amount) || 0} ₾</div>
+                    </div>
+                  </div>
+                  ${phoneClean ? `
+                    <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-100">
+                      <a href="tel:${phoneClean}" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center gap-1.5">
+                        📞 დარეკვა: ${s.customerPhone}
+                      </a>
+                      <a href="https://wa.me/${phoneClean.replace(/^0/, '995').replace(/^5/, '9955')}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-xs font-extrabold flex items-center gap-1.5">
+                        💬 WhatsApp მიწერა
+                      </a>
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            })
+            .join('');
+        }
+
+        async function fetchSalesNotifications(playAlertOnNew = true) {
+          try {
+            const res = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'get_sales_notifications' }),
+            });
+            if (!res.ok) return;
+            const data = await res.json();
+            if (!data || !Array.isArray(data.sales)) return;
+            const incoming = data.sales;
+            let foundNewSale = null;
+            incoming.forEach((item) => {
+              if (item && item.id && !knownSaleIds.has(item.id)) {
+                knownSaleIds.add(item.id);
+                if (salesInitialLoadDone && item.unread) {
+                  foundNewSale = item;
+                }
+              }
+            });
+            salesInitialLoadDone = true;
+            allSalesNotifications = incoming;
+            renderSalesNotificationsModalList();
+
+            if (foundNewSale && playAlertOnNew) {
+              playSaleApprovedChime();
+              if (typeof showWishlistToast === 'function') {
+                showWishlistToast(`🎉 განვადება დამტკიცდა! ${foundNewSale.productName} (${foundNewSale.amount} ₾)`);
+              }
+            }
+          } catch (e) {}
+        }
+
+        function openSalesNotificationsModal() {
+          const modalEl = document.getElementById('sales-notifications-modal');
+          if (modalEl) modalEl.classList.remove('hidden');
+          fetchSalesNotifications(false);
+          // Mark all as read when opened
+          fetch('/api/bog-pay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'mark_sales_read' }),
+          })
+            .then((r) => r.json())
+            .then((d) => {
+              if (d && Array.isArray(d.sales)) {
+                allSalesNotifications = d.sales;
+                renderSalesNotificationsModalList();
+              }
+            })
+            .catch(() => {});
+        }
+        window.openSalesNotificationsModal = openSalesNotificationsModal;
+
+        const toolbarSalesBtn = document.getElementById('toolbar-sales-notifications-btn');
+        if (toolbarSalesBtn) {
+          toolbarSalesBtn.addEventListener('click', openSalesNotificationsModal);
+        }
+        const closeSalesModalBtn = document.getElementById('close-sales-notifications-modal-btn');
+        const closeSalesFooterBtn = document.getElementById('close-sales-notifications-footer-btn');
+        const salesModalBackdrop = document.getElementById('sales-notifications-modal');
+        if (closeSalesModalBtn && salesModalBackdrop) {
+          closeSalesModalBtn.addEventListener('click', () => salesModalBackdrop.classList.add('hidden'));
+        }
+        if (closeSalesFooterBtn && salesModalBackdrop) {
+          closeSalesFooterBtn.addEventListener('click', () => salesModalBackdrop.classList.add('hidden'));
+        }
+        if (salesModalBackdrop) {
+          salesModalBackdrop.addEventListener('click', (e) => {
+            if (e.target === salesModalBackdrop) salesModalBackdrop.classList.add('hidden');
+          });
+        }
+        const refreshSalesBtn = document.getElementById('refresh-sales-notifications-btn');
+        if (refreshSalesBtn) {
+          refreshSalesBtn.addEventListener('click', () => fetchSalesNotifications(true));
+        }
+        const testSaleBtn = document.getElementById('test-sale-notification-btn');
+        if (testSaleBtn) {
+          testSaleBtn.addEventListener('click', async () => {
+            testSaleBtn.textContent = '⏳ იგზავნება...';
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'record_approved_sale',
+                  bank: 'bog',
+                  mode: 'installment',
+                  status: 'approved',
+                  productName: '[ტესტი] კარაოკე დინამიკი 2 მიკროფონით',
+                  amount: 650,
+                  months: 12,
+                  customerPhone: '551 58 85 79',
+                }),
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.sales)) {
+                allSalesNotifications = d.sales;
+                renderSalesNotificationsModalList();
+                playSaleApprovedChime();
+                if (typeof showWishlistToast === 'function') {
+                  showWishlistToast('🔔 ტესტ-შეტყობინება წარმატებით მოვიდა!');
+                }
+              }
+            } catch (e) {}
+            testSaleBtn.textContent = '🔔 ტესტ-შეტყობინების შემოწმება';
+          });
+        }
+        const salesListEl = document.getElementById('sales-notifications-list');
+        if (salesListEl) {
+          salesListEl.addEventListener('click', async (e) => {
+            const delBtn = e.target.closest('[data-del-sale-id]');
+            if (!delBtn) return;
+            const saleId = delBtn.getAttribute('data-del-sale-id');
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete_sale_notification', saleId }),
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.sales)) {
+                allSalesNotifications = d.sales;
+                renderSalesNotificationsModalList();
+              }
+            } catch (err) {}
+          });
+        }
+
+        setTimeout(() => fetchSalesNotifications(false), 1200);
+        setInterval(() => fetchSalesNotifications(true), 15000);
 
         const closeBogInstCalcBtn = document.getElementById('close-bog-inst-calc-btn');
         const bogInstCalcModalEl = document.getElementById('bog-installment-calc-modal');
@@ -18188,6 +18535,7 @@
                   productName: activeBogInstProduct.name,
                   productId: activeBogInstProduct.id,
                   amount: rawPrice,
+                  customerPhone: (document.getElementById('bog-inst-customer-phone')?.value || '').trim(),
                   originUrl: window.location.origin,
                 }),
               });
@@ -20356,8 +20704,51 @@
               }
             }
 
-            // Handle return from Bank of Georgia (payment.bog.ge) with ?payment=success or ?payment=fail
+            // Handle return from Bank of Georgia / Credo with ?payment=success or ?payment=fail
             const paymentStatus = params.get('payment');
+            if (paymentStatus === 'success') {
+              const saleMode = params.get('mode') || 'installment';
+              const saleBank = params.get('bank') || 'bog';
+              const saleOrderId = params.get('orderId') || ('ord_' + Date.now());
+              const saleProdId = params.get('prodId') || '';
+              const saleProdName = params.get('prodName') || 'პროდუქტი — iyidebaa.ge';
+              const saleAmount = Number(params.get('amount')) || 0;
+              const saleMonths = Number(params.get('months')) || 0;
+              const salePhone = params.get('phone') || localStorage.getItem('vv_customer_phone') || '';
+              fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'record_approved_sale',
+                  orderId: saleOrderId,
+                  bank: saleBank,
+                  mode: saleMode,
+                  status: 'approved',
+                  productId: saleProdId,
+                  productName: saleProdName,
+                  amount: saleAmount,
+                  months: saleMonths,
+                  customerPhone: salePhone,
+                }),
+              }).then(() => {
+                if (typeof fetchSalesNotifications === 'function') fetchSalesNotifications(true);
+              }).catch(() => {});
+              // Also post to Seller Chat so Gocha sees it in Chat Inbox immediately
+              fetch('/api/chat/message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  sessionId: 'bank_sale_' + saleOrderId,
+                  sender: 'customer',
+                  senderName: saleBank === 'credo' ? '🏦 კრედო განვადება' : '🏦 საქართველოს ბანკი',
+                  customerName: saleBank === 'credo' ? '🏦 კრედო განვადება' : '🏦 საქართველოს ბანკი',
+                  customerPhone: salePhone,
+                  productId: saleProdId,
+                  productName: saleProdName,
+                  text: `🎉 დამტკიცდა ${saleMode === 'installment' ? 'განვადება' : 'ბარათით გადახდა'}! ნივთი: ${saleProdName} | თანხა: ${saleAmount} ₾${saleMonths ? ` (${saleMonths} თვე)` : ''}${salePhone ? ` | ტელ: ${salePhone}` : ''}`,
+                }),
+              }).catch(() => {});
+            }
             if (paymentStatus === 'success' || paymentStatus === 'fail') {
               setTimeout(() => {
                 const banner = document.createElement('div');
