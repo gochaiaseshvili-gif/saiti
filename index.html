@@ -512,6 +512,19 @@
             <span class="hidden lg:inline">გარანტია &amp; პოლიტიკა</span>
           </button>
 
+          <button
+            id="header-return-policy-btn"
+            type="button"
+            data-open-info-page="returns"
+            onclick="window.openReturnPolicyModal && window.openReturnPolicyModal()"
+            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-amber-500/95 hover:bg-amber-600 text-zinc-950 border border-amber-300 text-xs font-black flex items-center gap-1.5 shadow-xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            title="ნივთის უკან დაბრუნებისა და შეცვლის პოლიტიკა (14 დღე)"
+            aria-label="ნივთის უკან დაბრუნების პოლიტიკა"
+          >
+            <span class="text-sm">🔄</span>
+            <span class="hidden md:inline">დაბრუნების პოლიტიკა</span>
+          </button>
+
           <!-- Compact Language Switcher Dropdown (მხოლოდ არჩეული ენა ჩანს, ჩამოშლით გადართვა) -->
           <div class="relative inline-flex items-center">
             <select
@@ -2514,6 +2527,21 @@
               <li>
                 <button
                   type="button"
+                  id="footer-return-policy-btn"
+                  data-open-info-page="returns"
+                  onclick="window.openReturnPolicyModal && window.openReturnPolicyModal()"
+                  class="w-full px-3 py-2 rounded-xl bg-rose-50/80 hover:bg-rose-100 border border-rose-300/90 hover:border-rose-400 text-left cursor-pointer flex items-center justify-between gap-2 font-extrabold text-zinc-900 shadow-2xs active:scale-[0.98] fast-transition"
+                >
+                  <span class="flex items-center gap-2">
+                    <span class="text-sm">🔄</span>
+                    <span>ნივთის უკან დაბრუნების პოლიტიკა</span>
+                  </span>
+                  <span class="text-[11px] font-black text-rose-700 shrink-0">გახსნა →</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
                   id="footer-chat-jump-btn"
                   data-open-info-page="chat"
                   onclick="window.jumpToStoreChat && window.jumpToStoreChat()"
@@ -2716,6 +2744,16 @@
               class="text-zinc-800 hover:text-zinc-950 hover:underline cursor-pointer font-bold"
             >
               🛡️ გარანტიები და მიწოდება
+            </button>
+            <span aria-hidden="true">•</span>
+            <button
+              type="button"
+              id="footer-bottom-returns-btn"
+              data-open-info-page="returns"
+              onclick="window.openReturnPolicyModal && window.openReturnPolicyModal()"
+              class="text-rose-700 hover:text-rose-900 hover:underline cursor-pointer font-extrabold"
+            >
+              🔄 ნივთის უკან დაბრუნების პოლიტიკა
             </button>
             <span aria-hidden="true">•</span>
             <button
@@ -6617,6 +6655,34 @@
             </div>
           </div>
 
+          
+          <!-- Official 14-Day Return & Exchange Policy Block (ნივთის უკან დაბრუნების პოლიტიკა) -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border-2 border-rose-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-rose-100 text-rose-700 flex items-center justify-center text-xl font-black">🔄</div>
+                <div>
+                  <h2 class="text-lg sm:text-xl font-black text-zinc-950">4. ნივთის უკან დაბრუნებისა და შეცვლის პოლიტიკა (14 დღე)</h2>
+                  <p class="text-xs text-zinc-500">„მომხმარებლის უფლებების დაცვის შესახებ“ საქართველოს კანონის შესაბამისად</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                data-open-info-page="returns"
+                onclick="window.openReturnPolicyModal && window.openReturnPolicyModal()"
+                class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold cursor-pointer shadow-xs"
+              >
+                სრული პოლიტიკის გახსნა →
+              </button>
+            </div>
+            <div class="text-xs sm:text-sm text-zinc-700 space-y-2.5 leading-relaxed">
+              <p>• <strong>14 კალენდარული დღის განმავლობაში უპირობოდ დაბრუნება:</strong> დისტანციურად (ონლაინ) შეძენილი ნივთის ჩაბარებიდან <strong>14 კალენდარული დღის</strong> განმავლობაში მომხმარებელს უფლება აქვს, ყოველგვარი საფუძვლის მითითების გარეშე უარი თქვას ხელშეკრულებაზე და დააბრუნოს ნივთი.</p>
+              <p>• <strong>დაბრუნების პირობები:</strong> ნივთს შენარჩუნებული უნდა ჰქონდეს პირვანდელი სასაქონლო იერსახე, ქარხნული შეფუთვა (ყუთი), ეტიკეტები და სრული კომპლექტაცია (მიკროფონები, კაბელები, პულტი, მზის პანელი, საგარანტიო ტალონი) და არ უნდა აღენიშნებოდეს ფიზიკური დაზიანება ან ექსპლუატაციის კვალი.</p>
+              <p>• <strong>ქარხნული წუნის შემთხვევაში:</strong> თუ ნივთს ჩაბარებისას ან 14 დღის ვადაში აღმოაჩნდა ქარხნული წუნი, ნივთი იცვლება ახალი მოდელით ან ბრუნდება თანხა 100%-ით. ქარხნული წუნის დროს ტრანსპორტირების ხარჯს სრულად ფარავს მაღაზია (სტანდარტული უპირობო დაბრუნებისას ტრანსპორტირების ხარჯს ფარავს მყიდველი).</p>
+              <p>• <strong>თანხის დაბრუნება და განვადების გაუქმება:</strong> თანხა ბრუნდება ნივთის დაბრუნებიდან <strong>1–3 სამუშაო დღეში</strong> (არაუგვიანეს 14 კალენდარული დღისა) იმავე საბანკო ანგარიშზე/ბარათზე, ხოლო საბანკო განვადებით (საქართველოს ბანკი, თიბისი ბანკი, კრედო ბანკი) შეძენისას მაღაზია ოფიციალურად აუქმებს განვადების ხელშეკრულებას ბანკში.</p>
+            </div>
+          </div>
+
           <!-- 4. Owner Contact & Direct Actions -->
           <div class="p-6 sm:p-8 rounded-3xl bg-zinc-950 text-white space-y-4">
             <div class="flex flex-wrap items-center justify-between gap-4">
@@ -6904,6 +6970,240 @@
       </div>
     </div>
     <!-- ======================================================================================== -->
+    
+    <!-- ======================================================================================== -->
+    <!-- DEDICATED PAGE: PRODUCT RETURN & REFUND POLICY (ნივთის უკან დაბრუნების პოლიტიკა)         -->
+    <!-- ======================================================================================== -->
+    <div
+      id="return-policy-modal-backdrop"
+      class="fixed inset-0 z-[75] hidden bg-stone-100 overflow-y-auto"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="return-policy-page-title"
+    >
+      <div class="min-h-screen flex flex-col">
+        <!-- Sticky Top Bar -->
+        <div class="sticky top-0 z-20 bg-zinc-950 text-white border-b border-zinc-800 px-4 sm:px-6 py-3.5 shadow-md">
+          <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <button
+                type="button"
+                id="back-from-returns-btn"
+                data-close-info-page="returns"
+                class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-extrabold flex items-center gap-1.5 cursor-pointer active:scale-95 fast-transition"
+              >
+                <span>←</span>
+                <span>მთავარ გვერდზე დაბრუნება</span>
+              </button>
+              <span class="text-xs font-mono-num text-zinc-400 hidden sm:inline">iyidebaa.ge • ოფიციალური დოკუმენტი</span>
+            </div>
+
+            <!-- Page Switcher Tabs -->
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                data-open-info-page="returns"
+                class="px-3 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-xs"
+              >
+                <span>🔄</span>
+                <span>დაბრუნების პოლიტიკა</span>
+              </button>
+              <button
+                type="button"
+                data-open-info-page="warranty"
+                onclick="window.openWarrantyModal && window.openWarrantyModal()"
+                class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-zinc-200 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>🛡️</span>
+                <span>გარანტია და მიწოდება</span>
+              </button>
+              <button
+                type="button"
+                data-open-info-page="privacy"
+                onclick="window.openPrivacyModal && window.openPrivacyModal()"
+                class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-zinc-200 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>📜</span>
+                <span>კონფიდენციალურობა</span>
+              </button>
+              <button
+                type="button"
+                data-open-info-page="about"
+                onclick="window.openAboutModal && window.openAboutModal()"
+                class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-zinc-200 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>ℹ️</span>
+                <span>ჩვენ შესახებ</span>
+              </button>
+              <button
+                type="button"
+                id="close-returns-modal-btn"
+                data-close-info-page="returns"
+                class="w-9 h-9 rounded-xl bg-white/10 hover:bg-rose-600 text-white flex items-center justify-center text-sm font-black cursor-pointer ml-1"
+                title="დახურვა"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Document Content -->
+        <div class="max-w-4xl mx-auto w-full px-4 sm:px-6 py-8 space-y-6 flex-1">
+          <!-- Hero Header Card -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-zinc-950 via-zinc-900 to-rose-950 text-white shadow-xl border border-rose-500/30 space-y-3">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 border border-rose-400/40 text-rose-200 text-xs font-extrabold">
+              <span>🔄</span>
+              <span>საქართველოს კანონმდებლობის შესაბამისი ოფიციალური წესები</span>
+            </div>
+            <h1 id="return-policy-page-title" class="font-display text-2xl sm:text-3xl font-black tracking-tight">
+              ნივთის უკან დაბრუნებისა და შეცვლის პოლიტიკა
+            </h1>
+            <p class="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+              წინამდებარე პოლიტიკა შემუშავებულია <strong>„მომხმარებლის უფლებების დაცვის შესახებ“ საქართველოს კანონის</strong> მოთხოვნათა სრული დაცვით და ვრცელდება ონლაინ მაღაზია <strong>iyidebaa.ge</strong>-ზე (ი.მ. გოჩა იასეშვილი) შეძენილ ყველა პროდუქტზე (მათ შორის ბარათით, გადარიცხვით და საბანკო განვადებით შეძენილ ნივთებზე).
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-2 text-xs font-bold">
+              <span class="px-3 py-1 rounded-xl bg-white/10 border border-white/15">📅 14 კალენდარული დღე დაბრუნების ვადა</span>
+              <span class="px-3 py-1 rounded-xl bg-white/10 border border-white/15">💳 თანხის 100%-იანი ანაზღაურება</span>
+              <span class="px-3 py-1 rounded-xl bg-white/10 border border-white/15">🏦 საბანკო განვადების ოფიციალური გაუქმება</span>
+            </div>
+          </div>
+
+          <!-- Section 1: 14-Day Unconditional Return -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center text-xs font-black">1</span>
+              <span>დისტანციურად შეძენილი ნივთის დაბრუნების ვადა (14 კალენდარული დღე)</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                1.1. „მომხმარებლის უფლებების დაცვის შესახებ“ საქართველოს კანონის თანახმად, მომხმარებელს უფლება აქვს, <strong>ყოველგვარი საფუძვლის მითითების გარეშე</strong> უარი თქვას დისტანციურად (ვებგვერდზე <strong>iyidebaa.ge</strong>, ტელეფონით ან ონლაინ ჩატით) დადებულ ხელშეკრულებაზე და დააბრუნოს შეძენილი ნივთი მისი ფიზიკურად ჩაბარებიდან <strong>14 (თოთხმეტი) კალენდარული დღის</strong> განმავლობაში.
+              </p>
+              <p>
+                1.2. აღნიშნული 14-დღიანი ვადის ათვლა იწყება მომხმარებლის ან მის მიერ განსაზღვრული მესამე პირის (გარდა გადამზიდავისა/კურიერისა) მიერ საქონლის ფაქტობრივი მფლობელობის მიღების დღიდან.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 2: Conditions for Returning an Item -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-xs font-black">2</span>
+              <span>ნივთის უკან დაბრუნების სავალდებულო პირობები</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>2.1. 14 კალენდარული დღის ვადაში ნივთის უპირობოდ დაბრუნების ან გადაცვლისთვის აუცილებელია დაცული იყოს შემდეგი პირობები:</p>
+              <ul class="list-disc pl-5 space-y-1.5">
+                <li><strong>პირვანდელი სასაქონლო იერსახე:</strong> ნივთი არ უნდა იყოს ნახმარი, არ უნდა აღენიშნებოდეს ექსპლუატაციის კვალი, ნაკაწრები, ბზარები, დავარდნის, სითხის ჩაღვრის ან სხვა ფიზიკური/მექანიკური დაზიანება;</li>
+                <li><strong>ქარხნული შეფუთვა და ლუქები:</strong> შენარჩუნებული უნდა იყოს ქარხნული ყუთი, დამცავი ფირები, სერიული ნომერი და ქარხნული ეტიკეტები;</li>
+                <li><strong>სრული კომპლექტაცია:</strong> ნივთთან ერთად სრულად უნდა დაბრუნდეს ყველა თანმხლები აქსესუარი (უსადენო მიკროფონები, კვების ბლოკი/დამტენი კაბელი, დისტანციური მართვის პულტი, მზის პანელი, ინსტრუქცია და საგარანტიო ტალონი);</li>
+                <li><strong>შეძენის დამადასტურებელი დოკუმენტი:</strong> წარმოდგენილი უნდა იყოს საგარანტიო ტალონი, საბანკო გადახდის ქვითარი, ინვოისი ან განვადების ხელშეკრულების ნომერი.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Section 3: Manufacturing Defect Exchange / Return -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-black">3</span>
+              <span>ქარხნული წუნის მქონე ნივთის შეცვლა ან დაბრუნება</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                3.1. თუ პროდუქტს ჩაბარებისას ან ჩაბარებიდან 14 კალენდარული დღის განმავლობაში აღმოაჩნდა <strong>ქარხნული წუნი (ტექნიკური გაუმართაობა)</strong>, მომხმარებელს უფლება აქვს აირჩიოს:
+              </p>
+              <ul class="list-disc pl-5 space-y-1.5">
+                <li>ნივთის უსასყიდლოდ შეცვლა სრულიად ახალი, იგივე ან ანალოგიური მოდელით;</li>
+                <li>ხელშეკრულებიდან გასვლა და გადახდილი თანხის 100%-ით უკან დაბრუნება (ან საბანკო განვადების სრული გაუქმება);</li>
+                <li>უფასო საგარანტიო მომსახურება 12-თვიანი ოფიციალური გარანტიის ფარგლებში.</li>
+              </ul>
+              <p>
+                3.2. ქარხნული წუნის ან შეკვეთისგან განსხვავებული ნივთის მიწოდების შემთხვევაში, ნივთის უკან წამოღებისა და შეცვლის <strong>საკურიერო/ტრანსპორტირების ხარჯს 100%-ით ფარავს მაღაზია</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 4: Return Procedure & Shipping Costs -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center text-xs font-black">4</span>
+              <span>დაბრუნების პროცედურა და ტრანსპორტირების ხარჯები</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2">
+              <p>
+                4.1. ნივთის დაბრუნების ან გადაცვლის მოთხოვნის დასაფიქსირებლად მომხმარებელმა 14 კალენდარული დღის ვადაში უნდა მოგვმართოს ნებისმიერი საკომუნიკაციო არხით:
+              </p>
+              <ul class="list-disc pl-5 space-y-1">
+                <li>📞 ტელეფონი / WhatsApp / Viber: <strong>+995 551 58 85 79</strong></li>
+                <li>✉️ ელ-ფოსტა: <strong>gocha.iaseshvili@gmail.com</strong></li>
+                <li>💬 ვებგვერდის (<strong>iyidebaa.ge</strong>) ონლაინ ჩატი</li>
+              </ul>
+              <p>
+                4.2. შეტყობინების გაგზავნიდან არაუგვიანეს <strong>7 (შვიდი) კალენდარული დღისა</strong> მომხმარებელმა უნდა დააბრუნოს ნივთი მაღაზიაში (ქ. თბილისი) ან გამოატანოს საკურიერო სამსახურს.
+              </p>
+              <p>
+                4.3. იმ შემთხვევაში, თუ ნივთი სრულიად გამართულია და მომხმარებელი მას აბრუნებს საკუთარი სურვილით (მიზეზის მითითების გარეშე), ნივთის უკან დაბრუნების ტრანსპორტირების პირდაპირ ხარჯს ფარავს მომხმარებელი.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 5: Refund & Bank Installment Cancellation -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-zinc-200 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-zinc-950 flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center text-xs font-black">5</span>
+              <span>თანხის დაბრუნებისა და საბანკო განვადების გაუქმების წესი</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-zinc-700 leading-relaxed space-y-2.5">
+              <p>
+                5.1. <strong>უნაღდო/ბარათით ან ნაღდი ანგარიშსწორებით შეძენისას:</strong> დაბრუნებული ნივთის მიღებისა და მისი მდგომარეობის შემოწმების შემდეგ, მომხმარებელს გადახდილი თანხა უბრუნდება სრულად <strong>1–3 სამუშაო დღის განმავლობაში</strong> (კანონმდებლობით განსაზღვრულ არაუგვიანეს 14 კალენდარული დღის ვადაში) იმავე საბანკო ბარათზე/ანგარიშზე, საიდანაც განხორციელდა გადახდა.
+              </p>
+              <p>
+                5.2. <strong>საბანკო განვადებით (საქართველოს ბანკი, თიბისი ბანკი, კრედო ბანკი) შეძენისას:</strong> ნივთის დაბრუნებისთანავე მაღაზია ოფიციალურად აფიქსირებს ტრანზაქციის/განვადების გაუქმებას შესაბამის ბანკში, რის საფუძველზეც მომხმარებელს სრულად უუქმდება საბანკო განვადების ვალდებულება.
+              </p>
+            </div>
+          </div>
+
+          <!-- Section 6: Exceptions -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-amber-50/70 border border-amber-300 shadow-2xs space-y-3">
+            <h2 class="text-base sm:text-lg font-black text-amber-950 flex items-center gap-2.5">
+              <span class="w-7 h-7 rounded-xl bg-amber-200 text-amber-950 flex items-center justify-center text-xs font-black">6</span>
+              <span>შემთხვევები, როდესაც ნივთი არ ექვემდებარება უკან დაბრუნებას</span>
+            </h2>
+            <div class="text-xs sm:text-sm text-amber-950 leading-relaxed space-y-1.5">
+              <p>• გასულია ნივთის ჩაბარებიდან კანონით განსაზღვრული <strong>14 კალენდარული დღე</strong> (ამ ვადის გასვლის შემდეგ მოქმედებს <strong>12-თვიანი ოფიციალური საგარანტიო მომსახურება</strong>);</p>
+              <p>• ნივთს აღენიშნება მომხმარებლის ბრალეულობით გამოწვეული მექანიკური/ფიზიკური დაზიანება, სითხის კვალი, დამწვრობა არასწორი ძაბვის მიწოდების გამო ან თვითნებური გახსნის/რემონტის კვალი;</p>
+              <p>• დაკარგულია ან დაზიანებულია კომპლექტაციაში შემავალი აუცილებელი ნაწილები (მაგ: მიკროფონები, დამტენი ბლოკი, მზის პანელი).</p>
+            </div>
+          </div>
+
+          <!-- Contact Footer inside Return Policy -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-zinc-950 text-white flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="text-xs font-extrabold text-amber-400">დაბრუნებისა და საგარანტიო მომსახურების ცხელი ხაზი</div>
+              <div class="text-base sm:text-lg font-black">ი.მ. გოჩა იასეშვილი • iyidebaa.ge</div>
+              <div class="text-xs text-zinc-400">ქ. თბილისი • ყოველდღე 10:00 – 22:00</div>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5">
+              <a
+                href="tel:+995551588579"
+                class="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs sm:text-sm font-black inline-flex items-center gap-2"
+              >
+                <span>📞</span>
+                <span>+995 551 58 85 79</span>
+              </a>
+              <button
+                type="button"
+                data-close-info-page="returns"
+                class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs sm:text-sm font-bold cursor-pointer"
+              >
+                მთავარ გვერდზე დაბრუნება
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       id="control-panel-backdrop"
       class="fixed inset-0 z-[80] hidden bg-black/65 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
@@ -19240,6 +19540,8 @@
               openWarrantyModal({ isInitialRestore: true });
             } else if (pageParam === 'privacy') {
               openPrivacyModal({ isInitialRestore: true });
+            } else if (pageParam === 'returns' || pageParam === 'return-policy') {
+              openReturnPolicyModal({ isInitialRestore: true });
             }
           } catch (e) {}
         }
@@ -19250,6 +19552,56 @@
         const aboutModalBackdrop = document.getElementById('about-modal-backdrop');
         const warrantyModalBackdrop = document.getElementById('warranty-modal-backdrop');
         const privacyModalBackdrop = document.getElementById('privacy-modal-backdrop');
+        const returnPolicyModalBackdrop = document.getElementById('return-policy-modal-backdrop');
+
+        function openReturnPolicyModal(opts = {}) {
+          if (!returnPolicyModalBackdrop) return;
+          if (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) closeAboutModal({ immediate: true });
+          if (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) closeWarrantyModal({ immediate: true });
+          if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) closePrivacyModal({ immediate: true });
+          if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
+          if (typeof closeShareModal === 'function') closeShareModal();
+          if (typeof closeScreenshotModal === 'function') closeScreenshotModal();
+          if (typeof closeWishlistModal === 'function') closeWishlistModal();
+
+          returnPolicyModalBackdrop.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+          returnPolicyModalBackdrop.scrollTop = 0;
+
+          if (!opts.fromPopState && !opts.isInitialRestore) {
+            try {
+              const u = new URL(window.location.href);
+              u.searchParams.set('page', 'returns');
+              u.searchParams.delete('product');
+              window.history.pushState({ page: 'returns' }, '', u.toString());
+            } catch (e) {}
+          }
+        }
+
+        function closeReturnPolicyModal(opts = {}) {
+          if (!returnPolicyModalBackdrop) return;
+          returnPolicyModalBackdrop.classList.add('hidden');
+          const anyOtherModalOpen =
+            (modalBackdrop && !modalBackdrop.classList.contains('hidden')) ||
+            (aboutModalBackdrop && !aboutModalBackdrop.classList.contains('hidden')) ||
+            (warrantyModalBackdrop && !warrantyModalBackdrop.classList.contains('hidden')) ||
+            (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) ||
+            (cpBackdrop && !cpBackdrop.classList.contains('hidden'));
+          if (!anyOtherModalOpen) {
+            document.body.classList.remove('overflow-hidden');
+          }
+          if (!opts.fromPopState && !opts.immediate) {
+            try {
+              const u = new URL(window.location.href);
+              if (u.searchParams.get('page') === 'returns' || u.searchParams.get('page') === 'return-policy') {
+                u.searchParams.delete('page');
+                window.history.pushState({}, '', u.toString());
+              }
+            } catch (e) {}
+          }
+        }
+        window.openReturnPolicyModal = openReturnPolicyModal;
+        window.closeReturnPolicyModal = closeReturnPolicyModal;
 
         function openAboutModal(opts = {}) {
           if (!aboutModalBackdrop) return;
@@ -19444,6 +19796,7 @@
               if (targetPage === 'about') openAboutModal();
               else if (targetPage === 'warranty') openWarrantyModal();
               else if (targetPage === 'privacy') openPrivacyModal();
+              else if (targetPage === 'returns' || targetPage === 'return-policy') openReturnPolicyModal();
               return;
             }
 
@@ -19454,6 +19807,7 @@
               if (closePage === 'about') closeAboutModal();
               else if (closePage === 'warranty') closeWarrantyModal();
               else if (closePage === 'privacy') closePrivacyModal();
+              else if (closePage === 'returns' || closePage === 'return-policy') closeReturnPolicyModal();
             }
           });
 
