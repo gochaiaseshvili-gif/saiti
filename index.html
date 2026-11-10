@@ -7366,6 +7366,107 @@
       </div>
     </div>
 
+    
+    <!-- ======================================================================================== -->
+    <!-- DEDICATED RED CREDO BANK CHECKOUT & MYCREDO APP MODAL (🟥 კრედო ბანკით გადახდა)          -->
+    <!-- ======================================================================================== -->
+    <div
+      id="credo-red-checkout-modal"
+      class="fixed inset-0 z-[90] hidden bg-rose-950/75 backdrop-blur-xs flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl border-2 border-[#fc6250] overflow-hidden animate-fadeIn">
+        <!-- Credo Red Top Header -->
+        <div class="bg-gradient-to-r from-[#fc6250] via-[#e11d48] to-[#be123c] px-5 py-4 text-white flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-white text-[#e11d48] font-black text-xs flex items-center justify-center shadow-sm">
+              კრედო
+            </div>
+            <div>
+              <h3 class="text-base font-black leading-tight">კრედო ბანკი (MyCredo) — გადახდა</h3>
+              <p class="text-[11px] text-rose-100 font-semibold">MyCredo App • mycredo.ge • კრედო ბარათი</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-credo-red-modal-btn"
+            class="w-8 h-8 rounded-xl bg-white/15 hover:bg-white/25 text-white font-black text-sm flex items-center justify-center cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Product & Amount Summary -->
+        <div class="p-5 space-y-4">
+          <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-between gap-3">
+            <div>
+              <div class="text-[11px] font-bold text-rose-800">არჩეული ნივთი:</div>
+              <div id="credo-modal-prod-name" class="text-sm font-black text-zinc-950">პროდუქტი</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[11px] font-bold text-rose-800">გადასახდელი თანხა:</div>
+              <div id="credo-modal-prod-price" class="font-mono-num text-lg font-black text-[#e11d48]">0 ₾</div>
+            </div>
+          </div>
+
+          <!-- Account / IBAN Copy Box for MyCredo App -->
+          <div class="p-3.5 rounded-2xl bg-stone-50 border border-zinc-200 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-zinc-600">მიმღები:</span>
+              <strong id="credo-modal-receiver-name" class="font-black text-zinc-950">ი.მ. გოჩა იასეშვილი</strong>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-zinc-200/80">
+              <div>
+                <div class="text-[10px] font-bold text-zinc-500">ანგარიშის ნომერი (IBAN):</div>
+                <div id="credo-modal-iban-text" class="font-mono-num text-xs sm:text-sm font-black text-[#e11d48] select-all">GE84BG0000000345895672GEL</div>
+              </div>
+              <button
+                type="button"
+                id="credo-modal-copy-iban-btn"
+                class="px-3 py-1.5 rounded-xl bg-[#e11d48] hover:bg-[#be123c] text-white text-xs font-black cursor-pointer shrink-0 shadow-2xs active:scale-95"
+              >
+                📋 კოპირება
+              </button>
+            </div>
+            <p id="credo-modal-copy-status" class="text-[11px] font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+              ✅ ანგარიშის ნომერი ავტომატურად დაკოპირდა! ჩასვით MyCredo-ში.
+            </p>
+          </div>
+
+          <!-- Primary Credo Action Buttons -->
+          <div class="space-y-2.5">
+            <button
+              type="button"
+              id="credo-modal-open-app-btn"
+              class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-[#fc6250] hover:bg-[#e11d48] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-md active:scale-[0.98] fast-transition cursor-pointer"
+            >
+              <span class="text-base">📱</span>
+              <span>MyCredo აპლიკაციაში / mycredo.ge-ზე გადასვლა</span>
+            </button>
+
+            <button
+              type="button"
+              id="credo-modal-open-installment-btn"
+              class="w-full min-h-[44px] px-4 py-2.5 rounded-2xl bg-rose-50 hover:bg-rose-100 text-[#be123c] border-2 border-[#fc6250] text-xs sm:text-sm font-black flex items-center justify-center gap-2 active:scale-[0.98] fast-transition cursor-pointer"
+            >
+              <span>🏦</span>
+              <span id="credo-modal-open-inst-label">კრედო ბანკის ონლაინ განვადებაზე გადასვლა</span>
+            </button>
+
+            <button
+              type="button"
+              id="credo-modal-card-gateway-btn"
+              class="w-full min-h-[44px] px-4 py-2.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold flex items-center justify-center gap-2 active:scale-[0.98] fast-transition cursor-pointer"
+            >
+              <span>💳</span>
+              <span id="credo-modal-card-gateway-label">კრედოს ბარათის ნომრის ჩაწერით გადახდა</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div
       id="control-panel-backdrop"
       class="fixed inset-0 z-[80] hidden bg-black/65 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4"
@@ -17477,8 +17578,8 @@
             e.stopPropagation();
             const prodId = cardCredoCardBtn.getAttribute('data-card-credo-card');
             const targetProd = productsList.find((p) => p.id === prodId);
-            if (targetProd && typeof launchBogCheckoutForProduct === 'function') {
-              launchBogCheckoutForProduct(targetProd, cardCredoCardBtn.querySelector('span:last-child'));
+            if (targetProd && typeof launchCredoCardCheckoutForProduct === 'function') {
+              launchCredoCardCheckoutForProduct(targetProd);
             }
             return;
           }
@@ -17896,6 +17997,31 @@
         }
         window.launchCredoCheckoutForProduct = launchCredoCheckoutForProduct;
 
+        function openBankAppOrWebByDevice(bankType) {
+          const ua = navigator.userAgent || '';
+          const isAndroid = /Android/i.test(ua);
+          const isIOS = /iPhone|iPad|iPod/i.test(ua);
+          if (bankType === 'tbc') {
+            if (isAndroid) {
+              window.location.href = 'intent://#Intent;package=com.icomvision.bsc.tbc;scheme=tbcbank;S.browser_fallback_url=https%3A%2F%2Ftbconline.ge;end';
+            } else if (isIOS) {
+              window.location.href = 'tbcbank://';
+              setTimeout(() => { window.open('https://tbconline.ge', '_blank'); }, 1100);
+            } else {
+              window.open('https://tbconline.ge', '_blank', 'noopener,noreferrer');
+            }
+          } else if (bankType === 'credo') {
+            if (isAndroid) {
+              window.location.href = 'intent://#Intent;package=ge.credo.mycredo;scheme=mycredo;S.browser_fallback_url=https%3A%2F%2Fmycredo.ge;end';
+            } else if (isIOS) {
+              window.location.href = 'mycredo://';
+              setTimeout(() => { window.open('https://mycredo.ge', '_blank'); }, 1100);
+            } else {
+              window.open('https://mycredo.ge', '_blank', 'noopener,noreferrer');
+            }
+          }
+        }
+
         let activeTbcCheckoutProduct = null;
         function launchTbcCardCheckoutForProduct(prod) {
           if (!prod) return false;
@@ -17916,10 +18042,40 @@
           const targetIban = (bankCfg.tbcIban && String(bankCfg.tbcIban).trim()) || bankCfg.bogIban || 'GE84BG0000000345895672GEL';
           if (ibanEl) ibanEl.textContent = targetIban;
           if (recEl) recEl.textContent = bankCfg.receiverName || 'ი.მ. გოჩა იასეშვილი';
-          if (copyStat) copyStat.classList.add('hidden');
+          if (targetIban && navigator.clipboard) {
+            navigator.clipboard.writeText(targetIban).catch(() => {});
+          }
+          if (copyStat) copyStat.classList.remove('hidden');
           if (tbcModal) tbcModal.classList.remove('hidden');
+          openBankAppOrWebByDevice('tbc');
           return true;
         }
+
+        let activeCredoCardProduct = null;
+        function launchCredoCardCheckoutForProduct(prod) {
+          if (!prod) return false;
+          const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+          activeCredoCardProduct = prod;
+          const credoModal = document.getElementById('credo-red-checkout-modal');
+          const nameEl = document.getElementById('credo-modal-prod-name');
+          const priceEl = document.getElementById('credo-modal-prod-price');
+          const ibanEl = document.getElementById('credo-modal-iban-text');
+          const recEl = document.getElementById('credo-modal-receiver-name');
+          const copyStat = document.getElementById('credo-modal-copy-status');
+          if (nameEl) nameEl.textContent = prod.name || 'პროდუქტი';
+          if (priceEl) priceEl.textContent = formatGel(prod.newPrice);
+          const targetIban = bankCfg.bogIban || 'GE84BG0000000345895672GEL';
+          if (ibanEl) ibanEl.textContent = targetIban;
+          if (recEl) recEl.textContent = bankCfg.receiverName || 'ი.მ. გოჩა იასეშვილი';
+          if (targetIban && navigator.clipboard) {
+            navigator.clipboard.writeText(targetIban).catch(() => {});
+          }
+          if (copyStat) copyStat.classList.remove('hidden');
+          if (credoModal) credoModal.classList.remove('hidden');
+          openBankAppOrWebByDevice('credo');
+          return true;
+        }
+        window.launchCredoCardCheckoutForProduct = launchCredoCardCheckoutForProduct;
         window.launchTbcCardCheckoutForProduct = launchTbcCardCheckoutForProduct;
 
         // Wire up TBC Blue Modal buttons and Modal Bank Action buttons
@@ -17970,6 +18126,50 @@
           });
         }
 
+        const closeCredoRedBtn = document.getElementById('close-credo-red-modal-btn');
+        const credoRedModalEl = document.getElementById('credo-red-checkout-modal');
+        if (closeCredoRedBtn && credoRedModalEl) {
+          closeCredoRedBtn.addEventListener('click', () => credoRedModalEl.classList.add('hidden'));
+          credoRedModalEl.addEventListener('click', (ev) => {
+            if (ev.target === credoRedModalEl) credoRedModalEl.classList.add('hidden');
+          });
+        }
+        const credoCopyIbanBtn = document.getElementById('credo-modal-copy-iban-btn');
+        if (credoCopyIbanBtn) {
+          credoCopyIbanBtn.addEventListener('click', () => {
+            const ibanTxt = (document.getElementById('credo-modal-iban-text')?.textContent || '').trim();
+            if (ibanTxt && navigator.clipboard) navigator.clipboard.writeText(ibanTxt).catch(() => {});
+            const st = document.getElementById('credo-modal-copy-status');
+            if (st) st.classList.remove('hidden');
+          });
+        }
+        const credoOpenAppBtn = document.getElementById('credo-modal-open-app-btn');
+        if (credoOpenAppBtn) {
+          credoOpenAppBtn.addEventListener('click', () => {
+            const ibanTxt = (document.getElementById('credo-modal-iban-text')?.textContent || '').trim();
+            if (ibanTxt && navigator.clipboard) navigator.clipboard.writeText(ibanTxt).catch(() => {});
+            openBankAppOrWebByDevice('credo');
+          });
+        }
+        const credoOpenInstBtn = document.getElementById('credo-modal-open-installment-btn');
+        if (credoOpenInstBtn) {
+          credoOpenInstBtn.addEventListener('click', async () => {
+            if (activeCredoCardProduct) {
+              const lbl = document.getElementById('credo-modal-open-inst-label');
+              await launchCredoCheckoutForProduct(activeCredoCardProduct, lbl);
+            }
+          });
+        }
+        const credoCardGatewayBtn = document.getElementById('credo-modal-card-gateway-btn');
+        if (credoCardGatewayBtn) {
+          credoCardGatewayBtn.addEventListener('click', async () => {
+            if (activeCredoCardProduct) {
+              const lbl = document.getElementById('credo-modal-card-gateway-label');
+              await launchBogCheckoutForProduct(activeCredoCardProduct, lbl);
+            }
+          });
+        }
+
         document.addEventListener('click', async (e) => {
           const modalBankBtn = e.target && e.target.closest ? e.target.closest('[data-modal-bank-action]') : null;
           if (!modalBankBtn) return;
@@ -17980,9 +18180,11 @@
           const spanEl = modalBankBtn.querySelector('span:last-child');
           if (act === 'credo-inst') {
             await launchCredoCheckoutForProduct(activeModalProduct, spanEl);
+          } else if (act === 'credo-card') {
+            launchCredoCardCheckoutForProduct(activeModalProduct);
           } else if (act === 'tbc-card' || act === 'tbc-inst') {
             launchTbcCardCheckoutForProduct(activeModalProduct);
-          } else if (act === 'bog-card' || act === 'bog-inst' || act === 'credo-card') {
+          } else if (act === 'bog-card' || act === 'bog-inst') {
             await launchBogCheckoutForProduct(activeModalProduct, spanEl);
           }
         });
