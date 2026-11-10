@@ -46,6 +46,13 @@
       }
     </script>
 
+    <!-- Speed & Security Optimizations for iyidebaa.ge -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com" />
+    <link rel="dns-prefetch" href="https://api.github.com" />
+    <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
+
     <!-- Google Fonts: Outfit (Display), Plus Jakarta Sans + Noto Sans Georgian (Body), JetBrains Mono (Tabular Specs) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -2624,8 +2631,37 @@
           </div>
         </div>
 
+        <!-- Georgian Banks, Cards & 256-Bit SSL Security Verification Bar -->
+        <div class="mt-6 pt-5 border-t border-zinc-200/80 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-[11px] font-black shadow-2xs">
+              <span>🔒</span>
+              <span>256-Bit SSL დაცული საიტი (HTTPS)</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-50 border border-orange-300 text-orange-950 text-[11px] font-black shadow-2xs">
+              <span>🟧</span>
+              <span>საქართველოს ბანკი (BOG ნაწილ-ნაწილ &amp; განვადება)</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 border border-sky-300 text-sky-950 text-[11px] font-black shadow-2xs">
+              <span>🟦</span>
+              <span>თიბისი ბანკი (TBC განაწილება &amp; განვადება)</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 border border-rose-300 text-rose-950 text-[11px] font-black shadow-2xs">
+              <span>🟥</span>
+              <span>კრედო ბანკი (Credo განვადება)</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-zinc-900 text-white text-[11px] font-extrabold shadow-2xs">
+              <span>💳</span>
+              <span>VISA / Mastercard / Apple Pay</span>
+            </span>
+          </div>
+          <div class="text-[11px] text-zinc-500 font-semibold">
+            ყველა ტრანზაქცია და პერსონალური მონაცემი დაცულია საქართველოს კანონმდებლობისა და საბანკო სტანდარტების შესაბამისად.
+          </div>
+        </div>
+
         <!-- Bottom Copyright & Quick Links Bar -->
-        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+        <div class="pt-4 mt-4 border-t border-zinc-200/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
           <div class="flex items-center gap-2">
             <span>© 2026</span>
             <strong class="text-zinc-800">„იყიდება საინტერესო ნივთები“ (iyidebaa.ge)</strong>
@@ -5122,16 +5158,62 @@
 
             <div>
               <label for="qo-payment-method" class="block text-xs font-bold text-zinc-800 mb-1">
-                გადახდის სასურველი მეთოდი
+                გადახდის ან განვადების მეთოდი (აირჩიეთ ბანკი)
               </label>
               <select
                 id="qo-payment-method"
-                class="w-full min-h-[42px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-semibold text-zinc-900 focus:outline-none focus:border-amber-500"
+                class="w-full min-h-[42px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-extrabold text-zinc-900 focus:outline-none focus:border-amber-500 cursor-pointer"
               >
-                <option value="კურიერთან ნაღდი ანგარიშსწორებით">💵 კურიერთან გადახდა (ჩაბარებისას)</option>
-                <option value="ბარათით გადახდა / გადარიცხვა">💳 ბარათით გადახდა / გადარიცხვა</option>
-                <option value="საბანკო განვადება (TBC / BOG / კრედო)">🏦 საბანკო განვადება (TBC / საქართველოს ბანკი / კრედო)</option>
+                <option value="კურიერთან ნაღდი ანგარიშსწორებით (ადგილზე შემოწმებით)">💵 კურიერთან გადახდა (ჩაბარებისა და შემოწმების შემდეგ)</option>
+                <option value="საქართველოს ბანკი (BOG) — 0% ნაწილ-ნაწილ / ონლაინ განვადება">🟧 საქართველოს ბანკი (BOG) — 0% ნაწილ-ნაწილ / განვადება</option>
+                <option value="თიბისი ბანკი (TBC) — 0% განაწილება / ონლაინ განვადება">🟦 თიბისი ბანკი (TBC) — 0% განაწილება / განვადება</option>
+                <option value="კრედო ბანკი (Credo) — სწრაფი ონლაინ განვადება">🟥 კრედო ბანკი (Credo) — სწრაფი ონლაინ განვადება</option>
+                <option value="ბარათით გადახდა (Visa / Mastercard) ან საბანკო გადარიცხვა">💳 ბარათით გადახდა (Visa / Mastercard) / გადარიცხვა</option>
               </select>
+            </div>
+
+            <!-- Interactive Georgian Bank Installment Calculator Box -->
+            <div
+              id="qo-installment-calc-box"
+              class="hidden p-3.5 rounded-2xl bg-gradient-to-br from-amber-50 via-white to-orange-50 border border-amber-300 space-y-2.5 shadow-2xs"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-black text-zinc-900 flex items-center gap-1.5">
+                  <span>🏦</span>
+                  <span>განვადების ვადის კალკულატორი:</span>
+                </span>
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">
+                  🔒 დაცული განაცხადი
+                </span>
+              </div>
+
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-1.5" id="qo-installment-months-grid">
+                <button type="button" data-inst-months="3" class="qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer">3 თვე</button>
+                <button type="button" data-inst-months="4" class="qo-inst-month-btn px-2 py-1.5 rounded-lg border-2 border-amber-500 bg-amber-500 text-zinc-950 text-[11px] font-black cursor-pointer">4 თვე (0%)</button>
+                <button type="button" data-inst-months="6" class="qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer">6 თვე</button>
+                <button type="button" data-inst-months="12" class="qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer">12 თვე</button>
+                <button type="button" data-inst-months="18" class="qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer">18 თვე</button>
+                <button type="button" data-inst-months="24" class="qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer">24 თვე</button>
+              </div>
+
+              <div class="flex items-center justify-between pt-1 border-t border-amber-200/80 text-xs">
+                <span class="font-bold text-zinc-700">თვეში გადასახდელი:</span>
+                <span id="qo-installment-monthly-amount" class="font-mono-num text-sm sm:text-base font-black text-amber-700">0 ₾ / თვეში</span>
+              </div>
+
+              <div>
+                <label for="qo-customer-pid" class="block text-[11px] font-bold text-zinc-700 mb-1">
+                  პირადი ნომერი (სურვილისამებრ — ბანკში განვადების სწრაფი ინვოისისთვის)
+                </label>
+                <input
+                  id="qo-customer-pid"
+                  type="text"
+                  maxlength="11"
+                  inputmode="numeric"
+                  placeholder="მაგ: 01001012345 (11 ციფრი)"
+                  class="w-full min-h-[38px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900 focus:outline-none focus:border-amber-500"
+                />
+              </div>
             </div>
           </div>
 
@@ -5141,12 +5223,13 @@
 
           <button
             type="submit"
+            id="qo-submit-btn"
             class="w-full min-h-[48px] px-4 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-extrabold flex items-center justify-center gap-2 shadow-md active:scale-[0.98] fast-transition cursor-pointer"
           >
             <svg class="w-5 h-5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.124.556 4.119 1.528 5.847l-1.528 5.581 5.714-1.499c1.693.903 3.621 1.419 5.672 1.419 6.627 0 12-5.373 12-12s-5.373-11.348-11.386-11.348z" />
             </svg>
-            <span>შეკვეთის გაგზავნა (WhatsApp)</span>
+            <span id="qo-submit-btn-label">შეკვეთის / განვადების გაგზავნა</span>
           </button>
 
           <a
@@ -16283,7 +16366,54 @@
         const closeQuickOrderBtn = document.getElementById('close-quick-order-modal-btn');
         const quickOrderForm = document.getElementById('quick-order-form');
         const modalQuickOrderBtn = document.getElementById('modal-quick-order-btn');
+        const qoPaymentMethodSelect = document.getElementById('qo-payment-method');
+        const qoInstallmentCalcBox = document.getElementById('qo-installment-calc-box');
+        const qoInstallmentMonthlyEl = document.getElementById('qo-installment-monthly-amount');
         let quickOrderTargetProduct = null;
+        let selectedInstallmentMonths = 4;
+
+        function updateQoInstallmentCalculator() {
+          if (!qoPaymentMethodSelect || !qoInstallmentCalcBox) return;
+          const val = qoPaymentMethodSelect.value || '';
+          const isInstallment =
+            val.includes('BOG') ||
+            val.includes('TBC') ||
+            val.includes('Credo') ||
+            val.includes('განვადება') ||
+            val.includes('ნაწილ-ნაწილ') ||
+            val.includes('განაწილება');
+
+          if (isInstallment) {
+            qoInstallmentCalcBox.classList.remove('hidden');
+            const rawPrice = Number(quickOrderTargetProduct && quickOrderTargetProduct.newPrice) || 0;
+            const monthly = selectedInstallmentMonths > 0 ? Math.ceil(rawPrice / selectedInstallmentMonths) : rawPrice;
+            if (qoInstallmentMonthlyEl) {
+              qoInstallmentMonthlyEl.textContent = `${monthly.toLocaleString('ka-GE')} ₾ / თვეში (${selectedInstallmentMonths} თვე)`;
+            }
+          } else {
+            qoInstallmentCalcBox.classList.add('hidden');
+          }
+
+          document.querySelectorAll('.qo-inst-month-btn').forEach((btn) => {
+            const m = Number(btn.getAttribute('data-inst-months')) || 4;
+            if (m === selectedInstallmentMonths) {
+              btn.className = 'qo-inst-month-btn px-2 py-1.5 rounded-lg border-2 border-amber-500 bg-amber-500 text-zinc-950 text-[11px] font-black cursor-pointer';
+            } else {
+              btn.className = 'qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer';
+            }
+          });
+        }
+
+        if (qoPaymentMethodSelect) {
+          qoPaymentMethodSelect.addEventListener('change', updateQoInstallmentCalculator);
+        }
+
+        document.querySelectorAll('.qo-inst-month-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            selectedInstallmentMonths = Number(btn.getAttribute('data-inst-months')) || 4;
+            updateQoInstallmentCalculator();
+          });
+        });
 
         function openQuickOrderModal(productId) {
           const prod = productsList.find((p) => p.id === productId) || activeModalProduct;
@@ -16302,6 +16432,8 @@
           if (priceEl) priceEl.textContent = formatGel(prod.newPrice);
           if (oldPriceEl) oldPriceEl.textContent = formatGel(prod.oldPrice);
           if (errEl) errEl.classList.add('hidden');
+
+          updateQoInstallmentCalculator();
 
           try {
             const savedName = localStorage.getItem('vv_qo_name') || '';
@@ -16354,12 +16486,14 @@
             const pInp = document.getElementById('qo-customer-phone');
             const aInp = document.getElementById('qo-customer-address');
             const mInp = document.getElementById('qo-payment-method');
+            const pidInp = document.getElementById('qo-customer-pid');
             const errEl = document.getElementById('qo-error-msg');
 
             const customerName = (nInp ? nInp.value : '').trim() || 'მყიდველი';
             const customerPhone = (pInp ? pInp.value : '').trim();
             const customerAddr = (aInp ? aInp.value : '').trim() || 'დაზუსტდება ზარით';
             const paymentMethod = (mInp ? mInp.value : '').trim() || 'კურიერთან გადახდა';
+            const customerPid = (pidInp ? pidInp.value : '').trim();
 
             if (!customerPhone || customerPhone.replace(/\D/g, '').length < 6) {
               if (errEl) errEl.classList.remove('hidden');
@@ -16374,16 +16508,31 @@
               localStorage.setItem('vv_qo_addr', customerAddr);
             } catch (err) {}
 
+            const isInst =
+              paymentMethod.includes('BOG') ||
+              paymentMethod.includes('TBC') ||
+              paymentMethod.includes('Credo') ||
+              paymentMethod.includes('განვადება');
+            const rawPrice = Number(quickOrderTargetProduct.newPrice) || 0;
+            const monthlyAmt = selectedInstallmentMonths > 0 ? Math.ceil(rawPrice / selectedInstallmentMonths) : rawPrice;
+
             const cleanDigits = String(storeSettings.phoneDigits || '995551588579').replace(/\D/g, '') || '995551588579';
-            const orderText = [
+            const orderLines = [
               `⚡ *ახალი შეკვეთა საიტიდან (iyidebaa.ge)*`,
               `📦 *პროდუქტი:* ${quickOrderTargetProduct.name}`,
               `💰 *ფასი:* ${formatGel(quickOrderTargetProduct.newPrice)}`,
               `👤 *მყიდველი:* ${customerName}`,
               `📞 *ტელეფონი:* ${customerPhone}`,
               `📍 *მისამართი:* ${customerAddr}`,
-              `💳 *გადახდა:* ${paymentMethod}`
-            ].join('\n');
+              `💳 *გადახდა:* ${paymentMethod}`,
+            ];
+            if (isInst) {
+              orderLines.push(`🏦 *განვადების ვადა:* ${selectedInstallmentMonths} თვე (≈ ${monthlyAmt} ₾/თვეში)`);
+              if (customerPid) {
+                orderLines.push(`🆔 *პირადი ნომერი:* ${customerPid}`);
+              }
+            }
+            const orderText = orderLines.join('\n');
 
             const waUrl = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(orderText)}`;
             closeQuickOrderModal();
