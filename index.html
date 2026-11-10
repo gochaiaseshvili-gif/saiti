@@ -17193,7 +17193,7 @@
         }
 
         if (quickOrderForm) {
-          quickOrderForm.addEventListener('submit', (e) => {
+          quickOrderForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!quickOrderTargetProduct) return;
             const nInp = document.getElementById('qo-customer-name');
@@ -17202,6 +17202,7 @@
             const mInp = document.getElementById('qo-payment-method');
             const pidInp = document.getElementById('qo-customer-pid');
             const errEl = document.getElementById('qo-error-msg');
+            const submitBtnLabel = document.getElementById('qo-submit-btn-label');
 
             const customerName = (nInp ? nInp.value : '').trim() || 'მყიდველი';
             const customerPhone = (pInp ? pInp.value : '').trim();
@@ -17231,6 +17232,41 @@
             const monthlyAmt = selectedInstallmentMonths > 0 ? Math.ceil(rawPrice / selectedInstallmentMonths) : rawPrice;
             const bankDetails = resolveSelectedBankDetails(paymentMethod);
             const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+
+            // If Bank of Georgia (BOG) or Card is chosen AND BOG Client ID + Secret Key are entered in Admin Panel, create a real BOG iPay / Installment order!
+            const isBogOrCard = paymentMethod.includes('BOG') || paymentMethod.includes('Visa') || paymentMethod.includes('ბარათით');
+            if (isBogOrCard && bankCfg.bogClientId && bankCfg.bogSecret) {
+              try {
+                if (submitBtnLabel) submitBtnLabel.textContent = '🏦 იხსნება საქართველოს ბანკის გვერდი...';
+                const bogRes = await fetch('/api/bog-pay', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    clientId: bankCfg.bogClientId,
+                    clientSecret: bankCfg.bogSecret,
+                    productName: quickOrderTargetProduct.name,
+                    productId: quickOrderTargetProduct.id,
+                    amount: rawPrice,
+                    months: selectedInstallmentMonths,
+                    paymentType: paymentMethod.includes('BOG')
+                      ? selectedInstallmentMonths === 4
+                        ? 'bnpl'
+                        : 'installment'
+                      : 'card',
+                    originUrl: window.location.origin,
+                  }),
+                });
+                const bogJson = await bogRes.json();
+                if (submitBtnLabel) submitBtnLabel.textContent = 'შეკვეთის / განვადების გაგზავნა';
+                if (bogJson && bogJson.ok && bogJson.redirectUrl) {
+                  closeQuickOrderModal();
+                  window.location.href = bogJson.redirectUrl;
+                  return;
+                }
+              } catch (bogErr) {
+                if (submitBtnLabel) submitBtnLabel.textContent = 'შეკვეთის / განვადების გაგზავნა';
+              }
+            }
 
             const cleanDigits = String(storeSettings.phoneDigits || '995551588579').replace(/\D/g, '') || '995551588579';
             const orderLines = [
