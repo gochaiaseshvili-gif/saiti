@@ -4652,8 +4652,8 @@
               </a>
             </div>
 
-            <!-- Row 2: Installment Request ("განვადებით შეძენა") & Card Payment ("ბარათით გადახდა") + Call -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <!-- Row 2: Installment Request ("განვადებით შეძენა"), TBC Card Payment & Universal Card Payment + Call -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
               <a
                 id="modal-installment-btn" href="#bog-installment" class="cursor-pointer theme-bg min-h-[48px] px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
               >
@@ -4664,12 +4664,20 @@
               </a>
 
               <a
+                id="modal-tbc-card-payment-btn" href="#tbc-card-pay" class="cursor-pointer min-h-[48px] px-3.5 py-2.5 rounded-xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
+                title="თიბისი ბანკის ბარათით (Visa / Mastercard / Apple Pay / Google Pay) ონლაინ გადახდა"
+              >
+                <span class="px-1.5 py-0.5 rounded bg-white text-[#00A3E0] font-black text-[10px]">TBC</span>
+                <span id="modal-tbc-card-btn-text">თიბისი ბარათით გადახდა</span>
+              </a>
+
+              <a
                 id="modal-card-payment-btn" href="#bog-card-pay" class="cursor-pointer min-h-[48px] px-3.5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap"
               >
                 <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                 </svg>
-                <span id="modal-card-btn-text">ბარათით გადახდა</span>
+                <span id="modal-card-btn-text">სხვა ბარათით გადახდა</span>
               </a>
 
               <a
@@ -13363,6 +13371,15 @@
                         </button>
                         <button
                           type="button"
+                          data-card-tbc-buy="${rawProduct.id}"
+                          class="min-h-[40px] px-2.5 py-2 rounded-xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs font-black inline-flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm active:scale-95 fast-transition cursor-pointer"
+                          title="თიბისი ბანკის ბარათით გადახდა (TBC Visa / Mastercard)"
+                        >
+                          <span class="px-1 py-0.2 rounded bg-white text-[#00A3E0] font-black text-[9px]">TBC</span>
+                          <span>ბარათი</span>
+                        </button>
+                        <button
+                          type="button"
                           data-quick-order-id="${rawProduct.id}"
                           class="theme-bg min-h-[40px] px-3 py-2 rounded-xl text-xs font-extrabold inline-flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm active:scale-95 fast-transition cursor-pointer"
                           title="სწრაფი შეკვეთა 1 დაჭერით"
@@ -17234,6 +17251,17 @@
             }
             return;
           }
+          const cardTbcBuyBtn = e.target.closest('[data-card-tbc-buy]');
+          if (cardTbcBuyBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const prodId = cardTbcBuyBtn.getAttribute('data-card-tbc-buy');
+            const targetProd = productsList.find((p) => p.id === prodId);
+            if (targetProd && typeof launchTbcCardCheckoutForProduct === 'function') {
+              launchTbcCardCheckoutForProduct(targetProd, cardTbcBuyBtn.querySelector('span:last-child'));
+            }
+            return;
+          }
 
           const quickOrderBtn = e.target.closest('[data-quick-order-id]');
           if (quickOrderBtn) {
@@ -17366,7 +17394,7 @@
           const val = qoPaymentMethodSelect.value || '';
           const isInstallment =
             val.includes('BOG') ||
-            val.includes('TBC') ||
+            (val.includes('TBC') && !val.includes('ბარათით')) ||
             val.includes('Credo') ||
             val.includes('განვადება') ||
             val.includes('ნაწილ-ნაწილ') ||
