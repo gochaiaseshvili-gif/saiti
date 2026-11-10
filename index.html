@@ -7268,7 +7268,7 @@
 
     
     <!-- ======================================================================================== -->
-    <!-- APPROVED INSTALLMENTS & BANK SALES NOTIFICATIONS MODAL (🔔 დამტკიცებული განვადებები)      -->
+    <!-- APPROVED INSTALLMENTS, REJECTIONS & STATISTICS MODAL (🔔 განვადებების სტატისტიკა) -->
     <!-- ======================================================================================== -->
     <div
       id="sales-notifications-modal"
@@ -7276,19 +7276,19 @@
       role="dialog"
       aria-modal="true"
     >
-      <div class="w-full max-w-2xl rounded-3xl bg-white shadow-2xl border-2 border-amber-400 overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="w-full max-w-3xl rounded-3xl bg-white shadow-2xl border-2 border-amber-400 overflow-hidden flex flex-col max-h-[92vh]">
         <!-- Header -->
         <div class="bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 text-white px-5 py-4 flex items-center justify-between gap-3">
           <div class="flex items-center gap-2.5">
             <span class="w-10 h-10 rounded-2xl bg-amber-500 text-zinc-950 flex items-center justify-center text-xl font-black shadow-sm">
-              🔔
+              📊
             </span>
             <div>
               <h3 class="text-base sm:text-lg font-black text-white">
-                დამტკიცებული განვადებები და გაყიდვები
+                განვადებების სტატისტიკა და შეტყობინებები
               </h3>
               <p class="text-[11px] text-amber-300 font-semibold">
-                საქართველოს ბანკი • კრედო ბანკი • ბარათით გადახდები (ავტომატური შეტყობინებები)
+                რამდენმა სცადა განვადება • ✅ დამტკიცებული • ❌ ბანკის უარი • ⏳ დაწყებული
               </p>
             </div>
           </div>
@@ -7303,25 +7303,68 @@
 
         <!-- Body -->
         <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1 bg-stone-50">
-          <!-- Controls Bar: Test Alert + Mark Read -->
-          <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 flex flex-wrap items-center justify-between gap-2">
-            <div class="text-xs font-bold text-amber-950">
-              🔊 როცა ბანკი განვადებას დაამტკიცებს, აქ და ჩატში ავტომატურად მოგივათ ხმოვანი შეტყობინება!
+          <!-- 4-Card Live Statistics Summary -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="rounded-2xl bg-blue-50 border-2 border-blue-200 p-3 text-center">
+              <div class="text-[11px] font-extrabold text-blue-800">📊 სულ მცდელობა</div>
+              <div id="stat-total-attempts" class="text-2xl font-black text-blue-950 font-mono-num mt-0.5">0</div>
+              <div class="text-[10px] font-semibold text-blue-600">რამდენმა შეავსო</div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="rounded-2xl bg-emerald-50 border-2 border-emerald-300 p-3 text-center">
+              <div class="text-[11px] font-extrabold text-emerald-800">✅ დამტკიცდა</div>
+              <div id="stat-approved-count" class="text-2xl font-black text-emerald-700 font-mono-num mt-0.5">0</div>
+              <div id="stat-approved-sum" class="text-[10px] font-extrabold text-emerald-900 font-mono-num">ჯამი: 0 ₾</div>
+            </div>
+            <div class="rounded-2xl bg-rose-50 border-2 border-rose-300 p-3 text-center">
+              <div class="text-[11px] font-extrabold text-rose-800">❌ ბანკის უარი</div>
+              <div id="stat-rejected-count" class="text-2xl font-black text-rose-600 font-mono-num mt-0.5">0</div>
+              <div class="text-[10px] font-semibold text-rose-700">არ დაუმტკიცდა</div>
+            </div>
+            <div class="rounded-2xl bg-amber-50 border-2 border-amber-300 p-3 text-center">
+              <div class="text-[11px] font-extrabold text-amber-900">⏳ პროცესშია</div>
+              <div id="stat-started-count" class="text-2xl font-black text-amber-700 font-mono-num mt-0.5">0</div>
+              <div class="text-[10px] font-semibold text-amber-800">გადავიდა ბანკში</div>
+            </div>
+          </div>
+
+          <!-- Filter Tabs + Test Buttons Bar -->
+          <div class="p-3 rounded-2xl bg-white border border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-1.5" id="sales-filter-tabs">
+              <button type="button" data-sales-filter="all" class="px-3 py-1.5 rounded-xl bg-zinc-900 text-white text-xs font-extrabold cursor-pointer">
+                ყველა
+              </button>
+              <button type="button" data-sales-filter="approved" class="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-emerald-50 text-emerald-800 text-xs font-extrabold cursor-pointer">
+                ✅ დამტკიცებული
+              </button>
+              <button type="button" data-sales-filter="rejected" class="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-rose-50 text-rose-700 text-xs font-extrabold cursor-pointer">
+                ❌ ბანკის უარი
+              </button>
+              <button type="button" data-sales-filter="started" class="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-amber-50 text-amber-900 text-xs font-extrabold cursor-pointer">
+                ⏳ დაწყებული
+              </button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-1.5">
               <button
                 type="button"
                 id="test-sale-notification-btn"
-                class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+                class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
               >
-                🔔 ტესტ-შეტყობინების შემოწმება
+                🔔 ტესტი: ✅ დამტკიცდა
+              </button>
+              <button
+                type="button"
+                id="test-reject-notification-btn"
+                class="px-2.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+              >
+                🔔 ტესტი: ❌ უარი
               </button>
               <button
                 type="button"
                 id="refresh-sales-notifications-btn"
-                class="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+                class="px-2.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
               >
-                🔄 განახლება
+                🔄
               </button>
             </div>
           </div>
@@ -7329,21 +7372,30 @@
           <!-- Sales List Container -->
           <div id="sales-notifications-list" class="space-y-2.5">
             <div class="text-center py-8 text-zinc-400 text-sm font-semibold">
-              იტვირთება შეტყობინებები...
+              იტვირთება სტატისტიკა...
             </div>
           </div>
         </div>
 
         <!-- Footer -->
-        <div class="px-5 py-3.5 bg-white border-t border-zinc-200 flex items-center justify-between text-xs text-zinc-500">
-          <span>ავტომატური სინქრონიზაცია ჩართულია (ყოველ 15 წამში)</span>
-          <button
-            type="button"
-            id="close-sales-notifications-footer-btn"
-            class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-extrabold cursor-pointer"
-          >
-            დახურვა
-          </button>
+        <div class="px-5 py-3.5 bg-white border-t border-zinc-200 flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-500">
+          <span>ავტომატურად ითვლის ყველა მცდელობას, დამტკიცებას და ბანკის უარს</span>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              id="clear-all-sales-stats-btn"
+              class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold cursor-pointer"
+            >
+              🗑️ გასუფთავება
+            </button>
+            <button
+              type="button"
+              id="close-sales-notifications-footer-btn"
+              class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-extrabold cursor-pointer"
+            >
+              დახურვა
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -18248,21 +18300,23 @@
         window.openBogInstallmentCalculatorModal = openBogInstallmentCalculatorModal;
 
         // =========================================================================
-        // APPROVED INSTALLMENTS & BANK SALES NOTIFICATION SYSTEM (🔔)
+        // APPROVED INSTALLMENTS, REJECTIONS & STATISTICS SYSTEM (🔔📊)
         // =========================================================================
         let allSalesNotifications = [];
-        let knownSaleIds = new Set();
+        let knownSaleStates = new Map();
         let salesInitialLoadDone = false;
+        let activeSalesFilter = 'all';
 
-        function playSaleApprovedChime() {
+        function playSaleApprovedChime(isReject = false) {
           try {
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
             if (!AudioCtx) return;
             const ctx = new AudioCtx();
-            [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+            const notes = isReject ? [440, 349.23, 293.66] : [523.25, 659.25, 783.99, 1046.5];
+            notes.forEach((freq, idx) => {
               const osc = ctx.createOscillator();
               const gain = ctx.createGain();
-              osc.type = 'sine';
+              osc.type = isReject ? 'triangle' : 'sine';
               osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.12);
               gain.gain.setValueAtTime(0.18, ctx.currentTime + idx * 0.12);
               gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + idx * 0.12 + 0.35);
@@ -18286,36 +18340,85 @@
               badgeEl.classList.add('hidden');
             }
           }
+
+          // Update 4-Card Live Statistics
+          const totalCount = allSalesNotifications.length;
+          const approvedItems = allSalesNotifications.filter((s) => s.status === 'approved' || !s.status);
+          const rejectedItems = allSalesNotifications.filter((s) => s.status === 'rejected');
+          const startedItems = allSalesNotifications.filter((s) => s.status === 'started');
+          const approvedSum = approvedItems.reduce((acc, s) => acc + (Number(s.amount) || 0), 0);
+
+          const elTotal = document.getElementById('stat-total-attempts');
+          const elAppCount = document.getElementById('stat-approved-count');
+          const elAppSum = document.getElementById('stat-approved-sum');
+          const elRejCount = document.getElementById('stat-rejected-count');
+          const elStartCount = document.getElementById('stat-started-count');
+          if (elTotal) elTotal.textContent = String(totalCount);
+          if (elAppCount) elAppCount.textContent = String(approvedItems.length);
+          if (elAppSum) elAppSum.textContent = `ჯამი: ${approvedSum} ₾`;
+          if (elRejCount) elRejCount.textContent = String(rejectedItems.length);
+          if (elStartCount) elStartCount.textContent = String(startedItems.length);
+
+          // Highlight active filter tab
+          document.querySelectorAll('[data-sales-filter]').forEach((btn) => {
+            const f = btn.getAttribute('data-sales-filter');
+            if (f === activeSalesFilter) {
+              btn.className = 'px-3 py-1.5 rounded-xl bg-zinc-900 text-white text-xs font-extrabold cursor-pointer';
+            } else {
+              btn.className = 'px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-700 text-xs font-extrabold cursor-pointer';
+            }
+          });
+
           if (!listEl) return;
-          if (allSalesNotifications.length === 0) {
+          const filtered =
+            activeSalesFilter === 'all'
+              ? allSalesNotifications
+              : allSalesNotifications.filter((s) => (s.status || 'approved') === activeSalesFilter);
+
+          if (filtered.length === 0) {
             listEl.innerHTML = `
               <div class="rounded-2xl bg-white border border-zinc-200 p-8 text-center space-y-2">
-                <div class="text-3xl">🏦</div>
-                <div class="text-sm font-black text-zinc-900">ჯერ დამტკიცებული განვადების შეტყობინება არ არის</div>
-                <div class="text-xs text-zinc-500">როგორც კი ბანკი მომხმარებელს განვადებას დაუმტკიცებს, შეტყობინება მაშინვე გამოჩნდება აქ!</div>
+                <div class="text-3xl">📊</div>
+                <div class="text-sm font-black text-zinc-900">ამ კატეგორიაში ჩანაწერი ჯერ არ არის</div>
+                <div class="text-xs text-zinc-500">როგორც კი მომხმარებელი განვადებას შეავსებს (დაუმტკიცდება ან უარი მოუვა), მაშინვე გამოჩნდება აქ!</div>
               </div>
             `;
             return;
           }
-          listEl.innerHTML = allSalesNotifications
+
+          listEl.innerHTML = filtered
             .map((s) => {
+              const st = s.status || 'approved';
               const isCredo = s.bank === 'credo';
               const isInst = s.mode !== 'card';
               const bankBadge = isCredo
                 ? '<span class="px-2 py-0.5 rounded-md bg-rose-600 text-white text-[10px] font-black">კრედო ბანკი</span>'
                 : '<span class="px-2 py-0.5 rounded-md bg-[#FE5F00] text-white text-[10px] font-black">საქართველოს ბანკი</span>';
-              const modeBadge = isInst
-                ? '<span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-black">✅ განვადება დამტკიცდა</span>'
-                : '<span class="px-2 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-black">💳 ბარათით გადახდილია</span>';
-              const dateStr = s.createdAt
-                ? new Date(s.createdAt).toLocaleString('ka-GE', { timeZone: 'Asia/Tbilisi' })
+
+              let statusBadge = '';
+              let borderClass = 'border-zinc-200';
+              if (st === 'rejected') {
+                statusBadge = '<span class="px-2 py-0.5 rounded-md bg-rose-600 text-white text-[10px] font-black">❌ ბანკის უარი / არ დამტკიცდა</span>';
+                borderClass = s.unread ? 'border-rose-500 bg-rose-50/30' : 'border-rose-200';
+              } else if (st === 'started') {
+                statusBadge = '<span class="px-2 py-0.5 rounded-md bg-amber-500 text-zinc-950 text-[10px] font-black">⏳ განაცხადი გაიხსნა (ავსებს ბანკში)</span>';
+                borderClass = 'border-amber-300 bg-amber-50/20';
+              } else {
+                statusBadge = isInst
+                  ? '<span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-black">✅ განვადება დამტკიცდა</span>'
+                  : '<span class="px-2 py-0.5 rounded-md bg-blue-600 text-white text-[10px] font-black">💳 ბარათით გადახდილია</span>';
+                borderClass = s.unread ? 'border-emerald-500 bg-emerald-50/20' : 'border-emerald-200';
+              }
+
+              const dateStr = (s.updatedAt || s.createdAt)
+                ? new Date(s.updatedAt || s.createdAt).toLocaleString('ka-GE', { timeZone: 'Asia/Tbilisi' })
                 : '';
               const phoneClean = String(s.customerPhone || '').replace(/[^0-9+]/g, '');
               return `
-                <div class="rounded-2xl bg-white border-2 ${s.unread ? 'border-emerald-500 bg-emerald-50/20' : 'border-zinc-200'} p-4 shadow-xs space-y-2.5">
+                <div class="rounded-2xl bg-white border-2 ${borderClass} p-4 shadow-xs space-y-2.5">
                   <div class="flex flex-wrap items-center justify-between gap-2">
                     <div class="flex flex-wrap items-center gap-1.5">
-                      ${modeBadge}
+                      ${statusBadge}
                       ${bankBadge}
                       ${s.months ? `<span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 text-[10px] font-black">${s.months} თვე</span>` : ''}
                     </div>
@@ -18327,10 +18430,12 @@
                   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
                     <div>
                       <div class="text-sm sm:text-base font-black text-zinc-950">${s.productName || 'პროდუქტი'}</div>
-                      ${s.customerPhone ? `<div class="text-xs font-extrabold text-emerald-800 mt-0.5">📞 მყიდველის ტელეფონი: <span class="font-mono-num">${s.customerPhone}</span></div>` : '<div class="text-[11px] text-zinc-500">მყიდველის ნომერი ბანკის ქვითარშია</div>'}
+                      ${s.customerPhone
+                        ? `<div class="text-xs font-extrabold ${st === 'rejected' ? 'text-rose-700' : 'text-emerald-800'} mt-0.5">📞 მყიდველის ტელეფონი: <span class="font-mono-num">${s.customerPhone}</span></div>`
+                        : '<div class="text-[11px] text-zinc-500">ტელეფონის ნომერი მითითებული არ არის</div>'}
                     </div>
                     <div class="text-left sm:text-right">
-                      <div class="text-lg sm:text-xl font-black text-emerald-700 font-mono-num">${Number(s.amount) || 0} ₾</div>
+                      <div class="text-lg sm:text-xl font-black ${st === 'rejected' ? 'text-rose-600 line-through' : 'text-emerald-700'} font-mono-num">${Number(s.amount) || 0} ₾</div>
                     </div>
                   </div>
                   ${phoneClean ? `
@@ -18360,12 +18465,15 @@
             const data = await res.json();
             if (!data || !Array.isArray(data.sales)) return;
             const incoming = data.sales;
-            let foundNewSale = null;
+            let foundNewEvent = null;
             incoming.forEach((item) => {
-              if (item && item.id && !knownSaleIds.has(item.id)) {
-                knownSaleIds.add(item.id);
+              if (!item || !item.id) return;
+              const prevStatus = knownSaleStates.get(item.id);
+              const currStatus = item.status || 'approved';
+              if (prevStatus !== currStatus) {
+                knownSaleStates.set(item.id, currStatus);
                 if (salesInitialLoadDone && item.unread) {
-                  foundNewSale = item;
+                  foundNewEvent = item;
                 }
               }
             });
@@ -18373,10 +18481,17 @@
             allSalesNotifications = incoming;
             renderSalesNotificationsModalList();
 
-            if (foundNewSale && playAlertOnNew) {
-              playSaleApprovedChime();
+            if (foundNewEvent && playAlertOnNew) {
+              const st = foundNewEvent.status || 'approved';
+              playSaleApprovedChime(st === 'rejected');
               if (typeof showWishlistToast === 'function') {
-                showWishlistToast(`🎉 განვადება დამტკიცდა! ${foundNewSale.productName} (${foundNewSale.amount} ₾)`);
+                if (st === 'rejected') {
+                  showWishlistToast(`❌ ბანკის უარი განვადებაზე: ${foundNewEvent.productName} (${foundNewEvent.amount} ₾)`);
+                } else if (st === 'started') {
+                  showWishlistToast(`⏳ მომხმარებელმა დაიწყო განვადება: ${foundNewEvent.productName}`);
+                } else {
+                  showWishlistToast(`🎉 განვადება დამტკიცდა! ${foundNewEvent.productName} (${foundNewEvent.amount} ₾)`);
+                }
               }
             }
           } catch (e) {}
@@ -18386,7 +18501,6 @@
           const modalEl = document.getElementById('sales-notifications-modal');
           if (modalEl) modalEl.classList.remove('hidden');
           fetchSalesNotifications(false);
-          // Mark all as read when opened
           fetch('/api/bog-pay', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -18421,6 +18535,15 @@
             if (e.target === salesModalBackdrop) salesModalBackdrop.classList.add('hidden');
           });
         }
+        const salesFilterTabsEl = document.getElementById('sales-filter-tabs');
+        if (salesFilterTabsEl) {
+          salesFilterTabsEl.addEventListener('click', (e) => {
+            const fBtn = e.target.closest('[data-sales-filter]');
+            if (!fBtn) return;
+            activeSalesFilter = fBtn.getAttribute('data-sales-filter') || 'all';
+            renderSalesNotificationsModalList();
+          });
+        }
         const refreshSalesBtn = document.getElementById('refresh-sales-notifications-btn');
         if (refreshSalesBtn) {
           refreshSalesBtn.addEventListener('click', () => fetchSalesNotifications(true));
@@ -18428,13 +18551,13 @@
         const testSaleBtn = document.getElementById('test-sale-notification-btn');
         if (testSaleBtn) {
           testSaleBtn.addEventListener('click', async () => {
-            testSaleBtn.textContent = '⏳ იგზავნება...';
+            testSaleBtn.textContent = '⏳...';
             try {
               const r = await fetch('/api/bog-pay', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  action: 'record_approved_sale',
+                  action: 'record_sale_event',
                   bank: 'bog',
                   mode: 'installment',
                   status: 'approved',
@@ -18448,13 +18571,62 @@
               if (d && Array.isArray(d.sales)) {
                 allSalesNotifications = d.sales;
                 renderSalesNotificationsModalList();
-                playSaleApprovedChime();
+                playSaleApprovedChime(false);
                 if (typeof showWishlistToast === 'function') {
-                  showWishlistToast('🔔 ტესტ-შეტყობინება წარმატებით მოვიდა!');
+                  showWishlistToast('✅ დამტკიცების ტესტ-შეტყობინება მოვიდა!');
                 }
               }
             } catch (e) {}
-            testSaleBtn.textContent = '🔔 ტესტ-შეტყობინების შემოწმება';
+            testSaleBtn.textContent = '🔔 ტესტი: ✅ დამტკიცდა';
+          });
+        }
+        const testRejectBtn = document.getElementById('test-reject-notification-btn');
+        if (testRejectBtn) {
+          testRejectBtn.addEventListener('click', async () => {
+            testRejectBtn.textContent = '⏳...';
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'record_sale_event',
+                  bank: 'bog',
+                  mode: 'installment',
+                  status: 'rejected',
+                  productName: '[ტესტი] კარაოკე დინამიკი 2 მიკროფონით',
+                  amount: 650,
+                  months: 12,
+                  customerPhone: '551 58 85 79',
+                }),
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.sales)) {
+                allSalesNotifications = d.sales;
+                renderSalesNotificationsModalList();
+                playSaleApprovedChime(true);
+                if (typeof showWishlistToast === 'function') {
+                  showWishlistToast('❌ ბანკის უარის ტესტ-შეტყობინება მოვიდა!');
+                }
+              }
+            } catch (e) {}
+            testRejectBtn.textContent = '🔔 ტესტი: ❌ უარი';
+          });
+        }
+        const clearAllSalesBtn = document.getElementById('clear-all-sales-stats-btn');
+        if (clearAllSalesBtn) {
+          clearAllSalesBtn.addEventListener('click', async () => {
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'clear_all_sales_notifications' }),
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.sales)) {
+                allSalesNotifications = [];
+                renderSalesNotificationsModalList();
+              }
+            } catch (e) {}
           });
         }
         const salesListEl = document.getElementById('sales-notifications-list');
@@ -20706,7 +20878,8 @@
 
             // Handle return from Bank of Georgia / Credo with ?payment=success or ?payment=fail
             const paymentStatus = params.get('payment');
-            if (paymentStatus === 'success') {
+            if (paymentStatus === 'success' || paymentStatus === 'fail') {
+              const isApproved = paymentStatus === 'success';
               const saleMode = params.get('mode') || 'installment';
               const saleBank = params.get('bank') || 'bog';
               const saleOrderId = params.get('orderId') || ('ord_' + Date.now());
@@ -20719,11 +20892,11 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                  action: 'record_approved_sale',
+                  action: 'record_sale_event',
                   orderId: saleOrderId,
                   bank: saleBank,
                   mode: saleMode,
-                  status: 'approved',
+                  status: isApproved ? 'approved' : 'rejected',
                   productId: saleProdId,
                   productName: saleProdName,
                   amount: saleAmount,
@@ -20733,7 +20906,7 @@
               }).then(() => {
                 if (typeof fetchSalesNotifications === 'function') fetchSalesNotifications(true);
               }).catch(() => {});
-              // Also post to Seller Chat so Gocha sees it in Chat Inbox immediately
+              // Also post to Seller Chat so Gocha sees both Approvals and Rejections in Chat Inbox immediately
               fetch('/api/chat/message', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -20745,7 +20918,9 @@
                   customerPhone: salePhone,
                   productId: saleProdId,
                   productName: saleProdName,
-                  text: `🎉 დამტკიცდა ${saleMode === 'installment' ? 'განვადება' : 'ბარათით გადახდა'}! ნივთი: ${saleProdName} | თანხა: ${saleAmount} ₾${saleMonths ? ` (${saleMonths} თვე)` : ''}${salePhone ? ` | ტელ: ${salePhone}` : ''}`,
+                  text: isApproved
+                    ? `🎉 დამტკიცდა ${saleMode === 'installment' ? 'განვადება' : 'ბარათით გადახდა'}! ნივთი: ${saleProdName} | თანხა: ${saleAmount} ₾${saleMonths ? ` (${saleMonths} თვე)` : ''}${salePhone ? ` | ტელ: ${salePhone}` : ''}`
+                    : `❌ ბანკის უარი / არ დასრულდა ${saleMode === 'installment' ? 'განვადება' : 'გადახდა'}: ${saleProdName} | თანხა: ${saleAmount} ₾${saleMonths ? ` (${saleMonths} თვე)` : ''}${salePhone ? ` | ტელ: ${salePhone}` : ''}`,
                 }),
               }).catch(() => {});
             }
