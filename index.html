@@ -4661,30 +4661,33 @@
                   <span class="text-[11px] font-semibold text-zinc-500">Visa / Mastercard / Apple Pay / Google Pay</span>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <a
+                  <button
+                    type="button"
                     id="modal-card-payment-btn"
-                    href="#bog-card-pay"
+                    data-modal-bank-action="bog-card"
                     class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
                   >
                     <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
                     <span id="modal-card-btn-text">საქართველოს ბანკი — ბარათი</span>
-                  </a>
-                  <a
+                  </button>
+                  <button
+                    type="button"
                     id="modal-tbc-card-payment-btn"
-                    href="#tbc-card-pay"
+                    data-modal-bank-action="tbc-card"
                     class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
                   >
                     <span class="px-1.5 py-0.5 rounded bg-white text-[#00A3E0] font-black text-[10px]">TBC</span>
                     <span id="modal-tbc-card-btn-text">თიბისი ბანკი — ბარათი</span>
-                  </a>
-                  <a
+                  </button>
+                  <button
+                    type="button"
                     id="modal-credo-card-payment-btn"
-                    href="#credo-card-pay"
+                    data-modal-bank-action="credo-card"
                     class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
                   >
                     <span class="px-1.5 py-0.5 rounded bg-white text-rose-600 font-black text-[10px]">კრედო</span>
                     <span id="modal-credo-card-btn-text">კრედო ბანკი — ბარათი</span>
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -4695,30 +4698,33 @@
                   <span class="text-[11px] font-bold text-amber-800">აირჩიეთ სასურველი ბანკი</span>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <a
+                  <button
+                    type="button"
                     id="modal-installment-btn"
-                    href="#bog-installment"
+                    data-modal-bank-action="bog-inst"
                     class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-950 border-2 border-orange-400 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition"
                   >
                     <span>🟧</span>
                     <span id="modal-installment-btn-text">საქართველოს ბანკი — განვადება</span>
-                  </a>
-                  <a
+                  </button>
+                  <button
+                    type="button"
                     id="modal-tbc-installment-btn"
-                    href="#tbc-installment"
+                    data-modal-bank-action="tbc-inst"
                     class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-950 border-2 border-sky-400 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition"
                   >
                     <span>🟦</span>
                     <span id="modal-tbc-inst-btn-text">თიბისი ბანკი — განვადება</span>
-                  </a>
-                  <a
+                  </button>
+                  <button
+                    type="button"
                     id="modal-credo-installment-btn"
-                    href="#credo-installment"
+                    data-modal-bank-action="credo-inst"
                     class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-700 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition"
                   >
                     <span>🟥</span>
                     <span id="modal-credo-inst-btn-text">კრედო ბანკი — განვადება</span>
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -7252,6 +7258,109 @@
                 მთავარ გვერდზე დაბრუნება
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- ======================================================================================== -->
+    <!-- DEDICATED BLUE TBC BANK CHECKOUT & MOBILE APP MODAL (🟦 თიბისი ბანკით გადახდა)          -->
+    <!-- ======================================================================================== -->
+    <div
+      id="tbc-blue-checkout-modal"
+      class="fixed inset-0 z-[90] hidden bg-sky-950/75 backdrop-blur-xs flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="w-full max-w-md rounded-3xl bg-white shadow-2xl border-2 border-[#00A3E0] overflow-hidden animate-fadeIn">
+        <!-- TBC Blue Top Header -->
+        <div class="bg-gradient-to-r from-[#00A3E0] via-[#0088CC] to-[#006699] px-5 py-4 text-white flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-white text-[#00A3E0] font-black text-sm flex items-center justify-center shadow-sm">
+              TBC
+            </div>
+            <div>
+              <h3 class="text-base font-black leading-tight">თიბისი ბანკი — გადახდა</h3>
+              <p class="text-[11px] text-sky-100 font-semibold">TBC Mobile App • ინტერნეტ ბანკი • TBC ბარათი</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-tbc-blue-modal-btn"
+            class="w-8 h-8 rounded-xl bg-white/15 hover:bg-white/25 text-white font-black text-sm flex items-center justify-center cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Product & Amount Summary -->
+        <div class="p-5 space-y-4">
+          <div class="p-3.5 rounded-2xl bg-sky-50 border border-sky-200 flex items-center justify-between gap-3">
+            <div>
+              <div class="text-[11px] font-bold text-sky-800">არჩეული ნივთი:</div>
+              <div id="tbc-modal-prod-name" class="text-sm font-black text-zinc-950">პროდუქტი</div>
+            </div>
+            <div class="text-right">
+              <div class="text-[11px] font-bold text-sky-800">გადასახდელი თანხა:</div>
+              <div id="tbc-modal-prod-price" class="font-mono-num text-lg font-black text-[#0088CC]">0 ₾</div>
+            </div>
+          </div>
+
+          <!-- Account / IBAN Copy Box for TBC App -->
+          <div class="p-3.5 rounded-2xl bg-stone-50 border border-zinc-200 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-zinc-600">მიმღები:</span>
+              <strong id="tbc-modal-receiver-name" class="font-black text-zinc-950">ი.მ. გოჩა იასეშვილი</strong>
+            </div>
+            <div class="flex items-center justify-between gap-2 pt-1 border-t border-zinc-200/80">
+              <div>
+                <div class="text-[10px] font-bold text-zinc-500">ანგარიშის ნომერი (IBAN):</div>
+                <div id="tbc-modal-iban-text" class="font-mono-num text-xs sm:text-sm font-black text-[#0088CC] select-all">GE84BG0000000345895672GEL</div>
+              </div>
+              <button
+                type="button"
+                id="tbc-modal-copy-iban-btn"
+                class="px-3 py-1.5 rounded-xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs font-black cursor-pointer shrink-0 shadow-2xs active:scale-95"
+              >
+                📋 კოპირება
+              </button>
+            </div>
+            <p id="tbc-modal-copy-status" class="hidden text-[11px] font-extrabold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+              ✅ ანგარიშის ნომერი დაკოპირებულია! ჩასვით თიბისის აპლიკაციაში.
+            </p>
+          </div>
+
+          <!-- Primary TBC Action Buttons -->
+          <div class="space-y-2.5">
+            <button
+              type="button"
+              id="tbc-modal-open-app-btn"
+              class="w-full min-h-[48px] px-4 py-3 rounded-2xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-md active:scale-[0.98] fast-transition cursor-pointer"
+            >
+              <span class="text-base">📱</span>
+              <span>თიბისის აპლიკაციაში (TBC App) გადასვლა</span>
+            </button>
+
+            <a
+              id="tbc-modal-open-web-btn"
+              href="https://tbconline.ge"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full min-h-[44px] px-4 py-2.5 rounded-2xl bg-sky-50 hover:bg-sky-100 text-[#0077B6] border-2 border-[#00A3E0] text-xs sm:text-sm font-black flex items-center justify-center gap-2 active:scale-[0.98] fast-transition"
+            >
+              <span>🌐</span>
+              <span>TBC ინტერნეტ ბანკის გახსნა (tbconline.ge)</span>
+            </a>
+
+            <button
+              type="button"
+              id="tbc-modal-card-gateway-btn"
+              class="w-full min-h-[44px] px-4 py-2.5 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold flex items-center justify-center gap-2 active:scale-[0.98] fast-transition cursor-pointer"
+            >
+              <span>💳</span>
+              <span id="tbc-modal-card-gateway-label">ბარათის მონაცემების ჩაწერით გადახდა (Visa / Mastercard)</span>
+            </button>
           </div>
         </div>
       </div>
@@ -13980,8 +14089,8 @@
               : `გამარჯობა, მინდა შევუკვეთო ეს პროდუქტი ბარათით გადახდით: ${product.name} (${rawProduct.newPrice} ₾)`
           );
 
-          modalInstallmentBtn.href = "#bog-installment";
-          modalInstallmentBtn.removeAttribute("target");
+          
+          
           modalCardPaymentBtn.href = "#bog-card-pay";
           modalCardPaymentBtn.removeAttribute("target");
 
@@ -17741,6 +17850,142 @@
             return true;
           }
         }
+        window.launchBogCheckoutForProduct = launchBogCheckoutForProduct;
+
+        async function launchCredoCheckoutForProduct(prod, statusEl) {
+          if (!prod) return false;
+          const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+          if (bankCfg.credoUrl && String(bankCfg.credoUrl).trim().startsWith('http')) {
+            window.location.href = String(bankCfg.credoUrl).trim();
+            return true;
+          }
+          const merchantId = bankCfg.credoClientId || '125694';
+          const password = bankCfg.credoSecret || '6NL7UJ0jM)3]';
+          const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
+          const origText = statusEl ? statusEl.textContent : '';
+          try {
+            if (statusEl) statusEl.textContent = '🟥 იხსნება კრედო...';
+            const credoRes = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                bank: 'credo',
+                merchantId,
+                password,
+                productName: prod.name,
+                productId: prod.id,
+                amount: rawPrice,
+                originUrl: window.location.origin,
+              }),
+            });
+            const credoJson = await credoRes.json();
+            if (statusEl) statusEl.textContent = origText;
+            if (credoJson && credoJson.ok && credoJson.redirectUrl) {
+              closeQuickOrderModal();
+              window.location.href = credoJson.redirectUrl;
+              return true;
+            } else {
+              alert((credoJson && credoJson.error) || 'კრედო ბანკთან დაკავშირება ვერ მოხერხდა.');
+              return true;
+            }
+          } catch (err) {
+            if (statusEl) statusEl.textContent = origText;
+            alert('კრედო ბანკის გვერდთან კავშირის შეცდომა.');
+            return true;
+          }
+        }
+        window.launchCredoCheckoutForProduct = launchCredoCheckoutForProduct;
+
+        let activeTbcCheckoutProduct = null;
+        function launchTbcCardCheckoutForProduct(prod) {
+          if (!prod) return false;
+          const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+          if (bankCfg.tbcUrl && String(bankCfg.tbcUrl).trim().startsWith('http')) {
+            window.location.href = String(bankCfg.tbcUrl).trim();
+            return true;
+          }
+          activeTbcCheckoutProduct = prod;
+          const tbcModal = document.getElementById('tbc-blue-checkout-modal');
+          const nameEl = document.getElementById('tbc-modal-prod-name');
+          const priceEl = document.getElementById('tbc-modal-prod-price');
+          const ibanEl = document.getElementById('tbc-modal-iban-text');
+          const recEl = document.getElementById('tbc-modal-receiver-name');
+          const copyStat = document.getElementById('tbc-modal-copy-status');
+          if (nameEl) nameEl.textContent = prod.name || 'პროდუქტი';
+          if (priceEl) priceEl.textContent = formatGel(prod.newPrice);
+          const targetIban = (bankCfg.tbcIban && String(bankCfg.tbcIban).trim()) || bankCfg.bogIban || 'GE84BG0000000345895672GEL';
+          if (ibanEl) ibanEl.textContent = targetIban;
+          if (recEl) recEl.textContent = bankCfg.receiverName || 'ი.მ. გოჩა იასეშვილი';
+          if (copyStat) copyStat.classList.add('hidden');
+          if (tbcModal) tbcModal.classList.remove('hidden');
+          return true;
+        }
+        window.launchTbcCardCheckoutForProduct = launchTbcCardCheckoutForProduct;
+
+        // Wire up TBC Blue Modal buttons and Modal Bank Action buttons
+        const closeTbcBlueBtn = document.getElementById('close-tbc-blue-modal-btn');
+        const tbcBlueModalEl = document.getElementById('tbc-blue-checkout-modal');
+        if (closeTbcBlueBtn && tbcBlueModalEl) {
+          closeTbcBlueBtn.addEventListener('click', () => tbcBlueModalEl.classList.add('hidden'));
+          tbcBlueModalEl.addEventListener('click', (ev) => {
+            if (ev.target === tbcBlueModalEl) tbcBlueModalEl.classList.add('hidden');
+          });
+        }
+        const tbcCopyIbanBtn = document.getElementById('tbc-modal-copy-iban-btn');
+        if (tbcCopyIbanBtn) {
+          tbcCopyIbanBtn.addEventListener('click', () => {
+            const ibanTxt = (document.getElementById('tbc-modal-iban-text')?.textContent || '').trim();
+            if (ibanTxt && navigator.clipboard) navigator.clipboard.writeText(ibanTxt).catch(() => {});
+            const st = document.getElementById('tbc-modal-copy-status');
+            if (st) st.classList.remove('hidden');
+          });
+        }
+        const tbcOpenAppBtn = document.getElementById('tbc-modal-open-app-btn');
+        if (tbcOpenAppBtn) {
+          tbcOpenAppBtn.addEventListener('click', () => {
+            const ibanTxt = (document.getElementById('tbc-modal-iban-text')?.textContent || '').trim();
+            if (ibanTxt && navigator.clipboard) navigator.clipboard.writeText(ibanTxt).catch(() => {});
+            const st = document.getElementById('tbc-modal-copy-status');
+            if (st) st.classList.remove('hidden');
+            const ua = navigator.userAgent || '';
+            const isAndroid = /Android/i.test(ua);
+            const isIOS = /iPhone|iPad|iPod/i.test(ua);
+            if (isAndroid) {
+              window.location.href = 'intent://#Intent;package=com.icomvision.bsc.tbc;scheme=tbcbank;S.browser_fallback_url=https%3A%2F%2Ftbconline.ge;end';
+            } else if (isIOS) {
+              window.location.href = 'tbcbank://';
+              setTimeout(() => { window.open('https://tbconline.ge', '_blank'); }, 1200);
+            } else {
+              window.open('https://tbconline.ge', '_blank', 'noopener,noreferrer');
+            }
+          });
+        }
+        const tbcCardGatewayBtn = document.getElementById('tbc-modal-card-gateway-btn');
+        if (tbcCardGatewayBtn) {
+          tbcCardGatewayBtn.addEventListener('click', async () => {
+            if (activeTbcCheckoutProduct) {
+              const lbl = document.getElementById('tbc-modal-card-gateway-label');
+              await launchBogCheckoutForProduct(activeTbcCheckoutProduct, lbl);
+            }
+          });
+        }
+
+        document.addEventListener('click', async (e) => {
+          const modalBankBtn = e.target && e.target.closest ? e.target.closest('[data-modal-bank-action]') : null;
+          if (!modalBankBtn) return;
+          e.preventDefault();
+          e.stopPropagation();
+          if (!activeModalProduct) return;
+          const act = modalBankBtn.getAttribute('data-modal-bank-action');
+          const spanEl = modalBankBtn.querySelector('span:last-child');
+          if (act === 'credo-inst') {
+            await launchCredoCheckoutForProduct(activeModalProduct, spanEl);
+          } else if (act === 'tbc-card' || act === 'tbc-inst') {
+            launchTbcCardCheckoutForProduct(activeModalProduct);
+          } else if (act === 'bog-card' || act === 'bog-inst' || act === 'credo-card') {
+            await launchBogCheckoutForProduct(activeModalProduct, spanEl);
+          }
+        });
 
         if (modalQuickOrderBtn) {
           modalQuickOrderBtn.addEventListener('click', (e) => {
