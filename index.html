@@ -15913,6 +15913,9 @@
             .map((prod, idx) => {
               const urls = getProductFiveGalleryUrls(prod, activeThemeColor);
               const customCount = countCustomUploadedImages(prod);
+              const pStats = typeof getProductAnalytics === 'function'
+                ? getProductAnalytics(prod.id)
+                : { today: 0, month: 0, year: 0, total: 0, cardSales: 0, installmentSales: 0, totalSales: 0 };
 
               const miniThumbs = urls
                 .map(
