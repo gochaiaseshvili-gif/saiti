@@ -14073,20 +14073,26 @@
         });
 
         function switchCpTab(tabName) {
-          [cpTabBtnList, cpTabBtnForm, cpTabBtnSettings].forEach((btn) => {
+          [cpTabBtnList, cpTabBtnForm, cpTabBtnSettings, cpTabBtnBanks].forEach((btn) => {
+            if (!btn) return;
             const isMatch = btn.getAttribute('data-cp-tab') === tabName;
             if (isMatch) {
               btn.classList.add('theme-bg', 'shadow-sm');
-              btn.classList.remove('bg-white', 'text-zinc-700', 'border', 'border-zinc-200/80');
+              btn.classList.remove('bg-white', 'text-zinc-700', 'border', 'border-zinc-200/80', 'bg-amber-50', 'text-amber-950', 'border-amber-300');
             } else {
               btn.classList.remove('theme-bg', 'shadow-sm');
-              btn.classList.add('bg-white', 'text-zinc-700', 'border', 'border-zinc-200/80');
+              if (btn.getAttribute('data-cp-tab') === 'banks') {
+                btn.classList.add('bg-amber-50', 'text-amber-950', 'border', 'border-amber-300');
+              } else {
+                btn.classList.add('bg-white', 'text-zinc-700', 'border', 'border-zinc-200/80');
+              }
             }
           });
 
           cpListSection.classList.toggle('hidden', tabName !== 'list');
           cpProductForm.classList.toggle('hidden', tabName !== 'form');
           cpSettingsForm.classList.toggle('hidden', tabName !== 'settings');
+          if (cpBanksSection) cpBanksSection.classList.toggle('hidden', tabName !== 'banks');
 
           if (tabName === 'list') {
             renderCpProductsList();
@@ -14094,12 +14100,15 @@
             renderFiveImageSlotsUI();
           } else if (tabName === 'settings') {
             populateSettingsForm();
+          } else if (tabName === 'banks') {
+            populateBanksForm();
           }
         }
 
         cpTabBtnList.addEventListener('click', () => switchCpTab('list'));
         cpTabBtnForm.addEventListener('click', () => switchCpTab('form'));
         cpTabBtnSettings.addEventListener('click', () => switchCpTab('settings'));
+        if (cpTabBtnBanks) cpTabBtnBanks.addEventListener('click', () => switchCpTab('banks'));
 
         const fCategoryLabel = document.getElementById('cp-prod-category-label');
         const fYtDuration = document.getElementById('cp-prod-yt-duration');
