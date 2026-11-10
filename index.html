@@ -13051,15 +13051,30 @@
                         }
                       </div>
 
-                      <button
-                        type="button"
-                        data-quick-order-id="${rawProduct.id}"
-                        class="theme-bg min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-extrabold inline-flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm active:scale-95 fast-transition cursor-pointer"
-                        title="სწრაფი შეკვეთა 1 დაჭერით"
-                      >
-                        <span>⚡</span>
-                        <span>${strings.cardOrderBtn}</span>
-                      </button>
+                      <div class="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          data-card-bog-buy="${rawProduct.id}"
+                          class="min-h-[40px] px-2.5 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs font-black inline-flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm active:scale-95 fast-transition cursor-pointer"
+                          title="პირდაპირ საქართველოს ბანკით გადახდა / განვადება"
+                        >
+                          <span class="px-1 py-0.2 rounded bg-white text-orange-600 font-black text-[9px]">BOG</span>
+                          <span>ყიდვა</span>
+                        </button>
+                        <button
+                          type="button"
+                          data-quick-order-id="${rawProduct.id}"
+                          class="theme-bg min-h-[40px] px-3 py-2 rounded-xl text-xs font-extrabold inline-flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm active:scale-95 fast-transition cursor-pointer"
+                          title="სწრაფი შეკვეთა 1 დაჭერით"
+                        >
+                          <span>⚡</span>
+                          <span>${strings.cardOrderBtn}</span>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between text-[11px] font-bold text-zinc-600 bg-amber-50/70 border border-amber-200/70 rounded-lg px-2.5 py-1">
+                      <span>🟧 0% განვადება / ნაწილ-ნაწილ</span>
+                      <span class="font-mono-num font-black text-amber-900">თვეში ${Math.max(1, Math.ceil((Number(rawProduct.newPrice) || 100) / 12))} ₾-დან</span>
                     </div>
 
                     <!-- Compact Full-Visibility Contact Person "გოჩა" + Phone Number Directly Under Price -->
@@ -16908,6 +16923,18 @@
             openShareModal(prodId);
             return;
           }
+          const cardBogBuyBtn = e.target.closest('[data-card-bog-buy]');
+          if (cardBogBuyBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const prodId = cardBogBuyBtn.getAttribute('data-card-bog-buy');
+            const targetProd = productsList.find((p) => p.id === prodId);
+            if (targetProd && typeof launchBogCheckoutForProduct === 'function') {
+              launchBogCheckoutForProduct(targetProd, cardBogBuyBtn.querySelector('span:last-child'));
+            }
+            return;
+          }
+
           const quickOrderBtn = e.target.closest('[data-quick-order-id]');
           if (quickOrderBtn) {
             e.stopPropagation();
