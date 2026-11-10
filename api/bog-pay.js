@@ -135,6 +135,19 @@ async function recordOrUpdateSaleEvent(saleObj) {
   };
   list.unshift(newEntry);
   await saveSalesToGithub(list, loaded.sha);
+
+  if (incomingStatus === "approved" && (saleObj.productId || newEntry.productId)) {
+    try {
+      await recordProductSaleGithub(
+        saleObj.productId || newEntry.productId,
+        saleObj.mode || "installment",
+        1,
+        saleObj.amount || 0,
+        saleObj.productName || ""
+      );
+    } catch (e) {}
+  }
+
   return list;
 }
 
@@ -201,6 +214,104 @@ async function recordVisitorEvent(req, body) {
   return stats;
 }
 
+async function loadProductStatsFromGithub() {
+  return await loadJsonFromGithub("product-analytics.json", {
+    products: {},
+    updatedAt: new Date().toISOString(),
+  });
+}
+
+async function recordProductViewGithub(productId, productName) {
+  if (!productId) return { products: {} };
+  const loaded = await loadProductStatsFromGithub();
+  const allStats = loaded.data || { products: {} };
+  if (!allStats.products) allStats.products = {};
+  const pId = String(productId).trim();
+  const now = new Date();
+  const dayKey = now.toISOString().slice(0, 10);
+  const monthKey = now.toISOString().slice(0, 7);
+  const yearKey = now.toISOString().slice(0, 4);
+
+  const prod = allStats.products[pId] || {
+    productId: pId,
+    productName: productName || pId,
+    views: { days: {}, months: {}, years: {}, total: 0 },
+    sales: { card: 0, installment: 0, total: 0, revenue: 0 },
+    lastViewedAt: null,
+    lastSoldAt: null,
+  };
+
+  if (!prod.views) prod.views = { days: {}, months: {}, years: {}, total: 0 };
+  if (!prod.views.days) prod.views.days = {};
+  if (!prod.views.months) prod.views.months = {};
+  if (!prod.views.years) prod.views.years = {};
+
+  prod.views.days[dayKey] = (Number(prod.views.days[dayKey]) || 0) + 1;
+  prod.views.months[monthKey] = (Number(prod.views.months[monthKey]) || 0) + 1;
+  prod.views.years[yearKey] = (Number(prod.views.years[yearKey]) || 0) + 1;
+  prod.views.total = (Number(prod.views.total) || 0) + 1;
+  prod.lastViewedAt = now.toISOString();
+  if (productName) prod.productName = productName;
+
+  allStats.products[pId] = prod;
+  allStats.updatedAt = now.toISOString();
+
+  await saveJsonToGithub("product-analytics.json", allStats, `Record view for product ${pId}`, loaded.sha);
+  return allStats;
+}
+
+async function recordProductSaleGithub(productId, mode, count, amount, productName) {
+  if (!productId) return { products: {} };
+  const loaded = await loadProductStatsFromGithub();
+  const allStats = loaded.data || { products: {} };
+  if (!allStats.products) allStats.products = {};
+  const pId = String(productId).trim();
+  const now = new Date();
+
+  const prod = allStats.products[pId] || {
+    productId: pId,
+    productName: productName || pId,
+    views: { days: {}, months: {}, years: {}, total: 0 },
+    sales: { card: 0, installment: 0, total: 0, revenue: 0 },
+    lastViewedAt: null,
+    lastSoldAt: null,
+  };
+
+  if (!prod.sales) prod.sales = { card: 0, installment: 0, total: 0, revenue: 0 };
+  const addCount = Math.max(1, Number(count) || 1);
+  const cleanMode = String(mode).toLowerCase() === "installment" ? "installment" : "card";
+
+  if (cleanMode === "installment") {
+    prod.sales.installment = (Number(prod.sales.installment) || 0) + addCount;
+  } else {
+    prod.sales.card = (Number(prod.sales.card) || 0) + addCount;
+  }
+  prod.sales.total = (Number(prod.sales.card) || 0) + (Number(prod.sales.installment) || 0);
+  if (amount) {
+    prod.sales.revenue = (Number(prod.sales.revenue) || 0) + (Number(amount) || 0);
+  }
+  prod.lastSoldAt = now.toISOString();
+  if (productName) prod.productName = productName;
+
+  allStats.products[pId] = prod;
+  allStats.updatedAt = now.toISOString();
+
+  await saveJsonToGithub("product-analytics.json", allStats, `Record sale for product ${pId}`, loaded.sha);
+  return allStats;
+}
+
+async function resetProductStatsGithub(productId) {
+  if (!productId) return { products: {} };
+  const loaded = await loadProductStatsFromGithub();
+  const allStats = loaded.data || { products: {} };
+  if (allStats.products && allStats.products[productId]) {
+    delete allStats.products[productId];
+    allStats.updatedAt = new Date().toISOString();
+    await saveJsonToGithub("product-analytics.json", allStats, `Reset stats for product ${productId}`, loaded.sha);
+  }
+  return allStats;
+}
+
 // Official Unified Bank Gateway + Installment & Visitor Geolocation Statistics
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -248,6 +359,35 @@ export default async function handler(req, res) {
       const emptyStats = { totalPageViews: 0, visitors: [], updatedAt: new Date().toISOString() };
       await saveJsonToGithub("visitors-stats.json", emptyStats, "Clear visitor stats", loaded.sha);
       return res.status(200).json({ ok: true, stats: emptyStats });
+    }
+
+    // =========================================================================
+    // PRODUCT SPECIFIC ANALYTICS ENDPOINTS (Views: Day, Month, Year & Sales: Card, Installment)
+    // =========================================================================
+    if (body.action === "record_product_view") {
+      const stats = await recordProductViewGithub(body.productId, body.productName);
+      return res.status(200).json({ ok: true, stats });
+    }
+
+    if (body.action === "get_product_analytics") {
+      const loaded = await loadProductStatsFromGithub();
+      return res.status(200).json({ ok: true, stats: loaded.data });
+    }
+
+    if (body.action === "record_product_sale_manual") {
+      const stats = await recordProductSaleGithub(
+        body.productId,
+        body.mode || "card",
+        body.count || 1,
+        body.amount || 0,
+        body.productName || ""
+      );
+      return res.status(200).json({ ok: true, stats });
+    }
+
+    if (body.action === "reset_product_stats") {
+      const stats = await resetProductStatsGithub(body.productId);
+      return res.status(200).json({ ok: true, stats });
     }
 
     // =========================================================================
