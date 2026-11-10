@@ -13547,8 +13547,10 @@
               : `გამარჯობა, მინდა შევუკვეთო ეს პროდუქტი ბარათით გადახდით: ${product.name} (${rawProduct.newPrice} ₾)`
           );
 
-          modalInstallmentBtn.href = `https://wa.me/${cleanDigits}?text=${installmentText}`;
-          modalCardPaymentBtn.href = `https://wa.me/${cleanDigits}?text=${cardPaymentText}`;
+          modalInstallmentBtn.href = "#bog-installment";
+          modalInstallmentBtn.removeAttribute("target");
+          modalCardPaymentBtn.href = "#bog-card-pay";
+          modalCardPaymentBtn.removeAttribute("target");
 
           if (
             !storeSettings.igHandle ||
@@ -17255,6 +17257,28 @@
             e.stopPropagation();
             if (activeModalProduct) {
               openQuickOrderModal(activeModalProduct.id);
+            }
+          });
+        }
+
+        if (modalInstallmentBtn) {
+          modalInstallmentBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (activeModalProduct) {
+              const txtEl = document.getElementById('modal-installment-btn-text');
+              await launchBogCheckoutForProduct(activeModalProduct, txtEl);
+            }
+          });
+        }
+
+        if (modalCardPaymentBtn) {
+          modalCardPaymentBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (activeModalProduct) {
+              const txtEl = document.getElementById('modal-card-btn-text');
+              await launchBogCheckoutForProduct(activeModalProduct, txtEl);
             }
           });
         }
