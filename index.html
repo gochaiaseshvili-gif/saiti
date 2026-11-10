@@ -2976,6 +2976,101 @@
                 </button>
               </div>
 
+              <!-- INLINE PRODUCT ANALYTICS & SALES DASHBOARD (ნახვები: დღეს, თვეში, წელს | გაყიდვები: ბარათით, განვადებით) -->
+              <div
+                id="mie-product-analytics-card"
+                class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-zinc-950 text-white shadow-xl border border-indigo-500/30 space-y-3"
+              >
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-white/10">
+                  <div class="flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center text-base shrink-0">📊</span>
+                    <div>
+                      <h4 class="text-xs sm:text-sm font-black text-white flex items-center gap-2">
+                        <span>ამ ნივთის ანალიტიკა და სტატისტიკა</span>
+                        <span id="mie-stats-prod-badge" class="px-2 py-0.5 rounded-md bg-indigo-500/30 text-indigo-200 text-[10px] font-mono-num font-bold">#101</span>
+                      </h4>
+                      <p class="text-[10px] text-zinc-300">ნახვები (დღეს/თვეში/წელს) და გაყიდვები (ბარათით/განვადებით)</p>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      id="mie-stat-test-view-btn"
+                      class="px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white text-[10px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                      title="სატესტო ნახვის დამატება"
+                    >
+                      👁️ +1 ნახვა
+                    </button>
+                    <button
+                      type="button"
+                      id="mie-stat-test-card-btn"
+                      class="px-2 py-1 rounded-lg bg-emerald-600/80 hover:bg-emerald-600 text-white text-[10px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                      title="სატესტო გაყიდვა ბარათით"
+                    >
+                      💳 +1 ბარათით
+                    </button>
+                    <button
+                      type="button"
+                      id="mie-stat-test-inst-btn"
+                      class="px-2 py-1 rounded-lg bg-amber-600/80 hover:bg-amber-600 text-white text-[10px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                      title="სატესტო გაყიდვა განვადებით"
+                    >
+                      🏦 +1 განვადებით
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <!-- Views -->
+                  <div class="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                    <div class="text-[11px] font-bold text-indigo-300 mb-1.5 flex items-center justify-between">
+                      <span>👥 რამდენმა ადამიანმა ნახა:</span>
+                      <span class="text-[9px] text-zinc-400">რეალურ დროში</span>
+                    </div>
+                    <div class="grid grid-cols-4 gap-1.5 text-center">
+                      <div class="p-1.5 rounded-lg bg-white/5">
+                        <div class="text-[9px] text-zinc-400">დღეს</div>
+                        <div id="mie-stat-views-today" class="text-base font-black text-amber-400">0</div>
+                      </div>
+                      <div class="p-1.5 rounded-lg bg-white/5">
+                        <div class="text-[9px] text-zinc-400">თვეში</div>
+                        <div id="mie-stat-views-month" class="text-base font-black text-blue-400">0</div>
+                      </div>
+                      <div class="p-1.5 rounded-lg bg-white/5">
+                        <div class="text-[9px] text-zinc-400">წელს</div>
+                        <div id="mie-stat-views-year" class="text-base font-black text-purple-400">0</div>
+                      </div>
+                      <div class="p-1.5 rounded-lg bg-white/5">
+                        <div class="text-[9px] text-zinc-400">სულ</div>
+                        <div id="mie-stat-views-total" class="text-base font-black text-emerald-400">0</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Sales -->
+                  <div class="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                    <div class="text-[11px] font-bold text-emerald-300 mb-1.5 flex items-center justify-between">
+                      <span>🛍️ გაყიდული რაოდენობა:</span>
+                      <span class="text-[9px] text-zinc-400">დამტკიცებული</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1.5 text-center">
+                      <div class="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                        <div class="text-[9px] text-emerald-300">💳 ბარათით</div>
+                        <div id="mie-stat-sales-card" class="text-base font-black text-emerald-400">0</div>
+                      </div>
+                      <div class="p-1.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                        <div class="text-[9px] text-amber-300">🏦 განვადებით</div>
+                        <div id="mie-stat-sales-installment" class="text-base font-black text-amber-400">0</div>
+                      </div>
+                      <div class="p-1.5 rounded-lg bg-white/10 border border-white/15">
+                        <div class="text-[9px] text-white">📦 სულ გაყიდული</div>
+                        <div id="mie-stat-sales-total" class="text-base font-black text-white">0</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- 1. Direct 5-Photo Upload & Slot Manager Right Here -->
               <div class="p-3.5 rounded-2xl bg-white border border-amber-200 space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2">
