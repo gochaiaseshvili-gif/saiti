@@ -19,7 +19,7 @@ function getGithubCloudToken() {
 
 async function loadSalesFromGithub() {
   const token = getGithubCloudToken();
-  if (!token) return [];
+  if (!token) return { sales: [], sha: "" };
   try {
     const apiUrl = `https://api.github.com/repos/${GH_REPO_SLUG}/contents/sales-notifications.json?t=${Date.now()}`;
     const res = await fetch(apiUrl, {
@@ -29,12 +29,14 @@ async function loadSalesFromGithub() {
         "X-GitHub-Api-Version": "2022-11-28",
       },
     });
-    if (!res.ok) return [];
+    if (!res.ok) return { sales: [], sha: "" };
     const data = await res.json();
     if (data && data.content) {
       const jsonStr = Buffer.from(data.content, "base64").toString("utf8");
       const parsed = JSON.parse(jsonStr);
-      return Array.isArray(parsed.sales) ? { sales: parsed.sales, sha: data.sha } : { sales: [], sha: data.sha };
+      return Array.isArray(parsed.sales)
+        ? { sales: parsed.sales, sha: data.sha || "" }
+        : { sales: [], sha: data.sha || "" };
     }
   } catch (e) {}
   return { sales: [], sha: "" };
@@ -61,10 +63,10 @@ async function saveSalesToGithub(salesList, existingSha = "") {
     }
     const payload = {
       updatedAt: new Date().toISOString(),
-      sales: salesList.slice(0, 100),
+      sales: salesList.slice(0, 200),
     };
     const putBody = {
-      message: "Record approved installment / bank sale notification",
+      message: "Update installment & sales statistics notification log",
       content: Buffer.from(JSON.stringify(payload, null, 2), "utf8").toString("base64"),
       branch: "main",
       ...(sha ? { sha } : {}),
@@ -80,19 +82,37 @@ async function saveSalesToGithub(salesList, existingSha = "") {
   }
 }
 
-async function recordApprovedSale(saleObj) {
+async function recordOrUpdateSaleEvent(saleObj) {
   const loaded = await loadSalesFromGithub();
   const list = Array.isArray(loaded.sales) ? loaded.sales : [];
-  // Deduplicate by orderId if present
-  if (saleObj.orderId && list.some((s) => s.orderId === saleObj.orderId)) {
+  const cleanOrderId = String(saleObj.orderId || "").trim();
+  const incomingStatus = String(saleObj.status || "approved").toLowerCase().trim();
+
+  // If an entry with this orderId already exists (e.g. "started"), update its status to "approved" or "rejected"
+  const existingIdx = cleanOrderId ? list.findIndex((s) => s.orderId === cleanOrderId) : -1;
+  if (existingIdx !== -1) {
+    const existing = list[existingIdx];
+    // Don't downgrade an already approved order to started
+    if (existing.status === "approved" && incomingStatus === "started") {
+      return list;
+    }
+    existing.status = incomingStatus;
+    existing.updatedAt = new Date().toISOString();
+    existing.unread = true;
+    if (saleObj.customerPhone) existing.customerPhone = saleObj.customerPhone;
+    if (saleObj.customerName) existing.customerName = saleObj.customerName;
+    if (saleObj.rejectReason) existing.rejectReason = saleObj.rejectReason;
+    await saveSalesToGithub(list, loaded.sha);
     return list;
   }
+
   const newEntry = {
     id: saleObj.id || "sale_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
-    orderId: saleObj.orderId || "",
+    orderId: cleanOrderId,
     bank: saleObj.bank || "bog",
     mode: saleObj.mode || "installment",
-    status: saleObj.status || "approved",
+    status: incomingStatus, // 'approved' | 'rejected' | 'started'
+    rejectReason: saleObj.rejectReason || "",
     productName: saleObj.productName || "პროდუქტი — iyidebaa.ge",
     productId: saleObj.productId || "",
     amount: Number(saleObj.amount) || 0,
@@ -101,37 +121,15 @@ async function recordApprovedSale(saleObj) {
     customerPhone: saleObj.customerPhone || "",
     customerName: saleObj.customerName || "",
     createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     unread: true,
   };
   list.unshift(newEntry);
   await saveSalesToGithub(list, loaded.sha);
-
-  // Optional Telegram notification if bot token & chat id are provided
-  if (saleObj.telegramBotToken && saleObj.telegramChatId) {
-    try {
-      const msg =
-        `🎉 *ახალი დამტკიცებული ${newEntry.mode === "installment" ? "განვადება" : "გადახდა"} (iyidebaa.ge)*\n` +
-        `🏦 ბანკი: ${newEntry.bank === "credo" ? "კრედო ბანკი" : "საქართველოს ბანკი"}\n` +
-        `📦 ნივთი: ${newEntry.productName}\n` +
-        `💰 თანხა: ${newEntry.amount} ₾${newEntry.months ? ` (${newEntry.months} თვე)` : ""}\n` +
-        (newEntry.customerPhone ? `📞 მყიდველის ტელეფონი: ${newEntry.customerPhone}\n` : "") +
-        `🕒 დრო: ${new Date().toLocaleString("ka-GE", { timeZone: "Asia/Tbilisi" })}`;
-      await fetch(`https://api.telegram.org/bot${saleObj.telegramBotToken}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: saleObj.telegramChatId,
-          text: msg,
-          parse_mode: "Markdown",
-        }),
-      });
-    } catch (e) {}
-  }
-
   return list;
 }
 
-// Official Unified Bank Gateway (Bank of Georgia iPay/Installment + Credo Bank Online Installment + Sales Notifications)
+// Official Unified Bank Gateway (Bank of Georgia iPay/Installment + Credo Bank Online Installment + Installment Statistics)
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -155,28 +153,49 @@ export default async function handler(req, res) {
     const query = req.query || {};
 
     // =========================================================================
-    // 0. HANDLE OFFICIAL BANK OF GEORGIA WEBHOOK CALLBACK OR FRONTEND SALE NOTIFICATION
+    // 0. HANDLE OFFICIAL BANK OF GEORGIA WEBHOOK CALLBACK (APPROVED OR REJECTED)
     // =========================================================================
     if (body.event === "order_payment" && body.body) {
       const bogBody = body.body;
-      const statusKey = (bogBody.order_status && bogBody.order_status.key) || "";
-      if (statusKey === "completed" || statusKey === "approved") {
-        const transferMethod =
-          (bogBody.payment_detail &&
-            bogBody.payment_detail.transfer_method &&
-            bogBody.payment_detail.transfer_method.key) ||
-          "";
-        const isLoan = transferMethod === "BOG_LOAN" || query.mode === "installment";
-        const basketItem =
-          (bogBody.purchase_units &&
-            Array.isArray(bogBody.purchase_units.items) &&
-            bogBody.purchase_units.items[0]) ||
-          {};
-        await recordApprovedSale({
-          orderId: bogBody.order_id || bogBody.external_order_id || "",
+      const statusKey = String((bogBody.order_status && bogBody.order_status.key) || "")
+        .toLowerCase()
+        .trim();
+      const transferMethod =
+        (bogBody.payment_detail &&
+          bogBody.payment_detail.transfer_method &&
+          bogBody.payment_detail.transfer_method.key) ||
+        "";
+      const isLoan = transferMethod === "BOG_LOAN" || query.mode === "installment";
+      const basketItem =
+        (bogBody.purchase_units &&
+          Array.isArray(bogBody.purchase_units.items) &&
+          bogBody.purchase_units.items[0]) ||
+        {};
+
+      let mappedStatus = "";
+      if (statusKey === "completed" || statusKey === "approved" || statusKey === "success") {
+        mappedStatus = "approved";
+      } else if (
+        statusKey === "rejected" ||
+        statusKey === "failed" ||
+        statusKey === "declined" ||
+        statusKey === "cancelled" ||
+        statusKey === "error" ||
+        statusKey === " blocked"
+      ) {
+        mappedStatus = "rejected";
+      }
+
+      if (mappedStatus) {
+        await recordOrUpdateSaleEvent({
+          orderId: bogBody.external_order_id || bogBody.order_id || query.orderId || "",
           bank: "bog",
           mode: isLoan ? "installment" : "card",
-          status: "approved",
+          status: mappedStatus,
+          rejectReason:
+            (bogBody.reject_reason && String(bogBody.reject_reason)) ||
+            (bogBody.order_status && bogBody.order_status.value) ||
+            "",
           productName: query.prodName || basketItem.description || "პროდუქტი — iyidebaa.ge",
           productId: query.prodId || basketItem.package_code || "",
           amount:
@@ -212,8 +231,14 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, sales: updated });
     }
 
-    if (body.action === "record_approved_sale") {
-      const sales = await recordApprovedSale(body);
+    if (body.action === "clear_all_sales_notifications") {
+      const loaded = await loadSalesFromGithub();
+      await saveSalesToGithub([], loaded.sha);
+      return res.status(200).json({ ok: true, sales: [] });
+    }
+
+    if (body.action === "record_approved_sale" || body.action === "record_sale_event") {
+      const sales = await recordOrUpdateSaleEvent(body);
       return res.status(200).json({ ok: true, sales });
     }
 
@@ -267,6 +292,19 @@ export default async function handler(req, res) {
           details: credoData,
         });
       }
+
+      // Log that a customer started a Credo installment application for statistics
+      await recordOrUpdateSaleEvent({
+        orderId: credoData.data.OrderHash || orderCode,
+        bank: "credo",
+        mode: "installment",
+        status: "started",
+        productName,
+        productId,
+        amount: amountGel,
+        months: 12,
+        customerPhone,
+      });
 
       return res.status(200).json({
         ok: true,
@@ -394,11 +432,27 @@ export default async function handler(req, res) {
       });
     }
 
+    // Record installment application start for full statistics tracking
+    if (isInstallmentMode) {
+      await recordOrUpdateSaleEvent({
+        orderId: extOrderId,
+        bank: "bog",
+        mode: "installment",
+        status: "started",
+        productName,
+        productId,
+        amount: amountGel,
+        months: chosenMonths,
+        customerPhone,
+      });
+    }
+
     return res.status(200).json({
       ok: true,
       bank: "bog",
       mode: isInstallmentMode ? "installment" : "card",
-      orderId: orderData.id,
+      orderId: extOrderId,
+      bogOrderId: orderData.id,
       redirectUrl: redirectHref,
     });
   } catch (err) {
