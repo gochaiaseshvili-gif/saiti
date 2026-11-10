@@ -3639,14 +3639,24 @@
 
               <!-- 1-Click Quick Order Primary CTA Button in Modal -->
               <div class="pt-3 border-t border-zinc-200/90">
-                <button
-                  type="button"
-                  id="modal-quick-order-btn"
-                  class="w-full min-h-[48px] px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white text-sm sm:text-base font-extrabold flex items-center justify-center gap-2 shadow-md active:scale-[0.99] fast-transition cursor-pointer"
-                >
-                  <span>⚡</span>
-                  <span id="modal-quick-order-btn-text">სწრაფი შეკვეთა 1 დაჭერით</span>
-                </button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    id="modal-quick-order-btn"
+                    class="w-full min-h-[48px] px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white text-xs sm:text-sm font-extrabold flex items-center justify-center gap-1.5 shadow-md active:scale-[0.99] fast-transition cursor-pointer"
+                  >
+                    <span>⚡</span>
+                    <span id="modal-quick-order-btn-text">სწრაფი შეკვეთა</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="modal-bog-direct-pay-btn"
+                    class="w-full min-h-[48px] px-3.5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-md active:scale-[0.99] fast-transition cursor-pointer"
+                  >
+                    <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
+                    <span id="modal-bog-direct-pay-text">საქართველოს ბანკით გადახდა</span>
+                  </button>
+                </div>
               </div>
 
               <!-- Compact Full-Visibility Contact Person & Phone Number Right Underneath Price (Tap to Call) -->
@@ -5263,6 +5273,17 @@
                 </div>
                 <div id="qo-bank-iban-text" class="font-mono-num text-xs sm:text-sm font-black text-zinc-950 tracking-wide select-all break-all"></div>
               </div>
+
+              <!-- Instant Bank of Georgia Live API Checkout Button -->
+              <button
+                type="button"
+                id="qo-bog-instant-checkout-btn"
+                class="hidden w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition cursor-pointer"
+              >
+                <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
+                <span id="qo-bog-instant-checkout-label">პირდაპირ საქართველოს ბანკით გადახდა (payment.bog.ge)</span>
+                <span>↗</span>
+              </button>
 
               <!-- Direct Bank Payment / Installment Link Button (shown when URL is set in Admin Panel) -->
               <a
@@ -15076,9 +15097,9 @@
             : {};
           return {
             bogEnabled: raw.bogEnabled !== false,
-            bogClientId: raw.bogClientId || '',
-            bogSecret: raw.bogSecret || '',
-            bogIban: raw.bogIban || '',
+            bogClientId: raw.bogClientId || '10000576',
+            bogSecret: raw.bogSecret || '0RAMGYvStUiE',
+            bogIban: raw.bogIban || 'GE84BG0000000345895672GEL',
             bogUrl: raw.bogUrl || '',
             bogScript: raw.bogScript || '',
 
@@ -17077,6 +17098,22 @@
               }
             }
 
+            const bogInstantBtn = document.getElementById('qo-bog-instant-checkout-btn');
+            const submitBtnLbl = document.getElementById('qo-submit-btn-label');
+            const isBogSelected = val.includes('BOG') || val.includes('Visa') || val.includes('ბარათით');
+            if (bogInstantBtn) {
+              if (isBogSelected) {
+                bogInstantBtn.classList.remove('hidden');
+              } else {
+                bogInstantBtn.classList.add('hidden');
+              }
+            }
+            if (submitBtnLbl) {
+              submitBtnLbl.textContent = isBogSelected
+                ? '🟧 საქართველოს ბანკით გადახდაზე გადასვლა'
+                : 'შეკვეთის / განვადების გაგზავნა';
+            }
+
             if (directUrlBtn) {
               if (info.url) {
                 directUrlBtn.href = info.url;
@@ -17174,11 +17211,71 @@
           }
         }
 
+        async function launchBogCheckoutForProduct(prod, statusEl) {
+          if (!prod) return false;
+          const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+          const clientId = bankCfg.bogClientId || '10000576';
+          const clientSecret = bankCfg.bogSecret || '0RAMGYvStUiE';
+          const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
+          const origText = statusEl ? statusEl.textContent : '';
+          try {
+            if (statusEl) statusEl.textContent = '🏦 იხსნება საქართველოს ბანკის გვერდი...';
+            const bogRes = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                clientId,
+                clientSecret,
+                productName: prod.name,
+                productId: prod.id,
+                amount: rawPrice,
+                months: selectedInstallmentMonths,
+                originUrl: window.location.origin,
+              }),
+            });
+            const bogJson = await bogRes.json();
+            if (statusEl) statusEl.textContent = origText;
+            if (bogJson && bogJson.ok && bogJson.redirectUrl) {
+              closeQuickOrderModal();
+              window.location.href = bogJson.redirectUrl;
+              return true;
+            } else {
+              alert((bogJson && bogJson.error) || 'საქართველოს ბანკთან დაკავშირება ვერ მოხერხდა.');
+              return true;
+            }
+          } catch (err) {
+            if (statusEl) statusEl.textContent = origText;
+            alert('საქართველოს ბანკის გვერდთან კავშირის შეცდომა.');
+            return true;
+          }
+        }
+
         if (modalQuickOrderBtn) {
           modalQuickOrderBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (activeModalProduct) {
               openQuickOrderModal(activeModalProduct.id);
+            }
+          });
+        }
+
+        const modalBogDirectPayBtn = document.getElementById('modal-bog-direct-pay-btn');
+        if (modalBogDirectPayBtn) {
+          modalBogDirectPayBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            if (activeModalProduct) {
+              const txtEl = document.getElementById('modal-bog-direct-pay-text');
+              await launchBogCheckoutForProduct(activeModalProduct, txtEl);
+            }
+          });
+        }
+
+        const qoBogInstantBtn = document.getElementById('qo-bog-instant-checkout-btn');
+        if (qoBogInstantBtn) {
+          qoBogInstantBtn.addEventListener('click', async () => {
+            if (quickOrderTargetProduct) {
+              const lblEl = document.getElementById('qo-bog-instant-checkout-label');
+              await launchBogCheckoutForProduct(quickOrderTargetProduct, lblEl);
             }
           });
         }
@@ -17210,7 +17307,8 @@
             const paymentMethod = (mInp ? mInp.value : '').trim() || 'კურიერთან გადახდა';
             const customerPid = (pidInp ? pidInp.value : '').trim();
 
-            if (!customerPhone || customerPhone.replace(/\D/g, '').length < 6) {
+            const isBogOrCardMethod = paymentMethod.includes('BOG') || paymentMethod.includes('Visa') || paymentMethod.includes('ბარათით');
+            if (!isBogOrCardMethod && (!customerPhone || customerPhone.replace(/\D/g, '').length < 6)) {
               if (errEl) errEl.classList.remove('hidden');
               if (pInp) pInp.focus();
               return;
@@ -17233,39 +17331,10 @@
             const bankDetails = resolveSelectedBankDetails(paymentMethod);
             const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
 
-            // If Bank of Georgia (BOG) or Card is chosen AND BOG Client ID + Secret Key are entered in Admin Panel, create a real BOG iPay / Installment order!
             const isBogOrCard = paymentMethod.includes('BOG') || paymentMethod.includes('Visa') || paymentMethod.includes('ბარათით');
-            if (isBogOrCard && bankCfg.bogClientId && bankCfg.bogSecret) {
-              try {
-                if (submitBtnLabel) submitBtnLabel.textContent = '🏦 იხსნება საქართველოს ბანკის გვერდი...';
-                const bogRes = await fetch('/api/bog-pay', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    clientId: bankCfg.bogClientId,
-                    clientSecret: bankCfg.bogSecret,
-                    productName: quickOrderTargetProduct.name,
-                    productId: quickOrderTargetProduct.id,
-                    amount: rawPrice,
-                    months: selectedInstallmentMonths,
-                    paymentType: paymentMethod.includes('BOG')
-                      ? selectedInstallmentMonths === 4
-                        ? 'bnpl'
-                        : 'installment'
-                      : 'card',
-                    originUrl: window.location.origin,
-                  }),
-                });
-                const bogJson = await bogRes.json();
-                if (submitBtnLabel) submitBtnLabel.textContent = 'შეკვეთის / განვადების გაგზავნა';
-                if (bogJson && bogJson.ok && bogJson.redirectUrl) {
-                  closeQuickOrderModal();
-                  window.location.href = bogJson.redirectUrl;
-                  return;
-                }
-              } catch (bogErr) {
-                if (submitBtnLabel) submitBtnLabel.textContent = 'შეკვეთის / განვადების გაგზავნა';
-              }
+            if (isBogOrCard) {
+              await launchBogCheckoutForProduct(quickOrderTargetProduct, submitBtnLabel);
+              return;
             }
 
             const cleanDigits = String(storeSettings.phoneDigits || '995551588579').replace(/\D/g, '') || '995551588579';
