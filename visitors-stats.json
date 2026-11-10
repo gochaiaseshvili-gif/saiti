@@ -1,6 +1,18 @@
 {
-  "totalPageViews": 63,
+  "totalPageViews": 64,
   "visitors": [
+    {
+      "visitorId": "vis_1794333956546_ave8t2",
+      "countryCode": "GE",
+      "countryName": "საქართველო",
+      "regionName": "TB",
+      "cityName": "Tbilisi",
+      "deviceType": "mobile",
+      "currentPage": "მთავარი გვერდი",
+      "visitsCount": 3,
+      "firstSeenAt": "2026-11-10T18:05:57.206Z",
+      "lastSeenAt": "2026-11-10T18:30:40.215Z"
+    },
     {
       "visitorId": "vis_1794335036464_jfnh7y",
       "countryCode": "US",
@@ -24,18 +36,6 @@
       "visitsCount": 1,
       "firstSeenAt": "2026-11-10T18:23:50.694Z",
       "lastSeenAt": "2026-11-10T18:23:50.694Z"
-    },
-    {
-      "visitorId": "vis_1794333956546_ave8t2",
-      "countryCode": "GE",
-      "countryName": "საქართველო",
-      "regionName": "TB",
-      "cityName": "Tbilisi",
-      "deviceType": "mobile",
-      "currentPage": "მთავარი გვერდი",
-      "visitsCount": 2,
-      "firstSeenAt": "2026-11-10T18:05:57.206Z",
-      "lastSeenAt": "2026-11-10T18:23:25.683Z"
     },
     {
       "visitorId": "vis_1794334175094_1us200",
@@ -746,5 +746,5 @@
       "lastSeenAt": "2026-11-10T18:03:47.582Z"
     }
   ],
-  "updatedAt": "2026-11-10T18:23:56.697Z"
+  "updatedAt": "2026-11-10T18:30:40.215Z"
 }
