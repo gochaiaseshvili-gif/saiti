@@ -16070,6 +16070,19 @@
                       </button>
                     </div>
                   </div>
+
+                  <!-- Product Analytics Strip (Views: Day, Month, Year & Sales: Card, Installment) -->
+                  <div class="flex flex-wrap items-center gap-1.5 p-2 rounded-xl bg-white border border-zinc-200/90 text-[11px] shadow-2xs">
+                    <span class="font-black text-zinc-900 flex items-center gap-1">📊 სტატისტიკა:</span>
+                    <span class="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 font-bold" title="დღის განმავლობაში ნანახი">📅 დღეს: <b>${pStats.today}</b></span>
+                    <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 font-bold" title="მიმდინარე თვეში ნანახი">🗓️ თვეში: <b>${pStats.month}</b></span>
+                    <span class="px-2 py-0.5 rounded-md bg-purple-50 text-purple-700 font-bold" title="წლის განმავლობაში ნანახი">📆 წელს: <b>${pStats.year}</b></span>
+                    <span class="px-2 py-0.5 rounded-md bg-stone-100 text-zinc-600 font-bold" title="ჯამური ნახვები">👁️ სულ: <b>${pStats.total}</b></span>
+                    <span class="text-zinc-300">|</span>
+                    <span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-bold" title="ბარათით გადახდით გაყიდული">💳 ბარათით: <b>${pStats.cardSales}</b> ცალი</span>
+                    <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 font-bold" title="განვადებით გაყიდული (საქართველოს ბანკი / კრედო)">🏦 განვადებით: <b>${pStats.installmentSales}</b> ცალი</span>
+                    <span class="px-2 py-0.5 rounded-md bg-zinc-900 text-white font-black" title="ჯამში გაყიდული ცალები">📦 სულ გაყიდული: <b>${pStats.totalSales}</b> ცალი</span>
+                  </div>
                 </div>
               `;
             })
