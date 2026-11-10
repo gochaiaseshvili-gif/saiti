@@ -5226,6 +5226,51 @@
                 />
               </div>
             </div>
+
+            <!-- Live Georgian Bank Portal / IBAN / Custom Bank Code Box (Controlled from Admin Panel Tab 4) -->
+            <div
+              id="qo-bank-live-portal-box"
+              class="hidden p-3.5 rounded-2xl bg-stone-50 border border-zinc-200 space-y-2.5 text-xs"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span id="qo-bank-portal-title" class="font-black text-zinc-950 flex items-center gap-1.5">
+                  <span>🏦</span>
+                  <span>ბანკის რეკვიზიტები და ონლაინ გადახდა</span>
+                </span>
+                <span id="qo-bank-merchant-badge" class="hidden px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 font-mono-num text-[10px] font-bold"></span>
+              </div>
+
+              <!-- IBAN & Receiver Info (shown when IBAN is set in Admin Panel) -->
+              <div id="qo-bank-iban-row" class="hidden p-2.5 rounded-xl bg-white border border-zinc-200 space-y-1.5">
+                <div class="flex items-center justify-between gap-2 text-[11px] text-zinc-600">
+                  <span>მიმღები: <strong id="qo-bank-receiver-text" class="text-zinc-950">გოჩა იასეშვილი</strong></span>
+                  <button
+                    type="button"
+                    id="qo-copy-iban-btn"
+                    class="px-2 py-0.5 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-950 font-extrabold text-[10px] cursor-pointer"
+                  >
+                    📋 ანგარიშის კოპირება
+                  </button>
+                </div>
+                <div id="qo-bank-iban-text" class="font-mono-num text-xs sm:text-sm font-black text-zinc-950 tracking-wide select-all break-all"></div>
+              </div>
+
+              <!-- Direct Bank Payment / Installment Link Button (shown when URL is set in Admin Panel) -->
+              <a
+                id="qo-bank-direct-url-btn"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hidden w-full min-h-[42px] px-3.5 py-2 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-amber-300 text-xs font-black flex items-center justify-center gap-2 shadow-xs fast-transition"
+              >
+                <span>🏦</span>
+                <span id="qo-bank-direct-url-label">პირდაპირ ბანკის ონლაინ გვერდზე გადასვლა</span>
+                <span>↗</span>
+              </a>
+
+              <!-- Custom Bank HTML/Widget Slot (shown when owner pastes bank HTML/script in Admin Panel) -->
+              <div id="qo-bank-custom-widget-slot" class="hidden pt-1"></div>
+            </div>
           </div>
 
           <div id="qo-error-msg" class="hidden text-xs font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2">
