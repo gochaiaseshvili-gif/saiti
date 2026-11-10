@@ -7254,6 +7254,123 @@
 
     
     <!-- ======================================================================================== -->
+    <!-- BANK OF GEORGIA OFFICIAL INSTALLMENT MONTH SELECTOR MODAL ("განვადებით ყიდვა" 3-48 თვე) -->
+    <!-- ======================================================================================== -->
+    <div
+      id="bog-installment-calc-modal"
+      class="fixed inset-0 z-[95] hidden bg-zinc-950/65 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="bog-inst-modal-title"
+    >
+      <div class="w-full max-w-[540px] rounded-2xl bg-white shadow-2xl overflow-hidden animate-fadeIn">
+        <!-- Header -->
+        <div class="px-5 sm:px-6 py-4 sm:py-5 border-b border-zinc-200 flex items-center justify-between">
+          <h3 id="bog-inst-modal-title" class="text-lg sm:text-xl font-bold text-zinc-900">
+            განვადებით ყიდვა
+          </h3>
+          <button
+            type="button"
+            id="close-bog-inst-calc-btn"
+            class="w-8 h-8 rounded-full hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 flex items-center justify-center text-xl font-bold cursor-pointer fast-transition"
+            aria-label="დახურვა"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-5 sm:p-6 space-y-5">
+          <div>
+            <div class="text-sm sm:text-base font-semibold text-zinc-900 mb-3">
+              აირჩიე სასურველი ვადა
+            </div>
+
+            <!-- Input Box + Orange Range Slider (3 to 48 months) -->
+            <div class="relative">
+              <div class="rounded-xl border border-zinc-400 px-4 py-2.5 bg-white">
+                <div class="text-[11px] sm:text-xs text-zinc-400 font-medium">სასურველი ვადა</div>
+                <input
+                  type="number"
+                  id="bog-inst-months-input"
+                  min="3"
+                  max="48"
+                  value="3"
+                  class="w-full text-base sm:text-lg font-bold text-zinc-900 bg-transparent focus:outline-none font-mono-num"
+                />
+              </div>
+              <input
+                type="range"
+                id="bog-inst-months-slider"
+                min="3"
+                max="48"
+                step="1"
+                value="3"
+                class="w-full h-1.5 bg-zinc-200 rounded-lg appearance-none cursor-pointer accent-[#FE5F00] -mt-1 block"
+              />
+              <div class="flex items-center justify-between text-xs sm:text-sm text-zinc-500 font-medium pt-1.5">
+                <span>3 თვე</span>
+                <span>48 თვე</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Monthly Payment Gray Box -->
+          <div class="rounded-2xl bg-[#F4F5F7] px-5 sm:px-6 py-4 sm:py-5 flex items-center justify-between sm:justify-end gap-4">
+            <span class="text-sm sm:text-base font-medium text-zinc-600">ყოველთვიურად გადაიხდი</span>
+            <span id="bog-inst-monthly-amount" class="text-2xl sm:text-4xl font-extrabold text-zinc-900 font-mono-num">
+              221.33₾
+            </span>
+          </div>
+
+          <!-- Peach Installment Benefits Box -->
+          <div class="rounded-2xl bg-[#FFF3EB] px-5 sm:px-6 py-5 sm:py-6 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+            <div class="sm:col-span-5 text-center sm:text-left">
+              <span class="text-2xl sm:text-[28px] font-bold text-[#FE5F00] tracking-tight">განვადება</span>
+            </div>
+            <div class="sm:col-span-7 space-y-2.5 text-xs sm:text-sm text-zinc-700 font-medium">
+              <div class="flex items-center gap-2.5">
+                <span class="text-zinc-900 font-bold">✓</span>
+                <span>მომენტალური შენაძენი</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-zinc-900 font-bold">✓</span>
+                <span>პირველი გადახდა ერთ თვეში</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="text-zinc-900 font-bold">✓</span>
+                <span>ეფექტური პროცენტი 26%-დან</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 sm:px-6 py-4 border-t border-zinc-200 flex items-center justify-between bg-white">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-xl bg-[#FFF3EB] flex items-center justify-center shrink-0">
+              <img
+                src="https://webstatic.bog.ge/boglogo/orange_logo.svg"
+                alt="BOG"
+                class="w-7 h-7 object-contain"
+                onerror="this.style.display='none'"
+              />
+            </div>
+            <span class="text-sm sm:text-base font-bold text-zinc-700">საქართველოს ბანკი</span>
+          </div>
+
+          <button
+            type="button"
+            id="bog-inst-continue-btn"
+            class="min-h-[44px] px-6 sm:px-7 py-2.5 rounded-xl bg-[#FE5F00] hover:bg-[#e55500] text-white text-sm sm:text-base font-bold shadow-md active:scale-95 fast-transition cursor-pointer"
+          >
+            <span id="bog-inst-continue-label">გაგრძელება</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
     <!-- DEDICATED BLUE TBC BANK CHECKOUT & MOBILE APP MODAL (🟦 თიბისი ბანკით გადახდა)          -->
     <!-- ======================================================================================== -->
     <div
@@ -13664,7 +13781,7 @@
                         <div class="grid grid-cols-2 gap-1.5">
                           <button
                             type="button"
-                            data-card-bog-buy="${rawProduct.id}"
+                            data-card-bog-inst="${rawProduct.id}"
                             class="min-h-[34px] px-2 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-950 border border-orange-300 text-[11px] font-black flex items-center justify-center gap-1 active:scale-95 fast-transition cursor-pointer"
                             title="საქართველოს ბანკის ონლაინ განვადება"
                           >
@@ -17530,6 +17647,17 @@
             openShareModal(prodId);
             return;
           }
+          const cardBogInstBtn = e.target.closest('[data-card-bog-inst]');
+          if (cardBogInstBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const prodId = cardBogInstBtn.getAttribute('data-card-bog-inst');
+            const targetProd = productsList.find((p) => p.id === prodId);
+            if (targetProd && typeof openBogInstallmentCalculatorModal === 'function') {
+              openBogInstallmentCalculatorModal(targetProd);
+            }
+            return;
+          }
           const cardBogBuyBtn = e.target.closest('[data-card-bog-buy]');
           if (cardBogBuyBtn) {
             e.preventDefault();
@@ -17933,6 +18061,152 @@
         }
         window.launchBogCheckoutForProduct = launchBogCheckoutForProduct;
 
+        const BOG_MONTH_FACTORS = {
+          3: 0.34050769, 4: 0.25809231, 5: 0.20866154, 6: 0.17572308, 7: 0.1522, 8: 0.13456923,
+          9: 0.12087692, 10: 0.10992308, 11: 0.10096923, 12: 0.09350769, 13: 0.0872, 14: 0.0818,
+          15: 0.07712308, 16: 0.07304615, 17: 0.06944615, 18: 0.06624615, 19: 0.0634, 20: 0.06083077,
+          21: 0.05850769, 22: 0.0564, 23: 0.05449231, 24: 0.05273846, 25: 0.05112308, 26: 0.04963077,
+          27: 0.04826154, 28: 0.04698462, 29: 0.04581538, 30: 0.04470769, 31: 0.04367692, 32: 0.04272308,
+          33: 0.04183077, 34: 0.04098462, 35: 0.04018462, 36: 0.03943077, 37: 0.03872308, 38: 0.03806154,
+          39: 0.03743077, 40: 0.03683077, 41: 0.03626154, 42: 0.03572308, 43: 0.03521538, 44: 0.03473846,
+          45: 0.03426154, 46: 0.03383077, 47: 0.0334, 48: 0.033
+        };
+
+        let activeBogInstProduct = null;
+        let activeBogInstDiscounts = [];
+        let activeBogInstMonth = 3;
+
+        function computeBogMonthlyForMonth(priceGel, monthNum) {
+          const m = Math.min(48, Math.max(3, Number(monthNum) || 3));
+          const found = activeBogInstDiscounts.find((d) => Number(d.month) === m);
+          if (found && found.amount) {
+            return Number(found.amount).toFixed(2);
+          }
+          const factor = BOG_MONTH_FACTORS[m] || (1 / m) * 1.12;
+          return (Math.max(1, Number(priceGel) || 1) * factor).toFixed(2);
+        }
+
+        function updateBogInstModalUi(monthVal) {
+          const m = Math.min(48, Math.max(3, Number(monthVal) || 3));
+          activeBogInstMonth = m;
+          const inpEl = document.getElementById('bog-inst-months-input');
+          const sliderEl = document.getElementById('bog-inst-months-slider');
+          const monthlyEl = document.getElementById('bog-inst-monthly-amount');
+          if (inpEl && Number(inpEl.value) !== m) inpEl.value = String(m);
+          if (sliderEl && Number(sliderEl.value) !== m) sliderEl.value = String(m);
+          const priceGel = activeBogInstProduct ? Math.max(1, Number(activeBogInstProduct.newPrice) || 1) : 650;
+          if (monthlyEl) {
+            monthlyEl.textContent = computeBogMonthlyForMonth(priceGel, m) + '₾';
+          }
+        }
+
+        async function openBogInstallmentCalculatorModal(prod) {
+          if (!prod) return false;
+          activeBogInstProduct = prod;
+          activeBogInstDiscounts = [];
+          activeBogInstMonth = 3;
+          updateBogInstModalUi(3);
+
+          const modalEl = document.getElementById('bog-installment-calc-modal');
+          if (modalEl) modalEl.classList.remove('hidden');
+
+          // Fetch live BOG installment table in background to ensure 100% exact BOG numbers
+          try {
+            const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+            const clientId = bankCfg.bogClientId || '10000576';
+            const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
+            const res = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'calculate_installment',
+                clientId,
+                amount: rawPrice,
+              }),
+            });
+            const data = await res.json();
+            if (data && Array.isArray(data.discounts) && data.discounts.length > 0) {
+              activeBogInstDiscounts = data.discounts;
+              updateBogInstModalUi(activeBogInstMonth);
+            }
+          } catch (e) {}
+          return true;
+        }
+        window.openBogInstallmentCalculatorModal = openBogInstallmentCalculatorModal;
+
+        const closeBogInstCalcBtn = document.getElementById('close-bog-inst-calc-btn');
+        const bogInstCalcModalEl = document.getElementById('bog-installment-calc-modal');
+        if (closeBogInstCalcBtn && bogInstCalcModalEl) {
+          closeBogInstCalcBtn.addEventListener('click', () => bogInstCalcModalEl.classList.add('hidden'));
+          bogInstCalcModalEl.addEventListener('click', (ev) => {
+            if (ev.target === bogInstCalcModalEl) bogInstCalcModalEl.classList.add('hidden');
+          });
+        }
+        const bogInstSliderEl = document.getElementById('bog-inst-months-slider');
+        const bogInstInputEl = document.getElementById('bog-inst-months-input');
+        if (bogInstSliderEl) {
+          bogInstSliderEl.addEventListener('input', (e) => {
+            updateBogInstModalUi(e.target.value);
+          });
+        }
+        if (bogInstInputEl) {
+          bogInstInputEl.addEventListener('input', (e) => {
+            const val = Number(e.target.value);
+            if (val >= 3 && val <= 48) {
+              updateBogInstModalUi(val);
+            }
+          });
+          bogInstInputEl.addEventListener('change', (e) => {
+            updateBogInstModalUi(e.target.value);
+          });
+        }
+        const bogInstContinueBtn = document.getElementById('bog-inst-continue-btn');
+        if (bogInstContinueBtn) {
+          bogInstContinueBtn.addEventListener('click', async () => {
+            if (!activeBogInstProduct) return;
+            const lblEl = document.getElementById('bog-inst-continue-label');
+            const origText = lblEl ? lblEl.textContent : 'გაგრძელება';
+            const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+            const clientId = bankCfg.bogClientId || '10000576';
+            const clientSecret = bankCfg.bogSecret || '0RAMGYvStUiE';
+            const rawPrice = Math.max(1, Number(activeBogInstProduct.newPrice) || 1);
+            const m = Math.min(48, Math.max(3, Number(activeBogInstMonth) || 3));
+            const foundDisc = activeBogInstDiscounts.find((d) => Number(d.month) === m);
+            const discountCode = (foundDisc && foundDisc.discount_code) || 'STANDARD';
+            try {
+              if (lblEl) lblEl.textContent = 'იხსნება განვადება...';
+              const bogRes = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  clientId,
+                  clientSecret,
+                  mode: 'installment',
+                  discountCode,
+                  month: m,
+                  months: m,
+                  productName: activeBogInstProduct.name,
+                  productId: activeBogInstProduct.id,
+                  amount: rawPrice,
+                  originUrl: window.location.origin,
+                }),
+              });
+              const bogJson = await bogRes.json();
+              if (lblEl) lblEl.textContent = origText;
+              if (bogJson && bogJson.ok && bogJson.redirectUrl) {
+                if (bogInstCalcModalEl) bogInstCalcModalEl.classList.add('hidden');
+                closeQuickOrderModal();
+                window.location.href = bogJson.redirectUrl;
+              } else {
+                alert((bogJson && bogJson.error) || 'საქართველოს ბანკის განვადების გახსნა ვერ მოხერხდა.');
+              }
+            } catch (err) {
+              if (lblEl) lblEl.textContent = origText;
+              alert('საქართველოს ბანკთან კავშირის შეცდომა.');
+            }
+          });
+        }
+
         async function launchCredoCheckoutForProduct(prod, statusEl) {
           if (!prod) return false;
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
@@ -18164,7 +18438,9 @@
             launchCredoCardCheckoutForProduct(activeModalProduct);
           } else if (act === 'tbc-card' || act === 'tbc-inst') {
             launchTbcCardCheckoutForProduct(activeModalProduct);
-          } else if (act === 'bog-card' || act === 'bog-inst') {
+          } else if (act === 'bog-inst') {
+            await openBogInstallmentCalculatorModal(activeModalProduct);
+          } else if (act === 'bog-card') {
             await launchBogCheckoutForProduct(activeModalProduct, spanEl);
           }
         });
@@ -18183,8 +18459,7 @@
             e.preventDefault();
             e.stopPropagation();
             if (activeModalProduct) {
-              const txtEl = document.getElementById('modal-installment-btn-text');
-              await launchBogCheckoutForProduct(activeModalProduct, txtEl);
+              await openBogInstallmentCalculatorModal(activeModalProduct);
             }
           });
         }
