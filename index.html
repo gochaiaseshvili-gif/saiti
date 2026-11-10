@@ -208,14 +208,23 @@
       body.customer-view-mode #theme-panel-toggle,
       body.customer-view-mode #theme-customizer-panel,
       body.customer-view-mode #open-control-panel-btn,
+      body.customer-view-mode #open-cp-banks-btn,
       body.customer-view-mode #owner-admin-toolbar-row,
       body.customer-view-mode #quick-add-product-btn,
       body.customer-view-mode [data-direct-card-upload-label],
       body.customer-view-mode [data-quick-edit-id],
       body.customer-view-mode #modal-direct-5photo-label,
+      body.customer-view-mode #modal-edit-product-btn,
+      body.customer-view-mode #modal-inline-edit-btn,
+      body.customer-view-mode #modal-inline-editor-panel,
+      body.customer-view-mode #modal-footer-admin-btn,
+      body.customer-view-mode #footer-admin-btn,
+      body.customer-view-mode #footer-banks-admin-btn,
       body.customer-view-mode #home-chat-role-seller,
       body.customer-view-mode #modal-chat-role-seller,
       body.customer-view-mode #enter-customer-view-btn,
+      body.customer-view-mode [data-lb-inline-move],
+      body.customer-view-mode [data-lb-inline-delete],
       body.customer-view-mode .owner-only-video-input,
       body.customer-view-mode .owner-only-admin-el {
         display: none !important;
@@ -15373,6 +15382,7 @@
         }
 
         let pendingPinTargetTab = 'list';
+        window.triggerAdminAccess = triggerAdminAccess;
         function triggerAdminAccess(productIdToEdit = null, targetTab = 'list') {
           if (document.body.classList.contains('customer-view-mode')) {
             if (ownerPinModal && ownerPinInput) {
@@ -19124,16 +19134,14 @@
 
             if (adminParam === '8579' || adminParam === '1') {
               sessionStorage.setItem('vv_owner_unlocked', '1');
-              localStorage.setItem('vv_owner_unlocked', '1');
               sessionStorage.removeItem('vv_forced_customer_preview');
               setCustomerViewMode(false);
             } else if (
-              sessionStorage.getItem('vv_owner_unlocked') === '1' ||
-              localStorage.getItem('vv_owner_unlocked') === '1' ||
-              (isAiStudioOrLocal && !forcedCustomerPreview && params.get('view') !== 'customer')
+              sessionStorage.getItem('vv_owner_unlocked') === '1' && !forcedCustomerPreview && params.get('view') !== 'customer'
             ) {
               setCustomerViewMode(false);
             } else {
+              localStorage.removeItem('vv_owner_unlocked');
               setCustomerViewMode(true);
             }
 
@@ -19152,6 +19160,49 @@
               if (savedModalScroll > 0 && modalBackdrop) {
                 modalBackdrop.scrollTop = savedModalScroll;
               }
+            }
+
+            // Handle return from Bank of Georgia (payment.bog.ge) with ?payment=success or ?payment=fail
+            const paymentStatus = params.get('payment');
+            if (paymentStatus === 'success' || paymentStatus === 'fail') {
+              setTimeout(() => {
+                const banner = document.createElement('div');
+                banner.className = 'fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4';
+                const isOk = paymentStatus === 'success';
+                banner.innerHTML = `
+                  <div class="bg-white max-w-md w-full rounded-3xl p-6 text-center space-y-4 shadow-2xl border ${isOk ? 'border-emerald-300' : 'border-amber-300'}">
+                    <div class="w-16 h-16 mx-auto rounded-2xl ${isOk ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'} flex items-center justify-center text-3xl font-black">
+                      ${isOk ? '✅' : '⚠️'}
+                    </div>
+                    <h3 class="text-xl font-black text-zinc-950">
+                      ${isOk ? 'გადახდა წარმატებით შესრულდა!' : 'გადახდა არ დასრულებულა'}
+                    </h3>
+                    <p class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                      ${isOk
+                        ? 'მადლობას გიხდით შეკვეთისთვის! ჩვენი წარმომადგენელი (გოჩა • +995 551 58 85 79) მალე დაგიკავშირდებათ ნივთის მოსაწოდებლად.'
+                        : 'საბანკო ტრანზაქცია გაუქმდა ან ვერ დასრულდა. შეგიძლიათ სცადოთ თავიდან ან შეუკვეთოთ კურიერთან გადახდით.'}
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                      <a href="tel:+995551588579" class="flex-1 min-h-[44px] px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center justify-center gap-1.5">
+                        📞 დარეკვა: 551 58 85 79
+                      </a>
+                      <button type="button" id="close-payment-status-modal-btn" class="flex-1 min-h-[44px] px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-extrabold cursor-pointer">
+                        დახურვა
+                      </button>
+                    </div>
+                  </div>
+                `;
+                document.body.appendChild(banner);
+                const closeBtn = banner.querySelector('#close-payment-status-modal-btn');
+                if (closeBtn) {
+                  closeBtn.addEventListener('click', () => {
+                    banner.remove();
+                    const cleanUrl = new URL(window.location.href);
+                    cleanUrl.searchParams.delete('payment');
+                    window.history.replaceState({}, '', cleanUrl.toString());
+                  });
+                }
+              }, 200);
             }
 
             // Restore open About Us, Warranties, or Privacy Policy page across page refresh (?page=about / ?page=warranty / ?page=privacy)
