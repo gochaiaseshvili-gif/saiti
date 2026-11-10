@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-10T17:36:33.123Z",
+  "updatedAt": "2026-11-10T17:38:08.184Z",
   "sales": [
     {
       "id": "sale_1794332193123_icdg",
@@ -15,7 +15,7 @@
       "customerPhone": "551 58 85 79",
       "customerName": "",
       "createdAt": "2026-11-10T17:36:33.123Z",
-      "unread": true
+      "unread": false
     }
   ]
 }
