@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794289921217,
+  "updatedAt": 1794294624110,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -265,7 +265,29 @@
     "heroTitle": "პროფესიონალური კარაოკე აკუსტიკა და პორტატული სოლარ გენერატორები",
     "heroSubtitle": "მძლავრი ავტონომიური ჟღერადობა ღონისძიებებისთვის, აგარაკისა და კომერციული სივრცეებისთვის — LiFePO4 მზის სადგურებთან ერთად უწყვეტი 220V ენერგიისთვის ნებისმიერ გარემოში.",
     "_techSpecsOnlyAboveGalleryV1": true,
-    "_clearedOverlapOffsetsV2": true
+    "_clearedOverlapOffsetsV2": true,
+    "bankConfig": {
+      "bogEnabled": true,
+      "bogClientId": "10000576",
+      "bogSecret": "",
+      "bogIban": "",
+      "bogUrl": "",
+      "bogScript": "",
+      "tbcEnabled": true,
+      "tbcClientId": "",
+      "tbcSecret": "",
+      "tbcIban": "",
+      "tbcUrl": "",
+      "tbcScript": "",
+      "credoEnabled": true,
+      "credoClientId": "",
+      "credoSecret": "",
+      "credoUrl": "",
+      "credoScript": "",
+      "receiverName": "გოჩა იასეშვილი",
+      "cardUrl": "",
+      "autoRedirect": true
+    }
   },
   "productsList": [
     {
