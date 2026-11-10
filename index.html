@@ -19776,6 +19776,345 @@
         setTimeout(() => detectAndRecordCurrentVisitor(), 1500);
         setInterval(() => fetchVisitorsStats(), 30000);
 
+        // =========================================================================
+        // PRODUCT SPECIFIC ANALYTICS SYSTEM (Views: Day, Month, Year & Sales: Card, Installment)
+        // =========================================================================
+        let productAnalyticsStore = {};
+
+        function getTodayDateKey() {
+          return new Date().toISOString().slice(0, 10);
+        }
+        function getMonthDateKey() {
+          return new Date().toISOString().slice(0, 7);
+        }
+        function getYearDateKey() {
+          return new Date().toISOString().slice(0, 4);
+        }
+
+        function loadLocalCachedProductAnalytics() {
+          try {
+            const raw = localStorage.getItem('iyidebaa_product_analytics_v1');
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              if (parsed && typeof parsed === 'object') {
+                productAnalyticsStore = parsed;
+              }
+            }
+          } catch (e) {}
+        }
+
+        function saveLocalCachedProductAnalytics() {
+          try {
+            localStorage.setItem('iyidebaa_product_analytics_v1', JSON.stringify(productAnalyticsStore));
+          } catch (e) {}
+        }
+
+        async function fetchServerProductAnalytics() {
+          try {
+            const res = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'get_product_analytics' })
+            });
+            const data = await res.json();
+            if (data && data.stats && data.stats.products) {
+              productAnalyticsStore = data.stats.products;
+              saveLocalCachedProductAnalytics();
+              const cpFormEl = document.getElementById('cp-product-form');
+              const cpProdId = document.getElementById('cp-prod-id');
+              if (cpFormEl && !cpFormEl.classList.contains('hidden') && cpProdId && cpProdId.value) {
+                renderProductAnalyticsUI(cpProdId.value, 'cp');
+              }
+              if (activeModalProduct) {
+                renderProductAnalyticsUI(activeModalProduct.id, 'mie');
+              }
+            }
+          } catch (e) {}
+        }
+
+        function getProductAnalytics(productId) {
+          if (!productId) {
+            return { today: 0, month: 0, year: 0, total: 0, cardSales: 0, installmentSales: 0, totalSales: 0 };
+          }
+          const pId = String(productId).trim();
+          const prodData = productAnalyticsStore[pId] || {};
+          const views = prodData.views || {};
+          const days = views.days || {};
+          const months = views.months || {};
+          const years = views.years || {};
+
+          const todayKey = getTodayDateKey();
+          const monthKey = getMonthDateKey();
+          const yearKey = getYearDateKey();
+
+          const today = Number(days[todayKey]) || 0;
+          const month = Number(months[monthKey]) || 0;
+          const year = Number(years[yearKey]) || 0;
+          const total = Number(views.total) || (today > 0 ? today : 0);
+
+          let cardSales = Number(prodData.sales?.card) || 0;
+          let installmentSales = Number(prodData.sales?.installment) || 0;
+
+          if (Array.isArray(allSalesNotifications)) {
+            const targetProd = (typeof productsList !== 'undefined' && Array.isArray(productsList))
+              ? productsList.find((p) => p.id === pId)
+              : null;
+            const targetName = targetProd ? targetProd.name : '';
+
+            let notifCardCount = 0;
+            let notifInstCount = 0;
+            allSalesNotifications.forEach((s) => {
+              if (s.status === 'approved') {
+                const matchesId = s.productId && String(s.productId).trim() === pId;
+                const matchesName = targetName && s.productName && s.productName.includes(targetName);
+                if (matchesId || matchesName) {
+                  if (s.mode === 'card') notifCardCount++;
+                  else notifInstCount++;
+                }
+              }
+            });
+            cardSales = Math.max(cardSales, notifCardCount);
+            installmentSales = Math.max(installmentSales, notifInstCount);
+          }
+
+          const totalSales = cardSales + installmentSales;
+
+          return {
+            today,
+            month,
+            year,
+            total,
+            cardSales,
+            installmentSales,
+            totalSales
+          };
+        }
+        window.getProductAnalytics = getProductAnalytics;
+
+        function renderProductAnalyticsUI(productId, targetPrefix = 'cp') {
+          const stats = getProductAnalytics(productId);
+          const vTodayEl = document.getElementById(`${targetPrefix}-stat-views-today`);
+          const vMonthEl = document.getElementById(`${targetPrefix}-stat-views-month`);
+          const vYearEl = document.getElementById(`${targetPrefix}-stat-views-year`);
+          const vTotalEl = document.getElementById(`${targetPrefix}-stat-views-total`);
+
+          const sCardEl = document.getElementById(`${targetPrefix}-stat-sales-card`);
+          const sInstEl = document.getElementById(`${targetPrefix}-stat-sales-installment`);
+          const sTotalEl = document.getElementById(`${targetPrefix}-stat-sales-total`);
+
+          const badgeEl = document.getElementById(`${targetPrefix}-stats-prod-badge`);
+
+          if (vTodayEl) vTodayEl.textContent = String(stats.today);
+          if (vMonthEl) vMonthEl.textContent = String(stats.month);
+          if (vYearEl) vYearEl.textContent = String(stats.year);
+          if (vTotalEl) vTotalEl.textContent = String(stats.total);
+
+          if (sCardEl) sCardEl.textContent = String(stats.cardSales);
+          if (sInstEl) sInstEl.textContent = String(stats.installmentSales);
+          if (sTotalEl) sTotalEl.textContent = String(stats.totalSales);
+
+          if (badgeEl) {
+            badgeEl.textContent = productId ? `#${productId}` : 'ახალი';
+          }
+        }
+        window.renderProductAnalyticsUI = renderProductAnalyticsUI;
+
+        async function recordProductView(productId, productName = '') {
+          if (!productId) return;
+          const pId = String(productId).trim();
+          const todayKey = getTodayDateKey();
+          const monthKey = getMonthDateKey();
+          const yearKey = getYearDateKey();
+
+          if (!productAnalyticsStore[pId]) {
+            productAnalyticsStore[pId] = {
+              productId: pId,
+              productName: productName || pId,
+              views: { days: {}, months: {}, years: {}, total: 0 },
+              sales: { card: 0, installment: 0, total: 0, revenue: 0 },
+              lastViewedAt: null,
+              lastSoldAt: null
+            };
+          }
+          const prod = productAnalyticsStore[pId];
+          if (!prod.views) prod.views = { days: {}, months: {}, years: {}, total: 0 };
+          if (!prod.views.days) prod.views.days = {};
+          if (!prod.views.months) prod.views.months = {};
+          if (!prod.views.years) prod.views.years = {};
+
+          prod.views.days[todayKey] = (Number(prod.views.days[todayKey]) || 0) + 1;
+          prod.views.months[monthKey] = (Number(prod.views.months[monthKey]) || 0) + 1;
+          prod.views.years[yearKey] = (Number(prod.views.years[yearKey]) || 0) + 1;
+          prod.views.total = (Number(prod.views.total) || 0) + 1;
+          prod.lastViewedAt = new Date().toISOString();
+          if (productName) prod.productName = productName;
+
+          saveLocalCachedProductAnalytics();
+
+          const cpProdId = document.getElementById('cp-prod-id');
+          if (cpProdId && cpProdId.value === pId) {
+            renderProductAnalyticsUI(pId, 'cp');
+          }
+          if (activeModalProduct && activeModalProduct.id === pId) {
+            renderProductAnalyticsUI(pId, 'mie');
+          }
+
+          try {
+            fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'record_product_view',
+                productId: pId,
+                productName: productName || pId
+              })
+            }).catch(() => {});
+          } catch (e) {}
+        }
+        window.recordProductView = recordProductView;
+
+        async function recordProductSaleManual(productId, mode = 'card', count = 1) {
+          if (!productId) return;
+          const pId = String(productId).trim();
+          const targetProd = (typeof productsList !== 'undefined' && Array.isArray(productsList))
+            ? productsList.find((p) => p.id === pId)
+            : null;
+          const pName = targetProd ? targetProd.name : '';
+          const pPrice = targetProd ? Number(targetProd.newPrice) || 0 : 0;
+
+          if (!productAnalyticsStore[pId]) {
+            productAnalyticsStore[pId] = {
+              productId: pId,
+              productName: pName || pId,
+              views: { days: {}, months: {}, years: {}, total: 0 },
+              sales: { card: 0, installment: 0, total: 0, revenue: 0 },
+              lastViewedAt: null,
+              lastSoldAt: null
+            };
+          }
+          const prod = productAnalyticsStore[pId];
+          if (!prod.sales) prod.sales = { card: 0, installment: 0, total: 0, revenue: 0 };
+          const cleanMode = mode === 'installment' ? 'installment' : 'card';
+          if (cleanMode === 'installment') {
+            prod.sales.installment = (Number(prod.sales.installment) || 0) + count;
+          } else {
+            prod.sales.card = (Number(prod.sales.card) || 0) + count;
+          }
+          prod.sales.total = (Number(prod.sales.card) || 0) + (Number(prod.sales.installment) || 0);
+          prod.sales.revenue = (Number(prod.sales.revenue) || 0) + (pPrice * count);
+          prod.lastSoldAt = new Date().toISOString();
+
+          saveLocalCachedProductAnalytics();
+
+          renderProductAnalyticsUI(pId, 'cp');
+          renderProductAnalyticsUI(pId, 'mie');
+
+          if (typeof showWishlistToast === 'function') {
+            showWishlistToast(
+              cleanMode === 'installment'
+                ? `🏦 +${count} განვადებით გაყიდვა დაფიქსირდა (სულ: ${prod.sales.installment} ცალი)!`
+                : `💳 +${count} ბარათით გაყიდვა დაფიქსირდა (სულ: ${prod.sales.card} ცალი)!`
+            );
+          }
+
+          try {
+            fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'record_product_sale_manual',
+                productId: pId,
+                mode: cleanMode,
+                count: count,
+                amount: pPrice * count,
+                productName: pName
+              })
+            }).catch(() => {});
+          } catch (e) {}
+        }
+        window.recordProductSaleManual = recordProductSaleManual;
+
+        // Hook up CP & MIE interactive stats test & reset buttons
+        const cpTestViewBtn = document.getElementById('cp-stat-test-view-btn');
+        if (cpTestViewBtn) {
+          cpTestViewBtn.addEventListener('click', () => {
+            const pId = fId ? fId.value : '';
+            if (pId) {
+              recordProductView(pId, fName ? fName.value : '');
+              if (typeof showWishlistToast === 'function') {
+                showWishlistToast('👁️ +1 სატესტო ნახვა დაემატა!');
+              }
+            }
+          });
+        }
+        const cpTestCardBtn = document.getElementById('cp-stat-test-card-btn');
+        if (cpTestCardBtn) {
+          cpTestCardBtn.addEventListener('click', () => {
+            const pId = fId ? fId.value : '';
+            if (pId) recordProductSaleManual(pId, 'card', 1);
+          });
+        }
+        const cpTestInstBtn = document.getElementById('cp-stat-test-inst-btn');
+        if (cpTestInstBtn) {
+          cpTestInstBtn.addEventListener('click', () => {
+            const pId = fId ? fId.value : '';
+            if (pId) recordProductSaleManual(pId, 'installment', 1);
+          });
+        }
+        const cpStatResetBtn = document.getElementById('cp-stat-reset-btn');
+        if (cpStatResetBtn) {
+          cpStatResetBtn.addEventListener('click', async () => {
+            const pId = fId ? fId.value : '';
+            if (!pId) return;
+            if (!confirm(`ნამდვილად გსურთ #${pId} პროდუქტის სტატისტიკის განულება?`)) return;
+            delete productAnalyticsStore[pId];
+            saveLocalCachedProductAnalytics();
+            renderProductAnalyticsUI(pId, 'cp');
+            try {
+              await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'reset_product_stats', productId: pId })
+              });
+            } catch (e) {}
+            if (typeof showWishlistToast === 'function') {
+              showWishlistToast('🗑️ ამ ნივთის სტატისტიკა განულდა!');
+            }
+          });
+        }
+        const cpStatRefreshBtn = document.getElementById('cp-stat-refresh-btn');
+        if (cpStatRefreshBtn) {
+          cpStatRefreshBtn.addEventListener('click', () => fetchServerProductAnalytics());
+        }
+
+        const mieTestViewBtn = document.getElementById('mie-stat-test-view-btn');
+        if (mieTestViewBtn) {
+          mieTestViewBtn.addEventListener('click', () => {
+            if (activeModalProduct) {
+              recordProductView(activeModalProduct.id, activeModalProduct.name);
+              if (typeof showWishlistToast === 'function') {
+                showWishlistToast('👁️ +1 სატესტო ნახვა დაემატა!');
+              }
+            }
+          });
+        }
+        const mieTestCardBtn = document.getElementById('mie-stat-test-card-btn');
+        if (mieTestCardBtn) {
+          mieTestCardBtn.addEventListener('click', () => {
+            if (activeModalProduct) recordProductSaleManual(activeModalProduct.id, 'card', 1);
+          });
+        }
+        const mieTestInstBtn = document.getElementById('mie-stat-test-inst-btn');
+        if (mieTestInstBtn) {
+          mieTestInstBtn.addEventListener('click', () => {
+            if (activeModalProduct) recordProductSaleManual(activeModalProduct.id, 'installment', 1);
+          });
+        }
+
+        loadLocalCachedProductAnalytics();
+        setTimeout(() => fetchServerProductAnalytics(), 1800);
+        setInterval(() => fetchServerProductAnalytics(), 30000);
+
         const closeBogInstCalcBtn = document.getElementById('close-bog-inst-calc-btn');
         const bogInstCalcModalEl = document.getElementById('bog-installment-calc-modal');
         if (closeBogInstCalcBtn && bogInstCalcModalEl) {
