@@ -8051,6 +8051,330 @@
               </button>
             </div>
           </div>
+
+          <!-- TAB 4: GEORGIAN BANKS, INSTALLMENT CODES & PAYMENT CREDENTIALS (საქართველოს ბანკი, თიბისი, კრედო, IBAN & კოდები) -->
+          <div id="cp-banks-section" class="hidden space-y-6">
+            <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-zinc-950 via-zinc-900 to-zinc-950 text-white border border-amber-500/40 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="space-y-1">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-[11px] font-black">
+                  <span>🔒 SSL 256-Bit დაცული ინტეგრაცია</span>
+                  <span>•</span>
+                  <span>iyidebaa.ge</span>
+                </div>
+                <h4 class="font-display text-base sm:text-lg font-black text-white">
+                  4. 🏦 ქართული ბანკების, ონლაინ განვადების და გადახდის კოდების სამართავი პანელი
+                </h4>
+                <p class="text-xs text-zinc-300 leading-relaxed">
+                  აქ შეგიძლიათ ჩასვათ ბანკის მიერ მოწოდებული ნებისმიერი კოდი: <strong>Client ID / Merchant ID</strong>, <strong>Secret Key (საიდუმლო გასაღები)</strong>, <strong>პირდაპირი გადახდის/განვადების ბმული</strong>, <strong>IBAN ანგარიშის ნომერი</strong> ან მზა <strong>HTML / JavaScript კოდი</strong>. შენახვისთანავე ავტომატურად აისახება საიტზე!
+                </p>
+              </div>
+              <button
+                type="button"
+                id="cp-save-banks-top-btn"
+                class="min-h-[44px] px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs sm:text-sm font-black shrink-0 shadow-sm active:scale-95 fast-transition cursor-pointer"
+              >
+                💾 ბანკების კოდების შენახვა
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+              <!-- 1. BANK OF GEORGIA (საქართველოს ბანკი — BOG iPay / ნაწილ-ნაწილ / 0% განვადება) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-orange-50/60 border-2 border-orange-300 space-y-3.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-orange-200">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-orange-500 text-white font-black text-xs flex items-center justify-center shadow-xs">BOG</span>
+                    <div>
+                      <h5 class="text-sm font-black text-zinc-950">🟧 საქართველოს ბანკი (BOG)</h5>
+                      <p class="text-[11px] text-zinc-600">0% ნაწილ-ნაწილ • ონლაინ განვადება • BOG iPay</p>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-3 py-1.5 rounded-xl border border-orange-300 text-xs font-extrabold text-zinc-900">
+                    <input id="cp-bank-bog-enabled" type="checkbox" checked class="w-4 h-4 accent-orange-600 rounded cursor-pointer" />
+                    <span>ჩართულია</span>
+                  </label>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="cp-bank-bog-client-id" class="block text-xs font-bold text-zinc-800 mb-1">
+                      Client ID / Merchant ID (მერჩანტის კოდი)
+                    </label>
+                    <input
+                      id="cp-bank-bog-client-id"
+                      type="text"
+                      placeholder="მაგ: bog_live_102938..."
+                      class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label for="cp-bank-bog-secret" class="block text-xs font-bold text-zinc-800 mb-1">
+                      Secret Key / საიდუმლო კოდი (პაროლი)
+                    </label>
+                    <input
+                      id="cp-bank-bog-secret"
+                      type="password"
+                       autocomplete="off"
+                      placeholder="ბანკის საიდუმლო გასაღები..."
+                      class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="cp-bank-bog-iban" class="block text-xs font-bold text-zinc-800 mb-1">
+                    საქართველოს ბანკის ანგარიშის ნომერი (IBAN — გადარიცხვისთვის / ინვოისისთვის)
+                  </label>
+                  <input
+                    id="cp-bank-bog-iban"
+                    type="text"
+                    placeholder="მაგ: GE00BG0000000000000000"
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900 uppercase"
+                  />
+                </div>
+
+                <div>
+                  <label for="cp-bank-bog-url" class="block text-xs font-bold text-zinc-800 mb-1">
+                    პირდაპირი გადახდის ან განვადების ბმული (თუ ბანკმა მოგცათ ლინკი)
+                  </label>
+                  <input
+                    id="cp-bank-bog-url"
+                    type="url"
+                    placeholder="მაგ: https://ipay.ge/... ან https://bog.ge/..."
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  />
+                </div>
+
+                <div>
+                  <label for="cp-bank-bog-script" class="block text-xs font-bold text-zinc-800 mb-1">
+                    ბანკის მიერ მოწოდებული HTML / JavaScript კოდი (SDK / ღილაკის კოდი)
+                  </label>
+                  <textarea
+                    id="cp-bank-bog-script"
+                    rows="2"
+                    placeholder="ჩასვით აქ ბანკის მიერ მოწოდებული &lt;script&gt; ან ღილაკის კოდი..."
+                    class="w-full px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- 2. TBC BANK (თიბისი ბანკი — TBC eCommerce / განაწილება / 0% განვადება) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-sky-50/60 border-2 border-sky-300 space-y-3.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-sky-200">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-sky-600 text-white font-black text-xs flex items-center justify-center shadow-xs">TBC</span>
+                    <div>
+                      <h5 class="text-sm font-black text-zinc-950">🟦 თიბისი ბანკი (TBC Bank)</h5>
+                      <p class="text-[11px] text-zinc-600">0% განაწილება • ონლაინ განვადება • TBC TPAY</p>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-3 py-1.5 rounded-xl border border-sky-300 text-xs font-extrabold text-zinc-900">
+                    <input id="cp-bank-tbc-enabled" type="checkbox" checked class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
+                    <span>ჩართულია</span>
+                  </label>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="cp-bank-tbc-client-id" class="block text-xs font-bold text-zinc-800 mb-1">
+                      Client ID / Merchant Code (თიბისის კოდი)
+                    </label>
+                    <input
+                      id="cp-bank-tbc-client-id"
+                      type="text"
+                      placeholder="მაგ: tbc_merchant_700..."
+                      class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label for="cp-bank-tbc-secret" class="block text-xs font-bold text-zinc-800 mb-1">
+                      API Key / Secret Key (საიდუმლო გასაღები)
+                    </label>
+                    <input
+                      id="cp-bank-tbc-secret"
+                      type="password"
+                      autocomplete="off"
+                      placeholder="თიბისის საიდუმლო კოდი..."
+                      class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="cp-bank-tbc-iban" class="block text-xs font-bold text-zinc-800 mb-1">
+                    თიბისი ბანკის ანგარიშის ნომერი (IBAN — გადარიცხვისთვის / ინვოისისთვის)
+                  </label>
+                  <input
+                    id="cp-bank-tbc-iban"
+                    type="text"
+                    placeholder="მაგ: GE00TB0000000000000000"
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900 uppercase"
+                  />
+                </div>
+
+                <div>
+                  <label for="cp-bank-tbc-url" class="block text-xs font-bold text-zinc-800 mb-1">
+                    პირდაპირი გადახდის ან განაწილების ბმული (TBC Link)
+                  </label>
+                  <input
+                    id="cp-bank-tbc-url"
+                    type="url"
+                    placeholder="მაგ: https://tbcpay.ge/... ან https://ecom.tbcbank.ge/..."
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  />
+                </div>
+
+                <div>
+                  <label for="cp-bank-tbc-script" class="block text-xs font-bold text-zinc-800 mb-1">
+                    თიბისი ბანკის HTML / JavaScript კოდი (ღილაკის ან ვიჯეტის კოდი)
+                  </label>
+                  <textarea
+                    id="cp-bank-tbc-script"
+                    rows="2"
+                    placeholder="ჩასვით აქ თიბისის მიერ მოწოდებული &lt;script&gt; ან ღილაკის კოდი..."
+                    class="w-full px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- 3. CREDO BANK (კრედო ბანკი — სწრაფი ონლაინ განვადება) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-rose-50/60 border-2 border-rose-300 space-y-3.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-rose-200">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-rose-600 text-white font-black text-[11px] flex items-center justify-center shadow-xs">CREDO</span>
+                    <div>
+                      <h5 class="text-sm font-black text-zinc-950">🟥 კრედო ბანკი (Credo Bank)</h5>
+                      <p class="text-[11px] text-zinc-600">სწრაფი ონლაინ განვადება (3–24 თვემდე)</p>
+                    </div>
+                  </div>
+                  <label class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-3 py-1.5 rounded-xl border border-rose-300 text-xs font-extrabold text-zinc-900">
+                    <input id="cp-bank-credo-enabled" type="checkbox" checked class="w-4 h-4 accent-rose-600 rounded cursor-pointer" />
+                    <span>ჩართულია</span>
+                  </label>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label for="cp-bank-credo-client-id" class="block text-xs font-bold text-zinc-800 mb-1">
+                      Merchant ID / პარტნიორის კოდი
+                    </label>
+                    <input
+                      id="cp-bank-credo-client-id"
+                      type="text"
+                      placeholder="მაგ: credo_partner_..."
+                      class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900"
+                    />
+                  </div>
+                  <div>
+                    <label for="cp-bank-credo-secret" class="block text-xs font-bold text-zinc-800 mb-1">
+                      Secret Key / პაროლი
+                    </label>
+                    <input
+                      id="cp-bank-credo-secret"
+                      type="password"
+                      autocomplete="off"
+                      placeholder="კრედოს საიდუმლო კოდი..."
+                      class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label for="cp-bank-credo-url" class="block text-xs font-bold text-zinc-800 mb-1">
+                    კრედო ბანკის განვადების პირდაპირი ბმული
+                  </label>
+                  <input
+                    id="cp-bank-credo-url"
+                    type="url"
+                    placeholder="მაგ: https://credobank.ge/..."
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  />
+                </div>
+
+                <div>
+                  <label for="cp-bank-credo-script" class="block text-xs font-bold text-zinc-800 mb-1">
+                    კრედო ბანკის HTML / JavaScript კოდი
+                  </label>
+                  <textarea
+                    id="cp-bank-credo-script"
+                    rows="2"
+                    placeholder="ჩასვით აქ კრედო ბანკის განვადების ღილაკის კოდი..."
+                    class="w-full px-3 py-2 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  ></textarea>
+                </div>
+              </div>
+
+              <!-- 4. VISA / MASTERCARD & RECEIVER DETAILS (ბარათით გადახდა და მიმღების რეკვიზიტები) -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-emerald-50/60 border-2 border-emerald-300 space-y-3.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-emerald-200">
+                  <div class="flex items-center gap-2.5">
+                    <span class="w-9 h-9 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">💳</span>
+                    <div>
+                      <h5 class="text-sm font-black text-zinc-950">💳 Visa / Mastercard და მიმღების მონაცემები</h5>
+                      <p class="text-[11px] text-zinc-600">ბარათით გადახდა • საბანკო გადარიცხვა • ინვოისი</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="cp-bank-receiver-name" class="block text-xs font-bold text-zinc-800 mb-1">
+                    მიმღების სახელი და გვარი / კომპანიის დასახელება (გამოჩნდება გადარიცხვისას)
+                  </label>
+                  <input
+                    id="cp-bank-receiver-name"
+                    type="text"
+                    placeholder="გოჩა იასეშვილი"
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-bold text-zinc-900"
+                  />
+                </div>
+
+                <div>
+                  <label for="cp-bank-card-url" class="block text-xs font-bold text-zinc-800 mb-1">
+                    Visa / Mastercard ბარათით გადახდის პირდაპირი ბმული (თუ გაქვთ)
+                  </label>
+                  <input
+                    id="cp-bank-card-url"
+                    type="url"
+                    placeholder="მაგ: https://pay.bog.ge/... ან https://tbcpay.ge/..."
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num text-zinc-900"
+                  />
+                </div>
+
+                <label class="flex items-start gap-2.5 p-3 rounded-xl bg-white border border-emerald-200 cursor-pointer select-none">
+                  <input id="cp-bank-auto-redirect" type="checkbox" checked class="mt-0.5 w-4 h-4 accent-emerald-600 rounded cursor-pointer" />
+                  <span class="text-xs text-zinc-800 leading-snug">
+                    <strong>ავტომატური გადამისამართება ბანკზე:</strong> როდესაც კლიენტი შეავსებს შეკვეთას და დააჭერს გაგზავნას, WhatsApp შეტყობინებასთან ერთად ავტომატურად გაეხსნას არჩეული ბანკის გადახდის/განვადების ბმული (თუ ბმული ზემოთ ჩასმულია).
+                  </span>
+                </label>
+
+                <div class="p-3 rounded-xl bg-white/90 border border-zinc-200 text-[11px] text-zinc-600 space-y-1">
+                  <div class="font-extrabold text-zinc-900">💡 როგორ მუშაობს ეს პანელი:</div>
+                  <p>1. როცა ბანკი მოგცემთ კოდს ან ბმულს, ჩასვით შესაბამის გრაფაში და დააჭირეთ შენახვას.</p>
+                  <p>2. თუ ჩაწერთ IBAN ანგარიშს, კლიენტს შეკვეთის ფანჯარაში გამოუჩნდება თქვენი ანგარიშის ნომერი „კოპირების“ ღილაკით.</p>
+                  <p>3. ყველა ცვლილება ავტომატურად იტვირთება <strong>iyidebaa.ge</strong>-ზე!</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-zinc-200 flex flex-wrap items-center justify-between gap-3">
+              <button
+                type="button"
+                id="cp-show-secrets-toggle-btn"
+                class="min-h-[44px] px-4 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-zinc-800 border border-zinc-300 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <span>👁️</span>
+                <span>საიდუმლო კოდების (Secret Key) ჩვენება / დამალვა</span>
+              </button>
+
+              <button
+                type="button"
+                id="cp-save-banks-btn"
+                class="min-h-[48px] px-8 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-black shadow-md active:scale-[0.98] fast-transition cursor-pointer flex items-center gap-2"
+              >
+                <span>💾</span>
+                <span>ბანკების და განვადების კოდების შენახვა</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
