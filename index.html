@@ -16921,6 +16921,77 @@
         let quickOrderTargetProduct = null;
         let selectedInstallmentMonths = 4;
 
+        function syncPaymentDropdownWithBankConfig() {
+          if (!qoPaymentMethodSelect) return;
+          const cfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+          Array.from(qoPaymentMethodSelect.options).forEach((opt) => {
+            const v = opt.value || '';
+            if (v.includes('BOG')) {
+              opt.hidden = cfg.bogEnabled === false;
+              opt.disabled = cfg.bogEnabled === false;
+            } else if (v.includes('TBC')) {
+              opt.hidden = cfg.tbcEnabled === false;
+              opt.disabled = cfg.tbcEnabled === false;
+            } else if (v.includes('Credo')) {
+              opt.hidden = cfg.credoEnabled === false;
+              opt.disabled = cfg.credoEnabled === false;
+            }
+          });
+        }
+
+        function resolveSelectedBankDetails(val) {
+          const cfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
+          if (val.includes('BOG')) {
+            return {
+              bankName: '🟧 საქართველოს ბანკი (BOG)',
+              clientId: cfg.bogClientId,
+              iban: cfg.bogIban,
+              url: cfg.bogUrl,
+              script: cfg.bogScript,
+              receiverName: cfg.receiverName || 'გოჩა იასეშვილი',
+              btnLabel: '🟧 საქართველოს ბანკის ონლაინ გვერდზე გადასვლა',
+            };
+          }
+          if (val.includes('TBC')) {
+            return {
+              bankName: '🟦 თიბისი ბანკი (TBC)',
+              clientId: cfg.tbcClientId,
+              iban: cfg.tbcIban,
+              url: cfg.tbcUrl,
+              script: cfg.tbcScript,
+              receiverName: cfg.receiverName || 'გოჩა იასეშვილი',
+              btnLabel: '🟦 თიბისი ბანკის ონლაინ გვერდზე გადასვლა',
+            };
+          }
+          if (val.includes('Credo')) {
+            return {
+              bankName: '🟥 კრედო ბანკი (Credo)',
+              clientId: cfg.credoClientId,
+              iban: '',
+              url: cfg.credoUrl,
+              script: cfg.credoScript,
+              receiverName: cfg.receiverName || 'გოჩა იასეშვილი',
+              btnLabel: '🟥 კრედო ბანკის განვადების გვერდზე გადასვლა',
+            };
+          }
+          if (val.includes('Visa') || val.includes('ბარათით') || val.includes('გადარიცხვა')) {
+            const combinedIban = [
+              cfg.bogIban ? `BOG: ${cfg.bogIban}` : '',
+              cfg.tbcIban ? `TBC: ${cfg.tbcIban}` : '',
+            ].filter(Boolean).join('  |  ');
+            return {
+              bankName: '💳 ბარათით გადახდა / საბანკო გადარიცხვა',
+              clientId: '',
+              iban: combinedIban,
+              url: cfg.cardUrl || cfg.bogUrl || cfg.tbcUrl || '',
+              script: '',
+              receiverName: cfg.receiverName || 'გოჩა იასეშვილი',
+              btnLabel: '💳 ბარათით ონლაინ გადახდის გვერდზე გადასვლა',
+            };
+          }
+          return null;
+        }
+
         function updateQoInstallmentCalculator() {
           if (!qoPaymentMethodSelect || !qoInstallmentCalcBox) return;
           const val = qoPaymentMethodSelect.value || '';
@@ -16950,6 +17021,82 @@
             } else {
               btn.className = 'qo-inst-month-btn px-2 py-1.5 rounded-lg border border-zinc-300 bg-white text-zinc-800 text-[11px] font-extrabold cursor-pointer';
             }
+          });
+
+          // Update Live Bank Portal / IBAN / Custom Widget Box
+          const portalBox = document.getElementById('qo-bank-live-portal-box');
+          const portalTitle = document.getElementById('qo-bank-portal-title');
+          const merchantBadge = document.getElementById('qo-bank-merchant-badge');
+          const ibanRow = document.getElementById('qo-bank-iban-row');
+          const ibanText = document.getElementById('qo-bank-iban-text');
+          const receiverText = document.getElementById('qo-bank-receiver-text');
+          const directUrlBtn = document.getElementById('qo-bank-direct-url-btn');
+          const directUrlLabel = document.getElementById('qo-bank-direct-url-label');
+          const customWidgetSlot = document.getElementById('qo-bank-custom-widget-slot');
+
+          const info = resolveSelectedBankDetails(val);
+          const hasAnyBankData = Boolean(info && (info.iban || info.url || info.script || info.clientId));
+
+          if (portalBox && info && hasAnyBankData) {
+            portalBox.classList.remove('hidden');
+            if (portalTitle) portalTitle.textContent = info.bankName;
+
+            if (merchantBadge) {
+              if (info.clientId) {
+                merchantBadge.textContent = `ID: ${info.clientId}`;
+                merchantBadge.classList.remove('hidden');
+              } else {
+                merchantBadge.classList.add('hidden');
+              }
+            }
+
+            if (ibanRow && ibanText) {
+              if (info.iban) {
+                ibanRow.classList.remove('hidden');
+                ibanText.textContent = info.iban;
+                if (receiverText) receiverText.textContent = info.receiverName;
+              } else {
+                ibanRow.classList.add('hidden');
+              }
+            }
+
+            if (directUrlBtn) {
+              if (info.url) {
+                directUrlBtn.href = info.url;
+                if (directUrlLabel) directUrlLabel.textContent = info.btnLabel;
+                directUrlBtn.classList.remove('hidden');
+              } else {
+                directUrlBtn.classList.add('hidden');
+              }
+            }
+
+            if (customWidgetSlot) {
+              if (info.script) {
+                customWidgetSlot.innerHTML = info.script;
+                customWidgetSlot.classList.remove('hidden');
+              } else {
+                customWidgetSlot.innerHTML = '';
+                customWidgetSlot.classList.add('hidden');
+              }
+            }
+          } else if (portalBox) {
+            portalBox.classList.add('hidden');
+          }
+        }
+
+        const qoCopyIbanBtn = document.getElementById('qo-copy-iban-btn');
+        if (qoCopyIbanBtn) {
+          qoCopyIbanBtn.addEventListener('click', () => {
+            const ibanEl = document.getElementById('qo-bank-iban-text');
+            const rawText = ibanEl ? ibanEl.textContent.trim() : '';
+            if (!rawText) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(rawText).catch(() => {});
+            }
+            qoCopyIbanBtn.textContent = '✅ დაკოპირდა!';
+            setTimeout(() => {
+              qoCopyIbanBtn.textContent = '📋 ანგარიშის კოპირება';
+            }, 2200);
           });
         }
 
@@ -16982,6 +17129,7 @@
           if (oldPriceEl) oldPriceEl.textContent = formatGel(prod.oldPrice);
           if (errEl) errEl.classList.add('hidden');
 
+          syncPaymentDropdownWithBankConfig();
           updateQoInstallmentCalculator();
 
           try {
@@ -17064,6 +17212,8 @@
               paymentMethod.includes('განვადება');
             const rawPrice = Number(quickOrderTargetProduct.newPrice) || 0;
             const monthlyAmt = selectedInstallmentMonths > 0 ? Math.ceil(rawPrice / selectedInstallmentMonths) : rawPrice;
+            const bankDetails = resolveSelectedBankDetails(paymentMethod);
+            const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
 
             const cleanDigits = String(storeSettings.phoneDigits || '995551588579').replace(/\D/g, '') || '995551588579';
             const orderLines = [
@@ -17081,10 +17231,16 @@
                 orderLines.push(`🆔 *პირადი ნომერი:* ${customerPid}`);
               }
             }
+            if (bankDetails && bankDetails.clientId) {
+              orderLines.push(`🔑 *მერჩანტის კოდი:* ${bankDetails.clientId}`);
+            }
             const orderText = orderLines.join('\n');
 
             const waUrl = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(orderText)}`;
             closeQuickOrderModal();
+            if (bankCfg.autoRedirect !== false && bankDetails && bankDetails.url) {
+              window.open(bankDetails.url, '_blank', 'noopener,noreferrer');
+            }
             window.open(waUrl, '_blank', 'noopener,noreferrer');
           });
         }
