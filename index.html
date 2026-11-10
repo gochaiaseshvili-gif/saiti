@@ -15718,6 +15718,9 @@
           document.getElementById('cp-submit-btn-label').textContent = 'პროდუქტის დამატება და საიტზე დაბრუნება';
           buildSpecInputs(null);
           renderFiveImageSlotsUI();
+          if (typeof renderProductAnalyticsUI === 'function') {
+            renderProductAnalyticsUI(null, 'cp');
+          }
         }
 
         function loadProductIntoForm(productId) {
@@ -15752,6 +15755,9 @@
           document.getElementById('cp-form-heading').textContent = `პროდუქტის და 5 ფოტოს რედაქტირება: ${prod.name}`;
           document.getElementById('cp-submit-btn-label').textContent = 'შენახვა და საიტზე დაბრუნება';
           buildSpecInputs(prod.specs || []);
+          if (typeof renderProductAnalyticsUI === 'function') {
+            renderProductAnalyticsUI(prod.id, 'cp');
+          }
           switchCpTab('form');
         }
 
