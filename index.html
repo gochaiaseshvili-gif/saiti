@@ -14793,6 +14793,9 @@
           syncModalWishlistButton();
           syncPriceDropUI(productId);
           refreshOpenProductModalView(rawProduct);
+          if (typeof recordProductView === 'function') {
+            recordProductView(productId, rawProduct.name);
+          }
 
           const waOrderText = currentLang === 'en'
             ? `Hello, I would like to order this product: ${product.name} (${rawProduct.newPrice} ₾)`
