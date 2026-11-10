@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794294627228,
+  "updatedAt": 1794294756185,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -269,7 +269,7 @@
     "bankConfig": {
       "bogEnabled": true,
       "bogClientId": "10000576",
-      "bogSecret": "",
+      "bogSecret": "0RAMGYvStUiE",
       "bogIban": "",
       "bogUrl": "",
       "bogScript": "",
