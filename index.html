@@ -15350,15 +15350,19 @@
               openControlPanel('form');
               loadProductIntoForm(prodIdToEdit);
             } else {
-              openControlPanel('list');
+              const targetTab = pendingPinTargetTab || 'list';
+              pendingPinTargetTab = 'list';
+              openControlPanel(targetTab);
             }
           });
         }
 
-        function triggerAdminAccess(productIdToEdit = null) {
+        let pendingPinTargetTab = 'list';
+        function triggerAdminAccess(productIdToEdit = null, targetTab = 'list') {
           if (document.body.classList.contains('customer-view-mode')) {
             if (ownerPinModal && ownerPinInput) {
               pendingPinEditProductId = productIdToEdit || null;
+              pendingPinTargetTab = targetTab || 'list';
               pendingPinInlineEdit = false;
               if (ownerPinError) ownerPinError.classList.add('hidden');
               ownerPinInput.value = '';
@@ -15372,11 +15376,15 @@
             openControlPanel('form');
             loadProductIntoForm(productIdToEdit);
           } else {
-            openControlPanel('list');
+            openControlPanel(targetTab || 'list');
           }
         }
 
-        footerAdminBtn.addEventListener('click', () => triggerAdminAccess(null));
+        footerAdminBtn.addEventListener('click', () => triggerAdminAccess(null, 'list'));
+        const footerBanksAdminBtn = document.getElementById('footer-banks-admin-btn');
+        if (footerBanksAdminBtn) {
+          footerBanksAdminBtn.addEventListener('click', () => triggerAdminAccess(null, 'banks'));
+        }
         if (modalFooterAdminBtn) {
           modalFooterAdminBtn.addEventListener('click', () => {
             if (activeModalProduct) {
