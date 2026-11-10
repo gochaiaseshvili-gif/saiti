@@ -17131,6 +17131,9 @@
           syncMieFieldActiveClosedUI(prod);
           renderMieSpecsRows(prod);
           renderMieFiveSlots(prod);
+          if (typeof renderProductAnalyticsUI === 'function') {
+            renderProductAnalyticsUI(prod.id, 'mie');
+          }
         }
 
         function refreshOpenProductModalView(prod) {
