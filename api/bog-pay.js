@@ -17,11 +17,11 @@ function getGithubCloudToken() {
   }
 }
 
-async function loadSalesFromGithub() {
+async function loadJsonFromGithub(fileName, defaultObj) {
   const token = getGithubCloudToken();
-  if (!token) return { sales: [], sha: "" };
+  if (!token) return { data: defaultObj, sha: "" };
   try {
-    const apiUrl = `https://api.github.com/repos/${GH_REPO_SLUG}/contents/sales-notifications.json?t=${Date.now()}`;
+    const apiUrl = `https://api.github.com/repos/${GH_REPO_SLUG}/contents/${fileName}?t=${Date.now()}`;
     const res = await fetch(apiUrl, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,24 +29,22 @@ async function loadSalesFromGithub() {
         "X-GitHub-Api-Version": "2022-11-28",
       },
     });
-    if (!res.ok) return { sales: [], sha: "" };
-    const data = await res.json();
-    if (data && data.content) {
-      const jsonStr = Buffer.from(data.content, "base64").toString("utf8");
+    if (!res.ok) return { data: defaultObj, sha: "" };
+    const meta = await res.json();
+    if (meta && meta.content) {
+      const jsonStr = Buffer.from(meta.content, "base64").toString("utf8");
       const parsed = JSON.parse(jsonStr);
-      return Array.isArray(parsed.sales)
-        ? { sales: parsed.sales, sha: data.sha || "" }
-        : { sales: [], sha: data.sha || "" };
+      return { data: parsed || defaultObj, sha: meta.sha || "" };
     }
   } catch (e) {}
-  return { sales: [], sha: "" };
+  return { data: defaultObj, sha: "" };
 }
 
-async function saveSalesToGithub(salesList, existingSha = "") {
+async function saveJsonToGithub(fileName, payloadObj, commitMsg, existingSha = "") {
   const token = getGithubCloudToken();
   if (!token) return false;
   try {
-    const apiUrl = `https://api.github.com/repos/${GH_REPO_SLUG}/contents/sales-notifications.json`;
+    const apiUrl = `https://api.github.com/repos/${GH_REPO_SLUG}/contents/${fileName}`;
     const headers = {
       Authorization: `Bearer ${token}`,
       Accept: "application/vnd.github+json",
@@ -61,13 +59,9 @@ async function saveSalesToGithub(salesList, existingSha = "") {
         sha = meta.sha || "";
       }
     }
-    const payload = {
-      updatedAt: new Date().toISOString(),
-      sales: salesList.slice(0, 200),
-    };
     const putBody = {
-      message: "Update installment & sales statistics notification log",
-      content: Buffer.from(JSON.stringify(payload, null, 2), "utf8").toString("base64"),
+      message: commitMsg,
+      content: Buffer.from(JSON.stringify(payloadObj, null, 2), "utf8").toString("base64"),
       branch: "main",
       ...(sha ? { sha } : {}),
     };
@@ -82,17 +76,32 @@ async function saveSalesToGithub(salesList, existingSha = "") {
   }
 }
 
+async function loadSalesFromGithub() {
+  const loaded = await loadJsonFromGithub("sales-notifications.json", { sales: [] });
+  return {
+    sales: Array.isArray(loaded.data && loaded.data.sales) ? loaded.data.sales : [],
+    sha: loaded.sha,
+  };
+}
+
+async function saveSalesToGithub(salesList, existingSha = "") {
+  return saveJsonToGithub(
+    "sales-notifications.json",
+    { updatedAt: new Date().toISOString(), sales: salesList.slice(0, 200) },
+    "Update installment & sales statistics notification log",
+    existingSha
+  );
+}
+
 async function recordOrUpdateSaleEvent(saleObj) {
   const loaded = await loadSalesFromGithub();
   const list = Array.isArray(loaded.sales) ? loaded.sales : [];
   const cleanOrderId = String(saleObj.orderId || "").trim();
   const incomingStatus = String(saleObj.status || "approved").toLowerCase().trim();
 
-  // If an entry with this orderId already exists (e.g. "started"), update its status to "approved" or "rejected"
   const existingIdx = cleanOrderId ? list.findIndex((s) => s.orderId === cleanOrderId) : -1;
   if (existingIdx !== -1) {
     const existing = list[existingIdx];
-    // Don't downgrade an already approved order to started
     if (existing.status === "approved" && incomingStatus === "started") {
       return list;
     }
@@ -111,7 +120,7 @@ async function recordOrUpdateSaleEvent(saleObj) {
     orderId: cleanOrderId,
     bank: saleObj.bank || "bog",
     mode: saleObj.mode || "installment",
-    status: incomingStatus, // 'approved' | 'rejected' | 'started'
+    status: incomingStatus,
     rejectReason: saleObj.rejectReason || "",
     productName: saleObj.productName || "პროდუქტი — iyidebaa.ge",
     productId: saleObj.productId || "",
@@ -129,7 +138,70 @@ async function recordOrUpdateSaleEvent(saleObj) {
   return list;
 }
 
-// Official Unified Bank Gateway (Bank of Georgia iPay/Installment + Credo Bank Online Installment + Installment Statistics)
+async function recordVisitorEvent(req, body) {
+  const loaded = await loadJsonFromGithub("visitors-stats.json", {
+    totalPageViews: 0,
+    visitors: [],
+  });
+  const stats = loaded.data || { totalPageViews: 0, visitors: [] };
+  const visitors = Array.isArray(stats.visitors) ? stats.visitors : [];
+
+  const headerCountry = req.headers["x-vercel-ip-country"]
+    ? decodeURIComponent(String(req.headers["x-vercel-ip-country"]))
+    : "";
+  const headerRegion = req.headers["x-vercel-ip-country-region"]
+    ? decodeURIComponent(String(req.headers["x-vercel-ip-country-region"]))
+    : "";
+  const headerCity = req.headers["x-vercel-ip-city"]
+    ? decodeURIComponent(String(req.headers["x-vercel-ip-city"]))
+    : "";
+
+  const visitorId = String(body.visitorId || "v_" + Date.now()).trim();
+  const countryCode = String(body.countryCode || headerCountry || "GE").toUpperCase().trim();
+  const countryName = String(body.countryName || (countryCode === "GE" ? "საქართველო" : countryCode)).trim();
+  const regionName = String(body.regionName || headerRegion || "").trim();
+  const cityName = String(body.cityName || headerCity || "").trim();
+  const deviceType = String(body.deviceType || "mobile").trim();
+  const currentPage = String(body.currentPage || "მთავარი გვერდი").trim();
+  const nowIso = new Date().toISOString();
+
+  stats.totalPageViews = (Number(stats.totalPageViews) || 0) + 1;
+
+  const existingIdx = visitors.findIndex((v) => v.visitorId === visitorId);
+  if (existingIdx !== -1) {
+    const existing = visitors[existingIdx];
+    existing.lastSeenAt = nowIso;
+    existing.visitsCount = (Number(existing.visitsCount) || 1) + 1;
+    if (countryCode) existing.countryCode = countryCode;
+    if (countryName) existing.countryName = countryName;
+    if (regionName) existing.regionName = regionName;
+    if (cityName) existing.cityName = cityName;
+    if (currentPage) existing.currentPage = currentPage;
+    // Move to top of recent visitors
+    visitors.splice(existingIdx, 1);
+    visitors.unshift(existing);
+  } else {
+    visitors.unshift({
+      visitorId,
+      countryCode,
+      countryName,
+      regionName,
+      cityName,
+      deviceType,
+      currentPage,
+      visitsCount: 1,
+      firstSeenAt: nowIso,
+      lastSeenAt: nowIso,
+    });
+  }
+
+  stats.visitors = visitors.slice(0, 500);
+  stats.updatedAt = nowIso;
+  await saveJsonToGithub("visitors-stats.json", stats, "Update visitor geolocation analytics", loaded.sha);
+  return stats;
+}
+
+// Official Unified Bank Gateway + Installment & Visitor Geolocation Statistics
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
@@ -151,6 +223,32 @@ export default async function handler(req, res) {
   try {
     const body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
     const query = req.query || {};
+
+    // =========================================================================
+    // VISITOR GEOLOCATION ANALYTICS ENDPOINTS
+    // =========================================================================
+    if (body.action === "record_visitor") {
+      const stats = await recordVisitorEvent(req, body);
+      return res.status(200).json({ ok: true, stats });
+    }
+
+    if (body.action === "get_visitor_stats") {
+      const loaded = await loadJsonFromGithub("visitors-stats.json", {
+        totalPageViews: 0,
+        visitors: [],
+      });
+      return res.status(200).json({ ok: true, stats: loaded.data });
+    }
+
+    if (body.action === "clear_visitor_stats") {
+      const loaded = await loadJsonFromGithub("visitors-stats.json", {
+        totalPageViews: 0,
+        visitors: [],
+      });
+      const emptyStats = { totalPageViews: 0, visitors: [], updatedAt: new Date().toISOString() };
+      await saveJsonToGithub("visitors-stats.json", emptyStats, "Clear visitor stats", loaded.sha);
+      return res.status(200).json({ ok: true, stats: emptyStats });
+    }
 
     // =========================================================================
     // 0. HANDLE OFFICIAL BANK OF GEORGIA WEBHOOK CALLBACK (APPROVED OR REJECTED)
@@ -181,7 +279,7 @@ export default async function handler(req, res) {
         statusKey === "declined" ||
         statusKey === "cancelled" ||
         statusKey === "error" ||
-        statusKey === " blocked"
+        statusKey === "blocked"
       ) {
         mappedStatus = "rejected";
       }
@@ -293,7 +391,6 @@ export default async function handler(req, res) {
         });
       }
 
-      // Log that a customer started a Credo installment application for statistics
       await recordOrUpdateSaleEvent({
         orderId: credoData.data.OrderHash || orderCode,
         bank: "credo",
@@ -432,7 +529,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Record installment application start for full statistics tracking
     if (isInstallmentMode) {
       await recordOrUpdateSaleEvent({
         orderId: extOrderId,
