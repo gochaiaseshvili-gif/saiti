@@ -80,6 +80,19 @@ export default async function handler(req, res) {
     const clientId = String(body.clientId || process.env.BOG_CLIENT_ID || "10000576").trim();
     const clientSecret = String(body.clientSecret || process.env.BOG_SECRET_KEY || "0RAMGYvStUiE").trim();
 
+    if (body.action === "calculate_installment" || bank === "bog_calc") {
+      const calcRes = await fetch("https://api.bog.ge/payments/v1/ecommerce/installment/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json;charset=UTF-8" },
+        body: JSON.stringify({ client_id: clientId, amount: amountGel }),
+      });
+      const calcData = await calcRes.json();
+      return res.status(200).json({
+        ok: true,
+        discounts: (calcData && calcData.discounts) || [],
+      });
+    }
+
     const basicAuth = Buffer.from(clientId + ":" + clientSecret).toString("base64");
     const tokenRes = await fetch(
       "https://oauth2.bog.ge/auth/realms/bog/protocol/openid-connect/token",
@@ -105,9 +118,25 @@ export default async function handler(req, res) {
     const tokenData = await tokenRes.json();
     const accessToken = tokenData.access_token;
 
+    const isInstallmentMode =
+      body.mode === "installment" ||
+      bank === "bog_installment" ||
+      bank === "bog-inst";
+
     const orderPayload = {
       callback_url: originUrl + "/api/bog-pay",
       external_order_id: "iyidebaa_" + Date.now(),
+      ...(isInstallmentMode
+        ? {
+            payment_method: ["bog_loan"],
+            config: {
+              loan: {
+                type: String(body.discountCode || "STANDARD").trim() || "STANDARD",
+                month: Math.min(48, Math.max(3, Number(body.month || body.months) || 3)),
+              },
+            },
+          }
+        : {}),
       purchase_units: {
         currency: "GEL",
         total_amount: amountGel,
@@ -154,6 +183,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       bank: "bog",
+      mode: isInstallmentMode ? "installment" : "card",
       orderId: orderData.id,
       redirectUrl: redirectHref,
     });
