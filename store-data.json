@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794310144261,
+  "updatedAt": 1794335077144,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -165,6 +165,7 @@
       "modal-gallery",
       "modal-specs",
       "modal-video",
+      "modal-card-payment",
       "modal-chat",
       "modal-order"
     ],
@@ -287,7 +288,8 @@
       "receiverName": "გოჩა იასეშვილი",
       "cardUrl": "",
       "autoRedirect": true
-    }
+    },
+    "_cardPaymentUnderVideoV1": true
   },
   "productsList": [
     {
@@ -4249,7 +4251,15 @@
       },
       "facebookUrl": "",
       "instagramUrl": "",
-      "youtubeUrl": ""
+      "youtubeUrl": "",
+      "descStyle": {
+        "fontSize": 15,
+        "isBold": true,
+        "isItalic": false,
+        "isUnderline": false,
+        "textColor": "",
+        "bgColor": ""
+      }
     },
     {
       "id": "offgrid-event-combo",
