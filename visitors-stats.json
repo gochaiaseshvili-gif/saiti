@@ -1,6 +1,18 @@
 {
-  "totalPageViews": 19,
+  "totalPageViews": 20,
   "visitors": [
+    {
+      "visitorId": "vis_1794333937073_e7nzau",
+      "countryCode": "US",
+      "countryName": "აშშ",
+      "regionName": "CA",
+      "cityName": "San Jose",
+      "deviceType": "mobile",
+      "currentPage": "მთავარი გვერდი",
+      "visitsCount": 1,
+      "firstSeenAt": "2026-11-10T18:05:37.301Z",
+      "lastSeenAt": "2026-11-10T18:05:37.301Z"
+    },
     {
       "visitorId": "vis_1794333928927_l4tcu1",
       "countryCode": "US",
@@ -230,5 +242,5 @@
       "lastSeenAt": "2026-11-10T18:03:47.582Z"
     }
   ],
-  "updatedAt": "2026-11-10T18:05:29.177Z"
+  "updatedAt": "2026-11-10T18:05:37.301Z"
 }
