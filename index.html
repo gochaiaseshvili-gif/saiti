@@ -3769,6 +3769,43 @@
                   </button>
                 </div>
               </div>
+
+              <!-- Card Payments for All 3 Banks right underneath Online Installment -->
+              <div class="pt-3 border-t border-zinc-200/90 space-y-2">
+                <div class="text-xs font-black text-zinc-900 flex items-center justify-between">
+                  <span>💳 ბარათით გადახდა (სამივე ბანკი):</span>
+                  <span class="text-[11px] font-semibold text-zinc-500">Visa / Mastercard / Apple Pay / Google Pay</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    id="modal-card-payment-btn"
+                    data-modal-bank-action="bog-card"
+                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
+                  >
+                    <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
+                    <span id="modal-card-btn-text">საქართველოს ბანკი — ბარათი</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="modal-tbc-card-payment-btn"
+                    data-modal-bank-action="tbc-card"
+                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
+                  >
+                    <span class="px-1.5 py-0.5 rounded bg-white text-[#00A3E0] font-black text-[10px]">TBC</span>
+                    <span id="modal-tbc-card-btn-text">თიბისი ბანკი — ბარათი</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="modal-credo-card-payment-btn"
+                    data-modal-bank-action="credo-card"
+                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
+                  >
+                    <span class="px-1.5 py-0.5 rounded bg-white text-rose-600 font-black text-[10px]">კრედო</span>
+                    <span id="modal-credo-card-btn-text">კრედო ბანკი — ბარათი</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -4662,42 +4699,6 @@
 
             <!-- Dedicated 3-Bank Card Payment & 3-Bank Installment Box inside Product Detail Page -->
             <div class="p-4 rounded-2xl bg-stone-50 border-2 border-zinc-200/90 space-y-3 shadow-2xs">
-              <!-- 1. Card Payments for All 3 Banks -->
-              <div class="space-y-1.5">
-                <div class="text-xs font-black text-zinc-900 flex items-center justify-between">
-                  <span>💳 ბარათით გადახდა (სამივე ბანკი):</span>
-                  <span class="text-[11px] font-semibold text-zinc-500">Visa / Mastercard / Apple Pay / Google Pay</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    id="modal-card-payment-btn"
-                    data-modal-bank-action="bog-card"
-                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
-                  >
-                    <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
-                    <span id="modal-card-btn-text">საქართველოს ბანკი — ბარათი</span>
-                  </button>
-                  <button
-                    type="button"
-                    id="modal-tbc-card-payment-btn"
-                    data-modal-bank-action="tbc-card"
-                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-[#00A3E0] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
-                  >
-                    <span class="px-1.5 py-0.5 rounded bg-white text-[#00A3E0] font-black text-[10px]">TBC</span>
-                    <span id="modal-tbc-card-btn-text">თიბისი ბანკი — ბარათი</span>
-                  </button>
-                  <button
-                    type="button"
-                    id="modal-credo-card-payment-btn"
-                    data-modal-bank-action="credo-card"
-                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
-                  >
-                    <span class="px-1.5 py-0.5 rounded bg-white text-rose-600 font-black text-[10px]">კრედო</span>
-                    <span id="modal-credo-card-btn-text">კრედო ბანკი — ბარათი</span>
-                  </button>
-                </div>
-              </div>
 
 
 
