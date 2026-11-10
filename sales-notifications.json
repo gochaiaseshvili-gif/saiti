@@ -1,21 +1,4 @@
 {
-  "updatedAt": "2026-11-10T17:39:32.821Z",
-  "sales": [
-    {
-      "id": "sale_1794332372821_8my0",
-      "orderId": "",
-      "bank": "bog",
-      "mode": "installment",
-      "status": "approved",
-      "productName": "[ტესტი] კარაოკე დინამიკი 2 მიკროფონით",
-      "productId": "",
-      "amount": 650,
-      "months": 12,
-      "monthly": "",
-      "customerPhone": "551 58 85 79",
-      "customerName": "",
-      "createdAt": "2026-11-10T17:39:32.821Z",
-      "unread": true
-    }
-  ]
+  "updatedAt": "2026-11-10T17:39:37.760Z",
+  "sales": []
 }
