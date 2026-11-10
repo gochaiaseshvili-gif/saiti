@@ -19611,6 +19611,9 @@
           if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
             closePrivacyModal({ immediate: true });
           }
+          if (typeof returnPolicyModalBackdrop !== 'undefined' && returnPolicyModalBackdrop && !returnPolicyModalBackdrop.classList.contains('hidden')) {
+            closeReturnPolicyModal({ immediate: true });
+          }
           if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
           if (typeof closeShareModal === 'function') closeShareModal();
           if (typeof closeScreenshotModal === 'function') closeScreenshotModal();
@@ -19662,6 +19665,9 @@
           }
           if (privacyModalBackdrop && !privacyModalBackdrop.classList.contains('hidden')) {
             closePrivacyModal({ immediate: true });
+          }
+          if (typeof returnPolicyModalBackdrop !== 'undefined' && returnPolicyModalBackdrop && !returnPolicyModalBackdrop.classList.contains('hidden')) {
+            closeReturnPolicyModal({ immediate: true });
           }
           if (typeof closeQuickOrderModal === 'function') closeQuickOrderModal();
           if (typeof closeShareModal === 'function') closeShareModal();
