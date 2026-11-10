@@ -1005,6 +1005,20 @@
                 class="hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-red-600 text-white leading-none animate-bounce"
               >0</span>
             </button>
+
+            <button
+              id="toolbar-visitors-stats-btn"
+              type="button"
+              class="min-h-[36px] px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white border border-indigo-400/80 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="ვიზიტორების და ლოკაციების სტატისტიკა (საქართველოს რეგიონები, ქალაქები და მსოფლიო)"
+            >
+              <span>🌍📊</span>
+              <span>ვიზიტორები / ლოკაცია</span>
+              <span
+                id="toolbar-visitors-count-badge"
+                class="px-1.5 py-0.5 text-[10px] font-black rounded-full bg-emerald-500 text-white leading-none"
+              >1</span>
+            </button>
           </div>
         </div>
 
@@ -7391,6 +7405,201 @@
             <button
               type="button"
               id="close-sales-notifications-footer-btn"
+              class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-extrabold cursor-pointer"
+            >
+              დახურვა
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
+    <!-- VISITORS & GEOLOCATION ANALYTICS MODAL (საქართველოს რეგიონები, ქალაქები და უცხოეთი)      -->
+    <!-- ======================================================================================== -->
+    <div
+      id="visitors-analytics-modal"
+      class="fixed inset-0 z-[92] hidden bg-zinc-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="bg-white border border-zinc-200 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+        <!-- Header -->
+        <div class="px-5 py-4 bg-gradient-to-r from-indigo-950 via-blue-900 to-indigo-900 text-white flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="w-11 h-11 rounded-2xl bg-white/15 flex items-center justify-center text-2xl shadow-inner">🌍📊</span>
+            <div>
+              <h3 class="text-base sm:text-lg font-black tracking-tight">საიტის ვიზიტორების და ლოკაციის სტატისტიკა</h3>
+              <p class="text-[11px] sm:text-xs text-indigo-200 font-medium">
+                საქართველო (რეგიონები და ქალაქები: აჭარა, სამეგრელო, კახეთი, ზუგდიდი, სიღნაღი...) და მსოფლიო (რომი, იტალია...)
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-visitors-analytics-modal-btn"
+            class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center text-lg font-bold cursor-pointer"
+            aria-label="დახურვა"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 bg-stone-50 flex-1">
+          <!-- 4 Summary Cards -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div class="bg-white border border-zinc-200 rounded-2xl p-3.5 shadow-2xs">
+              <div class="text-[11px] font-bold text-zinc-500 flex items-center gap-1">
+                <span>👥</span>
+                <span>სულ ვიზიტორი</span>
+              </div>
+              <div id="vstat-total-visitors" class="text-2xl font-black text-zinc-900 mt-1">0</div>
+              <div class="text-[10px] font-semibold text-zinc-400 mt-0.5">
+                ჯამური ნახვები: <span id="vstat-total-views" class="font-extrabold text-zinc-600">0</span>
+              </div>
+            </div>
+
+            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 shadow-2xs">
+              <div class="text-[11px] font-bold text-emerald-800 flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>ახლა საიტზეა</span>
+              </div>
+              <div id="vstat-online-now" class="text-2xl font-black text-emerald-700 mt-1">1</div>
+              <div class="text-[10px] font-semibold text-emerald-600 mt-0.5">ბოლო 15 წუთში აქტიური</div>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3.5 shadow-2xs">
+              <div class="text-[11px] font-bold text-blue-800 flex items-center gap-1">
+                <span>🇬🇪</span>
+                <span>საქართველოდან</span>
+              </div>
+              <div id="vstat-georgia-count" class="text-2xl font-black text-blue-700 mt-1">0</div>
+              <div id="vstat-georgia-pct" class="text-[10px] font-semibold text-blue-600 mt-0.5">0% ვიზიტორების</div>
+            </div>
+
+            <div class="bg-purple-50 border border-purple-200 rounded-2xl p-3.5 shadow-2xs">
+              <div class="text-[11px] font-bold text-purple-800 flex items-center gap-1">
+                <span>🌍</span>
+                <span>უცხოეთიდან / მსოფლიო</span>
+              </div>
+              <div id="vstat-abroad-count" class="text-2xl font-black text-purple-700 mt-1">0</div>
+              <div id="vstat-abroad-pct" class="text-[10px] font-semibold text-purple-600 mt-0.5">0% ვიზიტორების</div>
+            </div>
+          </div>
+
+          <!-- Action & Simulation Bar -->
+          <div class="bg-white border border-indigo-100 rounded-2xl p-3 flex flex-wrap items-center justify-between gap-2 shadow-2xs">
+            <div class="text-xs font-bold text-zinc-700 flex items-center gap-1.5">
+              <span>📍</span>
+              <span>თქვენი მიმდინარე ლოკაცია:</span>
+              <span id="vstat-my-detected-location" class="px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 font-black">იტვირთება...</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                id="test-visitor-georgia-btn"
+                class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+                title="სატესტოდ დაამატებს ვიზიტორს საქართველოს რეგიონიდან (ზუგდიდი, სიღნაღი, ბათუმი, ქუთაისი...)"
+              >
+                🇬🇪 ტესტი: რეგიონი (ზუგდიდი / სიღნაღი)
+              </button>
+              <button
+                type="button"
+                id="test-visitor-abroad-btn"
+                class="px-2.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-[11px] font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+                title="სატესტოდ დაამატებს ვიზიტორს უცხოეთიდან (რომი - იტალია, ათენი - საბერძნეთი...)"
+              >
+                🌍 ტესტი: უცხოეთი (რომი, იტალია)
+              </button>
+              <button
+                type="button"
+                id="refresh-visitors-stats-btn"
+                class="px-2.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white text-[11px] font-extrabold shadow-xs active:scale-95 fast-transition cursor-pointer"
+                title="განახლება"
+              >
+                🔄
+              </button>
+            </div>
+          </div>
+
+          <!-- 3-Column Geo Breakdown: Georgian Regions, Georgian Cities, World / Abroad -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+            <!-- 1. საქართველოს რეგიონები -->
+            <div class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-2xs flex flex-col">
+              <div class="flex items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-zinc-100">
+                <h4 class="text-xs sm:text-sm font-black text-zinc-900 flex items-center gap-1.5">
+                  <span>🇬🇪</span>
+                  <span>საქართველოს რეგიონები</span>
+                </h4>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">მხარეები</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 mb-2.5">აჭარა, სამეგრელო, კახეთი, იმერეთი, თბილისი და სხვ.</p>
+              <div id="vstat-georgia-regions-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 flex-1">
+                <div class="text-xs text-zinc-400 py-4 text-center">ჯერ მონაცემები არ არის</div>
+              </div>
+            </div>
+
+            <!-- 2. საქართველოს ქალაქები -->
+            <div class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-2xs flex flex-col">
+              <div class="flex items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-zinc-100">
+                <h4 class="text-xs sm:text-sm font-black text-zinc-900 flex items-center gap-1.5">
+                  <span>🏙️</span>
+                  <span>საქართველოს ქალაქები</span>
+                </h4>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700">ქალაქები</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 mb-2.5">ზუგდიდი, სიღნაღი, ბათუმი, ქუთაისი, თელავი, თბილისი...</p>
+              <div id="vstat-georgia-cities-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 flex-1">
+                <div class="text-xs text-zinc-400 py-4 text-center">ჯერ მონაცემები არ არის</div>
+              </div>
+            </div>
+
+            <!-- 3. მსოფლიო / უცხოეთი -->
+            <div class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-2xs flex flex-col">
+              <div class="flex items-center justify-between gap-2 pb-2.5 mb-2.5 border-b border-zinc-100">
+                <h4 class="text-xs sm:text-sm font-black text-zinc-900 flex items-center gap-1.5">
+                  <span>🌍</span>
+                  <span>მსოფლიო / უცხოეთი</span>
+                </h4>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-700">ქვეყანა & ქალაქი</span>
+              </div>
+              <p class="text-[11px] text-zinc-400 mb-2.5">რომი (იტალია), ათენი (საბერძნეთი), ბერლინი, ნიუ-იორკი...</p>
+              <div id="vstat-world-locations-list" class="space-y-2 max-h-64 overflow-y-auto pr-1 flex-1">
+                <div class="text-xs text-zinc-400 py-4 text-center">უცხოეთიდან ჯერ არავინ შემოსულა</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Visitors Live Stream -->
+          <div class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-2xs">
+            <div class="flex items-center justify-between gap-2 pb-2.5 mb-3 border-b border-zinc-100">
+              <h4 class="text-xs sm:text-sm font-black text-zinc-900 flex items-center gap-1.5">
+                <span>🕒</span>
+                <span>ბოლო შემოსული ვიზიტორები (დეტალური სია)</span>
+              </h4>
+              <span class="text-[11px] font-semibold text-zinc-400">ქვეყანა • რეგიონი • ქალაქი • დრო</span>
+            </div>
+            <div id="vstat-recent-visitors-list" class="space-y-2 max-h-60 overflow-y-auto pr-1">
+              <div class="text-xs text-zinc-400 py-4 text-center">იტვირთება ვიზიტორების სია...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 py-3.5 bg-white border-t border-zinc-200 flex flex-wrap items-center justify-between gap-2 text-xs text-zinc-500">
+          <span>ავტომატურად აფიქსირებს ყველა შემოსულ სტუმარს IP-ლოკაციის მიხედვით</span>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              id="clear-visitors-stats-btn"
+              class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 font-extrabold cursor-pointer"
+            >
+              🗑️ სტატისტიკის განულება
+            </button>
+            <button
+              type="button"
+              id="close-visitors-analytics-footer-btn"
               class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-extrabold cursor-pointer"
             >
               დახურვა
@@ -18652,6 +18861,671 @@
 
         setTimeout(() => fetchSalesNotifications(false), 1200);
         setInterval(() => fetchSalesNotifications(true), 15000);
+
+        // =========================================================================
+        // VISITORS & GEOLOCATION ANALYTICS SYSTEM (საქართველო: რეგიონები/ქალაქები + მსოფლიო)
+        // =========================================================================
+        const COUNTRY_MAP_KA = {
+          GE: { name: 'საქართველო', flag: '🇬🇪' },
+          IT: { name: 'იტალია', flag: '🇮🇹' },
+          GR: { name: 'საბერძნეთი', flag: '🇬🇷' },
+          DE: { name: 'გერმანია', flag: '🇩🇪' },
+          US: { name: 'აშშ', flag: '🇺🇸' },
+          FR: { name: 'საფრანგეთი', flag: '🇫🇷' },
+          ES: { name: 'ესპანეთი', flag: '🇪🇸' },
+          TR: { name: 'თურქეთი', flag: '🇹🇷' },
+          PL: { name: 'პოლონეთი', flag: '🇵🇱' },
+          IL: { name: 'ისრაელი', flag: '🇮🇱' },
+          GB: { name: 'დიდი ბრიტანეთი', flag: '🇬🇧' },
+          UK: { name: 'დიდი ბრიტანეთი', flag: '🇬🇧' },
+          UA: { name: 'უკრაინა', flag: '🇺🇦' },
+          AZ: { name: 'აზერბაიჯანი', flag: '🇦🇿' },
+          AM: { name: 'სომხეთი', flag: '🇦🇲' },
+          RU: { name: 'რუსეთი', flag: '🇷🇺' },
+          AT: { name: 'ავსტრია', flag: '🇦🇹' },
+          BE: { name: 'ბელგია', flag: '🇧🇪' },
+          NL: { name: 'ნიდერლანდები', flag: '🇳🇱' },
+          CA: { name: 'კანადა', flag: '🇨🇦' },
+          CY: { name: 'კვიპროსი', flag: '🇨🇾' },
+          CZ: { name: 'ჩეხეთი', flag: '🇨🇿' },
+          PT: { name: 'პორტუგალია', flag: '🇵🇹' },
+          SE: { name: 'შვედეთი', flag: '🇸🇪' },
+          CH: { name: 'შვეიცარია', flag: '🇨🇭' },
+          IE: { name: 'ირლანდია', flag: '🇮🇪' },
+          AE: { name: 'არაბთა გაერთიანებული საამიროები', flag: '🇦🇪' },
+          CN: { name: 'ჩინეთი', flag: '🇨🇳' },
+          JP: { name: 'იაპონია', flag: '🇯🇵' }
+        };
+
+        const GEORGIAN_CITIES_AND_REGIONS = {
+          // თბილისი
+          tbilisi: { city: 'თბილისი', region: 'თბილისი' },
+          "t'bilisi": { city: 'თბილისი', region: 'თბილისი' },
+          // აჭარა
+          batumi: { city: 'ბათუმი', region: 'აჭარა' },
+          kobuleti: { city: 'ქობულეთი', region: 'აჭარა' },
+          khelvachauri: { city: 'ხელვაჩაური', region: 'აჭარა' },
+          khulo: { city: 'ხულო', region: 'აჭარა' },
+          shuakhevi: { city: 'შუახევი', region: 'აჭარა' },
+          keda: { city: 'ქედა', region: 'აჭარა' },
+          chakvi: { city: 'ჩაქვი', region: 'აჭარა' },
+          sarpi: { city: 'სარფი', region: 'აჭარა' },
+          // სამეგრელო-ზემო სვანეთი
+          zugdidi: { city: 'ზუგდიდი', region: 'სამეგრელო-ზემო სვანეთი' },
+          poti: { city: 'ფოთი', region: 'სამეგრელო-ზემო სვანეთი' },
+          "p'ot'i": { city: 'ფოთი', region: 'სამეგრელო-ზემო სვანეთი' },
+          senaki: { city: 'სენაკი', region: 'სამეგრელო-ზემო სვანეთი' },
+          abasha: { city: 'აბაშა', region: 'სამეგრელო-ზემო სვანეთი' },
+          martvili: { city: 'მარტვილი', region: 'სამეგრელო-ზემო სვანეთი' },
+          khobi: { city: 'ხობი', region: 'სამეგრელო-ზემო სვანეთი' },
+          tsalenjikha: { city: 'წალენჯიხა', region: 'სამეგრელო-ზემო სვანეთი' },
+          chkhorotsku: { city: 'ჩხოროწყუ', region: 'სამეგრელო-ზემო სვანეთი' },
+          mestia: { city: 'მესტია', region: 'სამეგრელო-ზემო სვანეთი' },
+          anaklia: { city: 'ანაკლია', region: 'სამეგრელო-ზემო სვანეთი' },
+          // კახეთი
+          telavi: { city: 'თელავი', region: 'კახეთი' },
+          "t'elavi": { city: 'თელავი', region: 'კახეთი' },
+          sighnaghi: { city: 'სიღნაღი', region: 'კახეთი' },
+          signagi: { city: 'სიღნაღი', region: 'კახეთი' },
+          snighnaghi: { city: 'სიღნაღი', region: 'კახეთი' },
+          gurjaani: { city: 'გურჯაანი', region: 'კახეთი' },
+          sagarejo: { city: 'საგარეჯო', region: 'კახეთი' },
+          kvareli: { city: 'ყვარელი', region: 'კახეთი' },
+          qvareli: { city: 'ყვარელი', region: 'კახეთი' },
+          lagodekhi: { city: 'ლაგოდეხი', region: 'კახეთი' },
+          dedoplistskaro: { city: 'დედოფლისწყარო', region: 'კახეთი' },
+          akhmeta: { city: 'ახმეტა', region: 'კახეთი' },
+          tsinandali: { city: 'წინანდალი', region: 'კახეთი' },
+          // იმერეთი
+          kutaisi: { city: 'ქუთაისი', region: 'იმერეთი' },
+          "k'ut'aisi": { city: 'ქუთაისი', region: 'იმერეთი' },
+          zestafoni: { city: 'ზესტაფონი', region: 'იმერეთი' },
+          zestaponi: { city: 'ზესტაფონი', region: 'იმერეთი' },
+          samtredia: { city: 'სამტრედია', region: 'იმერეთი' },
+          chiatura: { city: 'ჭიათურა', region: 'იმერეთი' },
+          tskaltubo: { city: 'წყალტუბო', region: 'იმერეთი' },
+          tsqaltubo: { city: 'წყალტუბო', region: 'იმერეთი' },
+          sachkhere: { city: 'საჩხერე', region: 'იმერეთი' },
+          tkibuli: { city: 'ტყიბული', region: 'იმერეთი' },
+          khoni: { city: 'ხონი', region: 'იმერეთი' },
+          vani: { city: 'ვანი', region: 'იმერეთი' },
+          baghdati: { city: 'ბაღდათი', region: 'იმერეთი' },
+          terjola: { city: 'თერჯოლა', region: 'იმერეთი' },
+          kharagauli: { city: 'ხარაგაული', region: 'იმერეთი' },
+          // ქვემო ქართლი
+          rustavi: { city: 'რუსთავი', region: 'ქვემო ქართლი' },
+          marneuli: { city: 'მარნეული', region: 'ქვემო ქართლი' },
+          gardabani: { city: 'გარდაბანი', region: 'ქვემო ქართლი' },
+          bolnisi: { city: 'ბოლნისი', region: 'ქვემო ქართლი' },
+          dmanisi: { city: 'დმანისი', region: 'ქვემო ქართლი' },
+          tsalka: { city: 'წალკა', region: 'ქვემო ქართლი' },
+          tetritskaro: { city: 'თეთრიწყარო', region: 'ქვემო ქართლი' },
+          // შიდა ქართლი
+          gori: { city: 'გორი', region: 'შიდა ქართლი' },
+          khashuri: { city: 'ხაშური', region: 'შიდა ქართლი' },
+          kaspi: { city: 'კასპი', region: 'შიდა ქართლი' },
+          kareli: { city: 'ქარელი', region: 'შიდა ქართლი' },
+          surami: { city: 'სურამი', region: 'შიდა ქართლი' },
+          // გურია
+          ozurgeti: { city: 'ოზურგეთი', region: 'გურია' },
+          lanchkhuti: { city: 'ლანჩხუთი', region: 'გურია' },
+          chokhatauri: { city: 'ჩოხატაური', region: 'გურია' },
+          ureki: { city: 'ურეკი', region: 'გურია' },
+          // სამცხე-ჯავახეთი
+          akhaltzikhe: { city: 'ახალციხე', region: 'სამცხე-ჯავახეთი' },
+          akhaltsikhe: { city: 'ახალციხე', region: 'სამცხე-ჯავახეთი' },
+          borjomi: { city: 'ბორჯომი', region: 'სამცხე-ჯავახეთი' },
+          akhalkalaki: { city: 'ახალქალაქი', region: 'სამცხე-ჯავახეთი' },
+          ninotsminda: { city: 'ნინოწმინდა', region: 'სამცხე-ჯავახეთი' },
+          bakuriani: { city: 'ბაკურიანი', region: 'სამცხე-ჯავახეთი' },
+          abastumani: { city: 'აბასთუმანი', region: 'სამცხე-ჯავახეთი' },
+          // მცხეთა-მთიანეთი
+          mtskheta: { city: 'მცხეთა', region: 'მცხეთა-მთიანეთი' },
+          dusheti: { city: 'დუშეთი', region: 'მცხეთა-მთიანეთი' },
+          stepantsminda: { city: 'სტეფანწმინდა (ყაზბეგი)', region: 'მცხეთა-მთიანეთი' },
+          kazbegi: { city: 'ყაზბეგი', region: 'მცხეთა-მთიანეთი' },
+          tianeti: { city: 'თიანეთი', region: 'მცხეთა-მთიანეთი' },
+          gudauri: { city: 'გუდაური', region: 'მცხეთა-მთიანეთი' },
+          // რაჭა-ლეჩხუმი და ქვემო სვანეთი
+          ambrolauri: { city: 'ამბროლაური', region: 'რაჭა-ლეჩხუმი' },
+          oni: { city: 'ონი', region: 'რაჭა-ლეჩხუმი' },
+          tsageri: { city: 'ცაგერი', region: 'რაჭა-ლეჩხუმი' },
+          lentekhi: { city: 'ლენტეხი', region: 'რაჭა-ლეჩხუმი' },
+          // აფხაზეთი
+          sukhumi: { city: 'სოხუმი', region: 'აფხაზეთი' },
+          gagra: { city: 'გაგრა', region: 'აფხაზეთი' }
+        };
+
+        const GEORGIAN_REGIONS_MAP = {
+          tb: 'თბილისი',
+          tbilisi: 'თბილისი',
+          aj: 'აჭარა',
+          adjara: 'აჭარა',
+          ajara: 'აჭარა',
+          'autonomous republic of adjara': 'აჭარა',
+          sz: 'სამეგრელო-ზემო სვანეთი',
+          samegrelo: 'სამეგრელო-ზემო სვანეთი',
+          'samegrelo and zemo svaneti': 'სამეგრელო-ზემო სვანეთი',
+          'samegrelo-zemo svaneti': 'სამეგრელო-ზემო სვანეთი',
+          ka: 'კახეთი',
+          kakheti: 'კახეთი',
+          im: 'იმერეთი',
+          imereti: 'იმერეთი',
+          kk: 'ქვემო ქართლი',
+          'kvemo kartli': 'ქვემო ქართლი',
+          sk: 'შიდა ქართლი',
+          'shida kartli': 'შიდა ქართლი',
+          gu: 'გურია',
+          guria: 'გურია',
+          sj: 'სამცხე-ჯავახეთი',
+          'samtskhe-javakheti': 'სამცხე-ჯავახეთი',
+          mm: 'მცხეთა-მთიანეთი',
+          'mtskheta-mtianeti': 'მცხეთა-მთიანეთი',
+          rl: 'რაჭა-ლეჩხუმი',
+          'racha-lechkhumi and kvemo svaneti': 'რაჭა-ლეჩხუმი',
+          ab: 'აფხაზეთი',
+          abkhazia: 'აფხაზეთი'
+        };
+
+        const WORLD_CITIES_KA = {
+          rome: 'რომი',
+          roma: 'რომი',
+          milan: 'მილანი',
+          milano: 'მილანი',
+          bari: 'ბარი',
+          naples: 'ნეაპოლი',
+          napoli: 'ნეაპოლი',
+          florence: 'ფლორენცია',
+          venice: 'ვენეცია',
+          athens: 'ათენი',
+          thessaloniki: 'სალონიკი',
+          berlin: 'ბერლინი',
+          munich: 'მიუნხენი',
+          frankfurt: 'ფრანკფურტი',
+          hamburg: 'ჰამბურგი',
+          paris: 'პარიზი',
+          lyon: 'ლიონი',
+          nice: 'ნიცა',
+          madrid: 'მადრიდი',
+          barcelona: 'ბარსელონა',
+          valencia: 'ვალენსია',
+          istanbul: 'სტამბოლი',
+          ankara: 'ანკარა',
+          antalya: 'ანტალია',
+          trabzon: 'ტრაპიზონი',
+          rize: 'რიზე',
+          'new york': 'ნიუ-იორკი',
+          'los angeles': 'ლოს-ანჯელესი',
+          chicago: 'ჩიკაგო',
+          miami: 'მაიამი',
+          washington: 'ვაშინგტონი',
+          london: 'ლონდონი',
+          manchester: 'მანჩესტერი',
+          warsaw: 'ვარშავა',
+          krakow: 'კრაკოვი',
+          'tel aviv': 'თელ-ავივი',
+          jerusalem: 'იერუსალიმი',
+          haifa: 'ჰაიფა',
+          vienna: 'ვენა',
+          brussels: 'ბრიუსელი',
+          amsterdam: 'ამსტერდამი',
+          prague: 'პრაღა',
+          kyiv: 'კიევი',
+          kiev: 'კიევი',
+          baku: 'ბაქო',
+          yerevan: 'ერევანი',
+          moscow: 'მოსკოვი',
+          dubai: 'დუბაი',
+          limassol: 'ლიმასოლი',
+          nicosia: 'ნიქოზია',
+          toronto: 'ტორონტო'
+        };
+
+        function normalizeGeoToGeorgian(rawGeo) {
+          const code = String(rawGeo.countryCode || 'GE').toUpperCase();
+          const cInfo = COUNTRY_MAP_KA[code] || {
+            name: rawGeo.countryName || code || 'უცხოეთი',
+            flag: code === 'GE' ? '🇬🇪' : '🌍'
+          };
+          const rawCityLower = String(rawGeo.city || '').trim().toLowerCase();
+          const rawRegLower = String(rawGeo.region || '').trim().toLowerCase();
+
+          if (code === 'GE') {
+            const matchedCity = GEORGIAN_CITIES_AND_REGIONS[rawCityLower];
+            if (matchedCity) {
+              return {
+                countryCode: 'GE',
+                countryName: 'საქართველო',
+                flag: '🇬🇪',
+                region: matchedCity.region,
+                city: matchedCity.city,
+                isGeorgia: true
+              };
+            }
+            const matchedRegion = GEORGIAN_REGIONS_MAP[rawRegLower] || (rawGeo.region ? rawGeo.region : 'თბილისი');
+            const displayCity = rawGeo.city ? rawGeo.city : matchedRegion;
+            return {
+              countryCode: 'GE',
+              countryName: 'საქართველო',
+              flag: '🇬🇪',
+              region: matchedRegion,
+              city: displayCity === 'Tbilisi' ? 'თბილისი' : displayCity,
+              isGeorgia: true
+            };
+          } else {
+            const worldCityKa = WORLD_CITIES_KA[rawCityLower] || rawGeo.city || 'უცნობი ქალაქი';
+            return {
+              countryCode: code,
+              countryName: cInfo.name,
+              flag: cInfo.flag,
+              region: rawGeo.region || cInfo.name,
+              city: worldCityKa,
+              isGeorgia: false
+            };
+          }
+        }
+
+        function getOrCreateVisitorSessionId() {
+          const KEY = 'iyidebaa_visitor_id_v1';
+          try {
+            let vid = localStorage.getItem(KEY);
+            if (!vid) {
+              vid = 'vis_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+              localStorage.setItem(KEY, vid);
+            }
+            return vid;
+          } catch (e) {
+            return 'vis_' + Date.now();
+          }
+        }
+
+        function renderVisitorsAnalyticsModal(visitorsList) {
+          const list = Array.isArray(visitorsList) ? visitorsList : [];
+          const totalVisitors = list.length;
+          const totalViews = list.reduce((acc, v) => acc + (Number(v.visitsCount) || 1), 0);
+          const nowMs = Date.now();
+          const onlineNow = Math.max(
+            1,
+            list.filter((v) => {
+              const t = new Date(v.lastSeenAt || v.firstSeenAt || 0).getTime();
+              return nowMs - t <= 15 * 60 * 1000;
+            }).length
+          );
+
+          const georgiaVisitors = list.filter((v) => v.isGeorgia !== false && String(v.countryCode || 'GE').toUpperCase() === 'GE');
+          const abroadVisitors = list.filter((v) => v.isGeorgia === false || String(v.countryCode || 'GE').toUpperCase() !== 'GE');
+
+          const georgiaPct = totalVisitors > 0 ? Math.round((georgiaVisitors.length / totalVisitors) * 100) : 0;
+          const abroadPct = totalVisitors > 0 ? Math.round((abroadVisitors.length / totalVisitors) * 100) : 0;
+
+          const badgeEl = document.getElementById('toolbar-visitors-count-badge');
+          if (badgeEl) badgeEl.textContent = String(totalVisitors || 1);
+
+          const totalVisEl = document.getElementById('vstat-total-visitors');
+          const totalViewsEl = document.getElementById('vstat-total-views');
+          const onlineNowEl = document.getElementById('vstat-online-now');
+          const geoCountEl = document.getElementById('vstat-georgia-count');
+          const geoPctEl = document.getElementById('vstat-georgia-pct');
+          const abrCountEl = document.getElementById('vstat-abroad-count');
+          const abrPctEl = document.getElementById('vstat-abroad-pct');
+
+          if (totalVisEl) totalVisEl.textContent = String(totalVisitors);
+          if (totalViewsEl) totalViewsEl.textContent = String(totalViews);
+          if (onlineNowEl) onlineNowEl.textContent = String(onlineNow);
+          if (geoCountEl) geoCountEl.textContent = String(georgiaVisitors.length);
+          if (geoPctEl) geoPctEl.textContent = `${georgiaPct}% ვიზიტორების`;
+          if (abrCountEl) abrCountEl.textContent = String(abroadVisitors.length);
+          if (abrPctEl) abrPctEl.textContent = `${abroadPct}% ვიზიტორების`;
+
+          // 1. Aggregate Georgian Regions
+          const regionsCountMap = {};
+          georgiaVisitors.forEach((v) => {
+            const reg = v.region || 'თბილისი';
+            regionsCountMap[reg] = (regionsCountMap[reg] || 0) + 1;
+          });
+          const sortedRegions = Object.entries(regionsCountMap).sort((a, b) => b[1] - a[1]);
+          const regContainer = document.getElementById('vstat-georgia-regions-list');
+          if (regContainer) {
+            if (sortedRegions.length === 0) {
+              regContainer.innerHTML = '<div class="text-xs text-zinc-400 py-4 text-center">ჯერ მონაცემები არ არის</div>';
+            } else {
+              regContainer.innerHTML = sortedRegions
+                .map(([regName, count]) => {
+                  const pct = georgiaVisitors.length > 0 ? Math.round((count / georgiaVisitors.length) * 100) : 0;
+                  return `
+                    <div class="p-2.5 rounded-xl bg-stone-50 border border-zinc-200/80">
+                      <div class="flex items-center justify-between text-xs font-extrabold text-zinc-800">
+                        <span>📍 ${regName}</span>
+                        <span class="px-2 py-0.5 rounded-lg bg-blue-100 text-blue-800 font-black">${count} ვიზიტორი (${pct}%)</span>
+                      </div>
+                      <div class="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden mt-1.5">
+                        <div class="h-full bg-blue-600 rounded-full" style="width: ${Math.max(6, pct)}%"></div>
+                      </div>
+                    </div>
+                  `;
+                })
+                .join('');
+            }
+          }
+
+          // 2. Aggregate Georgian Cities
+          const citiesCountMap = {};
+          georgiaVisitors.forEach((v) => {
+            const cityKey = `${v.city || 'თბილისი'} (${v.region || 'საქართველო'})`;
+            citiesCountMap[cityKey] = (citiesCountMap[cityKey] || 0) + 1;
+          });
+          const sortedCities = Object.entries(citiesCountMap).sort((a, b) => b[1] - a[1]);
+          const citiesContainer = document.getElementById('vstat-georgia-cities-list');
+          if (citiesContainer) {
+            if (sortedCities.length === 0) {
+              citiesContainer.innerHTML = '<div class="text-xs text-zinc-400 py-4 text-center">ჯერ მონაცემები არ არის</div>';
+            } else {
+              citiesContainer.innerHTML = sortedCities
+                .map(([cityLabel, count]) => {
+                  const pct = georgiaVisitors.length > 0 ? Math.round((count / georgiaVisitors.length) * 100) : 0;
+                  return `
+                    <div class="p-2.5 rounded-xl bg-stone-50 border border-zinc-200/80">
+                      <div class="flex items-center justify-between text-xs font-extrabold text-zinc-800">
+                        <span>🏙️ ${cityLabel}</span>
+                        <span class="px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800 font-black">${count} (${pct}%)</span>
+                      </div>
+                      <div class="w-full h-1.5 bg-zinc-200 rounded-full overflow-hidden mt-1.5">
+                        <div class="h-full bg-emerald-600 rounded-full" style="width: ${Math.max(6, pct)}%"></div>
+                      </div>
+                    </div>
+                  `;
+                })
+                .join('');
+            }
+          }
+
+          // 3. Aggregate World / Abroad Locations
+          const worldCountMap = {};
+          abroadVisitors.forEach((v) => {
+            const flag = v.flag || '🌍';
+            const country = v.countryName || v.countryCode || 'უცხოეთი';
+            const city = v.city || 'უცნობი ქალაქი';
+            const key = `${flag} ${country} — ${city}`;
+            worldCountMap[key] = (worldCountMap[key] || 0) + 1;
+          });
+          const sortedWorld = Object.entries(worldCountMap).sort((a, b) => b[1] - a[1]);
+          const worldContainer = document.getElementById('vstat-world-locations-list');
+          if (worldContainer) {
+            if (sortedWorld.length === 0) {
+              worldContainer.innerHTML = '<div class="text-xs text-zinc-400 py-4 text-center">უცხოეთიდან ჯერ არავინ შემოსულა</div>';
+            } else {
+              worldContainer.innerHTML = sortedWorld
+                .map(([worldLabel, count]) => {
+                  const pct = abroadVisitors.length > 0 ? Math.round((count / abroadVisitors.length) * 100) : 0;
+                  return `
+                    <div class="p-2.5 rounded-xl bg-purple-50/60 border border-purple-200/80">
+                      <div class="flex items-center justify-between text-xs font-extrabold text-zinc-800">
+                        <span>${worldLabel}</span>
+                        <span class="px-2 py-0.5 rounded-lg bg-purple-100 text-purple-800 font-black">${count} (${pct}%)</span>
+                      </div>
+                      <div class="w-full h-1.5 bg-purple-100 rounded-full overflow-hidden mt-1.5">
+                        <div class="h-full bg-purple-600 rounded-full" style="width: ${Math.max(6, pct)}%"></div>
+                      </div>
+                    </div>
+                  `;
+                })
+                .join('');
+            }
+          }
+
+          // 4. Recent Visitors Detailed List
+          const recentContainer = document.getElementById('vstat-recent-visitors-list');
+          if (recentContainer) {
+            if (list.length === 0) {
+              recentContainer.innerHTML = '<div class="text-xs text-zinc-400 py-4 text-center">ვიზიტორები ჯერ არ არის</div>';
+            } else {
+              recentContainer.innerHTML = list
+                .slice(0, 50)
+                .map((v) => {
+                  const isGeo = v.isGeorgia !== false && String(v.countryCode || 'GE').toUpperCase() === 'GE';
+                  const flag = v.flag || (isGeo ? '🇬🇪' : '🌍');
+                  const dt = v.lastSeenAt ? new Date(v.lastSeenAt).toLocaleString('ka-GE') : '';
+                  const badgeClass = isGeo
+                    ? 'bg-blue-100 text-blue-800 border-blue-200'
+                    : 'bg-purple-100 text-purple-800 border-purple-200';
+                  const locationTitle = isGeo
+                    ? `${flag} საქართველო • რეგიონი: ${v.region || 'თბილისი'} • ქალაქი: ${v.city || 'თბილისი'}`
+                    : `${flag} ${v.countryName || v.countryCode} • ქალაქი: ${v.city || '-'} (${v.region || '-'})`;
+                  return `
+                    <div class="p-2.5 rounded-xl bg-stone-50 border border-zinc-200 flex flex-wrap items-center justify-between gap-2">
+                      <div class="flex items-center gap-2">
+                        <span class="px-2 py-1 rounded-lg text-[11px] font-black border ${badgeClass}">
+                          ${isGeo ? '🇬🇪 საქართველო' : '🌍 უცხოეთი'}
+                        </span>
+                        <div>
+                          <div class="text-xs font-extrabold text-zinc-900">${locationTitle}</div>
+                          <div class="text-[11px] text-zinc-500">
+                            შემოსვლა: <b>${v.visitsCount || 1}-ჯერ</b> • მოწყობილობა: ${v.device || 'Browser'}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="text-[11px] font-bold text-zinc-500">${dt}</div>
+                    </div>
+                  `;
+                })
+                .join('');
+            }
+          }
+        }
+
+        async function detectAndRecordCurrentVisitor() {
+          let detectedRaw = {
+            countryCode: 'GE',
+            countryName: 'Georgia',
+            region: 'Tbilisi',
+            city: 'Tbilisi'
+          };
+          try {
+            const geoRes = await fetch('https://ipwho.is/');
+            if (geoRes.ok) {
+              const g = await geoRes.json();
+              if (g && g.success !== false && g.country_code) {
+                detectedRaw = {
+                  countryCode: g.country_code,
+                  countryName: g.country,
+                  region: g.region,
+                  city: g.city
+                };
+              }
+            }
+          } catch (e) {
+            try {
+              const backupRes = await fetch('https://freeipapi.com/api/json');
+              if (backupRes.ok) {
+                const b = await backupRes.json();
+                if (b && b.countryCode) {
+                  detectedRaw = {
+                    countryCode: b.countryCode,
+                    countryName: b.countryName,
+                    region: b.regionName,
+                    city: b.cityName
+                  };
+                }
+              }
+            } catch (e2) {}
+          }
+
+          const norm = normalizeGeoToGeorgian(detectedRaw);
+          const myLocEl = document.getElementById('vstat-my-detected-location');
+          if (myLocEl) {
+            myLocEl.textContent = norm.isGeorgia
+              ? `${norm.flag} საქართველო — ${norm.region}, ${norm.city}`
+              : `${norm.flag} ${norm.countryName} — ${norm.city}`;
+          }
+
+          const isMobile = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent || '');
+          const deviceLabel = isMobile ? '📱 მობილური' : '💻 კომპიუტერი';
+
+          try {
+            const r = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                action: 'record_visitor',
+                visitorId: getOrCreateVisitorSessionId(),
+                countryCode: norm.countryCode,
+                countryName: norm.countryName,
+                flag: norm.flag,
+                region: norm.region,
+                city: norm.city,
+                isGeorgia: norm.isGeorgia,
+                device: deviceLabel
+              })
+            });
+            const d = await r.json();
+            if (d && Array.isArray(d.visitors)) {
+              renderVisitorsAnalyticsModal(d.visitors);
+            }
+          } catch (err) {}
+        }
+
+        async function fetchVisitorsStats() {
+          try {
+            const r = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'get_visitor_stats' })
+            });
+            const d = await r.json();
+            if (d && Array.isArray(d.visitors)) {
+              renderVisitorsAnalyticsModal(d.visitors);
+            }
+          } catch (err) {}
+        }
+
+        const openVisitorsBtn = document.getElementById('toolbar-visitors-stats-btn');
+        const visitorsModalEl = document.getElementById('visitors-analytics-modal');
+        const closeVisitorsTopBtn = document.getElementById('close-visitors-analytics-modal-btn');
+        const closeVisitorsFooterBtn = document.getElementById('close-visitors-analytics-footer-btn');
+
+        if (openVisitorsBtn && visitorsModalEl) {
+          openVisitorsBtn.addEventListener('click', () => {
+            visitorsModalEl.classList.remove('hidden');
+            fetchVisitorsStats();
+          });
+        }
+        if (closeVisitorsTopBtn && visitorsModalEl) {
+          closeVisitorsTopBtn.addEventListener('click', () => visitorsModalEl.classList.add('hidden'));
+        }
+        if (closeVisitorsFooterBtn && visitorsModalEl) {
+          closeVisitorsFooterBtn.addEventListener('click', () => visitorsModalEl.classList.add('hidden'));
+        }
+        if (visitorsModalEl) {
+          visitorsModalEl.addEventListener('click', (e) => {
+            if (e.target === visitorsModalEl) visitorsModalEl.classList.add('hidden');
+          });
+        }
+
+        const refreshVisitorsBtn = document.getElementById('refresh-visitors-stats-btn');
+        if (refreshVisitorsBtn) {
+          refreshVisitorsBtn.addEventListener('click', () => fetchVisitorsStats());
+        }
+
+        const testGeoSamples = [
+          { city: 'ზუგდიდი', region: 'სამეგრელო-ზემო სვანეთი' },
+          { city: 'სიღნაღი', region: 'კახეთი' },
+          { city: 'ბათუმი', region: 'აჭარა' },
+          { city: 'ქუთაისი', region: 'იმერეთი' },
+          { city: 'თელავი', region: 'კახეთი' },
+          { city: 'სენაკი', region: 'სამეგრელო-ზემო სვანეთი' },
+          { city: 'ქობულეთი', region: 'აჭარა' }
+        ];
+        let testGeoIdx = 0;
+        const testVisitorGeoBtn = document.getElementById('test-visitor-georgia-btn');
+        if (testVisitorGeoBtn) {
+          testVisitorGeoBtn.addEventListener('click', async () => {
+            const sample = testGeoSamples[testGeoIdx % testGeoSamples.length];
+            testGeoIdx++;
+            testVisitorGeoBtn.textContent = '⏳ ემატება...';
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'record_visitor',
+                  visitorId: 'test_geo_' + Date.now(),
+                  countryCode: 'GE',
+                  countryName: 'საქართველო',
+                  flag: '🇬🇪',
+                  region: sample.region,
+                  city: sample.city,
+                  isGeorgia: true,
+                  device: '📱 მობილური (ტესტი)'
+                })
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.visitors)) {
+                renderVisitorsAnalyticsModal(d.visitors);
+              }
+            } catch (e) {}
+            testVisitorGeoBtn.textContent = '🇬🇪 ტესტი: რეგიონი (ზუგდიდი / სიღნაღი)';
+          });
+        }
+
+        const testAbroadSamples = [
+          { countryCode: 'IT', countryName: 'იტალია', flag: '🇮🇹', region: 'Lazio', city: 'რომი' },
+          { countryCode: 'IT', countryName: 'იტალია', flag: '🇮🇹', region: 'Puglia', city: 'ბარი' },
+          { countryCode: 'GR', countryName: 'საბერძნეთი', flag: '🇬🇷', region: 'Attica', city: 'ათენი' },
+          { countryCode: 'DE', countryName: 'გერმანია', flag: '🇩🇪', region: 'Berlin', city: 'ბერლინი' },
+          { countryCode: 'US', countryName: 'აშშ', flag: '🇺🇸', region: 'New York', city: 'ნიუ-იორკი' },
+          { countryCode: 'FR', countryName: 'საფრანგეთი', flag: '🇫🇷', region: 'Île-de-France', city: 'პარიზი' }
+        ];
+        let testAbroadIdx = 0;
+        const testVisitorAbroadBtn = document.getElementById('test-visitor-abroad-btn');
+        if (testVisitorAbroadBtn) {
+          testVisitorAbroadBtn.addEventListener('click', async () => {
+            const sample = testAbroadSamples[testAbroadIdx % testAbroadSamples.length];
+            testAbroadIdx++;
+            testVisitorAbroadBtn.textContent = '⏳ ემატება...';
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'record_visitor',
+                  visitorId: 'test_abr_' + Date.now(),
+                  countryCode: sample.countryCode,
+                  countryName: sample.countryName,
+                  flag: sample.flag,
+                  region: sample.region,
+                  city: sample.city,
+                  isGeorgia: false,
+                  device: '💻 კომპიუტერი (ტესტი)'
+                })
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.visitors)) {
+                renderVisitorsAnalyticsModal(d.visitors);
+              }
+            } catch (e) {}
+            testVisitorAbroadBtn.textContent = '🌍 ტესტი: უცხოეთი (რომი, იტალია)';
+          });
+        }
+
+        const clearVisitorsBtn = document.getElementById('clear-visitors-stats-btn');
+        if (clearVisitorsBtn) {
+          clearVisitorsBtn.addEventListener('click', async () => {
+            try {
+              const r = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'clear_visitor_stats' })
+              });
+              const d = await r.json();
+              if (d && Array.isArray(d.visitors)) {
+                renderVisitorsAnalyticsModal(d.visitors);
+              }
+            } catch (e) {}
+          });
+        }
+
+        setTimeout(() => detectAndRecordCurrentVisitor(), 1500);
+        setInterval(() => fetchVisitorsStats(), 30000);
 
         const closeBogInstCalcBtn = document.getElementById('close-bog-inst-calc-btn');
         const bogInstCalcModalEl = document.getElementById('bog-installment-calc-modal');
