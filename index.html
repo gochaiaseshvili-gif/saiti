@@ -3741,6 +3741,34 @@
                   <span id="modal-body-share-text">გაზიარება</span>
                 </button>
               </div>
+
+              <!-- Online Installment (ONLY Bank of Georgia & Credo) right underneath Screenshot & Share -->
+              <div class="pt-3 border-t border-zinc-200/90 space-y-2">
+                <div class="text-xs font-black text-zinc-900 flex items-center justify-between">
+                  <span>🏦 ონლაინ განვადება:</span>
+                  <span class="text-[11px] font-bold text-amber-800">საქართველოს ბანკი &bull; კრედო ბანკი</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    id="modal-installment-btn"
+                    data-modal-bank-action="bog-inst"
+                    class="cursor-pointer min-h-[44px] px-3 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
+                  >
+                    <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
+                    <span id="modal-installment-btn-text">საქართველოს ბანკი — განვადება</span>
+                  </button>
+                  <button
+                    type="button"
+                    id="modal-credo-installment-btn"
+                    data-modal-bank-action="credo-inst"
+                    class="cursor-pointer min-h-[44px] px-3 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition"
+                  >
+                    <span class="px-1.5 py-0.5 rounded bg-white text-rose-600 font-black text-[10px]">კრედო</span>
+                    <span id="modal-credo-inst-btn-text">კრედო ბანკი — განვადება</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -4671,42 +4699,7 @@
                 </div>
               </div>
 
-              <!-- 2. Installment Payments for All 3 Banks (BOG, TBC, Credo) -->
-              <div class="space-y-1.5 pt-2.5 border-t border-zinc-200">
-                <div class="text-xs font-black text-zinc-900 flex items-center justify-between">
-                  <span>🏦 ონლაინ განვადება (სამივე ბანკი):</span>
-                  <span class="text-[11px] font-bold text-amber-800">აირჩიეთ სასურველი ბანკი</span>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <button
-                    type="button"
-                    id="modal-installment-btn"
-                    data-modal-bank-action="bog-inst"
-                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-950 border-2 border-orange-400 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition"
-                  >
-                    <span>🟧</span>
-                    <span id="modal-installment-btn-text">საქართველოს ბანკი — განვადება</span>
-                  </button>
-                  <button
-                    type="button"
-                    id="modal-tbc-installment-btn"
-                    data-modal-bank-action="tbc-inst"
-                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-950 border-2 border-sky-400 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition"
-                  >
-                    <span>🟦</span>
-                    <span id="modal-tbc-inst-btn-text">თიბისი ბანკი — განვადება</span>
-                  </button>
-                  <button
-                    type="button"
-                    id="modal-credo-installment-btn"
-                    data-modal-bank-action="credo-inst"
-                    class="cursor-pointer min-h-[44px] px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white border-2 border-rose-700 text-xs sm:text-sm font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition"
-                  >
-                    <span>🟥</span>
-                    <span id="modal-credo-inst-btn-text">კრედო ბანკი — განვადება</span>
-                  </button>
-                </div>
-              </div>
+
 
               <!-- Direct Phone Call Row -->
               <div class="pt-1">
@@ -13656,17 +13649,17 @@
                         </div>
                       </div>
 
-                      <!-- Row 2: Installment / Bank Payment for All 3 Banks (BOG, TBC, Credo) -->
+                      <!-- Row 2: Installment for BOG & Credo -->
                       <div class="space-y-1 pt-1.5 border-t border-zinc-200/70">
                         <div class="text-[10px] font-extrabold text-zinc-700 flex items-center justify-between">
-                          <span>🏦 განვადება (სამივე ბანკი):</span>
+                          <span>🏦 ონლაინ განვადება:</span>
                           <span class="font-mono-num font-black text-amber-800">თვეში ${Math.max(1, Math.ceil((Number(rawProduct.newPrice) || 100) / 12))} ₾-დან</span>
                         </div>
-                        <div class="grid grid-cols-3 gap-1.5">
+                        <div class="grid grid-cols-2 gap-1.5">
                           <button
                             type="button"
                             data-card-bog-buy="${rawProduct.id}"
-                            class="min-h-[34px] px-1.5 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-950 border border-orange-300 text-[10px] font-black flex items-center justify-center gap-1 active:scale-95 fast-transition cursor-pointer"
+                            class="min-h-[34px] px-2 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-950 border border-orange-300 text-[11px] font-black flex items-center justify-center gap-1 active:scale-95 fast-transition cursor-pointer"
                             title="საქართველოს ბანკის ონლაინ განვადება"
                           >
                             <span>🟧</span>
@@ -13674,17 +13667,8 @@
                           </button>
                           <button
                             type="button"
-                            data-card-tbc-inst="${rawProduct.id}"
-                            class="min-h-[34px] px-1.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-950 border border-sky-300 text-[10px] font-black flex items-center justify-center gap-1 active:scale-95 fast-transition cursor-pointer"
-                            title="თიბისი ბანკის ონლაინ განვადება"
-                          >
-                            <span>🟦</span>
-                            <span>TBC განვადება</span>
-                          </button>
-                          <button
-                            type="button"
                             data-card-credo-inst="${rawProduct.id}"
-                            class="min-h-[34px] px-1.5 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 text-[10px] font-black flex items-center justify-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
+                            class="min-h-[34px] px-2 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 text-[11px] font-black flex items-center justify-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
                             title="კრედო ბანკის ონლაინ განვადება (პირდაპირი გადასვლა)"
                           >
                             <span>🟥</span>
