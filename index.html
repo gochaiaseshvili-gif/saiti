@@ -15058,6 +15058,152 @@
           }
         });
 
+        // =========================================================================
+        // TAB 4: GEORGIAN BANKS, INSTALLMENT CODES & PAYMENT CREDENTIALS LOGIC
+        // =========================================================================
+        function getBankConfig() {
+          const raw = (storeSettings && storeSettings.bankConfig && typeof storeSettings.bankConfig === 'object')
+            ? storeSettings.bankConfig
+            : {};
+          return {
+            bogEnabled: raw.bogEnabled !== false,
+            bogClientId: raw.bogClientId || '',
+            bogSecret: raw.bogSecret || '',
+            bogIban: raw.bogIban || '',
+            bogUrl: raw.bogUrl || '',
+            bogScript: raw.bogScript || '',
+
+            tbcEnabled: raw.tbcEnabled !== false,
+            tbcClientId: raw.tbcClientId || '',
+            tbcSecret: raw.tbcSecret || '',
+            tbcIban: raw.tbcIban || '',
+            tbcUrl: raw.tbcUrl || '',
+            tbcScript: raw.tbcScript || '',
+
+            credoEnabled: raw.credoEnabled !== false,
+            credoClientId: raw.credoClientId || '',
+            credoSecret: raw.credoSecret || '',
+            credoUrl: raw.credoUrl || '',
+            credoScript: raw.credoScript || '',
+
+            receiverName: raw.receiverName || 'გოჩა იასეშვილი',
+            cardUrl: raw.cardUrl || '',
+            autoRedirect: raw.autoRedirect !== false,
+          };
+        }
+
+        function populateBanksForm() {
+          const cfg = getBankConfig();
+          const setVal = (id, v) => {
+            const el = document.getElementById(id);
+            if (el) el.value = v || '';
+          };
+          const setChk = (id, v) => {
+            const el = document.getElementById(id);
+            if (el) el.checked = Boolean(v);
+          };
+
+          setChk('cp-bank-bog-enabled', cfg.bogEnabled);
+          setVal('cp-bank-bog-client-id', cfg.bogClientId);
+          setVal('cp-bank-bog-secret', cfg.bogSecret);
+          setVal('cp-bank-bog-iban', cfg.bogIban);
+          setVal('cp-bank-bog-url', cfg.bogUrl);
+          setVal('cp-bank-bog-script', cfg.bogScript);
+
+          setChk('cp-bank-tbc-enabled', cfg.tbcEnabled);
+          setVal('cp-bank-tbc-client-id', cfg.tbcClientId);
+          setVal('cp-bank-tbc-secret', cfg.tbcSecret);
+          setVal('cp-bank-tbc-iban', cfg.tbcIban);
+          setVal('cp-bank-tbc-url', cfg.tbcUrl);
+          setVal('cp-bank-tbc-script', cfg.tbcScript);
+
+          setChk('cp-bank-credo-enabled', cfg.credoEnabled);
+          setVal('cp-bank-credo-client-id', cfg.credoClientId);
+          setVal('cp-bank-credo-secret', cfg.credoSecret);
+          setVal('cp-bank-credo-url', cfg.credoUrl);
+          setVal('cp-bank-credo-script', cfg.credoScript);
+
+          setVal('cp-bank-receiver-name', cfg.receiverName);
+          setVal('cp-bank-card-url', cfg.cardUrl);
+          setChk('cp-bank-auto-redirect', cfg.autoRedirect);
+        }
+
+        function saveBanksConfig() {
+          const getVal = (id) => {
+            const el = document.getElementById(id);
+            return el ? el.value.trim() : '';
+          };
+          const getChk = (id, def = true) => {
+            const el = document.getElementById(id);
+            return el ? Boolean(el.checked) : def;
+          };
+
+          storeSettings.bankConfig = {
+            bogEnabled: getChk('cp-bank-bog-enabled', true),
+            bogClientId: getVal('cp-bank-bog-client-id'),
+            bogSecret: getVal('cp-bank-bog-secret'),
+            bogIban: getVal('cp-bank-bog-iban').toUpperCase(),
+            bogUrl: getVal('cp-bank-bog-url'),
+            bogScript: getVal('cp-bank-bog-script'),
+
+            tbcEnabled: getChk('cp-bank-tbc-enabled', true),
+            tbcClientId: getVal('cp-bank-tbc-client-id'),
+            tbcSecret: getVal('cp-bank-tbc-secret'),
+            tbcIban: getVal('cp-bank-tbc-iban').toUpperCase(),
+            tbcUrl: getVal('cp-bank-tbc-url'),
+            tbcScript: getVal('cp-bank-tbc-script'),
+
+            credoEnabled: getChk('cp-bank-credo-enabled', true),
+            credoClientId: getVal('cp-bank-credo-client-id'),
+            credoSecret: getVal('cp-bank-credo-secret'),
+            credoUrl: getVal('cp-bank-credo-url'),
+            credoScript: getVal('cp-bank-credo-script'),
+
+            receiverName: getVal('cp-bank-receiver-name') || 'გოჩა იასეშვილი',
+            cardUrl: getVal('cp-bank-card-url'),
+            autoRedirect: getChk('cp-bank-auto-redirect', true),
+          };
+
+          saveStateEverywhere();
+          if (typeof syncPaymentDropdownWithBankConfig === 'function') {
+            syncPaymentDropdownWithBankConfig();
+          }
+          if (typeof updateQoInstallmentCalculator === 'function') {
+            updateQoInstallmentCalculator();
+          }
+        }
+
+        if (cpBanksSection) {
+          cpBanksSection.addEventListener('input', () => {
+            saveBanksConfig();
+          });
+          cpBanksSection.addEventListener('change', () => {
+            saveBanksConfig();
+          });
+        }
+
+        ['cp-save-banks-btn', 'cp-save-banks-top-btn'].forEach((btnId) => {
+          const btnEl = document.getElementById(btnId);
+          if (btnEl) {
+            btnEl.addEventListener('click', () => {
+              saveBanksConfig();
+              showCpToast('🏦 ბანკების კოდები, IBAN ანგარიშები და განვადების პარამეტრები შეინახა და აისახა საიტზე!');
+            });
+          }
+        });
+
+        const showSecretsToggleBtn = document.getElementById('cp-show-secrets-toggle-btn');
+        if (showSecretsToggleBtn) {
+          showSecretsToggleBtn.addEventListener('click', () => {
+            ['cp-bank-bog-secret', 'cp-bank-tbc-secret', 'cp-bank-credo-secret'].forEach((secId) => {
+              const inp = document.getElementById(secId);
+              if (inp) {
+                inp.type = inp.type === 'password' ? 'text' : 'password';
+              }
+            });
+          });
+        }
+
         const floatingQuickContactEl = document.getElementById('floating-quick-contact');
         const floatingBackBtn = document.getElementById('floating-back-btn');
         const modalFooterAdminBtn = document.getElementById('modal-footer-admin-btn');
@@ -15135,6 +15281,9 @@
         }
 
         openCpBtn.addEventListener('click', () => openControlPanel('list'));
+        if (openCpBanksBtn) {
+          openCpBanksBtn.addEventListener('click', () => openControlPanel('banks'));
+        }
         quickAddBtn.addEventListener('click', () => {
           resetProductForm();
           openControlPanel('form');
