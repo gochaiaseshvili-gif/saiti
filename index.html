@@ -8321,6 +8321,132 @@
 
             <input type="hidden" id="cp-prod-id" value="" />
 
+            <!-- PRODUCT SPECIFIC ANALYTICS & SALES DASHBOARD (ნახვები: დღეს, თვეში, წელს | გაყიდვები: ბარათით, განვადებით) -->
+            <div
+              id="cp-product-analytics-card"
+              class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-zinc-950 text-white shadow-xl border border-indigo-500/30 space-y-4"
+            >
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-xl shrink-0">📊</span>
+                  <div>
+                    <h4 class="text-sm sm:text-base font-black tracking-tight text-white flex items-center gap-2">
+                      <span>ამ ნივთის ანალიტიკა და სტატისტიკა</span>
+                      <span id="cp-stats-prod-badge" class="px-2 py-0.5 rounded-md bg-indigo-500/30 text-indigo-200 text-[11px] font-mono-num font-bold">#101</span>
+                    </h4>
+                    <p class="text-[11px] text-zinc-300">
+                      ნახვების რაოდენობა (დღეს, თვეში, წელს) და გაყიდვები (ბარათით და განვადებით)
+                    </p>
+                  </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <button
+                    type="button"
+                    id="cp-stat-test-view-btn"
+                    class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                    title="სატესტო ნახვის დამატება (დღეს/თვეში/წელს)"
+                  >
+                    👁️ +1 ნახვა
+                  </button>
+                  <button
+                    type="button"
+                    id="cp-stat-test-card-btn"
+                    class="px-2.5 py-1.5 rounded-xl bg-emerald-600/80 hover:bg-emerald-600 text-white text-[11px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                    title="სატესტო გაყიდვა ბარათით"
+                  >
+                    💳 +1 ბარათით
+                  </button>
+                  <button
+                    type="button"
+                    id="cp-stat-test-inst-btn"
+                    class="px-2.5 py-1.5 rounded-xl bg-amber-600/80 hover:bg-amber-600 text-white text-[11px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                    title="სატესტო გაყიდვა განვადებით"
+                  >
+                    🏦 +1 განვადებით
+                  </button>
+                  <button
+                    type="button"
+                    id="cp-stat-reset-btn"
+                    class="px-2.5 py-1.5 rounded-xl bg-rose-600/70 hover:bg-rose-600 text-white text-[11px] font-extrabold cursor-pointer active:scale-95 fast-transition"
+                    title="სტატისტიკის განულება მხოლოდ ამ ნივთისთვის"
+                  >
+                    🗑️
+                  </button>
+                  <button
+                    type="button"
+                    id="cp-stat-refresh-btn"
+                    class="px-2.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-[11px] font-extrabold cursor-pointer"
+                    title="განახლება"
+                  >
+                    🔄
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                <!-- 1. ნახვები (დღეს, თვეში, წელს, სულ) -->
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2.5">
+                  <div class="flex items-center justify-between text-xs font-bold text-indigo-300">
+                    <span class="flex items-center gap-1.5">
+                      <span>👥</span>
+                      <span>რამდენმა ადამიანმა ნახა ნივთი:</span>
+                    </span>
+                    <span class="text-[10px] text-zinc-400">რეალურ დროში</span>
+                  </div>
+                  <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="p-2 rounded-lg bg-white/5 border border-white/5">
+                      <div class="text-[10px] font-bold text-zinc-400">დღეს</div>
+                      <div id="cp-stat-views-today" class="text-lg sm:text-xl font-black text-amber-400">0</div>
+                      <div class="text-[9px] text-zinc-400">დღის განმ.</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white/5 border border-white/5">
+                      <div class="text-[10px] font-bold text-zinc-400">თვეში</div>
+                      <div id="cp-stat-views-month" class="text-lg sm:text-xl font-black text-blue-400">0</div>
+                      <div class="text-[9px] text-zinc-400">თვის განმ.</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white/5 border border-white/5">
+                      <div class="text-[10px] font-bold text-zinc-400">წელს</div>
+                      <div id="cp-stat-views-year" class="text-lg sm:text-xl font-black text-purple-400">0</div>
+                      <div class="text-[9px] text-zinc-400">წლის განმ.</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white/5 border border-white/5">
+                      <div class="text-[10px] font-bold text-zinc-400">სულ</div>
+                      <div id="cp-stat-views-total" class="text-lg sm:text-xl font-black text-emerald-400">0</div>
+                      <div class="text-[9px] text-zinc-400">ჯამური ნახვა</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 2. გაყიდვები (ბარათით, განვადებით, სულ) -->
+                <div class="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2.5">
+                  <div class="flex items-center justify-between text-xs font-bold text-emerald-300">
+                    <span class="flex items-center gap-1.5">
+                      <span>🛍️</span>
+                      <span>გაყიდული რაოდენობა:</span>
+                    </span>
+                    <span class="text-[10px] text-zinc-400">დამტკიცებული</span>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                      <div class="text-[10px] font-bold text-emerald-300">💳 ბარათით</div>
+                      <div id="cp-stat-sales-card" class="text-lg sm:text-xl font-black text-emerald-400">0</div>
+                      <div class="text-[9px] text-emerald-200/70">ცალი გაყიდული</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                      <div class="text-[10px] font-bold text-amber-300">🏦 განვადებით</div>
+                      <div id="cp-stat-sales-installment" class="text-lg sm:text-xl font-black text-amber-400">0</div>
+                      <div class="text-[9px] text-amber-200/70">ცალი გაყიდული</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-white/10 border border-white/15">
+                      <div class="text-[10px] font-bold text-white">📦 სულ გაყიდული</div>
+                      <div id="cp-stat-sales-total" class="text-lg sm:text-xl font-black text-white">0</div>
+                      <div class="text-[9px] text-zinc-300">ჯამური ცალი</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- 5-IMAGE GALLERY UPLOADER MODULE -->
             <div class="p-4 sm:p-5 rounded-2xl bg-stone-50 border border-zinc-200/90 space-y-4">
               <!-- Big 1-Click 5-Photo Multi-Select Dropzone Button -->
