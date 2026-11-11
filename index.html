@@ -7767,6 +7767,340 @@
     </div>
 
     <!-- ======================================================================================== -->
+    <!-- DILO DELIVERY (dilo.ge) OFFICIAL TRACKING MODAL (ამანათის თვალთვალი) -->
+    <!-- ======================================================================================== -->
+    <div
+      id="dilo-tracking-modal"
+      class="fixed inset-0 z-[96] hidden bg-zinc-950/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-orange-200 overflow-hidden flex flex-col max-h-[92vh]">
+        <!-- Header -->
+        <div class="px-5 py-4 bg-gradient-to-r from-orange-600 via-amber-600 to-orange-500 text-white flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center text-2xl shadow-inner">
+              🚚
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base sm:text-lg font-black tracking-tight leading-tight">Dilo Delivery • ამანათის თვალთვალი</h3>
+                <span class="text-[10px] font-black uppercase tracking-wider bg-white/20 text-white px-2 py-0.5 rounded-full">dilo.ge</span>
+              </div>
+              <p class="text-xs text-orange-100 font-medium">სწრაფი საკურიერო მიწოდება მთელ საქართველოში</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-dilo-tracking-modal-btn"
+            class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 text-white font-bold flex items-center justify-center text-lg cursor-pointer transition-all"
+            aria-label="დახურვა"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-5 flex-1 bg-stone-50/50">
+          <!-- Search Box -->
+          <div class="bg-white rounded-2xl p-4 border border-zinc-200 shadow-2xs space-y-3">
+            <label for="dilo-tracking-input" class="block text-xs font-black text-zinc-900">
+              🔍 შეიყვანეთ ამანათის თრექინგ კოდი ან ტელეფონის ნომერი:
+            </label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <div class="relative flex-1">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 text-sm">📦</span>
+                <input
+                  type="text"
+                  id="dilo-tracking-input"
+                  placeholder="მაგ: DL-29481 ან 551 58 85 79"
+                  class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-sm font-bold text-zinc-900 outline-none"
+                />
+              </div>
+              <button
+                type="button"
+                id="dilo-tracking-search-btn"
+                class="px-5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs sm:text-sm cursor-pointer shadow-sm transition-all"
+              >
+                შემოწმება
+              </button>
+            </div>
+            <!-- Quick Sample Chips -->
+            <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-zinc-500 pt-1">
+              <span class="font-bold">სწრაფი ნიმუში:</span>
+              <button type="button" class="dilo-sample-chip px-2.5 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-800 font-extrabold cursor-pointer border border-orange-200" data-code="DL-48192">
+                DL-48192 (თბილისი)
+              </button>
+              <button type="button" class="dilo-sample-chip px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 font-extrabold cursor-pointer border border-amber-200" data-code="DL-92041">
+                DL-92041 (რეგიონი)
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Tracking Timeline Display -->
+          <div id="dilo-tracking-result" class="bg-white rounded-2xl p-5 border border-zinc-200 shadow-2xs space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-zinc-100">
+              <div>
+                <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">ამანათის სტატუსი</span>
+                <div class="text-base font-black text-zinc-950 flex items-center gap-2">
+                  <span id="dilo-res-code" class="font-mono text-orange-600 font-black">DL-48192</span>
+                  <span id="dilo-res-badge" class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black">
+                    🚚 გზაშია კურიერთან
+                  </span>
+                </div>
+              </div>
+              <div class="text-left sm:text-right text-xs">
+                <span class="text-zinc-400 font-semibold">მიწოდების სავარაუდო დრო:</span>
+                <div id="dilo-res-eta" class="font-black text-zinc-900">დღეს, 16:00 - 18:00 სთ-მდე</div>
+              </div>
+            </div>
+
+            <!-- Steps Progress Bar -->
+            <div class="space-y-3 py-2">
+              <div class="relative flex items-center justify-between">
+                <!-- Line behind steps -->
+                <div class="absolute left-4 right-4 top-1/2 -translate-y-1/2 h-1 bg-zinc-200 -z-0"></div>
+                <div id="dilo-progress-line" class="absolute left-4 top-1/2 -translate-y-1/2 h-1 bg-orange-500 transition-all duration-500 -z-0" style="width: 66%;"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white">
+                    ✓
+                  </div>
+                  <span class="text-[10px] font-black text-zinc-800 mt-1">მიღებულია</span>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white">
+                    ✓
+                  </div>
+                  <span class="text-[10px] font-black text-zinc-800 mt-1">კურიერთან</span>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white animate-pulse">
+                    🚚
+                  </div>
+                  <span class="text-[10px] font-black text-orange-600 mt-1">გზაშია</span>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="relative z-10 flex flex-col items-center">
+                  <div class="w-8 h-8 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white">
+                    4
+                  </div>
+                  <span class="text-[10px] font-bold text-zinc-400 mt-1">ჩაბარდა</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detailed Steps Log -->
+            <div class="bg-stone-50 rounded-xl p-3 border border-zinc-100 space-y-2 text-xs">
+              <div class="flex items-start gap-2 text-zinc-700">
+                <span class="text-emerald-600 font-black">●</span>
+                <div class="flex-1">
+                  <span class="font-black">კურიერი გზაშია მიმღებთან:</span>
+                  <span class="text-zinc-500 ml-1">ამანათი გატანილია Dilo-ს საწყობიდან კურიერის მიერ</span>
+                </div>
+                <span class="text-[10px] text-zinc-400 font-mono">13:45</span>
+              </div>
+              <div class="flex items-start gap-2 text-zinc-700">
+                <span class="text-orange-600 font-black">●</span>
+                <div class="flex-1">
+                  <span class="font-black">დახარისხდა Dilo Delivery-ს ჰაბში:</span>
+                  <span class="text-zinc-500 ml-1">თბილისი, კოსმონავტების სანაპირო 25ა</span>
+                </div>
+                <span class="text-[10px] text-zinc-400 font-mono">11:20</span>
+              </div>
+              <div class="flex items-start gap-2 text-zinc-700">
+                <span class="text-zinc-400 font-black">●</span>
+                <div class="flex-1">
+                  <span class="font-black">შეკვეთა რეგისტრირებულია:</span>
+                  <span class="text-zinc-500 ml-1">მომწოდებელი: iyidebaa.ge (ი.მ გოჩა იასეშვილი)</span>
+                </div>
+                <span class="text-[10px] text-zinc-400 font-mono">09:15</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dilo Delivery Service Details & Hotline -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="bg-white rounded-2xl p-3.5 border border-zinc-200 shadow-2xs space-y-1.5">
+              <div class="font-black text-zinc-900 flex items-center gap-1.5">
+                <span>⚡</span>
+                <span>მიტანის ვადები</span>
+              </div>
+              <ul class="text-[11px] text-zinc-600 space-y-1 leading-snug">
+                <li>• <strong>თბილისში:</strong> იმავე დღეს (2-4 საათში)</li>
+                <li>• <strong>ყველა რეგიონსა და სოფელში:</strong> 1-3 სამუშაო დღეში</li>
+              </ul>
+            </div>
+            <div class="bg-white rounded-2xl p-3.5 border border-zinc-200 shadow-2xs space-y-1.5">
+              <div class="font-black text-zinc-900 flex items-center gap-1.5">
+                <span>📞</span>
+                <span>Dilo-ს კონტაქტი</span>
+              </div>
+              <div class="text-[11px] text-zinc-600 space-y-1 leading-snug">
+                <div>ცხელი ხაზი: <a href="tel:595304000" class="font-black text-orange-600 hover:underline">595 304 000</a></div>
+                <div>მისამართი: თბილისი, კოსმონავტების 25ა</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 py-3.5 bg-white border-t border-zinc-200 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <a
+            href="https://dilo.ge"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-orange-700 hover:text-orange-800 font-black"
+          >
+            🌐 dilo.ge ოფიციალური ვებ-გვერდი ↗
+          </a>
+          <button
+            type="button"
+            id="close-dilo-tracking-footer-btn"
+            class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-black cursor-pointer"
+          >
+            დახურვა
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
+    <!-- DILO DISPATCH & TRACKING MANAGEMENT MODAL (ADMIN: GOCHA'S WORKFLOW) -->
+    <!-- ======================================================================================== -->
+    <div
+      id="dilo-dispatch-modal"
+      class="fixed inset-0 z-[97] hidden bg-zinc-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-orange-300 overflow-hidden flex flex-col max-h-[92vh]">
+        <!-- Header -->
+        <div class="px-5 py-4 bg-gradient-to-r from-orange-600 to-amber-600 text-white flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-2xl">
+              📦
+            </div>
+            <div>
+              <h3 class="text-base sm:text-lg font-black leading-tight">Dilo Delivery-ზე გაფორმება</h3>
+              <p class="text-xs text-orange-100 font-medium">საკურიერო ამანათის გაგზავნა & თრექინგ კოდის მიბმა</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            id="close-dilo-dispatch-modal-btn"
+            class="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 text-white font-bold flex items-center justify-center text-lg cursor-pointer transition-all"
+            aria-label="დახურვა"
+          >
+            ✕
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="p-5 sm:p-6 overflow-y-auto space-y-4 flex-1 bg-stone-50/50">
+          <!-- Recipient & Order Data Card -->
+          <div class="bg-white rounded-2xl p-4 border border-zinc-200 shadow-2xs space-y-2.5">
+            <div class="flex items-center justify-between gap-2 pb-2 border-b border-zinc-100">
+              <span class="text-xs font-black text-zinc-900">📋 შეკვეთის მონაცემები Dilo-სთვის</span>
+              <span id="dispatch-sale-id-badge" class="font-mono text-[10px] bg-zinc-100 text-zinc-600 px-2 py-0.5 rounded">ID</span>
+            </div>
+            <div class="space-y-1.5 text-xs">
+              <div class="flex justify-between gap-2">
+                <span class="text-zinc-500">პროდუქტი:</span>
+                <span id="dispatch-product-name" class="font-black text-zinc-900 text-right"></span>
+              </div>
+              <div class="flex justify-between gap-2">
+                <span class="text-zinc-500">თანხა:</span>
+                <span id="dispatch-amount" class="font-black text-emerald-700 text-right font-mono-num"></span>
+              </div>
+              <div class="flex justify-between gap-2">
+                <span class="text-zinc-500">ტელეფონი:</span>
+                <span id="dispatch-customer-phone" class="font-black text-zinc-900 text-right font-mono"></span>
+              </div>
+              <div class="flex justify-between gap-2">
+                <span class="text-zinc-500">გადახდის ფორმა:</span>
+                <span id="dispatch-payment-mode" class="font-bold text-zinc-800 text-right"></span>
+              </div>
+            </div>
+
+            <!-- 1-Click Copy For Dilo.ge -->
+            <button
+              type="button"
+              id="copy-dispatch-info-btn"
+              class="w-full mt-2 py-2.5 rounded-xl bg-orange-50 hover:bg-orange-100 active:scale-98 text-orange-800 font-black text-xs border border-orange-200 flex items-center justify-center gap-2 cursor-pointer transition-all"
+            >
+              <span>📋</span>
+              <span id="copy-dispatch-info-label">Dilo.ge-სთვის ტექსტის კოპირება (1 კლიკით)</span>
+            </button>
+          </div>
+
+          <!-- Open Dilo Cabinet -->
+          <a
+            href="https://dilo.ge"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-full py-3 rounded-2xl bg-zinc-900 hover:bg-zinc-800 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all text-center block"
+          >
+            <span>🌐</span>
+            <span>Dilo.ge კაბინეტში შესვლა ამანათის დასარეგისტრირებლად ↗</span>
+          </a>
+
+          <!-- Assign Tracking Code Section -->
+          <div class="bg-white rounded-2xl p-4 border border-orange-200 shadow-2xs space-y-3">
+            <div>
+              <label for="dispatch-tracking-code-input" class="block text-xs font-black text-zinc-900">
+                🏷️ Dilo-ს მიერ მონიჭებული თრექინგ კოდი:
+              </label>
+              <p class="text-[11px] text-zinc-500 mt-0.5">შეიყვანეთ კოდი (მაგ: DL-28491) და შეინახეთ შეკვეთაზე</p>
+            </div>
+            <div class="flex gap-2">
+              <input
+                type="text"
+                id="dispatch-tracking-code-input"
+                placeholder="მაგ: DL-28491"
+                class="flex-1 px-3.5 py-2.5 rounded-xl border border-zinc-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-200 text-sm font-mono font-bold outline-none"
+              />
+              <button
+                type="button"
+                id="save-dispatch-tracking-btn"
+                class="px-4 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-black text-xs cursor-pointer shadow-sm transition-all whitespace-nowrap"
+              >
+                💾 შენახვა
+              </button>
+            </div>
+
+            <!-- Send to customer via WhatsApp -->
+            <button
+              type="button"
+              id="send-tracking-whatsapp-btn"
+              class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-black text-xs flex items-center justify-center gap-2 cursor-pointer transition-all"
+            >
+              <span>💬</span>
+              <span>WhatsApp-ით კოდის გაგზავნა მყიდველთან</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="px-5 py-3 bg-white border-t border-zinc-200 flex justify-end">
+          <button
+            type="button"
+            id="close-dilo-dispatch-footer-btn"
+            class="px-5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white font-black text-xs cursor-pointer"
+          >
+            დახურვა
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================================== -->
     <!-- BANK OF GEORGIA OFFICIAL INSTALLMENT MONTH SELECTOR MODAL ("განვადებით ყიდვა" 3-48 თვე) -->
     <!-- ======================================================================================== -->
     <div
