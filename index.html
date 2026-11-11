@@ -20006,9 +20006,10 @@
         setInterval(() => fetchSalesNotifications(true), 15000);
 
         // =========================================================================
-        // DILO DELIVERY (dilo.ge) LIVE PARTNER API INTEGRATION CONTROLLER
+        // DILO DELIVERY (dilo.ge/send) LIVE PARTNER API INTEGRATION CONTROLLER
         // =========================================================================
         let activeDispatchSale = null;
+        let activeDiloOrderType = 'Send';
         let diloCitiesCache = [];
         let diloDistrictsByCityCache = {};
         let diloPartnerOrdersCache = [];
@@ -20018,47 +20019,47 @@
 
         const DILO_STATUS_INFO = {
           1: { label: '📝 შექმნილია (მოლოდინში)', badgeClass: 'bg-amber-100 text-amber-900', eta: 'კურიერი მალე წამოიღებს', progress: '20%', step: 1 },
+          Created: { label: '📝 შექმნილია (მოლოდინში)', badgeClass: 'bg-amber-100 text-amber-900', eta: 'კურიერი მალე წამოიღებს', progress: '20%', step: 1 },
           2: { label: '✅ მიღებულია სისტემაში', badgeClass: 'bg-sky-100 text-sky-900', eta: 'მზადდება წამოსაღებად', progress: '35%', step: 1 },
+          Accepted: { label: '✅ მიღებულია სისტემაში', badgeClass: 'bg-sky-100 text-sky-900', eta: 'მზადდება წამოსაღებად', progress: '35%', step: 1 },
           3: { label: '🚐 კურიერი მოდის წამოსაღებად', badgeClass: 'bg-indigo-100 text-indigo-900', eta: 'გამგზავნიდან წამოღების პროცესში', progress: '45%', step: 2 },
+          PickupInProgress: { label: '🚐 კურიერი მოდის წამოსაღებად', badgeClass: 'bg-indigo-100 text-indigo-900', eta: 'გამგზავნიდან წამოღების პროცესში', progress: '45%', step: 2 },
           4: { label: '🏢 Dilo-ს დახარისხების ჰაბშია', badgeClass: 'bg-purple-100 text-purple-900', eta: '1-2 სამუშაო დღეში', progress: '55%', step: 2 },
+          AtWarehouse: { label: '🏢 Dilo-ს დახარისხების ჰაბშია', badgeClass: 'bg-purple-100 text-purple-900', eta: '1-2 სამუშაო დღეში', progress: '55%', step: 2 },
           5: { label: '🚚 გზაშია მიმღების ქალაქისკენ', badgeClass: 'bg-amber-100 text-amber-900', eta: '1-2 სამუშაო დღეში', progress: '70%', step: 3 },
+          InTransit: { label: '🚚 გზაშია მიმღების ქალაქისკენ', badgeClass: 'bg-amber-100 text-amber-900', eta: '1-2 სამუშაო დღეში', progress: '70%', step: 3 },
           6: { label: '🛵 კურიერს მოაქვს მისამართზე', badgeClass: 'bg-emerald-100 text-emerald-900', eta: 'დღეს ჩაბარდება მისამართზე', progress: '85%', step: 3 },
+          OutForDelivery: { label: '🛵 კურიერს მოაქვს მისამართზე', badgeClass: 'bg-emerald-100 text-emerald-900', eta: 'დღეს ჩაბარდება მისამართზე', progress: '85%', step: 3 },
           7: { label: '🎉 ჩაბარებულია მიმღებზე ✓', badgeClass: 'bg-emerald-600 text-white', eta: 'წარმატებით ჩაბარდა', progress: '100%', step: 4 },
+          Delivered: { label: '🎉 ჩაბარებულია მიმღებზე ✓', badgeClass: 'bg-emerald-600 text-white', eta: 'წარმატებით ჩაბარდა', progress: '100%', step: 4 },
           8: { label: '⏳ მიწოდება გადაიდო', badgeClass: 'bg-orange-100 text-orange-900', eta: 'დაგიკავშირდებათ კურიერი', progress: '60%', step: 3 },
+          Postponed: { label: '⏳ მიწოდება გადაიდო', badgeClass: 'bg-orange-100 text-orange-900', eta: 'დაგიკავშირდებათ კურიერი', progress: '60%', step: 3 },
           9: { label: '❌ გაუქმებულია', badgeClass: 'bg-rose-100 text-rose-800', eta: 'შეკვეთა გაუქმებულია', progress: '0%', step: 1 },
-          10: { label: '↩️ უკან დაბრუნებულია', badgeClass: 'bg-slate-200 text-slate-800', eta: 'დაუბრუნდა გამგზავნს', progress: '100%', step: 2 }
+          Cancelled: { label: '❌ გაუქმებულია', badgeClass: 'bg-rose-100 text-rose-800', eta: 'შეკვეთა გაუქმებულია', progress: '0%', step: 1 },
+          10: { label: '↩️ უკან დაბრუნებულია', badgeClass: 'bg-slate-200 text-slate-800', eta: 'დაუბრუნდა გამგზავნს', progress: '100%', step: 2 },
+          Returned: { label: '↩️ უკან დაბრუნებულია', badgeClass: 'bg-slate-200 text-slate-800', eta: 'დაუბრუნდა გამგზავნს', progress: '100%', step: 2 }
         };
 
         function updateDiloStepVisuals(activeStep) {
           for (let i = 1; i <= 4; i++) {
-            const stepEl = document.getElementById(`dilo-step-${i}`);
-            if (!stepEl) continue;
-            const circle = stepEl.querySelector('span:first-child');
-            const label = stepEl.querySelector('span:last-child');
+            const stepCircle = document.getElementById(`dilo-step-${i}`);
+            if (!stepCircle) continue;
             if (i < activeStep || (activeStep === 4 && i === 4)) {
-              if (circle) {
-                circle.className = 'w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow ring-4 ring-emerald-50';
-                circle.textContent = '✓';
-              }
-              if (label) label.className = 'text-[10px] font-black text-emerald-900 text-center leading-tight';
+              stepCircle.className = 'w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white';
+              stepCircle.textContent = '✓';
             } else if (i === activeStep) {
-              if (circle) {
-                circle.className = 'w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-black shadow ring-4 ring-amber-100 animate-pulse';
-                circle.textContent = i === 3 ? '🚚' : String(i);
-              }
-              if (label) label.className = 'text-[10px] font-black text-amber-900 text-center leading-tight';
+              stepCircle.className = 'w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-amber-100 animate-pulse';
+              stepCircle.textContent = i === 3 ? '🚚' : String(i);
             } else {
-              if (circle) {
-                circle.className = 'w-7 h-7 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center text-xs font-black ring-4 ring-white';
-                circle.textContent = String(i);
-              }
-              if (label) label.className = 'text-[10px] font-bold text-slate-500 text-center leading-tight';
+              stepCircle.className = 'w-8 h-8 rounded-full bg-zinc-200 text-zinc-500 flex items-center justify-center text-xs font-black shadow-xs ring-4 ring-white';
+              stepCircle.textContent = String(i);
             }
           }
         }
 
         function openDiloTrackingModal(initialCode = '') {
           if (!diloTrackingModalEl) return;
+          if (diloDispatchModalEl) diloDispatchModalEl.classList.add('hidden');
           diloTrackingModalEl.classList.remove('hidden');
           const inputEl = document.getElementById('dilo-tracking-input');
           if (inputEl) {
@@ -20083,8 +20084,7 @@
           const badgeEl = document.getElementById('dilo-res-badge');
           const etaEl = document.getElementById('dilo-res-eta');
           const lineEl = document.getElementById('dilo-progress-line');
-          const errBox = document.getElementById('dilo-tracking-error-box');
-          const errText = document.getElementById('dilo-tracking-error-text');
+          const errBox = document.getElementById('dilo-tracking-error');
           const detRecip = document.getElementById('dilo-det-recipient');
           const detLoc = document.getElementById('dilo-det-location');
           const detAddr = document.getElementById('dilo-det-address');
@@ -20094,11 +20094,10 @@
           if (errBox) errBox.classList.add('hidden');
           if (codeEl) codeEl.textContent = raw.toUpperCase();
           if (badgeEl) {
-            badgeEl.className = 'px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[11px] font-black animate-pulse';
+            badgeEl.className = 'px-2.5 py-0.5 rounded-full bg-zinc-200 text-zinc-700 text-[11px] font-black animate-pulse';
             badgeEl.textContent = '⏳ მოწმდება Dilo.ge-ზე...';
           }
 
-          // Check if query matches a local sale notification first (in case customer typed phone number that maps to a saved tracking code)
           let lookupQuery = raw;
           const matchedSale = allSalesNotifications.find(
             (s) =>
@@ -20117,9 +20116,9 @@
             });
             const data = await res.json();
 
-            if (!res.ok || !data.success || !data.order) {
-              if (errBox && errText) {
-                errText.textContent = (data && data.message) || `ამანათი კოდით "${raw}" ვერ მოიძებნა Dilo.ge ბაზაში.`;
+            if (!res.ok || (!data.ok && !data.success) || !data.order) {
+              if (errBox) {
+                errBox.textContent = (data && (data.error || data.message)) || `ამანათი კოდით "${raw}" ვერ მოიძებნა Dilo.ge ბაზაში.`;
                 errBox.classList.remove('hidden');
               }
               if (badgeEl) {
@@ -20130,7 +20129,8 @@
             }
 
             const ord = data.order;
-            const stInfo = DILO_STATUS_INFO[ord.status] || DILO_STATUS_INFO[1];
+            const stKey = ord.statusCode || ord.status || 1;
+            const stInfo = DILO_STATUS_INFO[stKey] || DILO_STATUS_INFO[ord.status] || DILO_STATUS_INFO[1];
 
             if (codeEl) codeEl.textContent = ord.trackingNumber || lookupQuery.toUpperCase();
             if (badgeEl) {
@@ -20146,31 +20146,31 @@
             updateDiloStepVisuals(stInfo.step);
 
             if (detRecip) {
-              const maskedPhone = ord.recipientPhone
-                ? String(ord.recipientPhone).replace(/(\d{3})\d{3}(\d{3})/, '$1 *** $2')
-                : '';
-              detRecip.textContent = `${ord.recipientName || 'მიმღები'}${maskedPhone ? ` (${maskedPhone})` : ''}`;
+              const phoneTxt = ord.recipientPhone ? ` (${ord.recipientPhone})` : '';
+              detRecip.textContent = `${ord.recipientName || 'მიმღები'}${phoneTxt}`;
             }
             if (detLoc) {
-              detLoc.textContent = [ord.recipientCityName, ord.recipientDistrictName].filter(Boolean).join(' — ') || 'საქართველო';
+              const cityTxt = ord.recipientCity || ord.recipientCityName || '';
+              const distTxt = ord.recipientDistrict || ord.recipientDistrictName || '';
+              detLoc.textContent = [cityTxt, distTxt].filter(Boolean).join(' — ') || 'საქართველო';
             }
             if (detAddr) {
               detAddr.textContent = ord.recipientAddress || 'მისამართი მითითებულია სისტემაში';
             }
             if (detCod) {
-              const codVal = Number(ord.codAmount) || 0;
-              const feeVal = Number(ord.deliveryFee) || 0;
+              const codVal = Number(ord.amountToCollectForPackage ?? ord.codAmount) || 0;
+              const feeVal = Number(ord.companyServicePrice ?? ord.deliveryFee) || 0;
               detCod.textContent = codVal > 0
                 ? `კურიერთან გადასახდელი: ${codVal} ₾ (ტარიფი: ${feeVal} ₾)`
-                : `სრულად გადახდილია ✓ (ტარიფი: ${feeVal} ₾)`;
+                : `გადახდილია ✓ (ტარიფი: ${feeVal} ₾)`;
             }
             if (detDate) {
               const createdStr = ord.createdAt ? new Date(ord.createdAt).toLocaleString('ka-GE') : '';
-              detDate.textContent = createdStr ? `შექმნის დრო: ${createdStr}` : '';
+              detDate.textContent = createdStr || '—';
             }
           } catch (err) {
-            if (errBox && errText) {
-              errText.textContent = 'დროებით ვერ მოხერხდა Dilo.ge სერვერთან დაკავშირება.';
+            if (errBox) {
+              errBox.textContent = 'დროებით ვერ მოხერხდა Dilo.ge სერვერთან დაკავშირება.';
               errBox.classList.remove('hidden');
             }
           }
@@ -20204,27 +20204,54 @@
           });
         });
 
-        // Toolbar & Footer Open Tracking Buttons
+        // =========================================================================
+        // DILO.GE/SEND BUTTONS -> OPEN OFFICIAL ORDER FORM IMMEDIATELY
+        // =========================================================================
+        function openDiloSendForProduct(rawProduct) {
+          if (!rawProduct) {
+            openDiloDispatchModal(null, 'create');
+            return;
+          }
+          const prodTitle = (rawProduct.ka && rawProduct.ka.name) || rawProduct.name || 'პროდუქტი';
+          const prodPrice = Number(rawProduct.newPrice ?? rawProduct.price) || 0;
+          openDiloDispatchModal(null, 'create', {
+            id: rawProduct.id || 'PRODUCT',
+            productId: rawProduct.id || '',
+            productName: prodTitle,
+            amount: prodPrice,
+            customerPhone: '',
+            mode: 'cod'
+          });
+        }
+        window.openDiloSendForProduct = openDiloSendForProduct;
+
+        // Header & Footer buttons -> open Dilo.ge/send modal directly!
         const toolbarDiloBtn = document.getElementById('toolbar-dilo-tracking-btn');
         if (toolbarDiloBtn) {
-          toolbarDiloBtn.addEventListener('click', () => openDiloTrackingModal());
+          toolbarDiloBtn.addEventListener('click', () => openDiloDispatchModal(null, 'create'));
         }
         const footerDiloBtn = document.getElementById('footer-dilo-tracking-btn');
         if (footerDiloBtn) {
-          footerDiloBtn.addEventListener('click', () => openDiloTrackingModal());
+          footerDiloBtn.addEventListener('click', () => openDiloDispatchModal(null, 'create'));
         }
 
-        // Product Details Modal & Control Panel Dilo Tracking Buttons
+        // Product Details Modal Dilo Send & Track Buttons
+        const modalDiloSendBtn = document.getElementById('modal-open-dilo-send-btn');
+        if (modalDiloSendBtn) {
+          modalDiloSendBtn.addEventListener('click', () => {
+            openDiloSendForProduct(typeof activeModalProduct !== 'undefined' ? activeModalProduct : null);
+          });
+        }
         const modalDiloTrackBtn = document.getElementById('modal-open-dilo-track-btn');
         if (modalDiloTrackBtn) {
           modalDiloTrackBtn.addEventListener('click', () => openDiloTrackingModal());
         }
         const cpDiloTrackBtn = document.getElementById('cp-dilo-track-btn');
         if (cpDiloTrackBtn) {
-          cpDiloTrackBtn.addEventListener('click', () => openDiloTrackingModal());
+          cpDiloTrackBtn.addEventListener('click', () => openDiloDispatchModal(null, 'create'));
         }
 
-        // Buttons inside Tracking Modal to jump to Admin Dispatch / Live Orders
+        // Buttons inside Tracking Modal to jump to Dilo.ge/send Order Form or Live Orders
         const openCreateFromTrackBtn = document.getElementById('open-dilo-create-from-track-btn');
         if (openCreateFromTrackBtn) {
           openCreateFromTrackBtn.addEventListener('click', () => {
@@ -20240,14 +20267,47 @@
           });
         }
 
-        // Catalog Grid Card Dilo Tracking Buttons delegation
+        // Switch from Dispatch Modal to Tracking Modal
+        const switchToTrackBtn = document.getElementById('dilo-tab-switch-track-btn');
+        if (switchToTrackBtn) {
+          switchToTrackBtn.addEventListener('click', () => {
+            if (diloDispatchModalEl) diloDispatchModalEl.classList.add('hidden');
+            openDiloTrackingModal();
+          });
+        }
+
+        // Catalog Grid Card Dilo Send & Tracking Buttons delegation
         document.addEventListener('click', (e) => {
+          const cardSendBtn = e.target.closest('[data-card-dilo-send]');
+          if (cardSendBtn) {
+            e.stopPropagation();
+            e.preventDefault();
+            const pid = cardSendBtn.getAttribute('data-card-dilo-send');
+            const foundProd = Array.isArray(productsList)
+              ? productsList.find((p) => String(p.id) === String(pid))
+              : null;
+            openDiloSendForProduct(foundProd);
+            return;
+          }
           const cardTrackBtn = e.target.closest('[data-card-dilo-track]');
           if (cardTrackBtn) {
             e.stopPropagation();
             e.preventDefault();
             openDiloTrackingModal();
           }
+        });
+
+        // Order Type buttons (გაგზავნა / დაბრუნება / გაცვლა)
+        document.querySelectorAll('.dilo-order-type-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            activeDiloOrderType = btn.getAttribute('data-dilo-order-type') || 'Send';
+            document.querySelectorAll('.dilo-order-type-btn').forEach((b) => {
+              const isAct = b === btn;
+              b.className = isAct
+                ? 'dilo-order-type-btn py-2 px-3 rounded-xl border-2 border-[#F6AA02] bg-amber-50/80 text-zinc-950 font-black text-xs cursor-pointer transition-all'
+                : 'dilo-order-type-btn py-2 px-3 rounded-xl border border-zinc-200 bg-white text-zinc-600 hover:bg-stone-50 font-bold text-xs cursor-pointer transition-all';
+            });
+          });
         });
 
         // Close Tracking Modal
@@ -20266,7 +20326,7 @@
         }
 
         // =========================================================================
-        // DILO CITIES & DISTRICTS LIVE LOADER + TARIFF BADGE
+        // DILO CITIES & DISTRICTS LIVE LOADER + 3-BOX FINANCIAL CALCULATOR
         // =========================================================================
         async function loadDiloCitiesAndDistricts() {
           const citySelect = document.getElementById('dilo-form-city');
@@ -20288,7 +20348,6 @@
           }
 
           if (diloCitiesCache.length > 0) {
-            // Put Tbilisi first, then alphabetical Geo
             const sorted = [...diloCitiesCache].sort((a, b) => {
               const nameA = a.cityNameGeo || a.cityName || '';
               const nameB = b.cityNameGeo || b.cityName || '';
@@ -20297,19 +20356,27 @@
               return nameA.localeCompare(nameB, 'ka');
             });
             citySelect.innerHTML = sorted
-              .map((c) => `<option value="${c.id}">${c.cityNameGeo || c.cityName}</option>`)
+              .map(
+                (c) =>
+                  `<option value="${c.cityNameGeo || c.cityName}" data-city-id="${c.id}">${
+                    c.cityNameGeo || c.cityName
+                  }</option>`
+              )
               .join('');
 
-            await loadDistrictsForDiloCity(citySelect.value);
+            const firstOpt = citySelect.options[citySelect.selectedIndex];
+            const firstCityId = firstOpt ? firstOpt.getAttribute('data-city-id') : '';
+            if (firstCityId) {
+              await loadDistrictsForDiloCity(firstCityId);
+            }
           }
         }
 
         async function loadDistrictsForDiloCity(cityId) {
           const distSelect = document.getElementById('dilo-form-district');
-          const feeBadge = document.getElementById('dilo-district-fee-badge');
           if (!distSelect || !cityId) return;
 
-          distSelect.innerHTML = '<option value="">იტვირთება უბნები / სოფლები...</option>';
+          distSelect.innerHTML = '<option value="">იტვირთება რაიონები / სოფლები...</option>';
 
           if (!diloDistrictsByCityCache[cityId]) {
             try {
@@ -20327,7 +20394,8 @@
 
           const districts = diloDistrictsByCityCache[cityId] || [];
           if (districts.length === 0) {
-            distSelect.innerHTML = '<option value="">უბნები ვერ მოიძებნა</option>';
+            distSelect.innerHTML = '<option value="" data-price="7">ცენტრი (7 ₾)</option>';
+            recalculateDiloFinancials();
             return;
           }
 
@@ -20339,90 +20407,147 @@
           );
 
           distSelect.innerHTML = sortedDist
-            .map(
-              (d) =>
-                `<option value="${d.id}" data-price="${d.companyServicePrice || 0}">${
-                  d.districtNameGeo || d.districtName
-                } (${d.companyServicePrice || 0} ₾)</option>`
-            )
+            .map((d) => {
+              const geoName = d.districtNameGeo || d.districtName || '';
+              const price = Number(d.companyServicePrice) || (d.isCapitalTerritory ? 7 : 10);
+              return `<option value="${geoName}" data-price="${price}">${geoName} (${price} ₾)</option>`;
+            })
             .join('');
 
-          updateDiloFeeBadgeFromSelect();
+          recalculateDiloFinancials();
         }
 
-        function updateDiloFeeBadgeFromSelect() {
+        function getSelectedDiloServiceFee() {
           const distSelect = document.getElementById('dilo-form-district');
-          const feeBadge = document.getElementById('dilo-district-fee-badge');
-          if (!distSelect || !feeBadge) return;
+          if (!distSelect || distSelect.selectedIndex < 0) return 7;
           const opt = distSelect.options[distSelect.selectedIndex];
-          const price = opt ? opt.getAttribute('data-price') : null;
-          if (price) {
-            feeBadge.textContent = `ტარიფი: ${price} ₾`;
+          const p = opt ? Number(opt.getAttribute('data-price')) : 7;
+          return p > 0 ? p : 7;
+        }
+
+        function recalculateDiloFinancials() {
+          const feeBadge = document.getElementById('dilo-district-fee-badge');
+          const feeDisplay = document.getElementById('dilo-form-service-fee-display');
+          const totalDisplay = document.getElementById('dilo-form-total-collect-display');
+          const codInput = document.getElementById('dilo-form-cod-amount');
+          const payStatusEl = document.getElementById('dilo-form-payment-status');
+          const whoPaysEl = document.getElementById('dilo-form-who-pays');
+          const svcIncludedEl = document.getElementById('dilo-form-service-included');
+
+          const fee = getSelectedDiloServiceFee();
+          const isPaid = payStatusEl && payStatusEl.value === 'Paid';
+          const recipientPaysFee = !whoPaysEl || whoPaysEl.value === 'Recipient';
+          const isSvcIncluded = svcIncludedEl && svcIncludedEl.checked;
+          const parcelCod = isPaid ? 0 : Math.max(0, Number(codInput ? codInput.value : 0) || 0);
+
+          if (feeBadge) {
+            feeBadge.textContent = `საკურიერო ტარიფი: ${fee} ₾`;
+          }
+          if (feeDisplay) {
+            feeDisplay.textContent = `${fee} ₾`;
+          }
+
+          let totalToCollect = parcelCod;
+          if (recipientPaysFee && !isSvcIncluded) {
+            totalToCollect += fee;
+          }
+          if (totalDisplay) {
+            totalDisplay.textContent = `${totalToCollect} ₾`;
           }
         }
 
         const diloCitySelectEl = document.getElementById('dilo-form-city');
         if (diloCitySelectEl) {
           diloCitySelectEl.addEventListener('change', () => {
-            loadDistrictsForDiloCity(diloCitySelectEl.value);
+            const opt = diloCitySelectEl.options[diloCitySelectEl.selectedIndex];
+            const cityId = opt ? opt.getAttribute('data-city-id') : '';
+            if (cityId) loadDistrictsForDiloCity(cityId);
           });
         }
         const diloDistSelectEl = document.getElementById('dilo-form-district');
         if (diloDistSelectEl) {
-          diloDistSelectEl.addEventListener('change', updateDiloFeeBadgeFromSelect);
+          diloDistSelectEl.addEventListener('change', recalculateDiloFinancials);
         }
 
-        const diloPayTypeEl = document.getElementById('dilo-form-payment-type');
+        const diloPayStatusEl = document.getElementById('dilo-form-payment-status');
         const diloCodInputEl = document.getElementById('dilo-form-cod-amount');
-        if (diloPayTypeEl && diloCodInputEl) {
-          diloPayTypeEl.addEventListener('change', () => {
-            if (diloPayTypeEl.value === 'already_paid') {
+        const diloWhoPaysEl = document.getElementById('dilo-form-who-pays');
+        const diloSvcIncludedEl = document.getElementById('dilo-form-service-included');
+
+        if (diloPayStatusEl && diloCodInputEl) {
+          diloPayStatusEl.addEventListener('change', () => {
+            if (diloPayStatusEl.value === 'Paid') {
               diloCodInputEl.value = '0';
             } else if (activeDispatchSale && Number(activeDispatchSale.amount) > 0) {
               diloCodInputEl.value = String(Number(activeDispatchSale.amount));
             }
+            recalculateDiloFinancials();
           });
+        }
+        if (diloCodInputEl) {
+          diloCodInputEl.addEventListener('input', recalculateDiloFinancials);
+        }
+        if (diloWhoPaysEl) {
+          diloWhoPaysEl.addEventListener('change', recalculateDiloFinancials);
+        }
+        if (diloSvcIncludedEl) {
+          diloSvcIncludedEl.addEventListener('change', recalculateDiloFinancials);
         }
 
         // Tabs inside Dispatch Modal
         const tabCreateBtn = document.getElementById('dilo-tab-create-btn');
         const tabListBtn = document.getElementById('dilo-tab-list-btn');
-        const tabCreatePanel = document.getElementById('dilo-tab-create-panel');
-        const tabListPanel = document.getElementById('dilo-tab-list-panel');
+        const tabCreatePanel = document.getElementById('dilo-panel-create');
+        const tabListPanel = document.getElementById('dilo-panel-list');
 
         function switchDiloDispatchTab(mode = 'create') {
           if (!tabCreateBtn || !tabListBtn || !tabCreatePanel || !tabListPanel) return;
           if (mode === 'list') {
             tabCreatePanel.classList.add('hidden');
             tabListPanel.classList.remove('hidden');
-            tabListBtn.className = 'flex-1 py-2.5 px-3 rounded-xl font-black text-xs transition flex items-center justify-center gap-1.5 bg-amber-500 text-slate-950 shadow-sm cursor-pointer';
-            tabCreateBtn.className = 'flex-1 py-2.5 px-3 rounded-xl font-black text-xs transition flex items-center justify-center gap-1.5 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 cursor-pointer';
+            tabListBtn.className = 'py-2 px-3 rounded-xl bg-[#F6AA02] text-zinc-950 text-xs font-black cursor-pointer shadow-xs transition-all flex items-center justify-center gap-1.5';
+            tabCreateBtn.className = 'flex-1 min-w-[150px] py-2 px-3 rounded-xl bg-white hover:bg-amber-50 text-zinc-800 border border-zinc-300 text-xs font-black cursor-pointer transition-all flex items-center justify-center gap-1.5';
             loadDiloPartnerOrdersList();
           } else {
             tabListPanel.classList.add('hidden');
             tabCreatePanel.classList.remove('hidden');
-            tabCreateBtn.className = 'flex-1 py-2.5 px-3 rounded-xl font-black text-xs transition flex items-center justify-center gap-1.5 bg-amber-500 text-slate-950 shadow-sm cursor-pointer';
-            tabListBtn.className = 'flex-1 py-2.5 px-3 rounded-xl font-black text-xs transition flex items-center justify-center gap-1.5 bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 cursor-pointer';
+            tabCreateBtn.className = 'flex-1 min-w-[150px] py-2 px-3 rounded-xl bg-[#F6AA02] text-zinc-950 text-xs font-black cursor-pointer shadow-xs transition-all flex items-center justify-center gap-1.5';
+            tabListBtn.className = 'py-2 px-3 rounded-xl bg-white hover:bg-amber-50 text-zinc-800 border border-zinc-300 text-xs font-black cursor-pointer transition-all flex items-center justify-center gap-1.5';
           }
         }
 
         if (tabCreateBtn) tabCreateBtn.addEventListener('click', () => switchDiloDispatchTab('create'));
         if (tabListBtn) tabListBtn.addEventListener('click', () => switchDiloDispatchTab('list'));
 
-        // Admin Dispatch Modal Management
-        function openDiloDispatchModal(saleId = null, initialTab = 'create') {
+        // Open Dilo.ge/send Modal (for Customer or Admin)
+        function openDiloDispatchModal(saleId = null, initialTab = 'create', customContext = null) {
           if (!diloDispatchModalEl) return;
+          if (diloTrackingModalEl) diloTrackingModalEl.classList.add('hidden');
 
-          const sale = saleId
-            ? allSalesNotifications.find((s) => String(s.id) === String(saleId))
-            : allSalesNotifications[0] || null;
+          let sale = null;
+          if (customContext) {
+            sale = customContext;
+          } else if (saleId) {
+            sale = allSalesNotifications.find((s) => String(s.id) === String(saleId)) || null;
+          } else if (typeof activeModalProduct !== 'undefined' && activeModalProduct && !modalBackdrop.classList.contains('hidden')) {
+            const pTitle = (activeModalProduct.ka && activeModalProduct.ka.name) || activeModalProduct.name || 'პროდუქტი';
+            const pPrice = Number(activeModalProduct.newPrice ?? activeModalProduct.price) || 0;
+            sale = {
+              id: activeModalProduct.id || 'PRODUCT',
+              productId: activeModalProduct.id || '',
+              productName: pTitle,
+              amount: pPrice,
+              customerPhone: '',
+              mode: 'cod'
+            };
+          }
 
           activeDispatchSale = sale || {
-            id: 'MANUAL',
-            productName: 'პროდუქტი (iyidebaa.ge)',
+            id: 'NEW',
+            productName: 'შეკვეთა — iyidebaa.ge',
             amount: 0,
             customerPhone: '',
-            mode: 'card'
+            mode: 'cod'
           };
 
           const sBadge = document.getElementById('dispatch-sale-id-badge');
@@ -20432,84 +20557,98 @@
           const pMode = document.getElementById('dispatch-payment-mode');
           const codeInput = document.getElementById('dispatch-tracking-code-input');
 
-          const fName = document.getElementById('dilo-form-recipient-name');
-          const fPhone = document.getElementById('dilo-form-recipient-phone');
+          const fName = document.getElementById('dilo-form-name');
+          const fPhone = document.getElementById('dilo-form-phone');
+          const fPayStatus = document.getElementById('dilo-form-payment-status');
           const fCod = document.getElementById('dilo-form-cod-amount');
-          const fComment = document.getElementById('dilo-form-comment');
-          const createResBanner = document.getElementById('dilo-api-create-result');
+          const fDesc = document.getElementById('dilo-form-desc');
+          const fNote = document.getElementById('dilo-form-note');
+          const createFeedback = document.getElementById('dilo-create-feedback');
 
-          if (createResBanner) createResBanner.classList.add('hidden');
+          if (createFeedback) createFeedback.classList.add('hidden');
 
-          if (sBadge) sBadge.textContent = `#${activeDispatchSale.id}`;
+          const saleAmt = Number(activeDispatchSale.amount) || 0;
+          if (sBadge) sBadge.textContent = activeDispatchSale.id === 'NEW' ? 'DILO.GE/SEND' : `#${activeDispatchSale.id}`;
           if (pName) pName.textContent = activeDispatchSale.productName || 'პროდუქტი';
-          if (pAmount) pAmount.textContent = `${Number(activeDispatchSale.amount) || 0} ₾`;
-          if (pPhone) pPhone.textContent = activeDispatchSale.customerPhone || 'შეავსეთ ქვემოთ';
-          if (pMode) {
-            const isInst = activeDispatchSale.mode !== 'card';
-            pMode.textContent = isInst
-              ? `📄 განვადება (${activeDispatchSale.months || 12} თვე - ${activeDispatchSale.bank === 'credo' ? 'კრედო' : 'საქართველოს ბანკი'})`
-              : '💳 ბარათით გადახდილია';
-          }
+          if (pAmount) pAmount.textContent = `${saleAmt} ₾`;
+          if (pPhone) pPhone.textContent = activeDispatchSale.customerPhone || '—';
+          if (pMode) pMode.textContent = activeDispatchSale.mode === 'card' ? 'გადახდილი' : 'ადგილზე გადახდა';
+
           if (codeInput) {
             codeInput.value = activeDispatchSale.diloTrackingCode || '';
           }
-          if (fName) {
-            fName.value = activeDispatchSale.customerName || 'მყიდველი (iyidebaa.ge)';
+          if (fName && activeDispatchSale.customerName) {
+            fName.value = activeDispatchSale.customerName;
           }
-          if (fPhone) {
-            fPhone.value = activeDispatchSale.customerPhone || '';
+          if (fPhone && activeDispatchSale.customerPhone) {
+            fPhone.value = activeDispatchSale.customerPhone;
+          }
+
+          // If opened from an already-paid card/installment sale, mark as Paid; if opened by a customer from a product card, default to NotPaid (COD) with product price
+          const isAlreadyPaidSale = saleId && (activeDispatchSale.mode === 'card' || activeDispatchSale.mode === 'installment');
+          if (fPayStatus) {
+            fPayStatus.value = isAlreadyPaidSale ? 'Paid' : 'NotPaid';
           }
           if (fCod) {
-            fCod.value = '0';
+            fCod.value = isAlreadyPaidSale ? '0' : String(saleAmt);
           }
-          if (fComment) {
-            fComment.value = `${activeDispatchSale.productName || 'შეკვეთა'} (${Number(activeDispatchSale.amount) || 0} ₾) — iyidebaa.ge`;
+          if (fDesc) {
+            fDesc.value = activeDispatchSale.productName
+              ? `${activeDispatchSale.productName}${saleAmt > 0 ? ` (${saleAmt} ₾)` : ''}`
+              : '';
+          }
+          if (fNote && !fNote.value) {
+            fNote.value = '';
           }
 
           diloDispatchModalEl.classList.remove('hidden');
-          loadDiloCitiesAndDistricts();
+          loadDiloCitiesAndDistricts().then(() => recalculateDiloFinancials());
           switchDiloDispatchTab(initialTab);
         }
         window.openDiloDispatchModal = openDiloDispatchModal;
 
-        // 1-Click Submit Parcel directly to Dilo.ge Partner API
+        // 1-Click Submit Parcel directly to Dilo.ge Partner API (dilo_create_order)
         const submitDiloApiBtn = document.getElementById('dilo-submit-api-order-btn');
         if (submitDiloApiBtn) {
           submitDiloApiBtn.addEventListener('click', async () => {
-            const fName = document.getElementById('dilo-form-recipient-name');
-            const fPhone = document.getElementById('dilo-form-recipient-phone');
+            const fName = document.getElementById('dilo-form-name');
+            const fPhone = document.getElementById('dilo-form-phone');
             const fCity = document.getElementById('dilo-form-city');
             const fDist = document.getElementById('dilo-form-district');
             const fAddr = document.getElementById('dilo-form-address');
-            const fPayType = document.getElementById('dilo-form-payment-type');
+            const fPayStatus = document.getElementById('dilo-form-payment-status');
             const fCod = document.getElementById('dilo-form-cod-amount');
-            const fWeight = document.getElementById('dilo-form-weight');
             const fWhoPays = document.getElementById('dilo-form-who-pays');
             const fFragile = document.getElementById('dilo-form-fragile');
-            const fComment = document.getElementById('dilo-form-comment');
-            const resBox = document.getElementById('dilo-api-create-result');
+            const fDesc = document.getElementById('dilo-form-desc');
+            const fNote = document.getElementById('dilo-form-note');
+            const resBox = document.getElementById('dilo-create-feedback');
             const codeInput = document.getElementById('dispatch-tracking-code-input');
             const btnLabel = document.getElementById('dilo-submit-api-order-label');
 
             const recipientName = fName ? fName.value.trim() : '';
             const recipientPhone = fPhone ? fPhone.value.trim() : '';
-            const recipientCityId = fCity ? fCity.value : '';
-            const recipientDistrictId = fDist ? fDist.value : '';
+            const recipientCity = fCity ? fCity.value.trim() : 'თბილისი';
+            const recipientDistrict = fDist ? fDist.value.trim() : '';
             const recipientAddress = fAddr ? fAddr.value.trim() : '';
 
-            if (!recipientPhone || !recipientCityId || !recipientDistrictId || !recipientAddress) {
+            if (!recipientName || !recipientPhone || !recipientCity || !recipientAddress) {
               if (resBox) {
-                resBox.className = 'rounded-xl p-3 text-xs font-bold bg-rose-50 border border-rose-300 text-rose-800';
-                resBox.textContent = '⚠️ გთხოვთ შეავსოთ მიმღების ტელეფონი, ქალაქი, უბანი/სოფელი და ზუსტი მისამართი.';
+                resBox.className = 'rounded-2xl p-3.5 text-xs font-bold bg-rose-50 border border-rose-300 text-rose-800';
+                resBox.textContent = '⚠️ გთხოვთ შეავსოთ სავალდებულო ველები: სახელი და გვარი, ტელეფონის ნომერი, ქალაქი და ქუჩის მისამართი.';
                 resBox.classList.remove('hidden');
               }
               return;
             }
 
-            const isCod = fPayType && fPayType.value === 'cod';
-            const codAmount = isCod ? Number(fCod ? fCod.value : 0) || 0 : 0;
+            const productPaymentStatus = fPayStatus && fPayStatus.value === 'Paid' ? 'Paid' : 'NotPaid';
+            const whoPaysForCompanyService = fWhoPays && fWhoPays.value === 'Sender' ? 'Sender' : 'Recipient';
+            const amountToCollectForPackage =
+              productPaymentStatus === 'NotPaid' ? Math.max(0, Number(fCod ? fCod.value : 0) || 0) : 0;
+            const description = fDesc ? fDesc.value.trim() : '';
+            const note = fNote ? fNote.value.trim() : '';
 
-            if (btnLabel) btnLabel.textContent = '⏳ იგზავნება Dilo.ge-ზე...';
+            if (btnLabel) btnLabel.textContent = '⏳ შეკვეთა იგზავნება Dilo.ge-ზე...';
             submitDiloApiBtn.disabled = true;
 
             try {
@@ -20518,25 +20657,37 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                   action: 'dilo_create_order',
-                  saleId: activeDispatchSale && activeDispatchSale.id !== 'MANUAL' ? activeDispatchSale.id : null,
-                  recipientName: recipientName || 'მყიდველი',
+                  saleId:
+                    activeDispatchSale &&
+                    activeDispatchSale.id &&
+                    activeDispatchSale.id !== 'NEW' &&
+                    activeDispatchSale.id !== 'PRODUCT'
+                      ? activeDispatchSale.id
+                      : null,
+                  productId: (activeDispatchSale && activeDispatchSale.productId) || '',
+                  productPrice: (activeDispatchSale && activeDispatchSale.amount) || amountToCollectForPackage,
+                  recipientName,
                   recipientPhone,
-                  recipientCityId,
-                  recipientDistrictId,
+                  recipientCity,
+                  recipientDistrict,
                   recipientAddress,
-                  weightKg: Number(fWeight ? fWeight.value : 2) || 2,
-                  recipientPaysDelivery: fWhoPays ? fWhoPays.value === 'recipient' : true,
+                  description:
+                    activeDiloOrderType !== 'Send'
+                      ? `[${activeDiloOrderType}] ${description}`
+                      : description,
                   isFragile: fFragile ? fFragile.checked : false,
-                  codAmount,
-                  comment: fComment ? fComment.value.trim() : ''
+                  productPaymentStatus,
+                  whoPaysForCompanyService,
+                  amountToCollectForPackage,
+                  note
                 })
               });
               const data = await res.json();
 
-              if (!res.ok || !data.success) {
+              if (!res.ok || (!data.ok && !data.success)) {
                 if (resBox) {
-                  resBox.className = 'rounded-xl p-3 text-xs font-bold bg-rose-50 border border-rose-300 text-rose-800';
-                  resBox.textContent = `❌ შეცდომა: ${(data && data.message) || 'ვერ მოხერხდა შეკვეთის შექმნა Dilo.ge-ზე'}`;
+                  resBox.className = 'rounded-2xl p-3.5 text-xs font-bold bg-rose-50 border border-rose-300 text-rose-800';
+                  resBox.textContent = `❌ შეცდომა: ${(data && (data.error || data.message)) || 'ვერ მოხერხდა შეკვეთის განთავსება Dilo.ge-ზე'}`;
                   resBox.classList.remove('hidden');
                 }
               } else {
@@ -20549,97 +20700,122 @@
                   renderSalesNotificationsModalList();
                 }
 
+                const feeShown = getSelectedDiloServiceFee();
                 if (resBox) {
-                  resBox.className = 'rounded-xl p-3.5 text-xs font-bold bg-emerald-50 border-2 border-emerald-400 text-emerald-950';
+                  resBox.className = 'rounded-2xl p-4 text-xs font-bold bg-emerald-50 border-2 border-emerald-500 text-emerald-950 shadow-xs';
                   resBox.innerHTML = `
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <div>
-                        <p class="font-black text-emerald-900 text-sm">🎉 ამანათი წარმატებით დარეგისტრირდა Dilo.ge-ზე!</p>
-                        <p class="text-[11px] text-emerald-800 mt-0.5">ოფიციალური თრექინგ კოდი: <span class="font-mono font-black bg-emerald-200 px-2 py-0.5 rounded">${newTrack}</span> (ტარიფი: ${(data.order && data.order.deliveryFee) || 0} ₾)</p>
+                        <p class="font-black text-emerald-900 text-sm">🎉 შეკვეთა განთავსდა Dilo.ge-ზე!</p>
+                        <p class="text-xs text-emerald-800 mt-1">თქვენი Tracking Number: <span class="font-mono font-black bg-emerald-200 px-2.5 py-0.5 rounded text-emerald-950">${newTrack}</span> (ტარიფი: ${feeShown} ₾)</p>
                       </div>
-                      <button type="button" onclick="window.openDiloTrackingModal('${newTrack}')" class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-black text-[11px] cursor-pointer">🔍 თრექინგში ნახვა</button>
+                      <button type="button" onclick="window.openDiloTrackingModal('${newTrack}')" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs cursor-pointer shadow-2xs">🔍 თრექინგში ნახვა</button>
                     </div>
                   `;
                   resBox.classList.remove('hidden');
                 }
                 if (typeof showWishlistToast === 'function') {
-                  showWishlistToast(`🎉 ამანათი გაიგზავნა Dilo.ge-ზე! კოდი: ${newTrack}`);
+                  showWishlistToast(`🎉 შეკვეთა განთავსდა Dilo.ge-ზე! კოდი: ${newTrack}`);
                 }
               }
             } catch (err) {
               if (resBox) {
-                resBox.className = 'rounded-xl p-3 text-xs font-bold bg-rose-50 border border-rose-300 text-rose-800';
+                resBox.className = 'rounded-2xl p-3.5 text-xs font-bold bg-rose-50 border border-rose-300 text-rose-800';
                 resBox.textContent = '❌ კავშირის შეცდომა Dilo.ge სერვერთან.';
                 resBox.classList.remove('hidden');
               }
             } finally {
               submitDiloApiBtn.disabled = false;
-              if (btnLabel) btnLabel.textContent = 'პირდაპირ გაგზავნა Dilo.ge-ში და თრექინგ კოდის მიღება';
+              if (btnLabel) btnLabel.textContent = 'შეკვეთის განთავსება Dilo.ge-ში (Tracking Number-ის მიღება)';
             }
+          });
+        }
+
+        // Copy Tracking Code Button
+        const copyDispatchBtn = document.getElementById('copy-dispatch-info-btn');
+        if (copyDispatchBtn) {
+          copyDispatchBtn.addEventListener('click', async () => {
+            const codeInput = document.getElementById('dispatch-tracking-code-input');
+            const codeVal = codeInput && codeInput.value.trim() ? codeInput.value.trim() : '';
+            const textToCopy = codeVal || `iyidebaa.ge — Dilo.ge შეკვეთა`;
+            try {
+              await navigator.clipboard.writeText(textToCopy);
+              const lbl = document.getElementById('copy-dispatch-info-label');
+              if (lbl) lbl.textContent = '✓ დაკოპირდა!';
+              setTimeout(() => {
+                if (lbl) lbl.textContent = 'კოდის კოპირება';
+              }, 2000);
+            } catch (e) {}
           });
         }
 
         // Load Live Partner Orders into Tab 2
         async function loadDiloPartnerOrdersList(searchQuery = '') {
           const container = document.getElementById('dilo-orders-live-container');
-          const countBadge = document.getElementById('dilo-tab-orders-count');
+          const countBadge = document.getElementById('dilo-total-orders-count');
           if (!container) return;
 
-          container.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs font-bold animate-pulse">⏳ იტვირთება თქვენი ამანათები Dilo.ge-დან...</div>';
+          container.innerHTML = '<div class="text-center py-8 text-zinc-400 text-xs font-bold animate-pulse">⏳ იტვირთება ამანათები Dilo.ge-დან...</div>';
 
           try {
             const res = await fetch('/api/bog-pay', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ action: 'dilo_list_orders', pageSize: 40, search: searchQuery })
+              body: JSON.stringify({ action: 'dilo_list_orders', pageSize: 50, search: searchQuery })
             });
             const data = await res.json();
             const items = (data && Array.isArray(data.items)) ? data.items : [];
             diloPartnerOrdersCache = items;
 
             if (countBadge) {
-              countBadge.textContent = String(data.totalCount || items.length || 0);
+              countBadge.textContent = String(data.total || data.totalCount || items.length || 0);
             }
 
             if (items.length === 0) {
-              container.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs font-bold">ამანათები ვერ მოიძებნა.</div>';
+              container.innerHTML = '<div class="text-center py-8 text-zinc-400 text-xs font-bold">ამანათები ვერ მოიძებნა.</div>';
               return;
             }
 
             container.innerHTML = items
               .map((ord) => {
-                const st = DILO_STATUS_INFO[ord.status] || DILO_STATUS_INFO[1];
+                const stKey = ord.statusCode || ord.status || 1;
+                const st = DILO_STATUS_INFO[stKey] || DILO_STATUS_INFO[ord.status] || DILO_STATUS_INFO[1];
                 const createdDate = ord.createdAt ? new Date(ord.createdAt).toLocaleDateString('ka-GE') : '';
-                const codVal = Number(ord.codAmount) || 0;
+                const codVal = Number(ord.amountToCollectForPackage ?? ord.codAmount) || 0;
+                const feeVal = Number(ord.companyServicePrice ?? ord.deliveryFee) || 0;
                 const cleanPhone = String(ord.recipientPhone || '').replace(/[^0-9]/g, '');
                 const intlPhone = cleanPhone.startsWith('995') ? cleanPhone : '995' + cleanPhone;
                 const waText = encodeURIComponent(
                   `გამარჯობა ${ord.recipientName || ''}! თქვენი ამანათი გამოგზავნილია საკურიერო კომპანია Dilo Delivery-ით.\n📦 თრექინგ კოდი: ${ord.trackingNumber}\nსტატუსის შემოწმება შეგიძლიათ ჩვენს საიტზე: https://iyidebaa.ge`
                 );
+                const cityStr = ord.recipientCity || ord.recipientCityName || '';
+                const distStr = ord.recipientDistrict || ord.recipientDistrictName || '';
 
                 return `
-                  <div class="rounded-xl border border-slate-200 bg-slate-50/70 hover:bg-white p-3 transition shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                  <div class="rounded-xl border border-zinc-200 bg-white hover:border-amber-400 p-3 transition shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
                     <div class="space-y-1">
                       <div class="flex items-center gap-2 flex-wrap">
-                        <span class="px-2 py-0.5 rounded-md bg-slate-900 text-amber-400 font-mono text-xs font-black">${ord.trackingNumber}</span>
+                        <span class="px-2 py-0.5 rounded-md bg-zinc-900 text-[#F6AA02] font-mono text-xs font-black">${ord.trackingNumber}</span>
                         <span class="px-2 py-0.5 rounded-full ${st.badgeClass} text-[10px] font-black">${st.label}</span>
-                        <span class="text-[10px] font-bold text-slate-400">${createdDate}</span>
+                        <span class="text-[10px] font-bold text-zinc-400">${createdDate}</span>
                       </div>
-                      <p class="text-xs font-black text-slate-900">${ord.recipientName || 'მიმღები'} • <span class="text-indigo-700 font-mono">${ord.recipientPhone || ''}</span></p>
-                      <p class="text-[11px] font-bold text-slate-600">📍 ${[ord.recipientCityName, ord.recipientDistrictName, ord.recipientAddress].filter(Boolean).join(', ')}</p>
-                      <p class="text-[10px] font-bold text-slate-500">
-                        ${codVal > 0 ? `💰 კურიერთან გადასახდელი: <strong class="text-amber-800">${codVal} ₾</strong>` : '✅ გადახდილია'}
-                        • ტარიფი: <strong>${ord.deliveryFee || 0} ₾</strong>
-                        ${ord.comment ? ` • 📝 ${ord.comment}` : ''}
+                      <p class="text-xs font-black text-zinc-900">${ord.recipientName || 'მიმღები'} ${ord.recipientPhone ? `• <span class="text-orange-700 font-mono">${ord.recipientPhone}</span>` : ''}</p>
+                      <p class="text-[11px] font-bold text-zinc-600">📍 ${[cityStr, distStr, ord.recipientAddress].filter(Boolean).join(', ')}</p>
+                      <p class="text-[10px] font-bold text-zinc-500">
+                        ${codVal > 0 ? `💰 ასაღები (COD): <strong class="text-amber-800">${codVal} ₾</strong>` : '✅ გადახდილია'}
+                        • საკურიერო: <strong>${feeVal} ₾</strong>
+                        ${ord.description ? ` • 📝 ${ord.description}` : ''}
                       </p>
                     </div>
                     <div class="flex sm:flex-col gap-1.5 shrink-0">
-                      <button type="button" data-live-order-track="${ord.trackingNumber}" class="px-2.5 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-[11px] transition cursor-pointer">
+                      <button type="button" data-live-order-track="${ord.trackingNumber}" class="px-3 py-1.5 rounded-lg bg-[#F6AA02] hover:bg-amber-500 text-zinc-950 font-black text-[11px] transition cursor-pointer">
                         🔍 თრექინგი
                       </button>
-                      <a href="https://wa.me/${intlPhone}?text=${waText}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] text-center transition">
-                        💬 WhatsApp
-                      </a>
+                      ${
+                        cleanPhone
+                          ? `<a href="https://wa.me/${intlPhone}?text=${waText}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] text-center transition">💬 WhatsApp</a>`
+                          : ''
+                      }
                     </div>
                   </div>
                 `;
@@ -20649,6 +20825,23 @@
             container.innerHTML = '<div class="text-center py-8 text-rose-600 text-xs font-bold">ვერ მოხერხდა ამანათების ჩატვირთვა.</div>';
           }
         }
+
+        // Pre-fetch order count badge quietly in background
+        setTimeout(() => {
+          fetch('/api/bog-pay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'dilo_list_orders', pageSize: 1 })
+          })
+            .then((r) => r.json())
+            .then((d) => {
+              const countBadge = document.getElementById('dilo-total-orders-count');
+              if (countBadge && d && typeof d.total === 'number') {
+                countBadge.textContent = String(d.total);
+              }
+            })
+            .catch(() => {});
+        }, 2000);
 
         const refreshOrdersBtn = document.getElementById('dilo-orders-refresh-btn');
         const ordersSearchInput = document.getElementById('dilo-orders-search-input');
@@ -20733,9 +20926,9 @@
         if (sendTrackingWhatsAppBtn) {
           sendTrackingWhatsAppBtn.addEventListener('click', () => {
             const codeInput = document.getElementById('dispatch-tracking-code-input');
-            const fPhone = document.getElementById('dilo-form-recipient-phone');
+            const fPhone = document.getElementById('dilo-form-phone');
             const code = (codeInput && codeInput.value.trim()) || (activeDispatchSale && activeDispatchSale.diloTrackingCode) || 'DL-';
-            const phoneSource = (fPhone && fPhone.value.trim()) || (activeDispatchSale && activeDispatchSale.customerPhone) || '';
+            const phoneSource = (fPhone && fPhone.value.trim()) || (activeDispatchSale && activeDispatchSale.customerPhone) || '551588579';
             const rawPhone = String(phoneSource).replace(/[^0-9]/g, '');
             const intlPhone = rawPhone.startsWith('995')
               ? rawPhone
@@ -20744,7 +20937,7 @@
               : rawPhone.replace(/^0/, '995');
 
             const prodTitle = (activeDispatchSale && activeDispatchSale.productName) || 'შეკვეთა';
-            const message = `გამარჯობა! თქვენი შეკვეთა "${prodTitle}" გაფორმდა საკურიერო კომპანია Dilo Delivery-ში (dilo.ge).\n\n📦 თქვენი ამანათის თრექინგ კოდია: ${code}\n\nთვალყურის დევნება შეგიძლიათ პირდაპირ ჩვენს საიტზე: https://iyidebaa.ge („🚚 Dilo თრექინგი“ ღილაკით) ან Dilo Delivery-ს ცხელ ხაზზე: 595 304 000.\n\nმადლობა რომ გვენდობით!`;
+            const message = `გამარჯობა! თქვენი შეკვეთა "${prodTitle}" გაფორმდა საკურიერო კომპანია Dilo Delivery-ში (dilo.ge).\n\n📦 თქვენი ამანათის თრექინგ კოდია: ${code}\n\nთვალყურის დევნება შეგიძლიათ პირდაპირ ჩვენს საიტზე: https://iyidebaa.ge („🚚 Dilo.ge შეკვეთა / გაგზავნა“ ღილაკით) ან Dilo Delivery-ს ცხელ ხაზზე: 595 304 000.\n\nმადლობა რომ გვენდობით!`;
 
             const url = `https://wa.me/${intlPhone}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank', 'noopener,noreferrer');
