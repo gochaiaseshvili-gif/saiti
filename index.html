@@ -8324,7 +8324,55 @@
               <!-- 4. ამანათის პარამეტრები & ფინანსები (cgoPackageOptions) -->
               <div class="space-y-3 pt-1">
                 <div class="text-[11px] font-black text-zinc-500 uppercase tracking-wider border-b border-zinc-100 pb-1">
-                  ⚙️ ამანათის პარამეტრები და გადახდა
+                  ⚙️ ამანათის წონა, პარამეტრები და გადახდა
+                </div>
+
+                <!-- OFFICIAL DILO.GE/SEND WEIGHT TIER SELECTOR (ნივთის წონა კგ) -->
+                <div class="p-3.5 rounded-2xl bg-amber-50/90 border-2 border-[#F6AA02] space-y-2.5 shadow-2xs">
+                  <div class="flex flex-wrap items-center justify-between gap-2">
+                    <label for="dilo-form-weight-bracket" class="text-xs font-black text-zinc-950 flex items-center gap-1.5">
+                      <span class="text-base">⚖️</span>
+                      <span>ნივთის წონა (კგ) <span class="text-rose-600">*</span></span>
+                    </label>
+                    <span id="dilo-weight-territory-badge" class="text-[11px] font-black px-2.5 py-0.5 rounded-full bg-zinc-900 text-[#F6AA02]">
+                      თბილისი • 0–5 კგ = 6 ₾
+                    </span>
+                  </div>
+
+                  <select
+                    id="dilo-form-weight-bracket"
+                    class="w-full px-3.5 py-2.5 rounded-xl border-2 border-amber-400 focus:border-zinc-950 font-black text-xs sm:text-sm text-zinc-950 bg-white outline-none cursor-pointer shadow-2xs"
+                  >
+                    <option value="0-5">0 – 5 კგ (მსუბუქი / სტანდარტული) — 6 ₾</option>
+                    <option value="5-10">5 – 10 კგ (საშუალო) — 10 ₾</option>
+                    <option value="10-15">10 – 15 კგ — 15 ₾</option>
+                    <option value="15-20">15 – 20 კგ — 18 ₾</option>
+                    <option value="20-30">20 – 30 კგ (მძიმე) — 25 ₾</option>
+                    <option value="30-40">30 – 40 კგ — 30 ₾</option>
+                    <option value="40-50">40 – 50 კგ — 40 ₾</option>
+                    <option value="60-70">60 – 70 კგ (გაბარიტული) — 50 ₾</option>
+                    <option value="70-80">70 – 80 კგ — 70 ₾</option>
+                    <option value="80-100">80 – 100 კგ — 80 ₾</option>
+                  </select>
+
+                  <!-- Quick 1-Click Weight Pills -->
+                  <div class="flex flex-wrap items-center gap-1.5 pt-0.5" id="dilo-weight-quick-pills">
+                    <button type="button" data-dilo-weight-pill="0-5" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-black border-2 border-zinc-900 bg-[#F6AA02] text-zinc-950 cursor-pointer transition-all">0–5 კგ</button>
+                    <button type="button" data-dilo-weight-pill="5-10" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">5–10 კგ</button>
+                    <button type="button" data-dilo-weight-pill="10-15" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">10–15 კგ</button>
+                    <button type="button" data-dilo-weight-pill="15-20" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">15–20 კგ</button>
+                    <button type="button" data-dilo-weight-pill="20-30" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">20–30 კგ</button>
+                    <button type="button" data-dilo-weight-pill="30-40" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">30–40 კგ</button>
+                    <button type="button" data-dilo-weight-pill="40-50" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">40–50 კგ</button>
+                    <button type="button" data-dilo-weight-pill="60-70" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">60–70 კგ</button>
+                    <button type="button" data-dilo-weight-pill="70-80" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">70–80 კგ</button>
+                    <button type="button" data-dilo-weight-pill="80-100" class="dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all">80–100 კგ</button>
+                  </div>
+
+                  <div id="dilo-weight-zones-compare" class="text-[11px] text-zinc-700 font-semibold bg-white/85 px-3 py-1.5 rounded-xl border border-amber-200 flex flex-wrap items-center justify-between gap-2">
+                    <span>ამ წონის ტარიფი Dilo.ge-ზე:</span>
+                    <span class="font-mono font-black text-zinc-900">თბილისი: 6 ₾ • ქალაქი: 8 ₾ • სოფელი/რაიონი: 12 ₾</span>
+                  </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
@@ -8381,15 +8429,15 @@
                   <div>
                     <label class="block text-[11px] font-black text-zinc-800 mb-1">საკურიერო მომსახურება (₾)</label>
                     <div id="dilo-form-service-fee-display" class="w-full px-3 py-2 rounded-xl border border-zinc-200 bg-white/80 font-mono text-sm font-black text-orange-700">
-                      7 ₾
+                      6 ₾
                     </div>
-                    <span id="dilo-form-service-fee-hint" class="block text-[10px] text-zinc-500 mt-0.5">ავტომატურად უბნის მიხედვით</span>
+                    <span id="dilo-form-service-fee-hint" class="block text-[10px] text-zinc-500 mt-0.5">წონის და უბნის მიხედვით</span>
                   </div>
 
                   <div>
                     <label class="block text-[11px] font-black text-emerald-900 mb-1">ჯამში ასაღები (₾)</label>
                     <div id="dilo-form-total-collect-display" class="w-full px-3 py-2 rounded-xl border-2 border-emerald-500 bg-emerald-50 font-mono text-sm font-black text-emerald-800">
-                      7 ₾
+                      6 ₾
                     </div>
                     <span class="block text-[10px] text-emerald-700 font-semibold mt-0.5">ამანათი + საკურიერო</span>
                   </div>
@@ -20326,12 +20374,269 @@
         }
 
         // =========================================================================
-        // DILO CITIES & DISTRICTS LIVE LOADER + 3-BOX FINANCIAL CALCULATOR
+        // DILO CITIES, DISTRICTS & OFFICIAL WEIGHT TIERS + 3-BOX FINANCIAL CALCULATOR
         // =========================================================================
+        const DILO_WEIGHT_BRACKETS = [
+          {
+            key: '0-5',
+            min: 0,
+            max: 5,
+            shortLabel: '0 – 5 კგ',
+            label: '0 – 5 კგ (მსუბუქი / სტანდარტული)',
+            capitalPrice: 6,
+            cityPrice: 8,
+            districtPrice: 12,
+            capitalTierId: '05f2d433-0e1c-4efb-92bf-294fb0b9eef5',
+            regionTierId: '366d49e5-3437-49b3-8def-9e9d710d7acf'
+          },
+          {
+            key: '5-10',
+            min: 5,
+            max: 10,
+            shortLabel: '5 – 10 კგ',
+            label: '5 – 10 კგ (საშუალო)',
+            capitalPrice: 10,
+            cityPrice: 12,
+            districtPrice: 18,
+            capitalTierId: '9bbccb7f-1633-4196-87cf-8b301e9306fc',
+            regionTierId: 'c78d9b5a-bf30-45c7-ae49-ba906b3abcf5'
+          },
+          {
+            key: '10-15',
+            min: 10,
+            max: 15,
+            shortLabel: '10 – 15 კგ',
+            label: '10 – 15 კგ',
+            capitalPrice: 15,
+            cityPrice: 18,
+            districtPrice: 24,
+            capitalTierId: '9eeb439d-1538-4f61-9700-371bd14bbebd',
+            regionTierId: '83b05ae1-c75c-4b80-94ab-b257010e0550'
+          },
+          {
+            key: '15-20',
+            min: 15,
+            max: 20,
+            shortLabel: '15 – 20 კგ',
+            label: '15 – 20 კგ',
+            capitalPrice: 18,
+            cityPrice: 24,
+            districtPrice: 30,
+            capitalTierId: '392d013e-e8ed-4941-b39d-dab912f8170a',
+            regionTierId: '392d013e-e8ed-4941-b39d-dab912f8170a'
+          },
+          {
+            key: '20-30',
+            min: 20,
+            max: 30,
+            shortLabel: '20 – 30 კგ',
+            label: '20 – 30 კგ (მძიმე)',
+            capitalPrice: 25,
+            cityPrice: 35,
+            districtPrice: 40,
+            capitalTierId: 'ca064bd3-3068-4ba2-af29-936fbc79804f',
+            regionTierId: 'ca064bd3-3068-4ba2-af29-936fbc79804f'
+          },
+          {
+            key: '30-40',
+            min: 30,
+            max: 40,
+            shortLabel: '30 – 40 კგ',
+            label: '30 – 40 კგ',
+            capitalPrice: 30,
+            cityPrice: 40,
+            districtPrice: 50,
+            capitalTierId: 'c64fde14-a988-43e4-ac29-e6d3bb507e0c',
+            regionTierId: 'c64fde14-a988-43e4-ac29-e6d3bb507e0c'
+          },
+          {
+            key: '40-50',
+            min: 40,
+            max: 50,
+            shortLabel: '40 – 50 კგ',
+            label: '40 – 50 კგ',
+            capitalPrice: 40,
+            cityPrice: 50,
+            districtPrice: 60,
+            capitalTierId: '219f7496-1c5c-4207-a397-d9790e9a9f7e',
+            regionTierId: '219f7496-1c5c-4207-a397-d9790e9a9f7e'
+          },
+          {
+            key: '60-70',
+            min: 60,
+            max: 70,
+            shortLabel: '60 – 70 კგ',
+            label: '60 – 70 კგ (გაბარიტული)',
+            capitalPrice: 50,
+            cityPrice: 65,
+            districtPrice: 75,
+            capitalTierId: '957af1d1-5cd9-4f42-9c69-f4132d51af54',
+            regionTierId: '957af1d1-5cd9-4f42-9c69-f4132d51af54'
+          },
+          {
+            key: '70-80',
+            min: 70,
+            max: 80,
+            shortLabel: '70 – 80 კგ',
+            label: '70 – 80 კგ',
+            capitalPrice: 70,
+            cityPrice: 100,
+            districtPrice: 120,
+            capitalTierId: '1f8ca4e5-75d8-4dc9-81e0-e57b9f75039e',
+            regionTierId: '1f8ca4e5-75d8-4dc9-81e0-e57b9f75039e'
+          },
+          {
+            key: '80-100',
+            min: 80,
+            max: 100,
+            shortLabel: '80 – 100 კგ',
+            label: '80 – 100 კგ',
+            capitalPrice: 80,
+            cityPrice: 120,
+            districtPrice: 150,
+            capitalTierId: '414ecbcc-b64f-43fa-a3bc-2c41ec08abaa',
+            regionTierId: '414ecbcc-b64f-43fa-a3bc-2c41ec08abaa'
+          }
+        ];
+
+        let diloWeightTiersLoaded = false;
+
+        async function loadDiloWeightTiers() {
+          if (diloWeightTiersLoaded) return;
+          try {
+            const res = await fetch('/api/bog-pay', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ action: 'dilo_weight_tiers' })
+            });
+            const data = await res.json();
+            if (data && Array.isArray(data.tiers) && data.tiers.length > 0) {
+              data.tiers.forEach((t) => {
+                const key = `${Number(t.minWeightKg)}-${Number(t.maxWeightKg)}`;
+                const b = DILO_WEIGHT_BRACKETS.find((item) => item.key === key);
+                if (!b) return;
+                if (t.capitalPrice !== null && t.capitalPrice !== undefined) {
+                  b.capitalPrice = Number(t.capitalPrice);
+                  b.capitalTierId = t.id;
+                }
+                if (t.cityPrice !== null && t.cityPrice !== undefined) {
+                  b.cityPrice = Number(t.cityPrice);
+                  b.regionTierId = t.id;
+                }
+                if (t.districtPrice !== null && t.districtPrice !== undefined) {
+                  b.districtPrice = Number(t.districtPrice);
+                  b.regionTierId = t.id;
+                }
+              });
+              diloWeightTiersLoaded = true;
+            }
+          } catch (e) {}
+        }
+
+        function getSelectedDiloTerritoryZone() {
+          const distSelect = document.getElementById('dilo-form-district');
+          const citySelect = document.getElementById('dilo-form-city');
+          if (distSelect && distSelect.selectedIndex >= 0) {
+            const opt = distSelect.options[distSelect.selectedIndex];
+            if (opt && opt.hasAttribute('data-capital')) {
+              const isCap = opt.getAttribute('data-capital') === '1';
+              const isCity = opt.getAttribute('data-city') === '1';
+              if (isCap) return 'capital';
+              if (isCity) return 'city';
+              return 'district';
+            }
+          }
+          const cityName = citySelect ? citySelect.value.trim() : 'თბილისი';
+          return cityName === 'თბილისი' ? 'capital' : 'city';
+        }
+
+        function getPriceForWeightBracketAndZone(bracket, zone) {
+          if (!bracket) return 6;
+          if (zone === 'capital') return bracket.capitalPrice;
+          if (zone === 'city') return bracket.cityPrice;
+          return bracket.districtPrice;
+        }
+
+        function resolveDiloWeightSelection() {
+          const weightSelect = document.getElementById('dilo-form-weight-bracket');
+          const selectedKey = weightSelect ? weightSelect.value : '0-5';
+          const bracket =
+            DILO_WEIGHT_BRACKETS.find((b) => b.key === selectedKey) || DILO_WEIGHT_BRACKETS[0];
+          const zone = getSelectedDiloTerritoryZone();
+          const price = getPriceForWeightBracketAndZone(bracket, zone);
+          const weightPriceTierId =
+            zone === 'capital' ? bracket.capitalTierId : bracket.regionTierId;
+          const zoneLabel =
+            zone === 'capital'
+              ? 'თბილისი'
+              : zone === 'city'
+              ? 'ქალაქი'
+              : 'რაიონი / სოფელი';
+          return {
+            bracket,
+            bracketKey: bracket.key,
+            shortLabel: bracket.shortLabel,
+            label: bracket.label,
+            price,
+            weightPriceTierId,
+            zone,
+            zoneLabel
+          };
+        }
+
+        function refreshDiloWeightDropdownAndDistrictPrices() {
+          const zone = getSelectedDiloTerritoryZone();
+          const weightSelect = document.getElementById('dilo-form-weight-bracket');
+          const selectedKey = weightSelect ? weightSelect.value : '0-5';
+          const activeBracket =
+            DILO_WEIGHT_BRACKETS.find((b) => b.key === selectedKey) || DILO_WEIGHT_BRACKETS[0];
+
+          if (weightSelect) {
+            Array.from(weightSelect.options).forEach((opt) => {
+              const b = DILO_WEIGHT_BRACKETS.find((item) => item.key === opt.value);
+              if (b) {
+                const p = getPriceForWeightBracketAndZone(b, zone);
+                opt.textContent = `${b.label} — ${p} ₾`;
+              }
+            });
+          }
+
+          // Update quick weight pills
+          document.querySelectorAll('.dilo-weight-pill').forEach((pill) => {
+            const pKey = pill.getAttribute('data-dilo-weight-pill');
+            const b = DILO_WEIGHT_BRACKETS.find((item) => item.key === pKey);
+            const isAct = pKey === activeBracket.key;
+            if (b) {
+              const p = getPriceForWeightBracketAndZone(b, zone);
+              pill.textContent = `${b.shortLabel} (${p} ₾)`;
+            }
+            pill.className = isAct
+              ? 'dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-black border-2 border-zinc-900 bg-[#F6AA02] text-zinc-950 cursor-pointer transition-all shadow-2xs'
+              : 'dilo-weight-pill px-2.5 py-1 rounded-lg text-[11px] font-bold border border-amber-300 bg-white hover:bg-amber-100 text-zinc-800 cursor-pointer transition-all';
+          });
+
+          // Update district option labels so each district displays the price for the currently selected weight!
+          const distSelect = document.getElementById('dilo-form-district');
+          if (distSelect) {
+            Array.from(distSelect.options).forEach((opt) => {
+              const geoName = opt.getAttribute('data-geo-name');
+              if (!geoName) return;
+              const isCap = opt.getAttribute('data-capital') === '1';
+              const isCity = opt.getAttribute('data-city') === '1';
+              const optZone = isCap ? 'capital' : isCity ? 'city' : 'district';
+              const optPrice = getPriceForWeightBracketAndZone(activeBracket, optZone);
+              opt.setAttribute('data-price', String(optPrice));
+              opt.textContent = `${geoName} (${optPrice} ₾)`;
+            });
+          }
+        }
+
         async function loadDiloCitiesAndDistricts() {
           const citySelect = document.getElementById('dilo-form-city');
           const distSelect = document.getElementById('dilo-form-district');
           if (!citySelect || !distSelect) return;
+
+          await loadDiloWeightTiers();
 
           if (diloCitiesCache.length === 0) {
             try {
@@ -20394,7 +20699,8 @@
 
           const districts = diloDistrictsByCityCache[cityId] || [];
           if (districts.length === 0) {
-            distSelect.innerHTML = '<option value="" data-price="7">ცენტრი (7 ₾)</option>';
+            distSelect.innerHTML =
+              '<option value="" data-geo-name="ცენტრი" data-capital="0" data-city="1" data-price="8">ცენტრი (8 ₾)</option>';
             recalculateDiloFinancials();
             return;
           }
@@ -20409,8 +20715,10 @@
           distSelect.innerHTML = sortedDist
             .map((d) => {
               const geoName = d.districtNameGeo || d.districtName || '';
-              const price = Number(d.companyServicePrice) || (d.isCapitalTerritory ? 7 : 10);
-              return `<option value="${geoName}" data-price="${price}">${geoName} (${price} ₾)</option>`;
+              const isCap = d.isCapitalTerritory ? '1' : '0';
+              const isCity = d.isCityTerritory ? '1' : '0';
+              const basePrice = Number(d.companyServicePrice) || (d.isCapitalTerritory ? 6 : d.isCityTerritory ? 8 : 12);
+              return `<option value="${geoName}" data-geo-name="${geoName}" data-capital="${isCap}" data-city="${isCity}" data-price="${basePrice}">${geoName} (${basePrice} ₾)</option>`;
             })
             .join('');
 
@@ -20418,33 +20726,48 @@
         }
 
         function getSelectedDiloServiceFee() {
-          const distSelect = document.getElementById('dilo-form-district');
-          if (!distSelect || distSelect.selectedIndex < 0) return 7;
-          const opt = distSelect.options[distSelect.selectedIndex];
-          const p = opt ? Number(opt.getAttribute('data-price')) : 7;
-          return p > 0 ? p : 7;
+          const resolved = resolveDiloWeightSelection();
+          return resolved.price;
         }
 
         function recalculateDiloFinancials() {
+          refreshDiloWeightDropdownAndDistrictPrices();
+
           const feeBadge = document.getElementById('dilo-district-fee-badge');
           const feeDisplay = document.getElementById('dilo-form-service-fee-display');
+          const feeHint = document.getElementById('dilo-form-service-fee-hint');
           const totalDisplay = document.getElementById('dilo-form-total-collect-display');
           const codInput = document.getElementById('dilo-form-cod-amount');
           const payStatusEl = document.getElementById('dilo-form-payment-status');
           const whoPaysEl = document.getElementById('dilo-form-who-pays');
           const svcIncludedEl = document.getElementById('dilo-form-service-included');
+          const weightBadge = document.getElementById('dilo-weight-territory-badge');
+          const weightCompare = document.getElementById('dilo-weight-zones-compare');
 
-          const fee = getSelectedDiloServiceFee();
+          const resolved = resolveDiloWeightSelection();
+          const fee = resolved.price;
           const isPaid = payStatusEl && payStatusEl.value === 'Paid';
           const recipientPaysFee = !whoPaysEl || whoPaysEl.value === 'Recipient';
           const isSvcIncluded = svcIncludedEl && svcIncludedEl.checked;
           const parcelCod = isPaid ? 0 : Math.max(0, Number(codInput ? codInput.value : 0) || 0);
 
           if (feeBadge) {
-            feeBadge.textContent = `საკურიერო ტარიფი: ${fee} ₾`;
+            feeBadge.textContent = `საკურიერო ტარიფი (${resolved.shortLabel}): ${fee} ₾`;
           }
           if (feeDisplay) {
             feeDisplay.textContent = `${fee} ₾`;
+          }
+          if (feeHint) {
+            feeHint.textContent = `წონა: ${resolved.shortLabel} • ${resolved.zoneLabel}`;
+          }
+          if (weightBadge) {
+            weightBadge.textContent = `${resolved.zoneLabel} • ${resolved.shortLabel} = ${fee} ₾`;
+          }
+          if (weightCompare && resolved.bracket) {
+            weightCompare.innerHTML = `
+              <span>ამ წონის (${resolved.shortLabel}) ტარიფი Dilo.ge-ზე:</span>
+              <span class="font-mono font-black text-zinc-900">თბილისი: ${resolved.bracket.capitalPrice} ₾ • ქალაქი: ${resolved.bracket.cityPrice} ₾ • სოფელი/რაიონი: ${resolved.bracket.districtPrice} ₾</span>
+            `;
           }
 
           let totalToCollect = parcelCod;
@@ -20468,6 +20791,19 @@
         if (diloDistSelectEl) {
           diloDistSelectEl.addEventListener('change', recalculateDiloFinancials);
         }
+        const diloWeightSelectEl = document.getElementById('dilo-form-weight-bracket');
+        if (diloWeightSelectEl) {
+          diloWeightSelectEl.addEventListener('change', recalculateDiloFinancials);
+        }
+        document.querySelectorAll('.dilo-weight-pill').forEach((pill) => {
+          pill.addEventListener('click', () => {
+            const pKey = pill.getAttribute('data-dilo-weight-pill');
+            if (diloWeightSelectEl && pKey) {
+              diloWeightSelectEl.value = pKey;
+              recalculateDiloFinancials();
+            }
+          });
+        });
 
         const diloPayStatusEl = document.getElementById('dilo-form-payment-status');
         const diloCodInputEl = document.getElementById('dilo-form-cod-amount');
@@ -20647,6 +20983,7 @@
               productPaymentStatus === 'NotPaid' ? Math.max(0, Number(fCod ? fCod.value : 0) || 0) : 0;
             const description = fDesc ? fDesc.value.trim() : '';
             const note = fNote ? fNote.value.trim() : '';
+            const weightInfo = resolveDiloWeightSelection();
 
             if (btnLabel) btnLabel.textContent = '⏳ შეკვეთა იგზავნება Dilo.ge-ზე...';
             submitDiloApiBtn.disabled = true;
@@ -20679,6 +21016,8 @@
                   productPaymentStatus,
                   whoPaysForCompanyService,
                   amountToCollectForPackage,
+                  weightPriceTierId: weightInfo.weightPriceTierId,
+                  weightRangeLabel: weightInfo.shortLabel,
                   note
                 })
               });
@@ -20700,14 +21039,14 @@
                   renderSalesNotificationsModalList();
                 }
 
-                const feeShown = getSelectedDiloServiceFee();
+                const feeShown = weightInfo.price;
                 if (resBox) {
                   resBox.className = 'rounded-2xl p-4 text-xs font-bold bg-emerald-50 border-2 border-emerald-500 text-emerald-950 shadow-xs';
                   resBox.innerHTML = `
                     <div class="flex items-center justify-between gap-2 flex-wrap">
                       <div>
                         <p class="font-black text-emerald-900 text-sm">🎉 შეკვეთა განთავსდა Dilo.ge-ზე!</p>
-                        <p class="text-xs text-emerald-800 mt-1">თქვენი Tracking Number: <span class="font-mono font-black bg-emerald-200 px-2.5 py-0.5 rounded text-emerald-950">${newTrack}</span> (ტარიფი: ${feeShown} ₾)</p>
+                        <p class="text-xs text-emerald-800 mt-1">თქვენი Tracking Number: <span class="font-mono font-black bg-emerald-200 px-2.5 py-0.5 rounded text-emerald-950">${newTrack}</span> (წონა: ${weightInfo.shortLabel} • ტარიფი: ${feeShown} ₾)</p>
                       </div>
                       <button type="button" onclick="window.openDiloTrackingModal('${newTrack}')" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-black text-xs cursor-pointer shadow-2xs">🔍 თრექინგში ნახვა</button>
                     </div>
