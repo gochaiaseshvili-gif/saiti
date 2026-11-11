@@ -48,7 +48,31 @@
       },
       "lastViewedAt": "2026-11-11T13:16:37.255Z",
       "lastSoldAt": null
+    },
+    "prod-1794065879123": {
+      "productId": "prod-1794065879123",
+      "productName": "NDR-15",
+      "views": {
+        "days": {
+          "2026-11-11": 1
+        },
+        "months": {
+          "2026-11": 1
+        },
+        "years": {
+          "2026": 1
+        },
+        "total": 1
+      },
+      "sales": {
+        "card": 0,
+        "installment": 0,
+        "total": 0,
+        "revenue": 0
+      },
+      "lastViewedAt": "2026-11-11T18:02:55.748Z",
+      "lastSoldAt": null
     }
   },
-  "updatedAt": "2026-11-11T17:56:44.711Z"
+  "updatedAt": "2026-11-11T18:02:55.748Z"
 }
