@@ -53,6 +53,8 @@ function getDiloApiKey(): string {
 let cachedDiloCities: any[] | null = null;
 let cachedDiloCitiesAt = 0;
 const cachedDiloDistricts = new Map<string, any[]>();
+let cachedDiloWeightTiers: any[] | null = null;
+let cachedDiloWeightTiersAt = 0;
 
 
 function computeGitBlobSha(buf: Buffer): string {
@@ -2159,6 +2161,29 @@ async function startServer() {
         return;
       }
 
+      if (body.action === 'dilo_weight_tiers') {
+        try {
+          if (cachedDiloWeightTiers && Date.now() - cachedDiloWeightTiersAt < 3600000) {
+            res.json({ ok: true, tiers: cachedDiloWeightTiers });
+            return;
+          }
+          const r = await fetch('https://dilo.ge/api/weightpricetiers', {
+            headers: { Accept: 'application/json' },
+          });
+          if (!r.ok) {
+            res.status(r.status).json({ ok: false, error: 'ვერ ჩაიტვირთა წონის ტარიფები Dilo.ge-დან' });
+            return;
+          }
+          const tiers = await r.json();
+          cachedDiloWeightTiers = Array.isArray(tiers) ? tiers : [];
+          cachedDiloWeightTiersAt = Date.now();
+          res.json({ ok: true, tiers: cachedDiloWeightTiers });
+        } catch (err: any) {
+          res.status(500).json({ ok: false, error: String(err?.message || err) });
+        }
+        return;
+      }
+
       if (body.action === 'dilo_track_order') {
         try {
           const apiKey = getDiloApiKey();
@@ -2260,6 +2285,8 @@ async function startServer() {
             productPaymentStatus === 'NotPaid' ? Math.max(0, Number(body.amountToCollectForPackage) || 0) : 0;
           const externalReference = String(body.externalReference || `IYIDEBAA-${Date.now()}`).trim();
           const note = String(body.note || '').trim();
+          const weightPriceTierId = body.weightPriceTierId ? String(body.weightPriceTierId).trim() : '';
+          const weightRangeLabel = body.weightRangeLabel ? String(body.weightRangeLabel).trim() : '';
 
           if (!recipientName || !recipientPhone || !recipientCity || !recipientAddress) {
             res.status(422).json({
@@ -2269,23 +2296,31 @@ async function startServer() {
             return;
           }
 
+          const finalDescription =
+            weightRangeLabel && !description.includes(weightRangeLabel)
+              ? `${description ? description + ' • ' : ''}წონა: ${weightRangeLabel}`
+              : description;
+
+          const orderItem: any = {
+            recipientName,
+            recipientPhone,
+            recipientCity,
+            recipientDistrict,
+            recipientAddress,
+            description: finalDescription || undefined,
+            isFragile,
+            productPaymentStatus,
+            whoPaysForCompanyService,
+            amountToCollectForPackage,
+            externalReference,
+          };
+          if (weightPriceTierId) {
+            orderItem.weightPriceTierId = weightPriceTierId;
+          }
+
           const payload = {
             note: note || undefined,
-            orders: [
-              {
-                recipientName,
-                recipientPhone,
-                recipientCity,
-                recipientDistrict,
-                recipientAddress,
-                description: description || undefined,
-                isFragile,
-                productPaymentStatus,
-                whoPaysForCompanyService,
-                amountToCollectForPackage,
-                externalReference,
-              },
-            ],
+            orders: [orderItem],
           };
 
           const r = await fetch('https://dilo.ge/api/partner/orders', {
@@ -2312,7 +2347,7 @@ async function startServer() {
           const createdOrder = Array.isArray(resData.orders) && resData.orders[0] ? resData.orders[0] : null;
           const trackingNumber = createdOrder ? createdOrder.trackingNumber : '';
 
-          let updatedSales = null;
+          let updatedSales: any[] | null = null;
           if (trackingNumber) {
             const targetId = body.saleId ? String(body.saleId).trim() : '';
             const currentList = loadLocalSalesList();
@@ -2358,7 +2393,9 @@ async function startServer() {
               };
               updatedSales = [newSaleEntry, ...currentList].slice(0, 200);
             }
-            saveLocalSalesList(updatedSales);
+            if (updatedSales) {
+              saveLocalSalesList(updatedSales);
+            }
           }
 
           res.status(201).json({
