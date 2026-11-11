@@ -2313,22 +2313,51 @@ async function startServer() {
           const trackingNumber = createdOrder ? createdOrder.trackingNumber : '';
 
           let updatedSales = null;
-          if (body.saleId && trackingNumber) {
-            const targetId = String(body.saleId).trim();
-            updatedSales = loadLocalSalesList().map((s) => {
-              if (s.id === targetId || s.orderId === targetId) {
-                return {
-                  ...s,
-                  diloTrackingCode: trackingNumber,
-                  recipientName,
-                  recipientCity,
-                  recipientDistrict,
-                  recipientAddress,
-                  updatedAt: new Date().toISOString(),
-                };
-              }
-              return s;
-            });
+          if (trackingNumber) {
+            const targetId = body.saleId ? String(body.saleId).trim() : '';
+            const currentList = loadLocalSalesList();
+            let matchedExisting = false;
+            if (targetId) {
+              updatedSales = currentList.map((s) => {
+                if (s.id === targetId || s.orderId === targetId) {
+                  matchedExisting = true;
+                  return {
+                    ...s,
+                    diloTrackingCode: trackingNumber,
+                    recipientName,
+                    recipientCity,
+                    recipientDistrict,
+                    recipientAddress,
+                    updatedAt: new Date().toISOString(),
+                  };
+                }
+                return s;
+              });
+            }
+            if (!matchedExisting) {
+              const newSaleEntry = {
+                id: `dilo_${Date.now()}`,
+                orderId: externalReference,
+                bank: 'dilo',
+                mode: productPaymentStatus === 'Paid' ? 'card' : 'cod',
+                status: 'approved',
+                productName: description || 'შეკვეთა Dilo.ge-ით',
+                productId: String(body.productId || ''),
+                amount: Number(body.productPrice) || amountToCollectForPackage || 0,
+                months: 0,
+                monthly: '',
+                customerPhone: recipientPhone,
+                customerName: recipientName,
+                recipientName,
+                recipientCity,
+                recipientDistrict,
+                recipientAddress,
+                diloTrackingCode: trackingNumber,
+                createdAt: new Date().toISOString(),
+                unread: true,
+              };
+              updatedSales = [newSaleEntry, ...currentList].slice(0, 200);
+            }
             saveLocalSalesList(updatedSales);
           }
 
