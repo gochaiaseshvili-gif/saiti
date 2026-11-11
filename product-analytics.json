@@ -30,15 +30,15 @@
       "productName": "MKF-02",
       "views": {
         "days": {
-          "2026-11-11": 2
+          "2026-11-11": 3
         },
         "months": {
-          "2026-11": 2
+          "2026-11": 3
         },
         "years": {
-          "2026": 2
+          "2026": 3
         },
-        "total": 2
+        "total": 3
       },
       "sales": {
         "card": 0,
@@ -46,9 +46,9 @@
         "total": 0,
         "revenue": 0
       },
-      "lastViewedAt": "2026-11-11T12:15:06.988Z",
+      "lastViewedAt": "2026-11-11T13:16:37.255Z",
       "lastSoldAt": null
     }
   },
-  "updatedAt": "2026-11-11T12:38:11.577Z"
+  "updatedAt": "2026-11-11T13:16:37.255Z"
 }
