@@ -35,6 +35,8 @@ function getDiloApiKey() {
 let cachedDiloCities = null;
 let cachedDiloCitiesAt = 0;
 const cachedDiloDistricts = new Map();
+let cachedDiloWeightTiers = null;
+let cachedDiloWeightTiersAt = 0;
 
 
 async function loadJsonFromGithub(fileName, defaultObj) {
@@ -548,6 +550,26 @@ export default async function handler(req, res) {
       }
     }
 
+    if (body.action === "dilo_weight_tiers") {
+      try {
+        if (cachedDiloWeightTiers && Date.now() - cachedDiloWeightTiersAt < 3600000) {
+          return res.status(200).json({ ok: true, tiers: cachedDiloWeightTiers });
+        }
+        const r = await fetch("https://dilo.ge/api/weightpricetiers", {
+          headers: { Accept: "application/json" },
+        });
+        if (!r.ok) {
+          return res.status(r.status).json({ ok: false, error: "ვერ ჩაიტვირთა წონის ტარიფები Dilo.ge-დან" });
+        }
+        const tiers = await r.json();
+        cachedDiloWeightTiers = Array.isArray(tiers) ? tiers : [];
+        cachedDiloWeightTiersAt = Date.now();
+        return res.status(200).json({ ok: true, tiers: cachedDiloWeightTiers });
+      } catch (err) {
+        return res.status(500).json({ ok: false, error: String(err.message || err) });
+      }
+    }
+
     if (body.action === "dilo_track_order") {
       try {
         const apiKey = getDiloApiKey();
@@ -646,6 +668,8 @@ export default async function handler(req, res) {
           productPaymentStatus === "NotPaid" ? Math.max(0, Number(body.amountToCollectForPackage) || 0) : 0;
         const externalReference = String(body.externalReference || `IYIDEBAA-${Date.now()}`).trim();
         const note = String(body.note || "").trim();
+        const weightPriceTierId = body.weightPriceTierId ? String(body.weightPriceTierId).trim() : "";
+        const weightRangeLabel = body.weightRangeLabel ? String(body.weightRangeLabel).trim() : "";
 
         if (!recipientName || !recipientPhone || !recipientCity || !recipientAddress) {
           return res.status(422).json({
@@ -654,23 +678,31 @@ export default async function handler(req, res) {
           });
         }
 
+        const finalDescription =
+          weightRangeLabel && !description.includes(weightRangeLabel)
+            ? `${description ? description + " • " : ""}წონა: ${weightRangeLabel}`
+            : description;
+
+        const orderItem = {
+          recipientName,
+          recipientPhone,
+          recipientCity,
+          recipientDistrict,
+          recipientAddress,
+          description: finalDescription || undefined,
+          isFragile,
+          productPaymentStatus,
+          whoPaysForCompanyService,
+          amountToCollectForPackage,
+          externalReference,
+        };
+        if (weightPriceTierId) {
+          orderItem.weightPriceTierId = weightPriceTierId;
+        }
+
         const payload = {
           note: note || undefined,
-          orders: [
-            {
-              recipientName,
-              recipientPhone,
-              recipientCity,
-              recipientDistrict,
-              recipientAddress,
-              description: description || undefined,
-              isFragile,
-              productPaymentStatus,
-              whoPaysForCompanyService,
-              amountToCollectForPackage,
-              externalReference,
-            },
-          ],
+          orders: [orderItem],
         };
 
         const r = await fetch("https://dilo.ge/api/partner/orders", {
