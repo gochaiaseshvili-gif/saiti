@@ -1,4 +1,23 @@
 {
-  "updatedAt": "2026-11-11T17:50:34.429Z",
-  "sales": []
+  "updatedAt": "2026-11-11T18:34:00.909Z",
+  "sales": [
+    {
+      "id": "sale_1794422040909_z1ka",
+      "orderId": "iyidebaa_1794421103768",
+      "bank": "bog",
+      "mode": "card",
+      "status": "rejected",
+      "rejectReason": "expiration",
+      "productName": "NDR-15",
+      "productId": "prod-1794065879123",
+      "amount": 1,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "createdAt": "2026-11-11T18:34:00.909Z",
+      "updatedAt": "2026-11-11T18:34:00.909Z",
+      "unread": true
+    }
+  ]
 }
