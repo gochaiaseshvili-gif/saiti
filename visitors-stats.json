@@ -1,6 +1,18 @@
 {
-  "totalPageViews": 98,
+  "totalPageViews": 99,
   "visitors": [
+    {
+      "visitorId": "vis_1794346598770_1rhafj",
+      "countryCode": "NL",
+      "countryName": "ნიდერლანდები",
+      "regionName": "NH",
+      "cityName": "Amsterdam",
+      "deviceType": "mobile",
+      "currentPage": "მთავარი გვერდი",
+      "visitsCount": 1,
+      "firstSeenAt": "2026-11-11T11:33:22.664Z",
+      "lastSeenAt": "2026-11-11T11:33:22.664Z"
+    },
     {
       "visitorId": "vis_1794396790422_07xae9",
       "countryCode": "US",
@@ -1142,5 +1154,5 @@
       "lastSeenAt": "2026-11-10T18:03:47.582Z"
     }
   ],
-  "updatedAt": "2026-11-11T11:33:10.713Z"
+  "updatedAt": "2026-11-11T11:33:22.664Z"
 }
