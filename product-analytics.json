@@ -24,7 +24,31 @@
       },
       "lastViewedAt": "2026-11-11T11:32:48.429Z",
       "lastSoldAt": null
+    },
+    "prod-1794065968994": {
+      "productId": "prod-1794065968994",
+      "productName": "MKF-02",
+      "views": {
+        "days": {
+          "2026-11-11": 1
+        },
+        "months": {
+          "2026-11": 1
+        },
+        "years": {
+          "2026": 1
+        },
+        "total": 1
+      },
+      "sales": {
+        "card": 0,
+        "installment": 0,
+        "total": 0,
+        "revenue": 0
+      },
+      "lastViewedAt": "2026-11-11T12:10:30.769Z",
+      "lastSoldAt": null
     }
   },
-  "updatedAt": "2026-11-11T11:32:48.429Z"
+  "updatedAt": "2026-11-11T12:10:30.769Z"
 }
