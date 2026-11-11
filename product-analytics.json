@@ -54,15 +54,15 @@
       "productName": "NDR-15",
       "views": {
         "days": {
-          "2026-11-11": 4
+          "2026-11-11": 5
         },
         "months": {
-          "2026-11": 4
+          "2026-11": 5
         },
         "years": {
-          "2026": 4
+          "2026": 5
         },
-        "total": 4
+        "total": 5
       },
       "sales": {
         "card": 0,
@@ -70,9 +70,9 @@
         "total": 0,
         "revenue": 0
       },
-      "lastViewedAt": "2026-11-11T18:18:37.257Z",
+      "lastViewedAt": "2026-11-11T18:22:50.291Z",
       "lastSoldAt": null
     }
   },
-  "updatedAt": "2026-11-11T18:18:37.257Z"
+  "updatedAt": "2026-11-11T18:22:50.291Z"
 }
