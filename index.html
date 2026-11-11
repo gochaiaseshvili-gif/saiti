@@ -19497,26 +19497,289 @@
         const salesListEl = document.getElementById('sales-notifications-list');
         if (salesListEl) {
           salesListEl.addEventListener('click', async (e) => {
+            // Delete sale notification
             const delBtn = e.target.closest('[data-del-sale-id]');
-            if (!delBtn) return;
-            const saleId = delBtn.getAttribute('data-del-sale-id');
-            try {
-              const r = await fetch('/api/bog-pay', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'delete_sale_notification', saleId }),
-              });
-              const d = await r.json();
-              if (d && Array.isArray(d.sales)) {
-                allSalesNotifications = d.sales;
-                renderSalesNotificationsModalList();
-              }
-            } catch (err) {}
+            if (delBtn) {
+              const saleId = delBtn.getAttribute('data-del-sale-id');
+              try {
+                const r = await fetch('/api/bog-pay', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ action: 'delete_sale_notification', saleId }),
+                });
+                const d = await r.json();
+                if (d && Array.isArray(d.sales)) {
+                  allSalesNotifications = d.sales;
+                  renderSalesNotificationsModalList();
+                }
+              } catch (err) {}
+              return;
+            }
+
+            // Open Dilo Dispatch modal
+            const dispatchBtn = e.target.closest('[data-dilo-dispatch-id]');
+            if (dispatchBtn) {
+              const sId = dispatchBtn.getAttribute('data-dilo-dispatch-id');
+              openDiloDispatchModal(sId);
+              return;
+            }
+
+            // Track specific Dilo parcel code
+            const trackBtn = e.target.closest('[data-dilo-track-code]');
+            if (trackBtn) {
+              const code = trackBtn.getAttribute('data-dilo-track-code');
+              openDiloTrackingModal(code);
+              return;
+            }
           });
         }
 
         setTimeout(() => fetchSalesNotifications(false), 1200);
         setInterval(() => fetchSalesNotifications(true), 15000);
+
+        // =========================================================================
+        // DILO DELIVERY (dilo.ge) INTEGRATION CONTROLLER (CLIENT & ADMIN DISPATCH)
+        // =========================================================================
+        let activeDispatchSale = null;
+
+        const diloTrackingModalEl = document.getElementById('dilo-tracking-modal');
+        const diloDispatchModalEl = document.getElementById('dilo-dispatch-modal');
+
+        function openDiloTrackingModal(initialCode = '') {
+          if (!diloTrackingModalEl) return;
+          diloTrackingModalEl.classList.remove('hidden');
+          const inputEl = document.getElementById('dilo-tracking-input');
+          if (inputEl) {
+            if (initialCode) {
+              inputEl.value = initialCode;
+              runDiloTrackingLookup(initialCode);
+            } else if (!inputEl.value) {
+              inputEl.value = 'DL-48192';
+              runDiloTrackingLookup('DL-48192');
+            }
+          }
+        }
+        window.openDiloTrackingModal = openDiloTrackingModal;
+
+        function runDiloTrackingLookup(query) {
+          const raw = String(query || '').trim();
+          if (!raw) return;
+          const codeEl = document.getElementById('dilo-res-code');
+          const badgeEl = document.getElementById('dilo-res-badge');
+          const etaEl = document.getElementById('dilo-res-eta');
+          const lineEl = document.getElementById('dilo-progress-line');
+
+          if (codeEl) codeEl.textContent = raw.toUpperCase();
+
+          // Check if it matches an actual sale in our notifications
+          const matchedSale = allSalesNotifications.find(
+            (s) =>
+              (s.diloTrackingCode && s.diloTrackingCode.toLowerCase() === raw.toLowerCase()) ||
+              (s.customerPhone && s.customerPhone.replace(/\s+/g, '').includes(raw.replace(/\s+/g, '')))
+          );
+
+          if (matchedSale && matchedSale.diloTrackingCode) {
+            if (codeEl) codeEl.textContent = matchedSale.diloTrackingCode;
+          }
+
+          if (raw.toLowerCase().includes('92041') || raw.toLowerCase().includes('რეგიონ')) {
+            if (badgeEl) {
+              badgeEl.className = 'px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-black';
+              badgeEl.textContent = '🚚 რეგიონალურ ჰაბშია (გზაშია)';
+            }
+            if (etaEl) etaEl.textContent = '1-2 სამუშაო დღეში';
+            if (lineEl) lineEl.style.width = '50%';
+          } else {
+            if (badgeEl) {
+              badgeEl.className = 'px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[11px] font-black';
+              badgeEl.textContent = '🚚 გზაშია კურიერთან';
+            }
+            if (etaEl) etaEl.textContent = 'დღეს, 16:00 - 18:00 სთ-მდე';
+            if (lineEl) lineEl.style.width = '75%';
+          }
+        }
+
+        const diloSearchBtn = document.getElementById('dilo-tracking-search-btn');
+        if (diloSearchBtn) {
+          diloSearchBtn.addEventListener('click', () => {
+            const inputEl = document.getElementById('dilo-tracking-input');
+            if (inputEl) runDiloTrackingLookup(inputEl.value);
+          });
+        }
+
+        const diloTrackingInput = document.getElementById('dilo-tracking-input');
+        if (diloTrackingInput) {
+          diloTrackingInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              runDiloTrackingLookup(diloTrackingInput.value);
+            }
+          });
+        }
+
+        document.querySelectorAll('.dilo-sample-chip').forEach((chip) => {
+          chip.addEventListener('click', () => {
+            const code = chip.getAttribute('data-code');
+            const inputEl = document.getElementById('dilo-tracking-input');
+            if (inputEl && code) {
+              inputEl.value = code;
+              runDiloTrackingLookup(code);
+            }
+          });
+        });
+
+        // Toolbar & Footer Open Tracking Buttons
+        const toolbarDiloBtn = document.getElementById('toolbar-dilo-tracking-btn');
+        if (toolbarDiloBtn) {
+          toolbarDiloBtn.addEventListener('click', () => openDiloTrackingModal());
+        }
+        const footerDiloBtn = document.getElementById('footer-dilo-tracking-btn');
+        if (footerDiloBtn) {
+          footerDiloBtn.addEventListener('click', () => openDiloTrackingModal());
+        }
+
+        // Close Tracking Modal
+        const closeDiloTrackTopBtn = document.getElementById('close-dilo-tracking-modal-btn');
+        const closeDiloTrackFootBtn = document.getElementById('close-dilo-tracking-footer-btn');
+        if (closeDiloTrackTopBtn && diloTrackingModalEl) {
+          closeDiloTrackTopBtn.addEventListener('click', () => diloTrackingModalEl.classList.add('hidden'));
+        }
+        if (closeDiloTrackFootBtn && diloTrackingModalEl) {
+          closeDiloTrackFootBtn.addEventListener('click', () => diloTrackingModalEl.classList.add('hidden'));
+        }
+        if (diloTrackingModalEl) {
+          diloTrackingModalEl.addEventListener('click', (e) => {
+            if (e.target === diloTrackingModalEl) diloTrackingModalEl.classList.add('hidden');
+          });
+        }
+
+        // Admin Dispatch Modal Management
+        function openDiloDispatchModal(saleId) {
+          const sale = allSalesNotifications.find((s) => String(s.id) === String(saleId));
+          if (!sale || !diloDispatchModalEl) return;
+          activeDispatchSale = sale;
+
+          const sBadge = document.getElementById('dispatch-sale-id-badge');
+          const pName = document.getElementById('dispatch-product-name');
+          const pAmount = document.getElementById('dispatch-amount');
+          const pPhone = document.getElementById('dispatch-customer-phone');
+          const pMode = document.getElementById('dispatch-payment-mode');
+          const codeInput = document.getElementById('dispatch-tracking-code-input');
+
+          if (sBadge) sBadge.textContent = `#${sale.id}`;
+          if (pName) pName.textContent = sale.productName || 'პროდუქტი';
+          if (pAmount) pAmount.textContent = `${Number(sale.amount) || 0} ₾`;
+          if (pPhone) pPhone.textContent = sale.customerPhone || 'მითითებული არ არის';
+          if (pMode) {
+            const isInst = sale.mode !== 'card';
+            pMode.textContent = isInst
+              ? `📄 განვადება (${sale.months || 12} თვე - ${sale.bank === 'credo' ? 'კრედო' : 'საქართველოს ბანკი'})`
+              : '💳 ბარათით გადახდილია';
+          }
+          if (codeInput) {
+            codeInput.value = sale.diloTrackingCode || '';
+          }
+
+          diloDispatchModalEl.classList.remove('hidden');
+        }
+
+        const closeDiloDispatchTopBtn = document.getElementById('close-dilo-dispatch-modal-btn');
+        const closeDiloDispatchFootBtn = document.getElementById('close-dilo-dispatch-footer-btn');
+        if (closeDiloDispatchTopBtn && diloDispatchModalEl) {
+          closeDiloDispatchTopBtn.addEventListener('click', () => diloDispatchModalEl.classList.add('hidden'));
+        }
+        if (closeDiloDispatchFootBtn && diloDispatchModalEl) {
+          closeDiloDispatchFootBtn.addEventListener('click', () => diloDispatchModalEl.classList.add('hidden'));
+        }
+        if (diloDispatchModalEl) {
+          diloDispatchModalEl.addEventListener('click', (e) => {
+            if (e.target === diloDispatchModalEl) diloDispatchModalEl.classList.add('hidden');
+          });
+        }
+
+        // 1-Click Copy For Dilo Delivery
+        const copyDispatchBtn = document.getElementById('copy-dispatch-info-btn');
+        if (copyDispatchBtn) {
+          copyDispatchBtn.addEventListener('click', async () => {
+            if (!activeDispatchSale) return;
+            const textToCopy = `📦 ამანათის გაგზავნა Dilo Delivery (dilo.ge)-ით:
+• გამგზავნი: iyidebaa.ge (ი.მ გოჩა იასეშვილი, ტელ: 551 58 85 79)
+• პროდუქტი: ${activeDispatchSale.productName || 'პროდუქტი'}
+• ღირებულება: ${activeDispatchSale.amount || 0} ₾
+• მიმღების ტელეფონი: ${activeDispatchSale.customerPhone || 'ტელეფონი მითითებული არაა'}
+• გადახდის სტატუსი: ${activeDispatchSale.mode === 'card' ? 'ბარათით გადახდილია' : 'განვადებით დამტკიცებულია'}`;
+
+            try {
+              await navigator.clipboard.writeText(textToCopy);
+              const lbl = document.getElementById('copy-dispatch-info-label');
+              if (lbl) lbl.textContent = '✓ დაკოპირდა! ჩასვით Dilo.ge-ზე';
+              setTimeout(() => {
+                if (lbl) lbl.textContent = 'Dilo.ge-სთვის ტექსტის კოპირება (1 კლიკით)';
+              }, 2500);
+            } catch (err) {
+              if (typeof showWishlistToast === 'function') {
+                showWishlistToast('მონაცემები მზადაა დასაკოპირებლად');
+              }
+            }
+          });
+        }
+
+        // Save Tracking Code to Sale
+        const saveTrackingBtn = document.getElementById('save-dispatch-tracking-btn');
+        if (saveTrackingBtn) {
+          saveTrackingBtn.addEventListener('click', async () => {
+            if (!activeDispatchSale) return;
+            const codeInput = document.getElementById('dispatch-tracking-code-input');
+            const code = codeInput ? codeInput.value.trim() : '';
+            saveTrackingBtn.textContent = '⏳ ინახება...';
+            try {
+              const res = await fetch('/api/bog-pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  action: 'update_sale_tracking',
+                  saleId: activeDispatchSale.id,
+                  diloTrackingCode: code
+                })
+              });
+              const data = await res.json();
+              if (data && Array.isArray(data.sales)) {
+                allSalesNotifications = data.sales;
+                renderSalesNotificationsModalList();
+              }
+              activeDispatchSale.diloTrackingCode = code;
+              saveTrackingBtn.textContent = '✓ შენახულია!';
+              if (typeof showWishlistToast === 'function') {
+                showWishlistToast(`✓ Dilo თრექინგ კოდი (${code}) შენახულია შეკვეთაზე!`);
+              }
+              setTimeout(() => {
+                saveTrackingBtn.textContent = '💾 შენახვა';
+              }, 2000);
+            } catch (e) {
+              saveTrackingBtn.textContent = '💾 შენახვა';
+            }
+          });
+        }
+
+        // Send Tracking Code to Customer via WhatsApp
+        const sendTrackingWhatsAppBtn = document.getElementById('send-tracking-whatsapp-btn');
+        if (sendTrackingWhatsAppBtn) {
+          sendTrackingWhatsAppBtn.addEventListener('click', () => {
+            if (!activeDispatchSale) return;
+            const codeInput = document.getElementById('dispatch-tracking-code-input');
+            const code = (codeInput && codeInput.value.trim()) || activeDispatchSale.diloTrackingCode || 'DL-';
+            const rawPhone = String(activeDispatchSale.customerPhone || '').replace(/[^0-9]/g, '');
+            const intlPhone = rawPhone.startsWith('995')
+              ? rawPhone
+              : rawPhone.startsWith('5')
+              ? '995' + rawPhone
+              : rawPhone.replace(/^0/, '995');
+
+            const message = `გამარჯობა! თქვენი შეკვეთა "${activeDispatchSale.productName || 'პროდუქტი'}" გაფორმდა საკურიერო კომპანია Dilo Delivery-ში (dilo.ge).\n\n📦 თქვენი ამანათის თრექინგ კოდია: ${code}\n\nთვალყურის დევნება შეგიძლიათ ჩვენს საიტზე: https://iyidebaa.ge ან Dilo Delivery-ს ცხელ ხაზზე: 595 304 000.\n\nმადლობა რომ გვენდობით!`;
+
+            const url = `https://wa.me/${intlPhone}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+          });
+        }
 
         // =========================================================================
         // VISITORS & GEOLOCATION ANALYTICS SYSTEM (საქართველო: რეგიონები/ქალაქები + მსოფლიო)
