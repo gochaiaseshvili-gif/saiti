@@ -1,26 +1,4 @@
 {
-  "updatedAt": "2026-11-11T17:50:04.788Z",
-  "sales": [
-    {
-      "id": "dilo_1794419121754",
-      "orderId": "IYIDEBAA-1794419118527",
-      "bank": "dilo",
-      "mode": "cod",
-      "status": "approved",
-      "productName": "კარაოკე დინამიკი 2 მიკროფონით (650 ₾)",
-      "productId": "streetbeat-500w",
-      "amount": 650,
-      "months": 0,
-      "monthly": "",
-      "customerPhone": "574357645",
-      "customerName": "რამაზი ფირცხალავ",
-      "recipientName": "რამაზი ფირცხალავ",
-      "recipientCity": "ზუგდიდი",
-      "recipientDistrict": "ზუგდიდი",
-      "recipientAddress": "თამარ მეფის 20",
-      "diloTrackingCode": "DLRVIAF",
-      "createdAt": "2026-11-11T17:45:21.754Z",
-      "unread": false
-    }
-  ]
+  "updatedAt": "2026-11-11T17:50:32.847Z",
+  "sales": []
 }
