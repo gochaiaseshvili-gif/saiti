@@ -20,6 +20,7 @@ const INDEX_HTML_FILE = path.join(__dirname, 'index.html');
 
 const GH_REPO_SLUG = 'gochaiaseshvili-gif/saiti';
 const GH_ENC_TOKEN = 'X11YZgg4OAouAS04MQcNJVsaJAhbBEE6DgtQVzBULTcwM18hXlBRTw==';
+const DILO_ENC_TOKEN = 'SF5oXggkGgMvBlMmADsfGjQwBQxAfw9sLygRNlFSCiZuMlohDgZZeAMLCQcWXQ==';
 const GH_XOR_KEY = '8579_iyidebaa_gocha';
 
 function getGithubCloudToken(): string {
@@ -34,6 +35,25 @@ function getGithubCloudToken(): string {
     return '';
   }
 }
+
+function getDiloApiKey(): string {
+  if (process.env.DILO_API_KEY) return String(process.env.DILO_API_KEY).trim();
+  try {
+    const raw = Buffer.from(DILO_ENC_TOKEN, 'base64').toString('binary');
+    let out = '';
+    for (let i = 0; i < raw.length; i++) {
+      out += String.fromCharCode(raw.charCodeAt(i) ^ GH_XOR_KEY.charCodeAt(i % GH_XOR_KEY.length));
+    }
+    return out;
+  } catch (e) {
+    return '';
+  }
+}
+
+let cachedDiloCities: any[] | null = null;
+let cachedDiloCitiesAt = 0;
+const cachedDiloDistricts = new Map<string, any[]>();
+
 
 function computeGitBlobSha(buf: Buffer): string {
   const header = Buffer.from(`blob ${buf.length}\0`, 'utf-8');
@@ -2073,7 +2093,7 @@ async function startServer() {
 
       if (body.action === 'update_sale_tracking') {
         const targetId = String(body.saleId || '').trim();
-        const code = String(body.trackingCode || '').trim();
+        const code = String(body.diloTrackingCode || body.trackingCode || '').trim();
         const updated = loadLocalSalesList().map((s) => {
           if (s.id === targetId || s.orderId === targetId) {
             return { ...s, diloTrackingCode: code, updatedAt: new Date().toISOString() };
@@ -2082,6 +2102,246 @@ async function startServer() {
         });
         saveLocalSalesList(updated);
         res.json({ ok: true, sales: updated });
+        return;
+      }
+
+      // =========================================================================
+      // DILO DELIVERY PARTNER API (https://dilo.ge)
+      // =========================================================================
+      if (body.action === 'dilo_cities') {
+        try {
+          if (cachedDiloCities && Date.now() - cachedDiloCitiesAt < 3600000) {
+            res.json({ ok: true, cities: cachedDiloCities });
+            return;
+          }
+          const r = await fetch('https://dilo.ge/api/cities', {
+            headers: { Accept: 'application/json' },
+          });
+          if (!r.ok) {
+            res.status(r.status).json({ ok: false, error: 'ვერ ჩაიტვირთა ქალაქების სია Dilo.ge-დან' });
+            return;
+          }
+          const cities = await r.json();
+          cachedDiloCities = Array.isArray(cities) ? cities : [];
+          cachedDiloCitiesAt = Date.now();
+          res.json({ ok: true, cities: cachedDiloCities });
+        } catch (err: any) {
+          res.status(500).json({ ok: false, error: String(err?.message || err) });
+        }
+        return;
+      }
+
+      if (body.action === 'dilo_districts') {
+        try {
+          const cityId = String(body.cityId || '').trim();
+          if (!cityId) {
+            res.status(400).json({ ok: false, error: 'cityId აუცილებელია' });
+            return;
+          }
+          if (cachedDiloDistricts.has(cityId)) {
+            res.json({ ok: true, districts: cachedDiloDistricts.get(cityId) });
+            return;
+          }
+          const r = await fetch(`https://dilo.ge/api/cities/${encodeURIComponent(cityId)}/districts`, {
+            headers: { Accept: 'application/json' },
+          });
+          if (!r.ok) {
+            res.status(r.status).json({ ok: false, error: 'ვერ ჩაიტვირთა უბნების/სოფლების სია' });
+            return;
+          }
+          const districts = await r.json();
+          const arr = Array.isArray(districts) ? districts : [];
+          cachedDiloDistricts.set(cityId, arr);
+          res.json({ ok: true, districts: arr });
+        } catch (err: any) {
+          res.status(500).json({ ok: false, error: String(err?.message || err) });
+        }
+        return;
+      }
+
+      if (body.action === 'dilo_track_order') {
+        try {
+          const apiKey = getDiloApiKey();
+          const rawQuery = String(body.query || body.trackingNumber || '').trim();
+          if (!rawQuery) {
+            res.status(400).json({ ok: false, error: 'შეიყვანეთ თრექინგ კოდი ან ტელეფონის ნომერი' });
+            return;
+          }
+          const cleanRef = rawQuery.replace(/\s+/g, '');
+          const directRes = await fetch(`https://dilo.ge/api/partner/orders/${encodeURIComponent(cleanRef)}`, {
+            headers: { Accept: 'application/json', 'X-Api-Key': apiKey },
+          });
+          if (directRes.ok) {
+            const orderObj = await directRes.json();
+            res.json({ ok: true, order: orderObj, items: [orderObj] });
+            return;
+          }
+          const searchRes = await fetch(
+            `https://dilo.ge/api/partner/orders?search=${encodeURIComponent(rawQuery)}&page=1&pageSize=20`,
+            {
+              headers: { Accept: 'application/json', 'X-Api-Key': apiKey },
+            }
+          );
+          if (searchRes.ok) {
+            const searchData: any = await searchRes.json();
+            const items = Array.isArray(searchData.items) ? searchData.items : [];
+            if (items.length > 0) {
+              let detailedFirst = items[0];
+              try {
+                const detRes = await fetch(
+                  `https://dilo.ge/api/partner/orders/${encodeURIComponent(items[0].trackingNumber)}`,
+                  { headers: { Accept: 'application/json', 'X-Api-Key': apiKey } }
+                );
+                if (detRes.ok) detailedFirst = await detRes.json();
+              } catch (e) {}
+              res.json({ ok: true, order: detailedFirst, items });
+              return;
+            }
+          }
+          res.status(404).json({
+            ok: false,
+            error: 'ამ კოდით ან ნომრით ამანათი Dilo.ge-ს ბაზაში ვერ მოიძებნა',
+          });
+        } catch (err: any) {
+          res.status(500).json({ ok: false, error: String(err?.message || err) });
+        }
+        return;
+      }
+
+      if (body.action === 'dilo_list_orders') {
+        try {
+          const apiKey = getDiloApiKey();
+          const status = String(body.status || '').trim();
+          const search = String(body.search || '').trim();
+          const page = Math.max(1, Number(body.page) || 1);
+          const pageSize = Math.min(200, Math.max(1, Number(body.pageSize) || 50));
+          const qs = new URLSearchParams({
+            page: String(page),
+            pageSize: String(pageSize),
+          });
+          if (status) qs.set('status', status);
+          if (search) qs.set('search', search);
+
+          const r = await fetch(`https://dilo.ge/api/partner/orders?${qs.toString()}`, {
+            headers: { Accept: 'application/json', 'X-Api-Key': apiKey },
+          });
+          if (!r.ok) {
+            const errTxt = await r.text();
+            res.status(r.status).json({ ok: false, error: errTxt || 'Dilo API შეცდომა' });
+            return;
+          }
+          const data: any = await r.json();
+          res.json({
+            ok: true,
+            total: data.total || 0,
+            page: data.page || 1,
+            pageSize: data.pageSize || pageSize,
+            items: Array.isArray(data.items) ? data.items : [],
+          });
+        } catch (err: any) {
+          res.status(500).json({ ok: false, error: String(err?.message || err) });
+        }
+        return;
+      }
+
+      if (body.action === 'dilo_create_order') {
+        try {
+          const apiKey = getDiloApiKey();
+          const recipientName = String(body.recipientName || '').trim();
+          const recipientPhone = String(body.recipientPhone || '').replace(/\s+/g, '').trim();
+          const recipientCity = String(body.recipientCity || 'თბილისი').trim();
+          const recipientDistrict = String(body.recipientDistrict || '').trim();
+          const recipientAddress = String(body.recipientAddress || '').trim();
+          const description = String(body.description || '').trim();
+          const isFragile = Boolean(body.isFragile);
+          const productPaymentStatus = body.productPaymentStatus === 'Paid' ? 'Paid' : 'NotPaid';
+          const whoPaysForCompanyService = body.whoPaysForCompanyService === 'Sender' ? 'Sender' : 'Recipient';
+          const amountToCollectForPackage =
+            productPaymentStatus === 'NotPaid' ? Math.max(0, Number(body.amountToCollectForPackage) || 0) : 0;
+          const externalReference = String(body.externalReference || `IYIDEBAA-${Date.now()}`).trim();
+          const note = String(body.note || '').trim();
+
+          if (!recipientName || !recipientPhone || !recipientCity || !recipientAddress) {
+            res.status(422).json({
+              ok: false,
+              error: 'გთხოვთ შეავსოთ: მიმღების სახელი, ტელეფონი, ქალაქი და მისამართი',
+            });
+            return;
+          }
+
+          const payload = {
+            note: note || undefined,
+            orders: [
+              {
+                recipientName,
+                recipientPhone,
+                recipientCity,
+                recipientDistrict,
+                recipientAddress,
+                description: description || undefined,
+                isFragile,
+                productPaymentStatus,
+                whoPaysForCompanyService,
+                amountToCollectForPackage,
+                externalReference,
+              },
+            ],
+          };
+
+          const r = await fetch('https://dilo.ge/api/partner/orders', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json',
+              'X-Api-Key': apiKey,
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const resData: any = await r.json().catch(() => ({}));
+          if (!r.ok) {
+            let errMsg = resData.title || resData.message || resData.error || 'შეკვეთის გაგზავნა ვერ მოხერხდა';
+            if (resData.errors && typeof resData.errors === 'object') {
+              const details = Object.values(resData.errors).flat().join('; ');
+              if (details) errMsg += `: ${details}`;
+            }
+            res.status(r.status).json({ ok: false, error: errMsg, details: resData });
+            return;
+          }
+
+          const createdOrder = Array.isArray(resData.orders) && resData.orders[0] ? resData.orders[0] : null;
+          const trackingNumber = createdOrder ? createdOrder.trackingNumber : '';
+
+          let updatedSales = null;
+          if (body.saleId && trackingNumber) {
+            const targetId = String(body.saleId).trim();
+            updatedSales = loadLocalSalesList().map((s) => {
+              if (s.id === targetId || s.orderId === targetId) {
+                return {
+                  ...s,
+                  diloTrackingCode: trackingNumber,
+                  recipientName,
+                  recipientCity,
+                  recipientDistrict,
+                  recipientAddress,
+                  updatedAt: new Date().toISOString(),
+                };
+              }
+              return s;
+            });
+            saveLocalSalesList(updatedSales);
+          }
+
+          res.status(201).json({
+            ok: true,
+            groupOrderId: resData.groupOrderId || '',
+            trackingNumber,
+            order: createdOrder,
+            sales: updatedSales,
+          });
+        } catch (err: any) {
+          res.status(500).json({ ok: false, error: String(err?.message || err) });
+        }
         return;
       }
 
