@@ -19758,6 +19758,26 @@
           footerDiloBtn.addEventListener('click', () => openDiloTrackingModal());
         }
 
+        // Product Details Modal & Control Panel Dilo Tracking Buttons
+        const modalDiloTrackBtn = document.getElementById('modal-open-dilo-track-btn');
+        if (modalDiloTrackBtn) {
+          modalDiloTrackBtn.addEventListener('click', () => openDiloTrackingModal());
+        }
+        const cpDiloTrackBtn = document.getElementById('cp-dilo-track-btn');
+        if (cpDiloTrackBtn) {
+          cpDiloTrackBtn.addEventListener('click', () => openDiloTrackingModal());
+        }
+
+        // Catalog Grid Card Dilo Tracking Buttons delegation
+        document.addEventListener('click', (e) => {
+          const cardTrackBtn = e.target.closest('[data-card-dilo-track]');
+          if (cardTrackBtn) {
+            e.stopPropagation();
+            e.preventDefault();
+            openDiloTrackingModal();
+          }
+        });
+
         // Close Tracking Modal
         const closeDiloTrackTopBtn = document.getElementById('close-dilo-tracking-modal-btn');
         const closeDiloTrackFootBtn = document.getElementById('close-dilo-tracking-footer-btn');
