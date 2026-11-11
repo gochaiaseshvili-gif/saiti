@@ -469,6 +469,20 @@ export default async function handler(req, res) {
       return res.status(200).json({ ok: true, sales: updated });
     }
 
+    if (body.action === "update_sale_tracking") {
+      const targetId = String(body.saleId || "").trim();
+      const code = String(body.trackingCode || "").trim();
+      const loaded = await loadSalesFromGithub();
+      const updated = (loaded.sales || []).map((s) => {
+        if (s.id === targetId || s.orderId === targetId) {
+          return { ...s, diloTrackingCode: code, updatedAt: new Date().toISOString() };
+        }
+        return s;
+      });
+      await saveSalesToGithub(updated, loaded.sha);
+      return res.status(200).json({ ok: true, sales: updated });
+    }
+
     if (body.action === "clear_all_sales_notifications") {
       const loaded = await loadSalesFromGithub();
       await saveSalesToGithub([], loaded.sha);
