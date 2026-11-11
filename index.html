@@ -19292,16 +19292,27 @@
                       <div class="text-lg sm:text-xl font-black ${st === 'rejected' ? 'text-rose-600 line-through' : 'text-emerald-700'} font-mono-num">${Number(s.amount) || 0} ₾</div>
                     </div>
                   </div>
-                  ${phoneClean ? `
-                    <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-100">
+                  <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-zinc-100">
+                    ${s.diloTrackingCode ? `
+                      <button type="button" data-dilo-track-code="${s.diloTrackingCode}" class="px-2.5 py-1.5 rounded-xl bg-orange-100 hover:bg-orange-200 text-orange-950 text-xs font-black flex items-center gap-1.5 border border-orange-300 cursor-pointer" title="ამანათის თვალთვალი">
+                        <span>📦 Dilo:</span>
+                        <span class="font-mono font-black text-orange-700">${s.diloTrackingCode}</span>
+                        <span class="text-[10px] bg-orange-500 text-white px-1 rounded">თვალთვალი</span>
+                      </button>
+                    ` : ''}
+                    <button type="button" data-dilo-dispatch-id="${s.id}" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-black flex items-center gap-1.5 cursor-pointer shadow-2xs">
+                      <span>🚚</span>
+                      <span>Dilo.ge-ზე გაფორმება & კოდი</span>
+                    </button>
+                    ${phoneClean ? `
                       <a href="tel:${phoneClean}" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center gap-1.5">
                         📞 დარეკვა: ${s.customerPhone}
                       </a>
                       <a href="https://wa.me/${phoneClean.replace(/^0/, '995').replace(/^5/, '9955')}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-green-600 hover:bg-green-700 text-white text-xs font-extrabold flex items-center gap-1.5">
-                        💬 WhatsApp მიწერა
+                        💬 WhatsApp
                       </a>
-                    </div>
-                  ` : ''}
+                    ` : ''}
+                  </div>
                 </div>
               `;
             })
