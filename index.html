@@ -343,19 +343,19 @@
     <header class="sticky top-0 z-30 min-h-[60px] py-2 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-3 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 sm:gap-3.5">
       <!-- Zone 1 (Left): Brand Logo + Brand Wordmark + Owner Phone Number + 1000x1000 PNG Download -->
       <div class="flex items-center gap-2.5 shrink-0">
-        <a
-          href="/iyidebaa-logo-1000x1000.png"
-          download="iyidebaa-logo-1000x1000.png"
-          title="დააჭირეთ ლოგოს ჩამოსატვირთად (PNG 1000x1000 თიბისი ბანკისთვის)"
-          class="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border-2 border-amber-400 shadow-md shrink-0 block"
+        <button
+          type="button"
+          onclick="window.openTbcLogoPreviewModal && window.openTbcLogoPreviewModal()"
+          title="დააჭირეთ ლოგოს გასადიდებლად და გადმოსაწერად (PNG 1000x1000 თიბისი ბანკისთვის)"
+          class="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-md shrink-0 block cursor-pointer"
         >
           <img
-            src="/iyidebaa-logo-1000x1000.png"
+            src="/iyidebaa-logo-1000x1000.png?v=tbcblue1"
             alt="iyidebaa.ge logo"
             referrerPolicy="no-referrer"
             class="w-full h-full object-cover group-hover:scale-105 fast-transition"
           />
-        </a>
+        </button>
         <div class="flex flex-col items-start justify-center gap-1 shrink-0">
           <div class="flex items-center gap-2 flex-wrap">
             <a
@@ -365,15 +365,15 @@
             >
               იყიდება საინტერესო ნივთები
             </a>
-            <a
-              href="/iyidebaa-logo-1000x1000.png"
-              download="iyidebaa-logo-1000x1000.png"
-              class="px-2 py-0.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-extrabold inline-flex items-center gap-1 shadow-2xs active:scale-95 fast-transition"
-              title="ჩამოტვირთეთ 1000x1000 PNG ლოგო თიბისი ბანკისთვის"
+            <button
+              type="button"
+              onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng()"
+              class="px-2.5 py-1 rounded-xl bg-[#00AEEF] hover:bg-[#0284c7] text-white text-[11px] font-extrabold inline-flex items-center gap-1 shadow-sm active:scale-95 fast-transition cursor-pointer"
+              title="1 დაჭერით გადმოწერეთ 1000x1000 PNG ლოგო თიბისი ბანკისთვის"
             >
               <span>⬇️</span>
-              <span>ლოგო PNG (1000×1000)</span>
-            </a>
+              <span>ლოგოს გადმოწერა (1000×1000 PNG)</span>
+            </button>
           </div>
 
           <a
@@ -389,6 +389,72 @@
           </a>
         </div>
       </div>
+
+      <!-- TBC Logo Preview & 1-Click Download Modal -->
+      <div
+        id="tbc-logo-preview-modal"
+        class="hidden fixed inset-0 z-[120] bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
+        onclick="if(event.target===this)this.classList.add('hidden')"
+      >
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl border border-sky-200 space-y-4 text-center">
+          <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
+            <h3 class="text-sm sm:text-base font-black text-zinc-900">🖼️ iyidebaa.ge — ლოგო თიბისი ბანკისთვის</h3>
+            <button
+              type="button"
+              onclick="document.getElementById('tbc-logo-preview-modal').classList.add('hidden')"
+              class="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold text-sm cursor-pointer"
+            >✕</button>
+          </div>
+          <div class="w-64 h-64 sm:w-72 sm:h-72 mx-auto rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-lg">
+            <img
+              src="/iyidebaa-logo-1000x1000.png?v=tbcblue1"
+              alt="iyidebaa.ge 1000x1000 PNG Logo"
+              referrerPolicy="no-referrer"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="text-xs text-zinc-600 space-y-0.5">
+            <div>ფორმატი: <strong class="text-zinc-900">PNG</strong> • ზომა: <strong class="text-zinc-900">1000 × 1000 px</strong></div>
+            <div>ფერები: <strong class="text-[#0284c7]">TBC ლურჯი / ცისფერი</strong></div>
+          </div>
+          <div class="flex flex-col gap-2 pt-1">
+            <a
+              href="/api/download-logo"
+              download="iyidebaa-logo-1000x1000.png"
+              onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng(event)"
+              class="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-[#00AEEF] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-md active:scale-95 fast-transition cursor-pointer"
+            >
+              <span>⬇️</span>
+              <span>გადმოწერა PNG (1000×1000)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <script>
+        window.openTbcLogoPreviewModal = function () {
+          var m = document.getElementById('tbc-logo-preview-modal');
+          if (m) m.classList.remove('hidden');
+        };
+        window.downloadTbcLogoPng = async function (ev) {
+          if (ev) ev.preventDefault();
+          try {
+            var res = await fetch('/iyidebaa-logo-1000x1000.png?v=tbcblue1');
+            var blob = await res.blob();
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'iyidebaa-logo-1000x1000.png';
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(function () {
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }, 400);
+          } catch (e) {
+            window.location.href = '/api/download-logo';
+          }
+        };
+      </script>
 
       <!-- Zone 2 (Compact & Neatly Organized Green Info Banner): ზედა რიგში საათი/ამინდი/პირობები, ქვედა რიგში მენიუს ღილაკები -->
       <div
