@@ -1,6 +1,18 @@
 {
-  "totalPageViews": 215,
+  "totalPageViews": 216,
   "visitors": [
+    {
+      "visitorId": "vis_1794441601520_no15pc",
+      "countryCode": "US",
+      "countryName": "აშშ",
+      "regionName": "OK",
+      "cityName": "Oklahoma City",
+      "deviceType": "mobile",
+      "currentPage": "მთავარი გვერდი",
+      "visitsCount": 1,
+      "firstSeenAt": "2026-11-12T00:59:39.606Z",
+      "lastSeenAt": "2026-11-12T00:59:39.606Z"
+    },
     {
       "visitorId": "vis_1794430491556_v2jqkb",
       "countryCode": "US",
@@ -2378,5 +2390,5 @@
       "lastSeenAt": "2026-11-10T18:03:47.582Z"
     }
   ],
-  "updatedAt": "2026-11-11T20:54:51.854Z"
+  "updatedAt": "2026-11-12T00:59:39.606Z"
 }
