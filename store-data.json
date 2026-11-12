@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794485535384,
+  "updatedAt": 1794486428536,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -277,7 +277,7 @@
       "tbcEnabled": true,
       "tbcClientId": "",
       "tbcSecret": "",
-      "tbcIban": "",
+      "tbcIban": "GE15TB7324845064300020",
       "tbcUrl": "",
       "tbcScript": "",
       "credoEnabled": true,
