@@ -2004,7 +2004,143 @@
 
         <div id="home-movable-sections-container" class="space-y-6">
 
-          <!-- MOVABLE BLOCK: PROMINENT MAIN-SCREEN AI CONSULTANT & CHAT PROMPT (ხელოვნური ინტელექტის მისაწერი მთავარ ეკრანზე) -->
+          <!-- MOVABLE BLOCK 1: CATALOG HEADER BAR -->
+          <div
+            id="catalog-header-box"
+            data-home-block="catalog-header"
+            data-block-label="კატალოგის სათაურის გრაფა"
+            class="movable-page-block flex flex-col sm:flex-row sm:items-end justify-between gap-2"
+          >
+            <div>
+              <h2 id="catalog-heading-title" class="font-display text-xl sm:text-2xl font-bold text-zinc-950 tracking-tight">
+                აქციაში არსებული მოდელები
+              </h2>
+              <p id="results-count-label" class="text-xs sm:text-sm text-zinc-500 mt-0.5">
+                ნაჩვენებია 8 პროდუქტი • დააჭირეთ პროდუქტს 5 ფოტოს, ვიდეო მიმოხილვისა და შეკვეთისთვის
+              </p>
+            </div>
+            <div class="text-xs text-zinc-500 flex flex-wrap items-center gap-3">
+              <span id="catalog-quick-order-text">სწრაფი შეკვეთა:</span>
+              <a id="catalog-phone-link" href="tel:+995551588579" class="font-mono-num font-semibold text-zinc-900 hover:underline">
+                +995 551 58 85 79
+              </a>
+            </div>
+          </div>
+
+          <!-- MOVABLE BLOCK 2: PRODUCT GRID CONTAINER -->
+          <div
+            id="product-grid-box"
+            data-home-block="product-grid"
+            data-block-label="პროდუქციის კატალოგის გრაფა"
+            class="movable-page-block"
+          >
+            <!-- Dynamic Product Grid Container -->
+            <div
+              id="product-grid"
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              aria-live="polite"
+            ></div>
+
+            <!-- Empty Search State -->
+            <div
+              id="empty-search-state"
+              class="hidden rounded-2xl bg-white border border-zinc-200 p-10 text-center max-w-md mx-auto my-6 space-y-3"
+            >
+              <p id="empty-search-title" class="text-base font-semibold text-zinc-900">აღნიშნული მოთხოვნით პროდუქტი ვერ მოიძებნა</p>
+              <p id="empty-search-subtitle" class="text-xs text-zinc-500">სცადეთ სხვა საძიებო სიტყვა ან დააბრუნეთ ყველა კატეგორიის ჩვენება.</p>
+              <button
+                id="reset-filters-btn"
+                type="button"
+                class="theme-bg min-h-[44px] px-5 py-2.5 rounded-xl text-xs font-semibold inline-flex items-center justify-center"
+              >
+                ყველა პროდუქტის ჩვენება
+              </button>
+            </div>
+          </div>
+
+          <!-- MOVABLE BLOCK 3: DELIVERY, INSTALLMENT & WARRANTY STANDARDS -->
+          <div
+            id="service-standards"
+            data-home-block="service-standards"
+            data-block-label="მიწოდების, განვადების და გარანტიის გრაფა"
+            class="movable-page-block pt-6 border-t border-zinc-200/80"
+          >
+            <div id="service-cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div
+                id="service-card-1"
+                data-service-card="serv-1"
+                data-block-label="მიწოდების ბარათი"
+                class="movable-service-card bg-white rounded-2xl p-6 border border-zinc-200/80 hover:border-amber-400 hover:shadow-md fast-transition space-y-2.5 flex flex-col justify-between"
+              >
+                <div class="space-y-2">
+                  <div id="serv-1-tag" class="text-xs font-mono-num text-zinc-400">01 • მიწოდება</div>
+                  <h3 id="serv-1-title" class="text-base font-bold text-zinc-950">სწრაფი საკურიერო მომსახურება</h3>
+                  <p id="serv-1-desc" class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                    თბილისში შეკვეთის ჩაბარება იმავე დღეს (3–4 საათში). რეგიონებში მიწოდება 24–48 საათში კარამდე მიტანით და ადგილზე შემოწმებით.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  data-open-info-page="warranty"
+                  onclick="window.openWarrantyModal && window.openWarrantyModal()"
+                  class="pt-2 text-xs font-extrabold text-amber-700 hover:text-amber-900 inline-flex items-center gap-1 cursor-pointer self-start"
+                >
+                  <span>🚚 მიწოდების პირობები სრულად</span>
+                  <span>→</span>
+                </button>
+              </div>
+
+              <div
+                id="service-card-2"
+                data-service-card="serv-2"
+                data-block-label="განვადების ბარათი"
+                class="movable-service-card bg-white rounded-2xl p-6 border border-zinc-200/80 hover:border-indigo-400 hover:shadow-md fast-transition space-y-2.5 flex flex-col justify-between"
+              >
+                <div class="space-y-2">
+                  <div id="serv-2-tag" class="text-xs font-mono-num text-zinc-400">02 • გადახდა და განვადება</div>
+                  <h3 id="serv-2-title" class="text-base font-bold text-zinc-950">ონლაინ განვადება და ბარათით გადახდა</h3>
+                  <p id="serv-2-desc" class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                    საქართველოს ბანკის, თიბისი ბანკის და კრედო ბანკის გამარტივებული განვადება ან ბარათით გადახდა პირდაპირ ჩატში გამოგზავნილი დაცული ბმულით.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  data-open-info-page="warranty"
+                  onclick="window.openWarrantyModal && window.openWarrantyModal()"
+                  class="pt-2 text-xs font-extrabold text-indigo-700 hover:text-indigo-900 inline-flex items-center gap-1 cursor-pointer self-start"
+                >
+                  <span>💳 განვადებისა და გადახდის პირობები</span>
+                  <span>→</span>
+                </button>
+              </div>
+
+              <div
+                id="service-card-3"
+                data-service-card="serv-3"
+                data-block-label="გარანტიის ბარათი"
+                class="movable-service-card bg-white rounded-2xl p-6 border border-zinc-200/80 hover:border-emerald-400 hover:shadow-md fast-transition space-y-2.5 flex flex-col justify-between"
+              >
+                <div class="space-y-2">
+                  <div id="serv-3-tag" class="text-xs font-mono-num text-zinc-400">03 • გარანტია და სერვისი</div>
+                  <h3 id="serv-3-title" class="text-base font-bold text-zinc-950">12-თვიანი ოფიციალური გარანტია</h3>
+                  <p id="serv-3-desc" class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
+                    ყველა კარაოკე დინამიკსა და LiFePO4 სოლარ გენერატორს მოყვება ქარხნული გარანტია, უსადენო მიკროფონების კომპლექტი და სრული კაბელების ნაკრები.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  data-open-info-page="warranty"
+                  onclick="window.openWarrantyModal && window.openWarrantyModal()"
+                  class="pt-2 text-xs font-extrabold text-emerald-700 hover:text-emerald-900 inline-flex items-center gap-1 cursor-pointer self-start"
+                >
+                  <span>🛡️ საგარანტიო პირობები სრულად</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- MOVABLE BLOCK 4: PROMINENT AI CONSULTANT & CHAT PROMPT (ჩატანილია სულ ქვემოთ) -->
           <div
             id="hero-ai-chat-box"
             data-home-block="hero-ai-chat"
@@ -2146,7 +2282,7 @@
             </div>
           </div>
 
-          <!-- MOVABLE BLOCK: SHOPPING PRICE CALCULATOR (ფასის გამომთვლელი კალკულატორი 2 ან მეტი ნივთის დაჯამებისთვის) -->
+          <!-- MOVABLE BLOCK 5: SHOPPING PRICE CALCULATOR (ჩატანილია სულ ქვემოთ) -->
           <div
             id="shopping-calculator-box"
             data-home-block="price-calculator"
@@ -2191,10 +2327,10 @@
                   <span>➕</span>
                   <span>ნივთის დამატება:</span>
                 </label>
-                <div class="flex-1 flex gap-1.5">
+                <div class="flex-1 min-w-0 flex gap-1.5">
                   <select
                     id="calc-product-select"
-                    class="flex-1 min-h-[32px] px-2.5 py-1 bg-white rounded-lg border border-amber-300 text-xs font-semibold text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
+                    class="flex-1 min-w-0 w-full min-h-[32px] px-2.5 py-1 bg-white rounded-lg border border-amber-300 text-xs font-semibold text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500 shadow-2xs"
                   >
                     <option value="">-- აირჩიეთ პროდუქტი კატალოგიდან --</option>
                   </select>
@@ -2293,142 +2429,6 @@
                     <span>+995 551 58 85 79</span>
                   </a>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- MOVABLE BLOCK 2: CATALOG HEADER BAR -->
-          <div
-            id="catalog-header-box"
-            data-home-block="catalog-header"
-            data-block-label="კატალოგის სათაურის გრაფა"
-            class="movable-page-block flex flex-col sm:flex-row sm:items-end justify-between gap-2"
-          >
-            <div>
-              <h2 id="catalog-heading-title" class="font-display text-xl sm:text-2xl font-bold text-zinc-950 tracking-tight">
-                აქციაში არსებული მოდელები
-              </h2>
-              <p id="results-count-label" class="text-xs sm:text-sm text-zinc-500 mt-0.5">
-                ნაჩვენებია 8 პროდუქტი • დააჭირეთ პროდუქტს 5 ფოტოს, ვიდეო მიმოხილვისა და შეკვეთისთვის
-              </p>
-            </div>
-            <div class="text-xs text-zinc-500 flex flex-wrap items-center gap-3">
-              <span id="catalog-quick-order-text">სწრაფი შეკვეთა:</span>
-              <a id="catalog-phone-link" href="tel:+995551588579" class="font-mono-num font-semibold text-zinc-900 hover:underline">
-                +995 551 58 85 79
-              </a>
-            </div>
-          </div>
-
-          <!-- MOVABLE BLOCK 4: PRODUCT GRID CONTAINER -->
-          <div
-            id="product-grid-box"
-            data-home-block="product-grid"
-            data-block-label="პროდუქციის კატალოგის გრაფა"
-            class="movable-page-block"
-          >
-            <!-- Dynamic Product Grid Container -->
-            <div
-              id="product-grid"
-              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              aria-live="polite"
-            ></div>
-
-            <!-- Empty Search State -->
-            <div
-              id="empty-search-state"
-              class="hidden rounded-2xl bg-white border border-zinc-200 p-10 text-center max-w-md mx-auto my-6 space-y-3"
-            >
-              <p id="empty-search-title" class="text-base font-semibold text-zinc-900">აღნიშნული მოთხოვნით პროდუქტი ვერ მოიძებნა</p>
-              <p id="empty-search-subtitle" class="text-xs text-zinc-500">სცადეთ სხვა საძიებო სიტყვა ან დააბრუნეთ ყველა კატეგორიის ჩვენება.</p>
-              <button
-                id="reset-filters-btn"
-                type="button"
-                class="theme-bg min-h-[44px] px-5 py-2.5 rounded-xl text-xs font-semibold inline-flex items-center justify-center"
-              >
-                ყველა პროდუქტის ჩვენება
-              </button>
-            </div>
-          </div>
-
-          <!-- MOVABLE BLOCK 5: DELIVERY, INSTALLMENT & WARRANTY STANDARDS -->
-          <div
-            id="service-standards"
-            data-home-block="service-standards"
-            data-block-label="მიწოდების, განვადების და გარანტიის გრაფა"
-            class="movable-page-block pt-6 border-t border-zinc-200/80"
-          >
-            <div id="service-cards-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div
-                id="service-card-1"
-                data-service-card="serv-1"
-                data-block-label="მიწოდების ბარათი"
-                class="movable-service-card bg-white rounded-2xl p-6 border border-zinc-200/80 hover:border-amber-400 hover:shadow-md fast-transition space-y-2.5 flex flex-col justify-between"
-              >
-                <div class="space-y-2">
-                  <div id="serv-1-tag" class="text-xs font-mono-num text-zinc-400">01 • მიწოდება</div>
-                  <h3 id="serv-1-title" class="text-base font-bold text-zinc-950">სწრაფი საკურიერო მომსახურება</h3>
-                  <p id="serv-1-desc" class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
-                    თბილისში შეკვეთის ჩაბარება იმავე დღეს (3–4 საათში). რეგიონებში მიწოდება 24–48 საათში კარამდე მიტანით და ადგილზე შემოწმებით.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  data-open-info-page="warranty"
-                  onclick="window.openWarrantyModal && window.openWarrantyModal()"
-                  class="pt-2 text-xs font-extrabold text-amber-700 hover:text-amber-900 inline-flex items-center gap-1 cursor-pointer self-start"
-                >
-                  <span>🚚 მიწოდებისა და შემოწმების წესები</span>
-                  <span>→</span>
-                </button>
-              </div>
-
-              <div
-                id="service-card-2"
-                data-service-card="serv-2"
-                data-block-label="განვადების ბარათი"
-                class="movable-service-card bg-white rounded-2xl p-6 border border-zinc-200/80 hover:border-indigo-400 hover:shadow-md fast-transition space-y-2.5 flex flex-col justify-between"
-              >
-                <div class="space-y-2">
-                  <div id="serv-2-tag" class="text-xs font-mono-num text-zinc-400">02 • გადახდა და განვადება</div>
-                  <h3 id="serv-2-title" class="text-base font-bold text-zinc-950">ონლაინ განვადება და ბარათით გადახდა</h3>
-                  <p id="serv-2-desc" class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
-                    საქართველოს ბანკის, თიბისი ბანკის და კრედო ბანკის გამარტივებული განვადება ან ბარათით გადახდა პირდაპირ ჩატში გამოგზავნილი დაცული ბმულით.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  data-open-info-page="warranty"
-                  onclick="window.openWarrantyModal && window.openWarrantyModal()"
-                  class="pt-2 text-xs font-extrabold text-indigo-700 hover:text-indigo-900 inline-flex items-center gap-1 cursor-pointer self-start"
-                >
-                  <span>💳 განვადებისა და გადახდის პირობები</span>
-                  <span>→</span>
-                </button>
-              </div>
-
-              <div
-                id="service-card-3"
-                data-service-card="serv-3"
-                data-block-label="გარანტიის ბარათი"
-                class="movable-service-card bg-white rounded-2xl p-6 border border-zinc-200/80 hover:border-emerald-400 hover:shadow-md fast-transition space-y-2.5 flex flex-col justify-between"
-              >
-                <div class="space-y-2">
-                  <div id="serv-3-tag" class="text-xs font-mono-num text-zinc-400">03 • გარანტია და სერვისი</div>
-                  <h3 id="serv-3-title" class="text-base font-bold text-zinc-950">12-თვიანი ოფიციალური გარანტია</h3>
-                  <p id="serv-3-desc" class="text-xs sm:text-sm text-zinc-600 leading-relaxed">
-                    ყველა კარაოკე დინამიკსა და LiFePO4 სოლარ გენერატორს მოყვება ქარხნული გარანტია, უსადენო მიკროფონების კომპლექტი და სრული კაბელების ნაკრები.
-                  </p>
-                </div>
-                <button
-                  type="button"
-                  data-open-info-page="warranty"
-                  onclick="window.openWarrantyModal && window.openWarrantyModal()"
-                  class="pt-2 text-xs font-extrabold text-emerald-700 hover:text-emerald-900 inline-flex items-center gap-1 cursor-pointer self-start"
-                >
-                  <span>🛡️ საგარანტიო პირობები სრულად</span>
-                  <span>→</span>
-                </button>
               </div>
             </div>
           </div>
@@ -10661,7 +10661,7 @@
             { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
             { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' }
           ],
-          homeBlocksOrder: ['hero-ai-chat', 'price-calculator', 'catalog-header', 'product-grid', 'service-standards'],
+          homeBlocksOrder: ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'price-calculator'],
           modalBlocksOrder: ['modal-pricing', 'modal-tech-specs', 'modal-gallery', 'modal-specs', 'modal-video', 'modal-card-payment', 'modal-chat', 'modal-order', 'modal-dilo-delivery'],
           serviceCardsOrder: ['serv-1', 'serv-2', 'serv-3'],
           blockOffsets: {},
@@ -29015,21 +29015,21 @@
           }
           storeSettings.homeBlocksOrder = storeSettings.homeBlocksOrder.filter((key) => key !== 'home-chat');
           if (!storeSettings.homeBlocksOrder.includes('hero-ai-chat')) {
-            storeSettings.homeBlocksOrder.unshift('hero-ai-chat');
+            storeSettings.homeBlocksOrder.push('hero-ai-chat');
           }
           if (!storeSettings.homeBlocksOrder.includes('price-calculator')) {
-            const catIdx = storeSettings.homeBlocksOrder.indexOf('catalog-header');
-            if (catIdx !== -1) {
-              storeSettings.homeBlocksOrder.splice(catIdx, 0, 'price-calculator');
-            } else {
-              storeSettings.homeBlocksOrder.push('price-calculator');
-            }
+            storeSettings.homeBlocksOrder.push('price-calculator');
           }
           DEFAULT_SETTINGS.homeBlocksOrder.forEach((key) => {
             if (!storeSettings.homeBlocksOrder.includes(key)) {
               storeSettings.homeBlocksOrder.push(key);
             }
           });
+          // Ensure catalog-header and product-grid appear immediately under the category bar, and AI/Calculator sit at the bottom
+          if (!storeSettings._productsFirstAiCalcBottomV1) {
+            storeSettings.homeBlocksOrder = ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'price-calculator'];
+            storeSettings._productsFirstAiCalcBottomV1 = true;
+          }
 
           if (!Array.isArray(storeSettings.modalBlocksOrder) || storeSettings.modalBlocksOrder.length === 0) {
             storeSettings.modalBlocksOrder = [...DEFAULT_SETTINGS.modalBlocksOrder];
