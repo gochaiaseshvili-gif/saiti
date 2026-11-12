@@ -341,23 +341,24 @@
 
     <!-- TOP BAR CONTRACT: Fully responsive across mobile, tablet & desktop with zero horizontal overflow -->
     <header class="sticky top-0 z-30 min-h-[60px] py-2 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-3 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 sm:gap-3.5">
-      <!-- Zone 1 (Left): Brand Logo + Brand Wordmark + Owner Phone Number + 1000x1000 PNG Download -->
+      <!-- Zone 1 (Left): Brand Logo + Brand Wordmark + Owner Phone Number + 1000x1000 PNG Download (V1 & V2) -->
       <div class="flex items-center gap-2.5 shrink-0">
         <button
           type="button"
           onclick="window.openTbcLogoPreviewModal && window.openTbcLogoPreviewModal()"
-          title="დააჭირეთ ლოგოს გასადიდებლად და გადმოსაწერად (PNG 1000x1000 თიბისი ბანკისთვის)"
+          title="დააჭირეთ ორივე ლოგოს სანახავად, ასარჩევად და გადმოსაწერად (PNG 1000x1000)"
           class="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-md shrink-0 block cursor-pointer"
         >
           <img
-            src="/iyidebaa-logo-1000x1000.png?v=tbcblue1"
+            id="header-active-logo-img"
+            src="/iyidebaa-logo-v2-1000x1000.png?v=tbcblue2"
             alt="iyidebaa.ge logo"
             referrerPolicy="no-referrer"
             class="w-full h-full object-cover group-hover:scale-105 fast-transition"
           />
         </button>
         <div class="flex flex-col items-start justify-center gap-1 shrink-0">
-          <div class="flex items-center gap-2 flex-wrap">
+          <div class="flex items-center gap-1.5 flex-wrap">
             <a
               href="#catalog"
               id="header-brand-name"
@@ -367,12 +368,30 @@
             </a>
             <button
               type="button"
-              onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng()"
-              class="px-2.5 py-1 rounded-xl bg-[#00AEEF] hover:bg-[#0284c7] text-white text-[11px] font-extrabold inline-flex items-center gap-1 shadow-sm active:scale-95 fast-transition cursor-pointer"
-              title="1 დაჭერით გადმოწერეთ 1000x1000 PNG ლოგო თიბისი ბანკისთვის"
+              onclick="window.openTbcLogoPreviewModal && window.openTbcLogoPreviewModal()"
+              class="px-2 py-0.5 rounded-lg bg-[#00AEEF] hover:bg-[#0284c7] text-white text-[10px] font-extrabold inline-flex items-center gap-1 shadow-xs active:scale-95 fast-transition cursor-pointer"
+              title="გახსენით და შეადარეთ ლოგოს ორივე ვერსია (V1 და V2)"
+            >
+              <span>🖼️</span>
+              <span>ლოგოები (V1 & V2)</span>
+            </button>
+            <button
+              type="button"
+              onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng(null, 1)"
+              class="px-2 py-0.5 rounded-lg bg-sky-700 hover:bg-sky-800 text-white text-[10px] font-extrabold inline-flex items-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
+              title="1 დაჭერით გადმოწერეთ ვერსია 1 (1000x1000 PNG)"
             >
               <span>⬇️</span>
-              <span>ლოგოს გადმოწერა (1000×1000 PNG)</span>
+              <span>V1 PNG</span>
+            </button>
+            <button
+              type="button"
+              onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng(null, 2)"
+              class="px-2 py-0.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-extrabold inline-flex items-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
+              title="1 დაჭერით გადმოწერეთ ვერსია 2 (1000x1000 PNG)"
+            >
+              <span>⬇️</span>
+              <span>V2 PNG</span>
             </button>
           </div>
 
@@ -390,60 +409,125 @@
         </div>
       </div>
 
-      <!-- TBC Logo Preview & 1-Click Download Modal -->
+      <!-- TBC Logo Preview & 1-Click Download Modal (Both V1 & V2 Side-by-Side) -->
       <div
         id="tbc-logo-preview-modal"
-        class="hidden fixed inset-0 z-[120] bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
+        class="hidden fixed inset-0 z-[120] bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
         onclick="if(event.target===this)this.classList.add('hidden')"
       >
-        <div class="bg-white rounded-3xl max-w-md w-full p-5 shadow-2xl border border-sky-200 space-y-4 text-center">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-5 shadow-2xl border border-sky-200 space-y-4 text-center my-auto">
           <div class="flex items-center justify-between border-b border-zinc-100 pb-3">
-            <h3 class="text-sm sm:text-base font-black text-zinc-900">🖼️ iyidebaa.ge — ლოგო თიბისი ბანკისთვის</h3>
+            <h3 class="text-sm sm:text-base font-black text-zinc-900">🖼️ iyidebaa.ge — აირჩიეთ და გადმოწერეთ ლოგო (PNG 1000×1000)</h3>
             <button
               type="button"
               onclick="document.getElementById('tbc-logo-preview-modal').classList.add('hidden')"
               class="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-700 font-bold text-sm cursor-pointer"
             >✕</button>
           </div>
-          <div class="w-64 h-64 sm:w-72 sm:h-72 mx-auto rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-lg">
-            <img
-              src="/iyidebaa-logo-1000x1000.png?v=tbcblue1"
-              alt="iyidebaa.ge 1000x1000 PNG Logo"
-              referrerPolicy="no-referrer"
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <div class="text-xs text-zinc-600 space-y-0.5">
-            <div>ფორმატი: <strong class="text-zinc-900">PNG</strong> • ზომა: <strong class="text-zinc-900">1000 × 1000 px</strong></div>
-            <div>ფერები: <strong class="text-[#0284c7]">TBC ლურჯი / ცისფერი</strong></div>
-          </div>
-          <div class="flex flex-col gap-2 pt-1">
-            <a
-              href="/api/download-logo"
-              download="iyidebaa-logo-1000x1000.png"
-              onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng(event)"
-              class="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-[#00AEEF] hover:bg-[#0284c7] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-md active:scale-95 fast-transition cursor-pointer"
-            >
-              <span>⬇️</span>
-              <span>გადმოწერა PNG (1000×1000)</span>
-            </a>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Version 1 Card -->
+            <div class="rounded-2xl border-2 border-sky-200 bg-sky-50/40 p-3.5 space-y-3 flex flex-col items-center">
+              <div class="text-xs font-black text-sky-950">ვერსია 1 — ჩანთა და ელვა (TBC Blue)</div>
+              <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-md">
+                <img
+                  src="/iyidebaa-logo-1000x1000.png?v=tbcblue1"
+                  alt="iyidebaa.ge Logo Version 1"
+                  referrerPolicy="no-referrer"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="text-[11px] text-zinc-600">ფორმატი: <strong>PNG</strong> • ზომა: <strong>1000×1000 px</strong></div>
+              <div class="w-full flex flex-col gap-1.5">
+                <a
+                  href="/api/download-logo?ver=1"
+                  download="iyidebaa-logo-1000x1000.png"
+                  onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng(event, 1)"
+                  class="w-full min-h-[38px] px-3 py-2 rounded-xl bg-[#00AEEF] hover:bg-[#0284c7] text-white text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer"
+                >
+                  <span>⬇️</span>
+                  <span>ვერსია 1 გადმოწერა (PNG)</span>
+                </a>
+                <button
+                  type="button"
+                  onclick="window.selectSiteHeaderLogo && window.selectSiteHeaderLogo(1)"
+                  class="w-full min-h-[32px] px-3 py-1 rounded-xl bg-white hover:bg-sky-100 text-sky-900 border border-sky-300 text-[11px] font-bold cursor-pointer active:scale-95 fast-transition"
+                >
+                  ✅ საიტის ლოგოდ დაყენება (V1)
+                </button>
+              </div>
+            </div>
+
+            <!-- Version 2 Card -->
+            <div class="rounded-2xl border-2 border-indigo-200 bg-indigo-50/40 p-3.5 space-y-3 flex flex-col items-center">
+              <div class="text-xs font-black text-indigo-950">ვერსია 2 — 3D ფარი და ურიკა (TBC Blue)</div>
+              <div class="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-md">
+                <img
+                  src="/iyidebaa-logo-v2-1000x1000.png?v=tbcblue2"
+                  alt="iyidebaa.ge Logo Version 2"
+                  referrerPolicy="no-referrer"
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              <div class="text-[11px] text-zinc-600">ფორმატი: <strong>PNG</strong> • ზომა: <strong>1000×1000 px</strong></div>
+              <div class="w-full flex flex-col gap-1.5">
+                <a
+                  href="/api/download-logo?ver=2"
+                  download="iyidebaa-logo-v2-1000x1000.png"
+                  onclick="window.downloadTbcLogoPng && window.downloadTbcLogoPng(event, 2)"
+                  class="w-full min-h-[38px] px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer"
+                >
+                  <span>⬇️</span>
+                  <span>ვერსია 2 გადმოწერა (PNG)</span>
+                </a>
+                <button
+                  type="button"
+                  onclick="window.selectSiteHeaderLogo && window.selectSiteHeaderLogo(2)"
+                  class="w-full min-h-[32px] px-3 py-1 rounded-xl bg-white hover:bg-indigo-100 text-indigo-900 border border-indigo-300 text-[11px] font-bold cursor-pointer active:scale-95 fast-transition"
+                >
+                  ✅ საიტის ლოგოდ დაყენება (V2)
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <script>
+        (function () {
+          try {
+            var savedVer = localStorage.getItem('vv_selected_logo_ver');
+            var imgEl = document.getElementById('header-active-logo-img');
+            if (imgEl && savedVer === '1') {
+              imgEl.src = '/iyidebaa-logo-1000x1000.png?v=tbcblue1';
+            }
+          } catch (e) {}
+        })();
         window.openTbcLogoPreviewModal = function () {
           var m = document.getElementById('tbc-logo-preview-modal');
           if (m) m.classList.remove('hidden');
         };
-        window.downloadTbcLogoPng = async function (ev) {
+        window.selectSiteHeaderLogo = function (ver) {
+          var imgEl = document.getElementById('header-active-logo-img');
+          if (imgEl) {
+            imgEl.src = ver === 2 ? '/iyidebaa-logo-v2-1000x1000.png?v=tbcblue2' : '/iyidebaa-logo-1000x1000.png?v=tbcblue1';
+          }
+          try { localStorage.setItem('vv_selected_logo_ver', String(ver)); } catch (e) {}
+          if (typeof showCpToast === 'function') {
+            showCpToast('✅ საიტზე დაყენდა ლოგოს ვერსია ' + ver);
+          }
+        };
+        window.downloadTbcLogoPng = async function (ev, ver) {
           if (ev) ev.preventDefault();
+          var isV2 = Number(ver) === 2;
+          var fileUrl = isV2 ? '/iyidebaa-logo-v2-1000x1000.png?v=tbcblue2' : '/iyidebaa-logo-1000x1000.png?v=tbcblue1';
+          var fileName = isV2 ? 'iyidebaa-logo-v2-1000x1000.png' : 'iyidebaa-logo-1000x1000.png';
           try {
-            var res = await fetch('/iyidebaa-logo-1000x1000.png?v=tbcblue1');
+            var res = await fetch(fileUrl);
             var blob = await res.blob();
             var url = URL.createObjectURL(blob);
             var a = document.createElement('a');
             a.href = url;
-            a.download = 'iyidebaa-logo-1000x1000.png';
+            a.download = fileName;
             document.body.appendChild(a);
             a.click();
             setTimeout(function () {
@@ -451,7 +535,7 @@
               URL.revokeObjectURL(url);
             }, 400);
           } catch (e) {
-            window.location.href = '/api/download-logo';
+            window.location.href = '/api/download-logo?ver=' + (isV2 ? '2' : '1');
           }
         };
       </script>
