@@ -232,7 +232,7 @@ async function recordVisitorEvent(req, body) {
 
   stats.visitors = visitors.slice(0, 500);
   stats.updatedAt = nowIso;
-  await saveJsonToGithub("visitors-stats.json", stats, "Update visitor geolocation analytics", loaded.sha);
+  // Skipped GitHub commit on visitor ping to preserve Vercel deployment quota
   return stats;
 }
 
@@ -278,7 +278,7 @@ async function recordProductViewGithub(productId, productName) {
   allStats.products[pId] = prod;
   allStats.updatedAt = now.toISOString();
 
-  await saveJsonToGithub("product-analytics.json", allStats, `Record view for product ${pId}`, loaded.sha);
+  // Skipped GitHub commit on product view to preserve Vercel deployment quota
   return allStats;
 }
 
