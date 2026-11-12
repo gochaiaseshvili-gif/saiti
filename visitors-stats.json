@@ -1,5 +1,5 @@
 {
-  "totalPageViews": 300,
+  "totalPageViews": 301,
   "visitors": [
     {
       "visitorId": "vis_1794333956546_ave8t2",
@@ -9,9 +9,9 @@
       "cityName": "Tbilisi",
       "deviceType": "mobile",
       "currentPage": "მთავარი გვერდი",
-      "visitsCount": 23,
+      "visitsCount": 24,
       "firstSeenAt": "2026-11-10T18:05:57.206Z",
-      "lastSeenAt": "2026-11-12T09:47:47.494Z"
+      "lastSeenAt": "2026-11-12T10:08:37.366Z"
     },
     {
       "visitorId": "vis_1794476570276_hfd2r6",
@@ -3302,5 +3302,5 @@
       "lastSeenAt": "2026-11-10T18:03:47.582Z"
     }
   ],
-  "updatedAt": "2026-11-12T09:47:47.494Z"
+  "updatedAt": "2026-11-12T10:08:37.366Z"
 }
