@@ -364,51 +364,51 @@
         </a>
       </div>
 
-      <!-- Zone 2 (Expanded Full-Width): საათის, ამინდის და ინფორმაციის დიდი გრაფა + მარჯვნიდან ჩასმული რჩეულები და ენების გრაფა -->
+      <!-- Zone 2 (Compact & Neatly Organized Green Info Banner): ზედა რიგში საათი/ამინდი/პირობები, ქვედა რიგში მენიუს ღილაკები -->
       <div
         id="live-info-banner"
-        style="background-color: #1e3a8a; border-color: #1d4ed8;"
-        class="w-full lg:flex-1 min-w-0 rounded-2xl text-white px-3 py-2 shadow-sm border flex flex-wrap items-center justify-between gap-2 text-xs transition-colors duration-150"
+        style="background-color: #065f46; border-color: #047857;"
+        class="w-full lg:w-auto lg:max-w-[1080px] lg:ml-auto min-w-0 rounded-2xl text-white px-3 py-2 shadow-sm border flex flex-col gap-1.5 text-xs transition-colors duration-150"
       >
-        <!-- Dynamic Clock, Weather & Custom Text Chips Container -->
+        <!-- Row 1: Dynamic Clock, Weather & Custom Text Chips Container (Neatly aligned on one horizontal row) -->
         <div
           id="live-info-banner-dynamic"
-          class="flex-1 min-w-0 flex flex-wrap items-center justify-between gap-2"
+          class="w-full min-w-0 flex flex-wrap items-center justify-between gap-1.5"
         >
           <!-- Left: Store Trust Badges -->
-          <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs font-semibold text-zinc-100">
-            <span class="inline-flex items-center gap-1 text-amber-300 font-bold">🚚 მიწოდება მთელ საქართველოში</span>
-            <span class="inline-flex items-center gap-1">🛡️ 12 თვე გარანტია</span>
-            <span class="inline-flex items-center gap-1 text-emerald-300 font-bold">💳 განვადება / ადგილზე გადახდა</span>
+          <div class="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-100">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-amber-300 font-bold whitespace-nowrap">🚚 მიწოდება მთელ საქართველოში</span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-emerald-300 font-bold whitespace-nowrap">💳 განვადება / ადგილზე გადახდა</span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white font-bold whitespace-nowrap">🛡️ 24 თვე გარანტია</span>
           </div>
 
           <!-- Right: Compact Live Date, Clock & Weather -->
           <div class="flex flex-wrap items-center gap-1.5 ml-auto">
-            <div class="hidden md:flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+            <div class="hidden md:inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-xl border border-white/15 text-[11px] whitespace-nowrap">
               <span>📅</span>
               <span id="live-weekday" class="font-bold text-amber-300 capitalize">...</span><span>, </span><span id="live-date" class="text-white">...</span>
             </div>
 
-            <div class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+            <div class="inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-xl border border-white/15 text-[11px] whitespace-nowrap">
               <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
               <span id="live-clock" class="font-mono-num font-bold text-white tracking-wider">00:00:00</span>
             </div>
 
-            <div id="live-weather-widget" class="flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-lg border border-white/15 text-[11px]">
+            <div id="live-weather-widget" class="inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-xl border border-white/15 text-[11px] whitespace-nowrap">
               <span id="live-weather-icon" class="text-sm">☀️</span>
               <span id="live-weather-temp" class="font-mono-num font-bold text-amber-300">--°C</span>
               <span id="live-weather-city" class="font-semibold text-white">თბილისი</span>
-              <span id="live-weather-desc" class="hidden xl:inline text-white/80"></span>
+              <span id="live-weather-desc" class="hidden"></span>
               <span id="live-weather-details" class="hidden"></span>
             </div>
 
-            <div class="hidden sm:flex items-center gap-1">
+            <div class="hidden sm:inline-flex items-center gap-1 bg-black/20 px-2 py-0.5 rounded-xl border border-white/15">
               <button
                 type="button"
                 data-city-choice="tbilisi"
                 id="weather-city-btn-tbilisi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
+                class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
               >
                 თბილისი
               </button>
@@ -416,7 +416,7 @@
                 type="button"
                 data-city-choice="batumi"
                 id="weather-city-btn-batumi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
+                class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
               >
                 ბათუმი
               </button>
@@ -424,14 +424,14 @@
                 type="button"
                 data-city-choice="kutaisi"
                 id="weather-city-btn-kutaisi"
-                class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
+                class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
               >
                 ქუთაისი
               </button>
               <button
                 type="button"
                 id="weather-geo-btn"
-                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
+                class="px-1.5 py-0.5 rounded-lg text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
                 title="ჩემი ლოკაციის ამინდი"
               >
                 <span>📍</span>
@@ -440,7 +440,7 @@
               <button
                 type="button"
                 id="weather-refresh-btn"
-                class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
+                class="px-1.5 py-0.5 rounded-lg text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
                 title="ამინდის განახლება"
               >
                 🔄
@@ -449,17 +449,17 @@
           </div>
         </div>
 
-        <!-- Pinned Right Controls Inside the Big Clock Banner: Wishlist (რჩეულები) + Language Switcher (ენების გრაფა) -->
-        <div class="flex flex-wrap items-center justify-end gap-1.5 sm:gap-2 shrink-0 ml-auto pl-1 sm:pl-2 border-l border-white/20">
+        <!-- Row 2: Pinned Action & Navigation Controls Neatly Aligned in a Single Compact Bar -->
+        <div class="w-full pt-1.5 border-t border-white/15 flex flex-wrap items-center justify-end gap-1.5">
           <!-- Header Calculator Quick Access Button -->
           <button
             id="header-calculator-btn"
             type="button"
-            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            class="min-h-[30px] px-2.5 py-1 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-extrabold inline-flex items-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
             title="ფასის გამომთვლელი (კალკულატორი • 2+ ნივთის დაჯამება)"
             aria-label="ფასის გამომთვლელი კალკულატორი"
           >
-            <span class="text-sm">🧮</span>
+            <span class="text-xs">🧮</span>
             <span id="header-calculator-label" class="inline">კალკულატორი</span>
             <span
               id="header-calc-badge"
@@ -471,11 +471,11 @@
           <button
             id="header-wishlist-btn"
             type="button"
-            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200/90 text-xs font-extrabold flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            class="min-h-[30px] px-2.5 py-1 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-900 border border-rose-200/90 text-[11px] font-extrabold inline-flex items-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
             title="ჩემი შენახული"
             aria-label="ჩემი შენახული"
           >
-            <svg class="w-4 h-4 text-rose-600 fill-current shrink-0" viewBox="0 0 24 24">
+            <svg class="w-3.5 h-3.5 text-rose-600 fill-current shrink-0" viewBox="0 0 24 24">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
             <span id="header-wishlist-label" class="inline">ჩემი შენახული</span>
@@ -491,11 +491,11 @@
             type="button"
             data-open-info-page="about"
             onclick="window.openAboutModal && window.openAboutModal()"
-            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-white/95 hover:bg-white text-zinc-950 border border-white/40 text-xs font-black flex items-center gap-1.5 shadow-xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            class="min-h-[30px] px-2.5 py-1 rounded-xl bg-white/95 hover:bg-white text-zinc-950 border border-white/40 text-[11px] font-black inline-flex items-center gap-1 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
             title="ჩვენ შესახებ — მაღაზიის ინფორმაცია, გარანტიები და პოლიტიკა"
             aria-label="ჩვენ შესახებ"
           >
-            <span class="text-sm">ℹ️</span>
+            <span class="text-xs">ℹ️</span>
             <span class="hidden md:inline">ჩვენ შესახებ</span>
           </button>
 
@@ -504,11 +504,11 @@
             type="button"
             data-open-info-page="warranty"
             onclick="window.openWarrantyModal && window.openWarrantyModal()"
-            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-emerald-500/95 hover:bg-emerald-600 text-white border border-emerald-300/60 text-xs font-black flex items-center gap-1.5 shadow-xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            class="min-h-[30px] px-2.5 py-1 rounded-xl bg-emerald-500/95 hover:bg-emerald-600 text-white border border-emerald-300/60 text-[11px] font-black inline-flex items-center gap-1 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
             title="ოფიციალური გარანტიები, მიწოდება და კონფიდენციალურობის პოლიტიკა"
             aria-label="გარანტია და პოლიტიკა"
           >
-            <span class="text-sm">🛡️</span>
+            <span class="text-xs">🛡️</span>
             <span class="hidden lg:inline">გარანტია &amp; პოლიტიკა</span>
           </button>
 
@@ -517,27 +517,27 @@
             type="button"
             data-open-info-page="returns"
             onclick="window.openReturnPolicyModal && window.openReturnPolicyModal()"
-            class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-amber-500/95 hover:bg-amber-600 text-zinc-950 border border-amber-300 text-xs font-black flex items-center gap-1.5 shadow-xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            class="min-h-[30px] px-2.5 py-1 rounded-xl bg-amber-500/95 hover:bg-amber-600 text-zinc-950 border border-amber-300 text-[11px] font-black inline-flex items-center gap-1 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
             title="ნივთის უკან დაბრუნებისა და შეცვლის პოლიტიკა (14 დღე)"
             aria-label="ნივთის უკან დაბრუნების პოლიტიკა"
           >
-            <span class="text-sm">🔄</span>
+            <span class="text-xs">🔄</span>
             <span class="hidden md:inline">დაბრუნების პოლიტიკა</span>
           </button>
 
-          <!-- Compact Language Switcher Dropdown (მხოლოდ არჩეული ენა ჩანს, ჩამოშლით გადართვა) -->
+          <!-- Compact Language Switcher Dropdown -->
           <div class="relative inline-flex items-center">
             <select
               id="header-lang-select"
               aria-label="ენის გადართვა"
-              class="appearance-none min-h-[34px] sm:min-h-[36px] pl-2.5 pr-6 py-1 rounded-xl bg-white/95 hover:bg-white text-zinc-900 border border-white/40 shadow-xs text-xs font-black cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 fast-transition"
+              class="appearance-none min-h-[30px] pl-2.5 pr-5 py-1 rounded-xl bg-white/95 hover:bg-white text-zinc-900 border border-white/40 shadow-2xs text-[11px] font-black cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500 fast-transition"
               title="ენის გადართვა"
             >
               <option value="ka" selected>🇬🇪 ქართული</option>
               <option value="en">🇬🇧 English</option>
               <option value="ru">🇷🇺 Русский</option>
             </select>
-            <span class="pointer-events-none absolute right-2 text-zinc-600 text-[10px] font-black select-none">▼</span>
+            <span class="pointer-events-none absolute right-1.5 text-zinc-600 text-[9px] font-black select-none">▼</span>
           </div>
 
           <!-- User Authentication & Social Profile Header Button -->
@@ -546,11 +546,11 @@
             <button
               id="header-user-login-btn"
               type="button"
-              class="min-h-[34px] sm:min-h-[36px] px-2.5 sm:px-3 py-1 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:brightness-110 text-white border border-violet-400 text-xs font-black flex items-center gap-1.5 shadow-sm active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              class="min-h-[30px] px-2.5 py-1 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:brightness-110 text-white border border-violet-400 text-[11px] font-black inline-flex items-center gap-1 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
               title="მარტივი რეგისტრაცია / შესვლა სოციალური ქსელით (Google / Facebook)"
               aria-label="მომხმარებლის პროფილი და ავტორიზაცია"
             >
-              <span class="text-sm">👤</span>
+              <span class="text-xs">👤</span>
               <span id="header-user-btn-label">შესვლა</span>
             </button>
 
@@ -14032,18 +14032,18 @@
         }
 
         const LIVE_BANNER_DEFAULT_WIDGETS = [
-          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 0, isBold: false, isUnderline: false },
-          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 12 თვე გარანტია', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 0, isBold: false, isUnderline: false },
-          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#6ee7b7', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 0, isBold: false, isUnderline: false },
-          { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false },
-          { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false },
-          { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false },
-          { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 0, isBold: false, isUnderline: false }
+          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '#047857', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#ffffff', bgColor: '#047857', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 24 თვე გარანტია', textColor: '#6ee7b7', bgColor: '#047857', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#059669', offsetX: 0, offsetY: 0, align: 'right', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 11, isBold: false, isUnderline: false }
         ];
 
         function ensureLiveBannerItems() {
           if (!storeSettings.liveBannerBgColor) {
-            storeSettings.liveBannerBgColor = '#1e3a8a';
+            storeSettings.liveBannerBgColor = '#065f46';
           }
           if (!Array.isArray(storeSettings.liveBannerItems)) {
             storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
@@ -14071,6 +14071,24 @@
                 };
               });
           }
+
+          // One-time tidy-up of previously uneven font sizes and negative Y offsets in the green header box
+          if (!storeSettings._neatGreenBannerV2) {
+            storeSettings.liveBannerItems = storeSettings.liveBannerItems.map((it) => {
+              const def = LIVE_BANNER_DEFAULT_WIDGETS.find((w) => w.id === it.id);
+              return {
+                ...it,
+                bgColor: it.id === 'date' && it.bgColor === '#e927ec' ? '#172554' : (it.bgColor || (def ? def.bgColor : '#047857')),
+                textColor: it.textColor || (def ? def.textColor : '#ffffff'),
+                offsetX: 0,
+                offsetY: 0,
+                fontSize: 12,
+                isBold: true
+              };
+            });
+            storeSettings._neatGreenBannerV2 = true;
+          }
+
           return storeSettings.liveBannerItems;
         }
 
@@ -14096,21 +14114,25 @@
           if (hasBg) {
             styleParts.push(`background-color: ${item.bgColor} !important`);
             styleParts.push(`border-color: rgba(255,255,255,0.22)`);
+          } else {
+            styleParts.push(`background-color: rgba(255,255,255,0.12)`);
+            styleParts.push(`border-color: rgba(255,255,255,0.18)`);
           }
           if (effTextCol) {
             styleParts.push(`color: ${effTextCol} !important`);
           }
           if (fSize >= 8) {
-            styleParts.push(`font-size: ${fSize}px !important`);
-            styleParts.push(`line-height: 1.25 !important`);
+            const clampedSize = Math.min(14, Math.max(11, fSize));
+            styleParts.push(`font-size: ${clampedSize}px !important`);
+            styleParts.push(`line-height: 1.2 !important`);
           }
           if (isBold) {
-            styleParts.push(`font-weight: 900 !important`);
+            styleParts.push(`font-weight: 800 !important`);
           }
           if (isUnderline) {
             styleParts.push(`text-decoration-line: underline !important`);
-            styleParts.push(`text-decoration-thickness: 2.5px !important`);
-            styleParts.push(`text-underline-offset: 4px !important`);
+            styleParts.push(`text-decoration-thickness: 2px !important`);
+            styleParts.push(`text-underline-offset: 3px !important`);
             styleParts.push(`text-decoration-skip-ink: none !important`);
           }
           const ox = Number(item.offsetX) || 0;
@@ -14143,7 +14165,7 @@
                 ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
+                class="lb-draggable-chip inline-flex items-center gap-1.5 min-h-[28px] px-2.5 py-1 rounded-xl border shadow-2xs text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-transform ${extraFmtClass}"
               >
                 ${safeText ? `<span>${safeText}</span>` : ''}
                 <span id="live-weekday" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-bold capitalize">...</span><span>, </span><span id="live-date" style="${effTextCol ? `color:${effTextCol} !important;` : ''}">...</span>
@@ -14159,7 +14181,7 @@
                 ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
+                class="lb-draggable-chip inline-flex items-center gap-1.5 min-h-[28px] px-2.5 py-1 rounded-xl border shadow-2xs text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-transform ${extraFmtClass}"
               >
                 <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
                 ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
@@ -14182,19 +14204,19 @@
                 ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex flex-wrap items-center gap-1.5 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-2 py-0.5 rounded-lg'} text-[11px] sm:text-xs font-semibold transition-transform ${extraFmtClass}"
+                class="lb-draggable-chip inline-flex items-center gap-1.5 min-h-[28px] px-2.5 py-1 rounded-xl border shadow-2xs text-[11px] sm:text-xs font-semibold whitespace-nowrap transition-transform ${extraFmtClass}"
               >
                 <span id="live-weather-icon" class="text-sm">☀️</span>
                 ${safeText ? `<span class="font-bold">${safeText}</span>` : ''}
                 <span id="live-weather-temp" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-mono-num font-bold">--°C</span>
                 <span id="live-weather-city" style="${effTextCol ? `color:${effTextCol} !important;` : ''}" class="font-semibold">თბილისი</span>
-                <span id="live-weather-desc" style="${effTextCol ? `color:${effTextCol} !important; opacity:0.9;` : ''}" class="hidden xl:inline"></span>
+                <span id="live-weather-desc" class="hidden"></span>
                 <span id="live-weather-details" class="hidden"></span>
                 <button
                   type="button"
                   data-weather-auto-sync-btn="1"
                   data-weather-auto-compact="1"
-                  class="px-2 py-0.5 rounded-md border text-[10px] font-extrabold inline-flex items-center gap-1 cursor-pointer active:scale-95 fast-transition ${autoBtnStyle}"
+                  class="px-1.5 py-0.5 rounded-lg border text-[10px] font-extrabold inline-flex items-center gap-1 cursor-pointer active:scale-95 fast-transition whitespace-nowrap ${autoBtnStyle}"
                   title="როცა ჩართულია, საიტის ამინდი (მზე ☀️ / წვიმა 🌧️ / თოვლი ❄️) ავტომატურად სინქრონიზდება რეალურ ამინდის პროგნოზთან"
                 >
                   <span>🔄</span>
@@ -14216,34 +14238,35 @@
                 ${fmtDataAttrs}
                 draggable="true"
                 ${styleAttr}
-                class="lb-draggable-chip flex flex-wrap items-center gap-1 ${hasBg ? 'px-2 py-1 rounded-lg border shadow-2xs' : ''} transition-transform ${extraFmtClass}"
+                class="lb-draggable-chip inline-flex items-center gap-1 min-h-[28px] px-2 py-0.5 rounded-xl border shadow-2xs whitespace-nowrap transition-transform ${extraFmtClass}"
               >
                 <button
                   type="button"
                   data-city-choice="tbilisi"
                   id="weather-city-btn-tbilisi"
                   style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
-                  class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/30 border border-amber-400/50 cursor-pointer"
+                  class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-500/30 border border-amber-400/50 cursor-pointer"
                 >${lblTbilisi}</button>
                 <button
                   type="button"
                   data-city-choice="batumi"
                   id="weather-city-btn-batumi"
                   style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
-                  class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 border border-white/15 cursor-pointer"
+                  class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-black/25 border border-white/15 cursor-pointer"
                 >${lblBatumi}</button>
                 <button
                   type="button"
                   data-city-choice="kutaisi"
                   id="weather-city-btn-kutaisi"
                   style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
-                  class="weather-city-btn px-2 py-0.5 rounded-md text-[11px] font-semibold bg-black/25 border border-white/15 cursor-pointer"
+                  class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-black/25 border border-white/15 cursor-pointer"
                 >${lblKutaisi}</button>
                 <button
                   type="button"
+                  data-city-choice-geo="1"
                   id="weather-geo-btn"
                   style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
-                  class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 border border-white/15 cursor-pointer"
+                  class="px-1.5 py-0.5 rounded-lg text-[11px] bg-black/25 border border-white/15 cursor-pointer"
                   title="ჩემი ლოკაციის ამინდი"
                 >
                   <span>📍</span>
@@ -14253,7 +14276,7 @@
                   type="button"
                   id="weather-refresh-btn"
                   style="${effTextCol ? `color:${effTextCol} !important;` : ''}"
-                  class="px-1.5 py-0.5 rounded-md text-[11px] bg-black/25 hover:opacity-100 border border-white/15 cursor-pointer"
+                  class="px-1.5 py-0.5 rounded-lg text-[11px] bg-black/25 hover:opacity-100 border border-white/15 cursor-pointer"
                   title="ამინდის განახლება"
                 >🔄</button>
                 ${inlineControlsHtml}
@@ -14268,7 +14291,7 @@
               ${fmtDataAttrs}
               draggable="true"
               ${styleAttr}
-              class="lb-draggable-chip inline-flex items-center gap-1 ${hasBg ? 'px-2.5 py-1 rounded-lg border shadow-2xs' : 'px-1.5 py-0.5 rounded-md'} text-[11px] sm:text-xs font-bold transition-transform ${extraFmtClass}"
+              class="lb-draggable-chip inline-flex items-center gap-1 min-h-[28px] px-2.5 py-1 rounded-xl border shadow-2xs text-[11px] sm:text-xs font-bold whitespace-nowrap transition-transform ${extraFmtClass}"
             >
               <span>${safeText}</span>
               ${inlineControlsHtml}
@@ -14281,8 +14304,8 @@
           const hiddenNoticeEl = document.getElementById('live-info-banner-hidden-notice');
           const inlinePanelEl = document.getElementById('inline-live-banner-manager-panel');
           const items = ensureLiveBannerItems();
-          const bgHex = storeSettings.liveBannerBgColor || '#1e3a8a';
-          const borderHex = /^#[0-9a-fA-F]{6}$/.test(bgHex) ? darkenHex(bgHex, 0.82) : '#1d4ed8';
+          const bgHex = storeSettings.liveBannerBgColor || '#065f46';
+          const borderHex = /^#[0-9a-fA-F]{6}$/.test(bgHex) ? darkenHex(bgHex, 0.82) : '#047857';
           const barDefaultTextCol = /^#[0-9a-fA-F]{6}$/.test(bgHex) ? getAutoContrastTextColor(bgHex) : '#ffffff';
 
           // Sync pickers and hex readouts across all panels
@@ -14330,7 +14353,7 @@
               <button
                 type="button"
                 data-lb-open-manager="1"
-                class="owner-only-admin-el px-2.5 py-1 rounded-lg bg-amber-400 hover:bg-amber-300 text-zinc-950 border border-amber-500 text-[11px] font-extrabold inline-flex items-center gap-1 shadow-xs active:scale-95 fast-transition cursor-pointer shrink-0"
+                class="owner-only-admin-el min-h-[28px] px-2.5 py-1 rounded-xl bg-amber-400 hover:bg-amber-300 text-zinc-950 border border-amber-500 text-[11px] font-extrabold inline-flex items-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer shrink-0 whitespace-nowrap"
                 title="ამ გრაფის ფერის შეცვლა, ნაწერების გადაადგილება, წაშლა და ახლიდან დამატება"
               >
                 <span>🎨⚙️</span>
@@ -14340,15 +14363,15 @@
 
             const dynamicEl = document.getElementById('live-info-banner-dynamic') || bannerEl;
             dynamicEl.innerHTML = `
-              <div class="flex flex-wrap items-center gap-2">
+              <div class="flex flex-wrap items-center gap-1.5">
                 ${leftItems.join('')}
               </div>
               ${
                 centerItems.length > 0
-                  ? `<div class="flex flex-wrap items-center justify-center gap-2 mx-auto">${centerItems.join('')}</div>`
+                  ? `<div class="flex flex-wrap items-center justify-center gap-1.5 mx-auto">${centerItems.join('')}</div>`
                   : ''
               }
-              <div class="flex flex-wrap items-center gap-2 ml-auto">
+              <div class="flex flex-wrap items-center gap-1.5 ml-auto">
                 ${rightItems.join('')}
                 ${adminBtnHtml}
               </div>
