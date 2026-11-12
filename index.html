@@ -2009,41 +2009,39 @@
             id="hero-ai-chat-box"
             data-home-block="hero-ai-chat"
             data-block-label="ხელოვნური ინტელექტის (AI) კონსულტანტის გრაფა"
-            class="movable-page-block rounded-3xl bg-gradient-to-br from-slate-950 via-zinc-900 to-indigo-950 text-white border-2 border-violet-500/80 shadow-xl p-4 sm:p-6 space-y-4 relative overflow-hidden"
+            class="movable-page-block max-w-4xl mx-auto rounded-2xl bg-gradient-to-br from-slate-950 via-zinc-900 to-indigo-950 text-white border border-violet-500/70 shadow-md p-2.5 sm:p-3.5 space-y-2 relative overflow-hidden"
           >
             <!-- Ambient luminous background accent -->
-            <div class="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-violet-600/20 blur-3xl pointer-events-none"></div>
-            <div class="absolute -left-16 -bottom-16 w-56 h-56 rounded-full bg-amber-500/15 blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-12 -top-12 w-40 h-40 rounded-full bg-violet-600/20 blur-2xl pointer-events-none"></div>
+            <div class="absolute -left-12 -bottom-12 w-40 h-40 rounded-full bg-amber-500/15 blur-2xl pointer-events-none"></div>
 
             <!-- Top Header & Live Status Row -->
-            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-white/10">
-              <div class="flex items-center gap-3">
-                <div class="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 text-white shadow-md text-2xl shrink-0">
+            <div class="relative z-10 flex items-center justify-between gap-2 pb-2 border-b border-white/10">
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="relative flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-500 text-white shadow-xs text-base shrink-0">
                   <span>🤖</span>
-                  <span class="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5">
+                  <span class="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-zinc-950"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500 border border-zinc-950"></span>
                   </span>
                 </div>
-                <div>
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <h2 class="text-base sm:text-lg font-extrabold text-white tracking-tight flex items-center gap-2">
-                      <span>ხელოვნური ინტელექტი (Gemini AI ასისტენტი)</span>
-                      <span class="px-2 py-0.5 rounded-full bg-gradient-to-r from-violet-500/40 to-amber-500/40 border border-violet-400/50 text-white text-[10px] font-black uppercase tracking-wider">Gemini Powered • 24/7</span>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <h2 class="text-xs sm:text-sm font-extrabold text-white tracking-tight flex items-center gap-1.5">
+                      <span>ხელოვნური ინტელექტი (AI ასისტენტი)</span>
+                      <span class="px-1.5 py-0.5 rounded-full bg-gradient-to-r from-violet-500/40 to-amber-500/40 border border-violet-400/50 text-white text-[9px] font-black uppercase tracking-wider">24/7</span>
                     </h2>
+                    <span class="hidden lg:inline text-[11px] text-zinc-400">• ჰკითხეთ პროდუქციაზე, ფასებზე ან ნებისმიერ თემაზე</span>
                   </div>
-                  <p class="text-xs sm:text-sm text-zinc-300">
-                    ჰკითხეთ AI-ს ნებისმიერი რამ — ჩვენს პროდუქციაზე, ფასებზე, ტექნოლოგიებზე, გამოთვლებზე თუ ნებისმიერ სხვა თემაზე Gemini-ვით!
-                  </p>
                 </div>
               </div>
 
               <!-- Quick Control Actions -->
-              <div class="flex flex-wrap items-center gap-2 self-start md:self-auto">
+              <div class="flex items-center gap-1.5 shrink-0">
                 <button
                   type="button"
                   data-open-ai-bot-modal="1"
-                  class="owner-only-admin-el min-h-[34px] px-3 py-1 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-extrabold flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 fast-transition"
+                  class="owner-only-admin-el min-h-[28px] px-2.5 py-1 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-[11px] font-extrabold flex items-center gap-1 cursor-pointer shadow-2xs active:scale-95 fast-transition"
                   title="ხელოვნური ინტელექტის ბოტის სწავლება და საიტზე მორგება"
                 >
                   <span>🤖🎓</span>
@@ -2052,7 +2050,7 @@
                 <button
                   type="button"
                   id="hero-ai-open-full-chat-btn"
-                  class="min-h-[34px] px-3 py-1 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold flex items-center gap-1.5 cursor-pointer active:scale-95 fast-transition"
+                  class="min-h-[28px] px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white border border-white/20 text-[11px] font-bold flex items-center gap-1 cursor-pointer active:scale-95 fast-transition"
                   title="სრული ჩატის ფანჯრის გახსნა"
                 >
                   <span>💬</span>
@@ -2062,73 +2060,73 @@
             </div>
 
             <!-- Prominent Input Bar with Send Action -->
-            <div class="relative z-10 space-y-2.5">
-              <form id="hero-ai-form" class="flex flex-col sm:flex-row items-stretch gap-2">
+            <div class="relative z-10 space-y-1.5">
+              <form id="hero-ai-form" class="flex flex-col sm:flex-row items-stretch gap-1.5">
                 <div class="relative flex-1">
-                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-lg pointer-events-none select-none">💬</span>
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm pointer-events-none select-none">💬</span>
                   <input
                     id="hero-ai-input"
                     type="text"
                     autocomplete="off"
-                    placeholder="ჰკითხეთ AI-ს ნებისმიერი რამ (საიტის პროდუქტებზე, ტექნიკაზე, გამოთვლებზე თუ ნებისმიერ თემაზე)..."
-                    class="w-full min-h-[50px] sm:min-h-[54px] pl-11 pr-4 py-2.5 rounded-2xl bg-white/10 hover:bg-white/15 focus:bg-white text-white focus:text-zinc-950 placeholder:text-zinc-400 focus:placeholder:text-zinc-400 border border-violet-400/40 focus:border-violet-500 text-xs sm:text-sm font-semibold shadow-inner focus:outline-none transition-all"
+                    placeholder="ჰკითხეთ AI-ს ნებისმიერი რამ (პროდუქტებზე, ტექნიკაზე, გამოთვლებზე)..."
+                    class="w-full min-h-[36px] sm:min-h-[38px] pl-9 pr-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 focus:bg-white text-white focus:text-zinc-950 placeholder:text-zinc-400 focus:placeholder:text-zinc-400 border border-violet-400/40 focus:border-violet-500 text-xs font-semibold shadow-inner focus:outline-none transition-all"
                   />
                 </div>
                 <button
                   id="hero-ai-submit-btn"
                   type="submit"
-                  class="min-h-[50px] sm:min-h-[54px] px-6 rounded-2xl bg-gradient-to-r from-violet-600 via-indigo-600 to-amber-500 hover:brightness-110 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                  class="min-h-[36px] sm:min-h-[38px] px-4 rounded-xl bg-gradient-to-r from-violet-600 via-indigo-600 to-amber-500 hover:brightness-110 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all cursor-pointer whitespace-nowrap"
                 >
-                  <span class="text-base">🚀</span>
+                  <span class="text-sm">🚀</span>
                   <span>გაგზავნა</span>
                 </button>
               </form>
 
               <!-- Clickable 1-Click Sample Prompt Chips -->
-              <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
-                <span class="text-[11px] font-bold text-amber-300 shrink-0 flex items-center gap-1">
+              <div class="flex items-center gap-1 overflow-x-auto no-scrollbar py-0.5">
+                <span class="text-[10px] font-bold text-amber-300 shrink-0 flex items-center gap-1">
                   <span>💡</span>
-                  <span>სწრაფი შეკითხვა:</span>
+                  <span>სწრაფი:</span>
                 </span>
                 <button
                   type="button"
                   data-hero-ai-chip="რა ღირს კარაოკე დინამიკები და რომელია საუკეთესო?"
-                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                  class="hero-ai-prompt-chip min-h-[24px] px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[10px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
                 >
-                  🎤 რა ღირს კარაოკე დინამიკები?
+                  🎤 კარაოკე დინამიკები
                 </button>
                 <button
                   type="button"
                   data-hero-ai-chip="რომელი სოლარ გენერატორი გაქვთ მარაგში და რა სიმძლავრის?"
-                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                  class="hero-ai-prompt-chip min-h-[24px] px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[10px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
                 >
                   ⚡ სოლარ გენერატორები
                 </button>
                 <button
                   type="button"
                   data-hero-ai-chip="ადგილზე მიტანა გაქვთ და რამდენი ხანი სჭირდება?"
-                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                  class="hero-ai-prompt-chip min-h-[24px] px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[10px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
                 >
                   🚚 მიტანის პირობები
                 </button>
                 <button
                   type="button"
                   data-hero-ai-chip="როგორ მოქმედებს განვადება?"
-                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                  class="hero-ai-prompt-chip min-h-[24px] px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[10px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
                 >
                   💳 განვადება
                 </button>
                 <button
                   type="button"
                   data-hero-ai-chip="რამდენი თვეა გარანტია?"
-                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                  class="hero-ai-prompt-chip min-h-[24px] px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[10px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
                 >
                   🛡️ გარანტია
                 </button>
                 <button
                   type="button"
                   data-hero-ai-chip="მაღაზიის ტელეფონი და გოჩას საკონტაქტო ნომერი"
-                  class="hero-ai-prompt-chip min-h-[30px] px-2.5 py-1 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-[11px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
+                  class="hero-ai-prompt-chip min-h-[24px] px-2 py-0.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/15 text-[10px] font-medium text-zinc-100 hover:text-white shrink-0 cursor-pointer active:scale-95 transition-all"
                 >
                   📞 კონტაქტი
                 </button>
@@ -2138,12 +2136,12 @@
             <!-- Dialogue & Real-Time Answer Stream Container -->
             <div
               id="hero-ai-dialogue-box"
-              class="relative z-10 hidden rounded-2xl bg-black/45 border border-white/10 p-3 sm:p-4 space-y-3 max-h-[320px] overflow-y-auto"
+              class="relative z-10 hidden rounded-xl bg-black/45 border border-white/10 p-2.5 sm:p-3 space-y-2 max-h-[220px] overflow-y-auto"
             >
-              <div id="hero-ai-dialogue-stream" class="space-y-2.5 text-xs sm:text-sm"></div>
-              <div id="hero-ai-typing-indicator" class="hidden items-center gap-2 text-violet-300 text-xs font-bold">
+              <div id="hero-ai-dialogue-stream" class="space-y-2 text-xs"></div>
+              <div id="hero-ai-typing-indicator" class="hidden items-center gap-2 text-violet-300 text-[11px] font-bold">
                 <span class="inline-block w-2 h-2 rounded-full bg-violet-400 animate-pulse"></span>
-                <span>🤖 AI ასისტენტი ფიქრობს და ამზადებს პასუხს...</span>
+                <span>🤖 AI ასისტენტი ფიქრობს...</span>
               </div>
             </div>
           </div>
