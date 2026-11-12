@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794399680579,
+  "updatedAt": 1794485303892,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -58,11 +58,11 @@
         "badgeTitle": "🚚 მიწოდების ტექსტი",
         "text": "🚚 მიწოდება მთელ საქართველოში",
         "textColor": "#ffffff",
-        "bgColor": "",
+        "bgColor": "#047857",
         "offsetX": 0,
         "offsetY": 0,
         "align": "left",
-        "fontSize": 14,
+        "fontSize": 12,
         "isBold": true,
         "isUnderline": false
       },
@@ -72,11 +72,11 @@
         "badgeTitle": "💳 განვადების ტექსტი",
         "text": "💳 განვადება / ადგილზე გადახდა",
         "textColor": "#ffffff",
-        "bgColor": "",
+        "bgColor": "#047857",
         "offsetX": 0,
         "offsetY": 0,
         "align": "left",
-        "fontSize": 14,
+        "fontSize": 12,
         "isBold": true,
         "isUnderline": false
       },
@@ -86,11 +86,11 @@
         "badgeTitle": "🛡️ გარანტიის ტექსტი",
         "text": "🛡️ 24 თვე გარანტია",
         "textColor": "#ffffff",
-        "bgColor": "",
+        "bgColor": "#047857",
         "offsetX": 0,
         "offsetY": 0,
         "align": "left",
-        "fontSize": 14,
+        "fontSize": 12,
         "isBold": true,
         "isUnderline": false
       },
@@ -100,11 +100,11 @@
         "badgeTitle": "📅 თარიღი და კვირის დღე",
         "text": "📅",
         "textColor": "#ffffff",
-        "bgColor": "#e927ec",
+        "bgColor": "#172554",
         "offsetX": 0,
-        "offsetY": -4,
+        "offsetY": 0,
         "align": "right",
-        "fontSize": 16,
+        "fontSize": 12,
         "isBold": true,
         "isUnderline": false
       },
@@ -118,8 +118,8 @@
         "offsetX": 0,
         "offsetY": 0,
         "align": "right",
-        "fontSize": 15,
-        "isBold": false,
+        "fontSize": 12,
+        "isBold": true,
         "isUnderline": false
       },
       {
@@ -130,10 +130,10 @@
         "textColor": "#ef4444",
         "bgColor": "#172554",
         "offsetX": 0,
-        "offsetY": -4,
+        "offsetY": 0,
         "align": "right",
-        "fontSize": 18,
-        "isBold": false,
+        "fontSize": 12,
+        "isBold": true,
         "isUnderline": false
       },
       {
@@ -146,18 +146,17 @@
         "offsetX": 0,
         "offsetY": 0,
         "align": "right",
-        "fontSize": 8,
-        "isBold": false,
+        "fontSize": 12,
+        "isBold": true,
         "isUnderline": false
       }
     ],
     "homeBlocksOrder": [
-      "hero-ai-chat",
-      "fb-banner",
-      "price-calculator",
       "catalog-header",
       "product-grid",
-      "service-standards"
+      "service-standards",
+      "hero-ai-chat",
+      "price-calculator"
     ],
     "modalBlocksOrder": [
       "modal-pricing",
@@ -167,7 +166,8 @@
       "modal-video",
       "modal-card-payment",
       "modal-chat",
-      "modal-order"
+      "modal-order",
+      "modal-dilo-delivery"
     ],
     "serviceCardsOrder": [
       "serv-1",
@@ -289,7 +289,10 @@
       "cardUrl": "",
       "autoRedirect": true
     },
-    "_cardPaymentUnderVideoV1": true
+    "_cardPaymentUnderVideoV1": true,
+    "_neatGreenBannerV2": true,
+    "_productsFirstAiCalcBottomV1": true,
+    "_diloAtVeryBottomV1": true
   },
   "productsList": [
     {
