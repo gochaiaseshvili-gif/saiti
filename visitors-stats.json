@@ -1,6 +1,18 @@
 {
-  "totalPageViews": 292,
+  "totalPageViews": 293,
   "visitors": [
+    {
+      "visitorId": "vis_1794476501456_jh4z2h",
+      "countryCode": "US",
+      "countryName": "აშშ",
+      "regionName": "IL",
+      "cityName": "Chicago",
+      "deviceType": "mobile",
+      "currentPage": "მთავარი გვერდი",
+      "visitsCount": 1,
+      "firstSeenAt": "2026-11-12T09:41:51.858Z",
+      "lastSeenAt": "2026-11-12T09:41:51.858Z"
+    },
     {
       "visitorId": "vis_1794473648490_jmxg1t",
       "countryCode": "US",
@@ -3218,5 +3230,5 @@
       "lastSeenAt": "2026-11-10T18:03:47.582Z"
     }
   ],
-  "updatedAt": "2026-11-12T08:54:08.794Z"
+  "updatedAt": "2026-11-12T09:41:51.858Z"
 }
