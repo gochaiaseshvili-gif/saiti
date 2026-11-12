@@ -31,15 +31,16 @@
       "productName": "MKF-02",
       "views": {
         "days": {
-          "2026-11-11": 3
+          "2026-11-11": 3,
+          "2026-11-12": 1
         },
         "months": {
-          "2026-11": 3
+          "2026-11": 4
         },
         "years": {
-          "2026": 3
+          "2026": 4
         },
-        "total": 3
+        "total": 4
       },
       "sales": {
         "card": 0,
@@ -47,7 +48,7 @@
         "total": 0,
         "revenue": 0
       },
-      "lastViewedAt": "2026-11-11T13:16:37.255Z",
+      "lastViewedAt": "2026-11-12T09:45:28.329Z",
       "lastSoldAt": null
     },
     "prod-1794065879123": {
@@ -75,5 +76,5 @@
       "lastSoldAt": null
     }
   },
-  "updatedAt": "2026-11-12T09:44:20.222Z"
+  "updatedAt": "2026-11-12T09:45:28.329Z"
 }
