@@ -12415,9 +12415,61 @@
           }
         } catch (e) {}
 
+        const KARAOKE_INTRO_TEXT =
+          'გვაქვს კარაოკე დინამიკების დიდი არჩევანი, დაგვირეკეთ და თქვენთვის სასურველს შეგარჩევინებთ. კარაოკე დინამიკებზე ვმუშაობთ 14 წელია. (პატივისცემით, გოჩა: 551 588-579 • VIBER / WHATSAPP / TELEGRAM)';
+        const KARAOKE_INTRO_HTML =
+          '<b><span style="color: rgb(228, 12, 34);"><span style="font-size: 16px; line-height: 1.4;">' +
+          KARAOKE_INTRO_TEXT +
+          '</span></span></b>';
+
+        function ensureKaraokeIntroOnProducts(list) {
+          if (!Array.isArray(list)) return false;
+          let changed = false;
+          list.forEach((p) => {
+            if (!p) return;
+            const isKaraoke =
+              p.category === 'karaoke' ||
+              String(p.categoryLabel || '').includes('კარაოკე');
+            if (!isKaraoke) return;
+
+            let rawDesc = String(p.description || '').trim();
+            // Strip any previous draft/unedited version of the intro to prevent duplication
+            rawDesc = rawDesc
+              .replace(/^\(?გვაქვს კარაოკე დინამიკების დიდი არჩევანი[\s\S]*?TELEGRAM\)?\s*/i, '')
+              .trim();
+            if (rawDesc === 'ახალი პროდუქტი') rawDesc = '';
+            // Fix minor typo in streetbeat-500w body if present
+            if (rawDesc.includes('უძლიერი ხმის მქონე')) {
+              rawDesc = rawDesc
+                .replace('უძლიერი ხმის მქონე კარაოკე დინამიკი მოყვება 2_ცალი', 'უძლიერესი ხმის მქონე კარაოკე დინამიკი, მოყვება 2 ცალი')
+                .replace('ერთ წლიანი გარაანტიით', 'ერთწლიანი გარანტიით');
+            }
+
+            const targetPlain = rawDesc
+              ? `${KARAOKE_INTRO_TEXT}\n\n${rawDesc}`
+              : KARAOKE_INTRO_TEXT;
+
+            const targetHtml = rawDesc
+              ? `${KARAOKE_INTRO_HTML}<br><br>${rawDesc.replace(/\n/g, '<br>')}`
+              : KARAOKE_INTRO_HTML;
+
+            if (p.description !== targetPlain || p.descHtml !== targetHtml) {
+              p.description = targetPlain;
+              p.descHtml = targetHtml;
+              changed = true;
+            }
+            if (p.closedFields && p.closedFields.description) {
+              delete p.closedFields.description;
+              changed = true;
+            }
+          });
+          return changed;
+        }
+
         // Ensure all products have normalized 5-image array and merge with backup & baked imagesMap
         productsList.forEach(ensureFiveImagesArray);
         mergeImagesMapIntoProductsList(productsList, bakedImagesMap);
+        ensureKaraokeIntroOnProducts(productsList);
 
         // =========================================================================
         // WISHLIST (რჩეულები) PERSISTENT STATE & LOCALSTORAGE BACKING
@@ -30178,6 +30230,7 @@
               }
 
               productsList.forEach(ensureFiveImagesArray);
+              ensureKaraokeIntroOnProducts(productsList);
               const syncedMap = buildCurrentImagesMap();
               saveLocalImagesBackupMap(syncedMap);
 
