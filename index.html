@@ -297,6 +297,26 @@
         text-underline-offset: 3px;
       }
     </style>
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '689564925872074');
+    fbq('init', '1762190030755658');
+    fbq('track', 'PageView');
+    </script>
+    <noscript>
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=689564925872074&ev=PageView&noscript=1"/>
+    <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1762190030755658&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Meta Pixel Code -->
   </head>
 
   <body class="customer-view-mode min-h-screen flex flex-col bg-stone-50 text-zinc-900 selection:bg-amber-500 selection:text-white">
@@ -15855,6 +15875,15 @@
           if (typeof recordProductView === 'function') {
             recordProductView(productId, rawProduct.name);
           }
+          if (typeof fbq === 'function') {
+            fbq('track', 'ViewContent', {
+              content_name: product.name || rawProduct.name || rawProduct.title,
+              content_ids: [String(rawProduct.id)],
+              content_type: 'product',
+              value: Number(rawProduct.newPrice ?? rawProduct.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
 
           const waOrderText = currentLang === 'en'
             ? `Hello, I would like to order this product: ${product.name} (${rawProduct.newPrice} ₾)`
@@ -19686,6 +19715,12 @@
           } catch (e) {}
 
           quickOrderBackdrop.classList.remove('hidden');
+          if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
           setTimeout(() => {
             const pInp = document.getElementById('qo-customer-phone');
             if (pInp) pInp.focus();
@@ -19700,6 +19735,12 @@
 
         async function launchBogCheckoutForProduct(prod, statusEl) {
           if (!prod) return false;
+          if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
           const clientId = bankCfg.bogClientId || '10000576';
           const clientSecret = bankCfg.bogSecret || '0RAMGYvStUiE';
@@ -19791,6 +19832,12 @@
           } catch (e) {}
           const modalEl = document.getElementById('bog-installment-calc-modal');
           if (modalEl) modalEl.classList.remove('hidden');
+          if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
 
           // Fetch live BOG installment table in background to ensure 100% exact BOG numbers
           try {
@@ -21085,6 +21132,12 @@
           }
 
           diloDispatchModalEl.classList.remove('hidden');
+          if (!saleId && typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(saleAmt) || 0,
+              currency: 'GEL'
+            });
+          }
           loadDiloCitiesAndDistricts().then(() => recalculateDiloFinancials());
           switchDiloDispatchTab(initialTab);
         }
@@ -21199,6 +21252,13 @@
                     </div>
                   `;
                   resBox.classList.remove('hidden');
+                }
+                if (typeof fbq === 'function') {
+                  fbq('track', 'Purchase', {
+                    value: Number((activeDispatchSale && activeDispatchSale.amount) || amountToCollectForPackage || 0) || 0,
+                    currency: 'GEL',
+                    content_type: 'product'
+                  });
                 }
                 if (typeof showWishlistToast === 'function') {
                   showWishlistToast(`🎉 შეკვეთა განთავსდა Dilo.ge-ზე! კოდი: ${newTrack}`);
@@ -22510,6 +22570,12 @@
 
         async function launchCredoCheckoutForProduct(prod, statusEl) {
           if (!prod) return false;
+          if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
           if (bankCfg.credoUrl && String(bankCfg.credoUrl).trim().startsWith('http')) {
             window.location.href = String(bankCfg.credoUrl).trim();
@@ -22580,6 +22646,12 @@
         let activeTbcCheckoutProduct = null;
         function launchTbcCardCheckoutForProduct(prod) {
           if (!prod) return false;
+          if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
           if (bankCfg.tbcUrl && String(bankCfg.tbcUrl).trim().startsWith('http')) {
             window.location.href = String(bankCfg.tbcUrl).trim();
@@ -22609,6 +22681,12 @@
         let activeCredoCardProduct = null;
         function launchCredoCardCheckoutForProduct(prod) {
           if (!prod) return false;
+          if (typeof fbq === 'function') {
+            fbq('track', 'InitiateCheckout', {
+              value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
           activeCredoCardProduct = prod;
           const credoModal = document.getElementById('credo-red-checkout-modal');
@@ -22880,6 +22958,13 @@
             const orderText = orderLines.join('\n');
 
             const waUrl = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(orderText)}`;
+            if (typeof fbq === 'function') {
+              fbq('track', 'Purchase', {
+                value: Number(quickOrderTargetProduct.newPrice ?? quickOrderTargetProduct.price ?? 0) || 0,
+                currency: 'GEL',
+                content_type: 'product'
+              });
+            }
             closeQuickOrderModal();
             if (bankCfg.autoRedirect !== false && bankDetails && bankDetails.url) {
               window.open(bankDetails.url, '_blank', 'noopener,noreferrer');
@@ -24669,6 +24754,13 @@
               const saleAmount = Number(params.get('amount')) || 0;
               const saleMonths = Number(params.get('months')) || 0;
               const salePhone = params.get('phone') || localStorage.getItem('vv_customer_phone') || '';
+              if (isApproved && typeof fbq === 'function') {
+                fbq('track', 'Purchase', {
+                  value: Number(saleAmount) || 0,
+                  currency: 'GEL',
+                  content_type: 'product'
+                });
+              }
               fetch('/api/bog-pay', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -27481,6 +27573,16 @@
           saveCalculatorState();
           renderCalculatorUI();
 
+          if (typeof fbq === 'function') {
+            fbq('track', 'AddToCart', {
+              content_name: product.name || product.title,
+              content_ids: [String(product.id)],
+              content_type: 'product',
+              value: Number(product.newPrice ?? product.price ?? 0) || 0,
+              currency: 'GEL'
+            });
+          }
+
           if (opts.toast !== false && typeof showCpToast === 'function') {
             showCpToast(`🧮 ${product.name} დაემატა კალკულატორში!`);
           }
@@ -27691,6 +27793,13 @@
               lines.push(`გთხოვთ დამიდასტუროთ შეკვეთა და მიწოდების დრო.`);
 
               const waUrl = `https://wa.me/${cleanDigits}?text=${encodeURIComponent(lines.join('\n'))}`;
+              if (typeof fbq === 'function') {
+                fbq('track', 'Purchase', {
+                  value: Number(grandTotal) || 0,
+                  currency: 'GEL',
+                  content_type: 'product'
+                });
+              }
               window.open(waUrl, '_blank', 'noopener,noreferrer');
             };
           }
