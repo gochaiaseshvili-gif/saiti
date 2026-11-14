@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-11-11T18:34:00.909Z",
+  "updatedAt": "2026-11-14T05:18:49.021Z",
   "sales": [
+    {
+      "id": "sale_1794633529021_3zeu",
+      "orderId": "4376839",
+      "bank": "credo",
+      "mode": "installment",
+      "status": "started",
+      "rejectReason": "",
+      "productName": "ახალი პროდუქტი",
+      "productId": "prod-1793274645682",
+      "amount": 1,
+      "months": 12,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "createdAt": "2026-11-14T05:18:49.021Z",
+      "updatedAt": "2026-11-14T05:18:49.021Z",
+      "unread": true
+    },
     {
       "id": "sale_1794422040909_z1ka",
       "orderId": "iyidebaa_1794421103768",
