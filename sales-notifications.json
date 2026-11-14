@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-11-14T06:15:32.181Z",
+  "updatedAt": "2026-11-14T08:16:12.783Z",
   "sales": [
+    {
+      "id": "sale_1794644172783_7abi",
+      "orderId": "4377397",
+      "bank": "credo",
+      "mode": "installment",
+      "status": "started",
+      "rejectReason": "",
+      "productName": "RX12",
+      "productId": "prod-1794065812913",
+      "amount": 140,
+      "months": 12,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "createdAt": "2026-11-14T08:16:12.783Z",
+      "updatedAt": "2026-11-14T08:16:12.783Z",
+      "unread": true
+    },
     {
       "id": "sale_1794636932181_b6q1",
       "orderId": "4376887",
