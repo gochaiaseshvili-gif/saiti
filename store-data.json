@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794635719078,
+  "updatedAt": 1794635722631,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -1860,7 +1860,7 @@
       "name": "ახალი პროდუქტი",
       "shortMeta": "",
       "oldPrice": 0,
-      "newPrice": 0,
+      "newPrice": 500,
       "images": [
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1793274773214_7nin.jpg",
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_2_1793274775362_yy5t.jpg",
