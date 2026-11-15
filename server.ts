@@ -2651,6 +2651,17 @@ async function startServer() {
   app.post('/api/bog-pay', (req, res) => handleBankGateway(req, res, 'bog'));
   app.post('/api/credo-pay', (req, res) => handleBankGateway(req, res, 'credo'));
 
+  app.get(['/api/fb-catalog', '/fb-catalog.xml', '/fb-catalog.csv'], async (req, res) => {
+    try {
+      const fbCatalogMod = await import('./api/fb-catalog.js');
+      if (req.path.endsWith('.csv')) req.query.format = 'csv';
+      else if (req.path.endsWith('.xml')) req.query.format = 'xml';
+      await fbCatalogMod.default(req, res);
+    } catch (err: any) {
+      res.status(500).json({ ok: false, error: err?.message || 'FB catalog error' });
+    }
+  });
+
   function getHtmlWithBakedState(rawHtml: string): string {
     try {
       recoverOrphanUploadedPhotos();

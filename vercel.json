@@ -1,6 +1,16 @@
 {
   "version": 2,
   "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/fb-catalog.xml",
+      "destination": "/api/fb-catalog?format=xml"
+    },
+    {
+      "source": "/fb-catalog.csv",
+      "destination": "/api/fb-catalog?format=csv"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
