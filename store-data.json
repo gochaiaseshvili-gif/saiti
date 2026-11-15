@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794761927315,
+  "updatedAt": 1794761950414,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -4232,7 +4232,7 @@
         },
         {
           "label": "კორპუსის დაცვა",
-          "value": "IPX5 ნესტგამძლე"
+          "value": ""
         },
         {
           "label": "წონა",
@@ -4247,7 +4247,8 @@
       "closedFields": {
         "sku": true,
         "spec_1": true,
-        "badge": true
+        "badge": true,
+        "spec_4": true
       },
       "facebookUrl": "https://www.facebook.com/share/v/1JGATV4oCw/",
       "instagramUrl": "https://www.instagram.com/reel/DffLEfnsP1n/?utm_source=ig_web_copy_link&srtk=MzRlODBiNWFlZA==",
