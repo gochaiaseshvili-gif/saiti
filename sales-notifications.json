@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-15T10:12:12.237Z",
+  "updatedAt": "2026-11-15T16:55:09.920Z",
   "sales": [
     {
       "id": "sale_1794737532237_9in4",
@@ -17,7 +17,7 @@
       "customerName": "",
       "createdAt": "2026-11-15T10:12:12.237Z",
       "updatedAt": "2026-11-15T10:12:12.237Z",
-      "unread": true
+      "unread": false
     },
     {
       "id": "sale_1794644172783_7abi",
@@ -35,7 +35,7 @@
       "customerName": "",
       "createdAt": "2026-11-14T08:16:12.783Z",
       "updatedAt": "2026-11-14T08:16:12.783Z",
-      "unread": true
+      "unread": false
     },
     {
       "id": "sale_1794636932181_b6q1",
@@ -53,7 +53,7 @@
       "customerName": "",
       "createdAt": "2026-11-14T06:15:32.181Z",
       "updatedAt": "2026-11-14T06:15:32.181Z",
-      "unread": true
+      "unread": false
     },
     {
       "id": "sale_1794633529021_3zeu",
@@ -71,7 +71,7 @@
       "customerName": "",
       "createdAt": "2026-11-14T05:18:49.021Z",
       "updatedAt": "2026-11-14T05:18:49.021Z",
-      "unread": true
+      "unread": false
     },
     {
       "id": "sale_1794422040909_z1ka",
@@ -89,7 +89,7 @@
       "customerName": "",
       "createdAt": "2026-11-11T18:34:00.909Z",
       "updatedAt": "2026-11-11T18:34:00.909Z",
-      "unread": true
+      "unread": false
     }
   ]
 }
