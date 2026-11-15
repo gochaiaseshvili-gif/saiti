@@ -10059,24 +10059,36 @@
                 </div>
               </div>
 
-              <!-- Facebook Catalog Live Data Feed Box -->
-              <div class="mt-4 p-4 rounded-2xl bg-blue-50/90 border-2 border-blue-200 space-y-3">
+              <!-- Facebook Catalog Live Data Feed & Two-Way Sync Box -->
+              <div class="mt-4 p-4 rounded-2xl bg-blue-50/90 border-2 border-blue-200 space-y-3.5">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                   <div>
                     <h4 class="text-xs sm:text-sm font-black text-[#1877F2] flex items-center gap-1.5">
                       <span>📘</span>
-                      <span>Facebook &amp; Instagram კატალოგი (ავტომატური სინქრონიზაციის ფიდი)</span>
+                      <span>Facebook &amp; Instagram კატალოგი (ორმხრივი სინქრონიზაცია: საიტი ⇄ Facebook)</span>
                     </h4>
                     <p class="text-[11px] text-slate-600 mt-0.5">
-                      ჩასვით ეს ბმული <b>Meta Commerce Manager → Data Sources → Data Feed</b>-ში. საიტზე ფასის ან ნივთის შეცვლისას ფეისბუქზეც ავტომატურად განახლდება!
+                      1) <b>საიტი → Facebook:</b> ჩასვით ქვედა ბმული Meta Commerce Manager-ში (Data Sources → Data Feed).<br/>
+                      2) <b>Facebook → საიტი:</b> ატვირთეთ Facebook-ის კატალოგის CSV/XML ან მიუთითეთ Catalog ID + Token.
                     </p>
                   </div>
-                  <label class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer shrink-0 bg-white px-3 py-1.5 rounded-xl border border-blue-200">
-                    <input id="cp-fb-feed-include-zero" type="checkbox" class="w-4 h-4 accent-blue-600 rounded cursor-pointer" />
-                    <span>0₾ ნივთების ჩართვაც (1₾ ფასით)</span>
-                  </label>
+                  <div class="flex flex-wrap items-center gap-2 shrink-0">
+                    <a
+                      href="https://business.facebook.com/commerce"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="px-3 py-1.5 rounded-xl bg-[#1877F2] hover:bg-blue-700 text-white text-xs font-extrabold transition shadow-sm"
+                    >
+                      🚀 Facebook კატალოგის გახსნა
+                    </a>
+                    <label class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-blue-200">
+                      <input id="cp-fb-feed-include-zero" type="checkbox" class="w-4 h-4 accent-blue-600 rounded cursor-pointer" />
+                      <span>0₾ ნივთების ჩართვაც (1₾ ფასით)</span>
+                    </label>
+                  </div>
                 </div>
 
+                <!-- 1. Site -> Facebook Feed URL -->
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                   <input
                     id="cp-fb-catalog-feed-url"
@@ -10107,6 +10119,51 @@
                     ⬇️ XML ჩამოტვირთვა
                   </button>
                 </div>
+
+                <!-- 2. Facebook -> Site Reverse Sync (File or Graph API) -->
+                <div class="pt-3 border-t border-blue-200/80 grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-center">
+                  <div class="lg:col-span-4 flex items-center gap-2">
+                    <input
+                      id="cp-fb-import-file-input"
+                      type="file"
+                      accept=".csv,.xml,text/csv,application/xml,text/xml"
+                      class="hidden"
+                    />
+                    <button
+                      type="button"
+                      id="cp-fb-import-file-btn"
+                      class="w-full px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold transition shadow-sm"
+                    >
+                      📥 Facebook-იდან (CSV/XML) საიტზე გადმოტანა
+                    </button>
+                  </div>
+                  <div class="lg:col-span-3">
+                    <input
+                      id="cp-fb-graph-catalog-id"
+                      type="text"
+                      placeholder="FB Catalog ID (არასავალდებულო)"
+                      class="w-full min-h-[38px] px-3 py-1.5 rounded-xl border border-blue-200 bg-white text-xs font-mono-num"
+                    />
+                  </div>
+                  <div class="lg:col-span-3">
+                    <input
+                      id="cp-fb-graph-token"
+                      type="password"
+                      placeholder="Meta Access Token (API სინქისთვის)"
+                      class="w-full min-h-[38px] px-3 py-1.5 rounded-xl border border-blue-200 bg-white text-xs font-mono-num"
+                    />
+                  </div>
+                  <div class="lg:col-span-2">
+                    <button
+                      type="button"
+                      id="cp-fb-graph-sync-btn"
+                      class="w-full px-3 py-2 rounded-xl bg-blue-900 hover:bg-blue-950 text-white text-xs font-extrabold transition shadow-sm"
+                    >
+                      🔄 API სინქი
+                    </button>
+                  </div>
+                </div>
+                <p id="cp-fb-sync-status-msg" class="text-xs font-bold text-blue-900 hidden"></p>
               </div>
             </div>
 
@@ -30329,6 +30386,217 @@
             xmlBtn.addEventListener('click', () => {
               const incZero = zeroCheck && zeroCheck.checked ? '&include_zero=1' : '';
               window.open(`/api/fb-catalog?format=xml&download=1${incZero}`, '_blank');
+            });
+          }
+
+          // Reverse Sync: Facebook -> Site (CSV/XML File Import & Meta Graph API Sync)
+          const importFileBtn = document.getElementById('cp-fb-import-file-btn');
+          const importFileInput = document.getElementById('cp-fb-import-file-input');
+          const graphCatalogIdInput = document.getElementById('cp-fb-graph-catalog-id');
+          const graphTokenInput = document.getElementById('cp-fb-graph-token');
+          const graphSyncBtn = document.getElementById('cp-fb-graph-sync-btn');
+          const statusMsgEl = document.getElementById('cp-fb-sync-status-msg');
+
+          if (graphCatalogIdInput && storeSettings.fbCatalogId) {
+            graphCatalogIdInput.value = storeSettings.fbCatalogId;
+          }
+          if (graphTokenInput && storeSettings.fbCatalogToken) {
+            graphTokenInput.value = storeSettings.fbCatalogToken;
+          }
+
+          function showFbSyncStatus(msg, isError = false) {
+            if (!statusMsgEl) return;
+            statusMsgEl.textContent = msg;
+            statusMsgEl.className = `text-xs font-bold ${isError ? 'text-red-600' : 'text-emerald-700'}`;
+            statusMsgEl.classList.remove('hidden');
+          }
+
+          function parsePriceNumber(raw) {
+            if (raw === undefined || raw === null) return 0;
+            const cleaned = String(raw).replace(/[^0-9.]/g, '');
+            const num = parseFloat(cleaned);
+            return Number.isFinite(num) ? Math.round(num * 100) / 100 : 0;
+          }
+
+          function applyImportedFbItemsToStore(fbItems) {
+            if (!Array.isArray(fbItems) || fbItems.length === 0) {
+              showFbSyncStatus('⚠️ კატალოგში პროდუქტები ვერ მოიძებნა.', true);
+              return;
+            }
+            let updatedCount = 0;
+            let addedCount = 0;
+
+            fbItems.forEach((item) => {
+              const extId = String(item.id || item.retailer_id || '').trim();
+              const title = String(item.title || item.name || '').trim();
+              if (!extId && !title) return;
+
+              const basePrice = parsePriceNumber(item.price);
+              const salePrice = parsePriceNumber(item.sale_price);
+              const finalNewPrice = salePrice > 0 ? salePrice : basePrice;
+              const finalOldPrice = salePrice > 0 && basePrice > salePrice ? basePrice : 0;
+
+              const existing = productsList.find(
+                (p) => (extId && String(p.id) === extId) || (title && String(p.name).trim() === title)
+              );
+
+              if (existing) {
+                if (finalNewPrice > 0) existing.newPrice = finalNewPrice;
+                if (finalOldPrice > 0) existing.oldPrice = finalOldPrice;
+                if (title && !title.includes('#')) existing.name = title;
+                if (item.description) existing.description = String(item.description).trim();
+                if (item.image_link && Array.isArray(existing.images)) {
+                  existing.images[0] = String(item.image_link).trim();
+                }
+                updatedCount++;
+              } else {
+                const imgs = [
+                  String(item.image_link || item.image_url || '').trim(),
+                  ...(Array.isArray(item.additional_image_links) ? item.additional_image_links : []),
+                ].filter(Boolean);
+                while (imgs.length < 5) imgs.push('');
+
+                productsList.unshift({
+                  id: extId || `prod-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+                  sku: extId || 'FB-ITEM',
+                  category: 'karaoke',
+                  categoryLabel: String(item.product_type || item.category || 'პროდუქცია').trim(),
+                  badgeText: 'ახალი',
+                  name: title || 'ახალი პროდუქტი',
+                  shortMeta: '',
+                  oldPrice: finalOldPrice,
+                  newPrice: finalNewPrice,
+                  images: imgs.slice(0, 5),
+                  description: String(item.description || '').trim(),
+                  specs: [],
+                  closedFields: {},
+                });
+                addedCount++;
+              }
+            });
+
+            renderProducts();
+            if (typeof renderCpProductsList === 'function') renderCpProductsList();
+            saveStateEverywhere({ immediate: true });
+            showFbSyncStatus(
+              `✅ სინქრონიზაცია დასრულდა! განახლდა: ${updatedCount} ნივთი, დაემატა ახალი: ${addedCount} ნივთი.`
+            );
+          }
+
+          function parseXmlCatalogText(xmlText) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(xmlText, 'text/xml');
+            const itemNodes = Array.from(doc.querySelectorAll('item, entry'));
+            return itemNodes.map((node) => {
+              const getTag = (tag) => {
+                const el =
+                  node.getElementsByTagName(`g:${tag}`)[0] ||
+                  node.getElementsByTagName(tag)[0];
+                return el ? el.textContent.trim() : '';
+              };
+              const extraImgs = Array.from(
+                node.getElementsByTagName('g:additional_image_link')
+              ).map((el) => el.textContent.trim());
+              return {
+                id: getTag('id'),
+                title: getTag('title'),
+                description: getTag('description'),
+                price: getTag('price'),
+                sale_price: getTag('sale_price'),
+                image_link: getTag('image_link'),
+                additional_image_links: extraImgs,
+                product_type: getTag('product_type'),
+              };
+            });
+          }
+
+          function parseCsvLine(line) {
+            const out = [];
+            let cur = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+              const ch = line[i];
+              if (ch === '"') {
+                if (inQuotes && line[i + 1] === '"') {
+                  cur += '"';
+                  i++;
+                } else {
+                  inQuotes = !inQuotes;
+                }
+              } else if (ch === ',' && !inQuotes) {
+                out.push(cur);
+                cur = '';
+              } else {
+                cur += ch;
+              }
+            }
+            out.push(cur);
+            return out;
+          }
+
+          function parseCsvCatalogText(csvText) {
+            const lines = String(csvText || '')
+              .replace(/^\uFEFF/, '')
+              .split(/\r?\n/)
+              .filter((l) => l.trim());
+            if (lines.length < 2) return [];
+            const headers = parseCsvLine(lines[0]).map((h) => h.trim().toLowerCase());
+            return lines.slice(1).map((line) => {
+              const cols = parseCsvLine(line);
+              const obj = {};
+              headers.forEach((h, idx) => {
+                obj[h] = cols[idx] !== undefined ? cols[idx].trim() : '';
+              });
+              if (obj.additional_image_link) {
+                obj.additional_image_links = obj.additional_image_link
+                  .split(',')
+                  .map((s) => s.trim())
+                  .filter(Boolean);
+              }
+              return obj;
+            });
+          }
+
+          if (importFileBtn && importFileInput) {
+            importFileBtn.addEventListener('click', () => importFileInput.click());
+            importFileInput.addEventListener('change', async (e) => {
+              const file = e.target.files && e.target.files[0];
+              if (!file) return;
+              try {
+                const text = await file.text();
+                const isXml = file.name.toLowerCase().endsWith('.xml') || text.trim().startsWith('<');
+                const parsedItems = isXml ? parseXmlCatalogText(text) : parseCsvCatalogText(text);
+                applyImportedFbItemsToStore(parsedItems);
+              } catch (err) {
+                showFbSyncStatus('❌ ფაილის წაკითხვა ვერ მოხერხდა.', true);
+              }
+              importFileInput.value = '';
+            });
+          }
+
+          if (graphSyncBtn) {
+            graphSyncBtn.addEventListener('click', async () => {
+              const catId = graphCatalogIdInput ? graphCatalogIdInput.value.trim() : '';
+              const token = graphTokenInput ? graphTokenInput.value.trim() : '';
+              if (!catId || !token) {
+                showFbSyncStatus('⚠️ მიუთითეთ Facebook Catalog ID და Meta Access Token (ან გამოიყენეთ CSV/XML ფაილით გადმოტანა).', true);
+                return;
+              }
+              storeSettings.fbCatalogId = catId;
+              storeSettings.fbCatalogToken = token;
+              showFbSyncStatus('⏳ მიმდინარეობს Facebook კატალოგიდან მონაცემების წამოღება...');
+              try {
+                const url = `https://graph.facebook.com/v19.0/${encodeURIComponent(catId)}/products?fields=id,retailer_id,name,description,price,sale_price,image_url,category&limit=200&access_token=${encodeURIComponent(token)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+                if (!res.ok || data.error) {
+                  showFbSyncStatus(`❌ Facebook API შეცდომა: ${(data.error && data.error.message) || res.statusText}`, true);
+                  return;
+                }
+                applyImportedFbItemsToStore(data.data || []);
+              } catch (err) {
+                showFbSyncStatus('❌ Facebook API-სთან დაკავშირება ვერ მოხერხდა.', true);
+              }
             });
           }
         })();
