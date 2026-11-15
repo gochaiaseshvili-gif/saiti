@@ -30575,19 +30575,48 @@
             });
           }
 
+          async function runServerAutoSyncFromFacebook(silent = true) {
+            if (!silent) {
+              showFbSyncStatus('⏳ მიმდინარეობს Facebook კატალოგიდან მონაცემების ავტომატური შემოწმება...');
+            }
+            try {
+              const res = await fetch(`/api/fb-catalog?action=auto_sync&t=${Date.now()}`, { cache: 'no-store' });
+              if (!res.ok) {
+                if (!silent) showFbSyncStatus('❌ სერვერთან დაკავშირება ვერ მოხერხდა.', true);
+                return;
+              }
+              const data = await res.json();
+              if (data && data.ok) {
+                if (data.changed && Array.isArray(data.productsList)) {
+                  productsList = data.productsList;
+                  productsList.forEach(ensureFiveImagesArray);
+                  renderProducts();
+                  if (typeof renderCpProductsList === 'function') renderCpProductsList();
+                }
+                if (!silent) {
+                  showFbSyncStatus(
+                    `✅ სინქრონიზაცია დასრულდა! Facebook-იდან დაემატა: ${data.addedCount || 0}, განახლდა: ${data.updatedCount || 0}.`
+                  );
+                }
+              }
+            } catch (err) {
+              if (!silent) showFbSyncStatus('❌ Facebook API-სთან დაკავშირება ვერ მოხერხდა.', true);
+            }
+          }
+
           if (graphSyncBtn) {
             graphSyncBtn.addEventListener('click', async () => {
               const catId = graphCatalogIdInput ? graphCatalogIdInput.value.trim() : '';
               const token = graphTokenInput ? graphTokenInput.value.trim() : '';
-              if (!catId || !token) {
-                showFbSyncStatus('⚠️ მიუთითეთ Facebook Catalog ID და Meta Access Token (ან გამოიყენეთ CSV/XML ფაილით გადმოტანა).', true);
+              if (!token) {
+                await runServerAutoSyncFromFacebook(false);
                 return;
               }
-              storeSettings.fbCatalogId = catId;
+              storeSettings.fbCatalogId = catId || '338932966606489';
               storeSettings.fbCatalogToken = token;
               showFbSyncStatus('⏳ მიმდინარეობს Facebook კატალოგიდან მონაცემების წამოღება...');
               try {
-                const url = `https://graph.facebook.com/v19.0/${encodeURIComponent(catId)}/products?fields=id,retailer_id,name,description,price,sale_price,image_url,category&limit=200&access_token=${encodeURIComponent(token)}`;
+                const url = `https://graph.facebook.com/v19.0/${encodeURIComponent(storeSettings.fbCatalogId)}/products?fields=id,retailer_id,name,description,price,sale_price,image_url,category&limit=200&access_token=${encodeURIComponent(token)}`;
                 const res = await fetch(url);
                 const data = await res.json();
                 if (!res.ok || data.error) {
@@ -30600,6 +30629,16 @@
               }
             });
           }
+
+          // Automatically check Facebook Catalog on boot & every 2 minutes in background
+          setTimeout(() => runServerAutoSyncFromFacebook(true), 3500);
+          setInterval(() => {
+            const isCpHidden = !cpBackdrop || cpBackdrop.classList.contains('hidden');
+            const isMieHidden = !modalInlineEditorPanel || modalInlineEditorPanel.classList.contains('hidden');
+            if (isCpHidden && isMieHidden) {
+              runServerAutoSyncFromFacebook(true);
+            }
+          }, 120000);
         })();
 
         syncInitialStateFromServer();
