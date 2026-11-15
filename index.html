@@ -66,16 +66,16 @@
 
     <style>
       :root {
-        --theme-primary: #d97706;
-        --theme-primary-hover: #b45309;
-        --theme-primary-soft: rgba(217, 119, 6, 0.12);
-        --theme-primary-border: rgba(217, 119, 6, 0.32);
+        --theme-primary: #0f172a;
+        --theme-primary-hover: #1e293b;
+        --theme-primary-soft: rgba(15, 23, 42, 0.08);
+        --theme-primary-border: rgba(15, 23, 42, 0.22);
         --theme-primary-text-on: #ffffff;
-        --site-page-bg: #fafaf9;
+        --site-page-bg: #f8fafc;
         --site-card-bg: #ffffff;
-        --site-header-bg: rgba(255, 255, 255, 0.96);
-        --site-price-color: #d97706;
-        --site-title-color: #09090b;
+        --site-header-bg: rgba(255, 255, 255, 0.98);
+        --site-price-color: #059669;
+        --site-title-color: #0f172a;
       }
 
       html,
@@ -136,6 +136,7 @@
 
       .font-display {
         font-family: 'Outfit', 'Noto Sans Georgian', sans-serif;
+        font-feature-settings: "case" on;
       }
 
       .font-mono-num {
@@ -205,12 +206,20 @@
       }
 
       /* Customer View Mode (?view=customer): hides main-page admin toolbars while keeping in-product 'ცვლილების შეტანა' accessible with PIN */
+      body.customer-view-mode #weather-effects-layer,
       body.customer-view-mode #theme-panel-toggle,
       body.customer-view-mode #theme-customizer-panel,
       body.customer-view-mode #open-control-panel-btn,
       body.customer-view-mode #open-cp-banks-btn,
       body.customer-view-mode #owner-admin-toolbar-row,
       body.customer-view-mode #quick-add-product-btn,
+      body.customer-view-mode #toolbar-sales-notifications-btn,
+      body.customer-view-mode #toolbar-visitors-stats-btn,
+      body.customer-view-mode #live-weather-widget,
+      body.customer-view-mode [data-lb-chip-id="clock"],
+      body.customer-view-mode [data-lb-chip-id="date"],
+      body.customer-view-mode [data-lb-chip-id="weather"],
+      body.customer-view-mode [data-lb-chip-id="cities"],
       body.customer-view-mode [data-direct-card-upload-label],
       body.customer-view-mode [data-quick-edit-id],
       body.customer-view-mode #modal-direct-5photo-label,
@@ -360,43 +369,50 @@
     </div>
 
     <!-- TOP BAR CONTRACT: Fully responsive across mobile, tablet & desktop with zero horizontal overflow -->
-    <header class="sticky top-0 z-30 min-h-[60px] py-2 bg-white/95 backdrop-blur-md border-b border-zinc-200/80 px-3 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 sm:gap-3.5">
-      <!-- Zone 1 (Left): Prominent Official Brand Logo + Brand Wordmark + Owner Phone Number -->
-      <div class="flex items-center gap-3 sm:gap-4 shrink-0">
-        <button
-          type="button"
-          onclick="window.openTbcLogoPreviewModal && window.openTbcLogoPreviewModal()"
-          title="iyidebaa.ge — იყიდე მარტივად და სწრაფად (დააჭირეთ გასადიდებლად)"
-          class="group relative w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-2xl overflow-hidden border-2 border-[#00AEEF] shadow-lg bg-[#041f56] shrink-0 block cursor-pointer"
+    <header class="sticky top-0 z-30 min-h-[64px] py-2.5 bg-white/98 backdrop-blur-md border-b border-slate-200/90 px-3 sm:px-6 lg:px-8 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 sm:gap-4 shadow-2xs">
+      <!-- Zone 1 (Left): Official Brand Logo + Brand Wordmark + Hotline Phone Number -->
+      <div class="flex items-center gap-3 sm:gap-3.5 shrink-0">
+        <a
+          href="#catalog"
+          title="iyidebaa.ge — აუდიო და ენერგო სისტემების ონლაინ მაღაზია"
+          class="group relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-[#041f56] shrink-0 block cursor-pointer"
         >
           <img
             id="header-active-logo-img"
-            src="/iyidebaa-logo-1000x1000.png?v=final1"
+            src="/iyidebaa-logo-1000x1000.png?v=final2"
             alt="iyidebaa.ge — იყიდე მარტივად და სწრაფად"
             referrerPolicy="no-referrer"
             class="w-full h-full object-contain group-hover:scale-105 fast-transition"
           />
-        </button>
-        <div class="flex flex-col items-start justify-center gap-1.5 shrink-0">
-          <a
-            href="#catalog"
-            id="header-brand-name"
-            class="font-display text-sm sm:text-base lg:text-lg font-extrabold tracking-tight text-zinc-950 leading-tight shrink-0 theme-ring rounded"
-          >
-            იყიდება საინტერესო ნივთები
-          </a>
+        </a>
+        <div class="flex flex-col items-start justify-center gap-1 shrink-0">
+          <div class="flex items-center gap-2">
+            <a
+              href="#catalog"
+              id="header-brand-name"
+              class="font-display text-sm sm:text-base lg:text-lg font-extrabold tracking-tight text-slate-950 leading-tight shrink-0 theme-ring rounded"
+            >
+              იყიდება საინტერესო ნივთები
+            </a>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-200 text-[10px] font-extrabold text-emerald-800 tracking-wide uppercase">
+              IYIDEBAA.GE
+            </span>
+          </div>
 
-          <a
-            id="header-phone-link"
-            href="tel:+995551588579"
-            class="theme-bg min-h-[32px] sm:min-h-[34px] px-3 sm:px-3.5 py-1 rounded-xl text-xs sm:text-sm font-extrabold text-white inline-flex items-center gap-1.5 shadow-sm hover:opacity-95 active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 theme-ring"
-            aria-label="დარეკვა ნომერზე +995 551 58 85 79"
-          >
-            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
-            <span id="header-phone-label" class="font-mono-num tracking-tight">+995 551 58 85 79</span>
-          </a>
+          <div class="flex items-center gap-2">
+            <a
+              id="header-phone-link"
+              href="tel:+995551588579"
+              class="bg-slate-900 hover:bg-slate-800 min-h-[30px] sm:min-h-[32px] px-3 py-1 rounded-xl text-xs font-extrabold text-white inline-flex items-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 theme-ring"
+              aria-label="ცხელი ხაზი +995 551 58 85 79"
+            >
+              <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+              </svg>
+              <span id="header-phone-label" class="font-mono-num tracking-tight">+995 551 58 85 79</span>
+            </a>
+            <span class="hidden xl:inline text-[11px] font-semibold text-slate-500">ცხელი ხაზი • კონსულტაცია</span>
+          </div>
         </div>
       </div>
 
@@ -464,106 +480,43 @@
         };
       </script>
 
-      <!-- Zone 2 (Compact & Neatly Organized Green Info Banner): ზედა რიგში საათი/ამინდი/პირობები, ქვედა რიგში მენიუს ღილაკები -->
+      <!-- Zone 2 (Clean Modern Store Info & Action Bar): პირობები და სწრაფი მენიუს ღილაკები -->
       <div
         id="live-info-banner"
-        style="background-color: #065f46; border-color: #047857;"
-        class="w-full lg:w-auto lg:max-w-[1080px] lg:ml-auto min-w-0 rounded-2xl text-white px-3 py-2 shadow-sm border flex flex-col gap-1.5 text-xs transition-colors duration-150"
+        style="background-color: #0f172a; border-color: #1e293b;"
+        class="w-full lg:w-auto lg:max-w-[1080px] lg:ml-auto min-w-0 rounded-2xl text-white px-3.5 py-2 shadow-xs border flex flex-col gap-1.5 text-xs transition-colors duration-150"
       >
-        <!-- Row 1: Dynamic Clock, Weather & Custom Text Chips Container (Neatly aligned on one horizontal row) -->
+        <!-- Row 1: Official Store Trust Badges -->
         <div
           id="live-info-banner-dynamic"
           class="w-full min-w-0 flex flex-wrap items-center justify-between gap-1.5"
         >
-          <!-- Left: Store Trust Badges -->
-          <div class="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-zinc-100">
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-amber-300 font-bold whitespace-nowrap">🚚 მიწოდება მთელ საქართველოში</span>
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-emerald-300 font-bold whitespace-nowrap">💳 განვადება / ადგილზე გადახდა</span>
-            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white font-bold whitespace-nowrap">🛡️ 24 თვე გარანტია</span>
+          <div class="flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-slate-100">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white font-bold whitespace-nowrap">🚚 სწრაფი მიწოდება მთელ საქართველოში</span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-emerald-300 font-bold whitespace-nowrap">💳 ონლაინ განვადება (BOG • TBC • კრედო)</span>
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-white/10 border border-white/15 text-amber-300 font-bold whitespace-nowrap">🛡️ 12-თვიანი ოფიციალური გარანტია</span>
           </div>
-
-          <!-- Right: Compact Live Date, Clock & Weather -->
-          <div class="flex flex-wrap items-center gap-1.5 ml-auto">
-            <div class="hidden md:inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-xl border border-white/15 text-[11px] whitespace-nowrap">
-              <span>📅</span>
-              <span id="live-weekday" class="font-bold text-amber-300 capitalize">...</span><span>, </span><span id="live-date" class="text-white">...</span>
-            </div>
-
-            <div class="inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-xl border border-white/15 text-[11px] whitespace-nowrap">
-              <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="live-clock-label" class="hidden">ცოცხალი დრო:</span>
-              <span id="live-clock" class="font-mono-num font-bold text-white tracking-wider">00:00:00</span>
-            </div>
-
-            <div id="live-weather-widget" class="inline-flex items-center gap-1.5 bg-black/25 px-2.5 py-1 rounded-xl border border-white/15 text-[11px] whitespace-nowrap">
-              <span id="live-weather-icon" class="text-sm">☀️</span>
-              <span id="live-weather-temp" class="font-mono-num font-bold text-amber-300">--°C</span>
-              <span id="live-weather-city" class="font-semibold text-white">თბილისი</span>
-              <span id="live-weather-desc" class="hidden"></span>
-              <span id="live-weather-details" class="hidden"></span>
-            </div>
-
-            <div class="hidden sm:inline-flex items-center gap-1 bg-black/20 px-2 py-0.5 rounded-xl border border-white/15">
-              <button
-                type="button"
-                data-city-choice="tbilisi"
-                id="weather-city-btn-tbilisi"
-                class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-bold bg-amber-500/30 text-amber-200 border border-amber-400/50 cursor-pointer"
-              >
-                თბილისი
-              </button>
-              <button
-                type="button"
-                data-city-choice="batumi"
-                id="weather-city-btn-batumi"
-                class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
-              >
-                ბათუმი
-              </button>
-              <button
-                type="button"
-                data-city-choice="kutaisi"
-                id="weather-city-btn-kutaisi"
-                class="weather-city-btn px-2 py-0.5 rounded-lg text-[11px] font-semibold bg-black/25 text-white border border-white/15 cursor-pointer"
-              >
-                ქუთაისი
-              </button>
-              <button
-                type="button"
-                id="weather-geo-btn"
-                class="px-1.5 py-0.5 rounded-lg text-[11px] bg-black/25 text-white border border-white/15 cursor-pointer"
-                title="ჩემი ლოკაციის ამინდი"
-              >
-                <span>📍</span>
-                <span id="weather-geo-btn-text" class="hidden">ჩემი ქალაქი</span>
-              </button>
-              <button
-                type="button"
-                id="weather-refresh-btn"
-                class="px-1.5 py-0.5 rounded-lg text-[11px] bg-black/25 text-white/80 hover:text-white border border-white/15 cursor-pointer"
-                title="ამინდის განახლება"
-              >
-                🔄
-              </button>
-            </div>
+          <div class="hidden">
+            <span id="live-weekday"></span><span id="live-date"></span><span id="live-clock"></span>
+            <span id="live-weather-icon"></span><span id="live-weather-temp"></span><span id="live-weather-city"></span>
           </div>
         </div>
 
         <!-- Row 2: Pinned Action & Navigation Controls Neatly Aligned in a Single Compact Bar -->
         <div class="w-full pt-1.5 border-t border-white/15 flex flex-wrap items-center justify-end gap-1.5">
-          <!-- Header Calculator Quick Access Button -->
+          <!-- Header Shopping Cart Quick Access Button -->
           <button
             id="header-calculator-btn"
             type="button"
-            class="min-h-[30px] px-2.5 py-1 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-[11px] font-extrabold inline-flex items-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
-            title="ფასის გამომთვლელი (კალკულატორი • 2+ ნივთის დაჯამება)"
-            aria-label="ფასის გამომთვლელი კალკულატორი"
+            class="min-h-[30px] px-3 py-1 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white border border-emerald-400 text-[11px] font-extrabold inline-flex items-center gap-1.5 shadow-2xs active:scale-[0.98] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+            title="ჩემი კალათა (ნივთების დაჯამება და შეკვეთა)"
+            aria-label="ჩემი კალათა"
           >
-            <span class="text-xs">🧮</span>
-            <span id="header-calculator-label" class="inline">კალკულატორი</span>
+            <span class="text-xs">🛒</span>
+            <span id="header-calculator-label" class="inline">კალათა</span>
             <span
               id="header-calc-badge"
-              class="calc-count-badge hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-amber-600 text-white leading-none"
+              class="calc-count-badge hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-white text-emerald-900 leading-none"
             >0</span>
           </button>
 
@@ -1030,19 +983,19 @@
               <span>Telegram</span>
             </a>
 
-            <!-- Calculator Quick View Button -->
+            <!-- Shopping Cart Quick View Button -->
             <button
               id="toolbar-calculator-btn"
               type="button"
-              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
-              title="ფასის გამომთვლელი (კალკულატორი • 2+ ნივთის დაჯამება)"
-              aria-label="ფასის გამომთვლელი კალკულატორი"
+              class="min-h-[36px] px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs font-bold flex items-center gap-1.5 active:scale-[0.97] fast-transition whitespace-nowrap shrink-0 cursor-pointer"
+              title="ჩემი კალათა (ნივთების დაჯამება და შეკვეთა)"
+              aria-label="ჩემი კალათა"
             >
-              <span>🧮</span>
-              <span id="toolbar-calculator-label">კალკულატორი</span>
+              <span>🛒</span>
+              <span id="toolbar-calculator-label">კალათა</span>
               <span
                 id="toolbar-calc-badge"
-                class="calc-count-badge hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-amber-600 text-white leading-none"
+                class="calc-count-badge hidden px-1.5 py-0.5 text-[10px] font-black rounded-full bg-emerald-600 text-white leading-none"
               >0</span>
             </button>
 
@@ -2382,26 +2335,26 @@
             </div>
           </div>
 
-          <!-- MOVABLE BLOCK 5: SHOPPING PRICE CALCULATOR (ჩატანილია სულ ქვემოთ) -->
+          <!-- MOVABLE BLOCK 5: SHOPPING CART & MULTI-ITEM CALCULATOR -->
           <div
             id="shopping-calculator-box"
             data-home-block="price-calculator"
-            data-block-label="🧮 ფასის გამომთვლელი (კალკულატორი)"
-            class="movable-page-block max-w-4xl mx-auto rounded-2xl bg-white border border-amber-300 shadow-md p-2.5 sm:p-3.5 space-y-2.5 relative overflow-hidden transition-all duration-300"
+            data-block-label="🛒 ჩემი კალათა (ნივთების დაჯამება)"
+            class="movable-page-block max-w-4xl mx-auto rounded-2xl bg-white border border-slate-200 shadow-sm p-3 sm:p-4 space-y-2.5 relative overflow-hidden transition-all duration-300"
           >
             <!-- Top Header & Badge -->
-            <div class="flex items-center justify-between gap-2 pb-2 border-b border-amber-100">
+            <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-100">
               <div class="flex items-center gap-2 min-w-0">
-                <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-amber-500 text-white shadow-xs text-base shrink-0">
-                  <span>🧮</span>
+                <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-slate-900 text-white shadow-xs text-base shrink-0">
+                  <span>🛒</span>
                 </div>
                 <div class="min-w-0">
                   <div class="flex items-center gap-1.5 flex-wrap">
-                    <h2 class="text-xs sm:text-sm font-black text-zinc-950 tracking-tight flex items-center gap-1.5">
-                      <span>ფასის კალკულატორი</span>
-                      <span class="px-1.5 py-0.5 rounded-full bg-amber-100 border border-amber-300 text-amber-900 text-[10px] font-black uppercase tracking-wider">2+ ნივთი</span>
+                    <h2 class="text-xs sm:text-sm font-black text-slate-950 tracking-tight flex items-center gap-1.5">
+                      <span>ჩემი კალათა</span>
+                      <span class="px-1.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-black uppercase tracking-wider">შეკვეთა &amp; განვადება</span>
                     </h2>
-                    <span class="hidden md:inline text-[11px] text-zinc-500">• აირჩიეთ ნივთები საერთო ფასისა და განვადების დასათვლელად</span>
+                    <span class="hidden md:inline text-[11px] text-slate-500">• აირჩიეთ ნივთები საერთო ფასისა და განვადების დასათვლელად</span>
                   </div>
                 </div>
               </div>
@@ -2411,8 +2364,8 @@
                 <button
                   type="button"
                   id="calc-clear-btn"
-                  class="min-h-[28px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-stone-200 text-zinc-700 hover:text-red-700 text-[11px] font-bold flex items-center gap-1 cursor-pointer active:scale-95 fast-transition"
-                  title="კალკულატორის გასუფთავება"
+                  class="min-h-[28px] px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 hover:text-red-700 text-[11px] font-bold flex items-center gap-1 cursor-pointer active:scale-95 fast-transition"
+                  title="კალათის გასუფთავება"
                 >
                   <span>🗑️</span>
                   <span>გასუფთავება</span>
@@ -4981,14 +4934,14 @@
               </div>
             </div>
 
-            <!-- Add to Calculator from Modal -->
+            <!-- Add to Cart from Modal -->
             <button
               id="modal-add-to-calc-btn"
               type="button"
-              class="w-full min-h-[46px] px-3.5 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-2xs active:scale-[0.98] fast-transition cursor-pointer"
+              class="w-full min-h-[46px] px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-2xs active:scale-[0.98] fast-transition cursor-pointer"
             >
-              <span class="text-base">🧮</span>
-              <span>+ ფასის გამომთვლელში (კალკულატორში) დამატება</span>
+              <span class="text-base">🛒</span>
+              <span>+ კალათაში დამატება</span>
             </button>
 
             <!-- Message the Seller Button at the Very Bottom -->
@@ -10743,23 +10696,20 @@
           weatherMode: 'off',
           weatherAutoSync: false,
           weatherIntensity: 65,
-          pageBgColor: '#fafaf9',
+          pageBgColor: '#f8fafc',
           cardBgColor: '#ffffff',
           headerBgColor: '#ffffff',
-          priceTextColor: '',
-          titleTextColor: '#09090b',
+          priceTextColor: '#059669',
+          titleTextColor: '#0f172a',
           cardFrameStyle: 'default',
-          liveBannerBgColor: '#1e3a8a',
+          liveBannerBgColor: '#0f172a',
           liveBannerHidden: false,
           liveBannerCustomized: false,
+          _proGeorgianStoreV1: true,
           liveBannerItems: [
-            { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების ტექსტი', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
-            { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის ტექსტი', text: '🛡️ 12 თვე გარანტია', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
-            { id: 'installment', type: 'text', badgeTitle: '💳 განვადების ტექსტი', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#6ee7b7', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
-            { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
-            { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
-            { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' },
-            { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right' }
+            { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების ტექსტი', text: '🚚 სწრაფი მიწოდება მთელ საქართველოში', textColor: '#34d399', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
+            { id: 'installment', type: 'text', badgeTitle: '💳 განვადების ტექსტი', text: '💳 ონლაინ განვადება (BOG • TBC • კრედო)', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
+            { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის ტექსტი', text: '🛡️ 12-თვიანი ოფიციალური გარანტია', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' }
           ],
           homeBlocksOrder: ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'price-calculator'],
           modalBlocksOrder: ['modal-pricing', 'modal-tech-specs', 'modal-gallery', 'modal-specs', 'modal-video', 'modal-card-payment', 'modal-chat', 'modal-order', 'modal-dilo-delivery'],
@@ -12432,6 +12382,29 @@
           const savedTheme = localStorage.getItem('vv_theme_color');
           if (savedTheme && /^#[0-9a-fA-F]{6}$/.test(savedTheme)) {
             activeThemeColor = savedTheme;
+          }
+          // One-time upgrade to Professional Georgian Store theme & layout
+          if (!storeSettings._proGeorgianStoreV1) {
+            storeSettings._proGeorgianStoreV1 = true;
+            storeSettings.weatherMode = 'off';
+            storeSettings.weatherAutoSync = false;
+            storeSettings.pageBgColor = '#f8fafc';
+            storeSettings.cardBgColor = '#ffffff';
+            storeSettings.headerBgColor = '#ffffff';
+            storeSettings.priceTextColor = '#059669';
+            storeSettings.titleTextColor = '#0f172a';
+            storeSettings.cardFrameStyle = 'default';
+            storeSettings.liveBannerBgColor = '#0f172a';
+            activeThemeColor = '#0f172a';
+            localStorage.setItem('vv_theme_color', '#0f172a');
+            localStorage.removeItem('vv_weather_user_set');
+            if (Array.isArray(storeSettings.customCategories)) {
+              storeSettings.customCategories = storeSettings.customCategories.map((c) => ({
+                ...c,
+                bgColor: '',
+                textColor: ''
+              }));
+            }
           }
         } catch (e) {}
 
@@ -14176,18 +14149,14 @@
         }
 
         const LIVE_BANNER_DEFAULT_WIDGETS = [
-          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 მიწოდება მთელ საქართველოში', textColor: '#fde047', bgColor: '#047857', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
-          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 განვადება / ადგილზე გადახდა', textColor: '#ffffff', bgColor: '#047857', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
-          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 24 თვე გარანტია', textColor: '#6ee7b7', bgColor: '#047857', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
-          { id: 'date', type: 'date', badgeTitle: '📅 თარიღი და კვირის დღე', text: '📅', textColor: '#fde047', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 12, isBold: true, isUnderline: false },
-          { id: 'weather', type: 'weather', badgeTitle: '☀️ ამინდის პროგნოზი', text: '', textColor: '#fde047', bgColor: '#059669', offsetX: 0, offsetY: 0, align: 'right', fontSize: 12, isBold: true, isUnderline: false },
-          { id: 'clock', type: 'clock', badgeTitle: '⏰ საათი (ცოცხალი დრო)', text: '⏰', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 12, isBold: true, isUnderline: false },
-          { id: 'cities', type: 'cities', badgeTitle: '🏙️ ქალაქების ღილაკები', text: 'თბილისი, ბათუმი, ქუთაისი', textColor: '#ffffff', bgColor: '#172554', offsetX: 0, offsetY: 0, align: 'right', fontSize: 11, isBold: false, isUnderline: false }
+          { id: 'delivery', type: 'text', badgeTitle: '🚚 მიწოდების წარწერა', text: '🚚 სწრაფი მიწოდება მთელ საქართველოში', textColor: '#34d399', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'installment', type: 'text', badgeTitle: '💳 განვადების წარწერა', text: '💳 ონლაინ განვადება (BOG • TBC • კრედო)', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false },
+          { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის წარწერა', text: '🛡️ 12-თვიანი ოფიციალური გარანტია', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left', fontSize: 12, isBold: true, isUnderline: false }
         ];
 
         function ensureLiveBannerItems() {
-          if (!storeSettings.liveBannerBgColor) {
-            storeSettings.liveBannerBgColor = '#065f46';
+          if (!storeSettings.liveBannerBgColor || storeSettings.liveBannerBgColor === '#065f46' || storeSettings.liveBannerBgColor === '#1e3a8a') {
+            storeSettings.liveBannerBgColor = '#0f172a';
           }
           if (!Array.isArray(storeSettings.liveBannerItems)) {
             storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
@@ -14195,7 +14164,7 @@
             storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
           } else {
             storeSettings.liveBannerItems = storeSettings.liveBannerItems
-              .filter((it) => it && it.id)
+              .filter((it) => it && it.id && !['date', 'clock', 'weather', 'cities'].includes(String(it.id).trim()))
               .map((it) => {
                 const def = LIVE_BANNER_DEFAULT_WIDGETS.find((w) => w.id === it.id);
                 const cleanType = it.type || (def ? def.type : 'text');
@@ -14205,34 +14174,21 @@
                   badgeTitle: it.badgeTitle || (def ? def.badgeTitle : '✨ დამატებული ნაწერი'),
                   text: it.text !== undefined ? String(it.text) : (def ? def.text : ''),
                   textColor: it.textColor ? String(it.textColor).trim() : '',
-                  bgColor: it.bgColor ? String(it.bgColor).trim() : '',
+                  bgColor: it.bgColor && it.bgColor !== '#047857' && it.bgColor !== '#172554' ? String(it.bgColor).trim() : '',
                   offsetX: Number(it.offsetX) || 0,
                   offsetY: Number(it.offsetY) || 0,
                   align: it.align === 'center' || it.align === 'right' || it.align === 'left' ? it.align : (def ? def.align : 'left'),
-                  fontSize: Number(it.fontSize) || 0,
-                  isBold: Boolean(it.isBold),
+                  fontSize: Number(it.fontSize) || 12,
+                  isBold: Boolean(it.isBold !== false),
                   isUnderline: Boolean(it.isUnderline)
                 };
               });
           }
 
-          // One-time tidy-up of previously uneven font sizes and negative Y offsets in the green header box
-          if (!storeSettings._neatGreenBannerV2) {
-            storeSettings.liveBannerItems = storeSettings.liveBannerItems.map((it) => {
-              const def = LIVE_BANNER_DEFAULT_WIDGETS.find((w) => w.id === it.id);
-              return {
-                ...it,
-                bgColor: it.id === 'date' && it.bgColor === '#e927ec' ? '#172554' : (it.bgColor || (def ? def.bgColor : '#047857')),
-                textColor: it.textColor || (def ? def.textColor : '#ffffff'),
-                offsetX: 0,
-                offsetY: 0,
-                fontSize: 12,
-                isBold: true
-              };
-            });
-            storeSettings._neatGreenBannerV2 = true;
+          if (storeSettings.liveBannerItems.length === 0) {
+            storeSettings.liveBannerItems = LIVE_BANNER_DEFAULT_WIDGETS.map((w) => ({ ...w }));
           }
-
+          storeSettings._neatGreenBannerV2 = true;
           return storeSettings.liveBannerItems;
         }
 
@@ -15216,6 +15172,10 @@
             .map((rawProduct) => {
               const product = getLocalizedProduct(rawProduct, currentLang);
               const savings = Math.max(0, Number(rawProduct.oldPrice) - Number(rawProduct.newPrice));
+              const discountPct =
+                Number(rawProduct.oldPrice) > Number(rawProduct.newPrice) && Number(rawProduct.oldPrice) > 0
+                  ? Math.round((savings / Number(rawProduct.oldPrice)) * 100)
+                  : 0;
               const imgSrc = getProductImageSrc(rawProduct, activeThemeColor);
               const customCount = countCustomUploadedImages(rawProduct);
               const isWishlisted = wishlistIds.has(rawProduct.id);
@@ -15230,6 +15190,7 @@
               const showShortMeta = !cf.shortMeta && Boolean(product.shortMeta && String(product.shortMeta).trim());
               const showNewPrice = !cf.newPrice && Number(rawProduct.newPrice) > 0;
               const showOldPrice = !cf.oldPrice && Number(rawProduct.oldPrice) > 0 && Number(rawProduct.oldPrice) > Number(rawProduct.newPrice);
+              const monthlyFrom = Math.max(1, Math.ceil((Number(rawProduct.newPrice) || 100) / 12));
 
               return `
                 <article
@@ -15237,41 +15198,52 @@
                   tabindex="0"
                   role="button"
                   aria-label="${product.name} - ${strings.cardOrderBtn}"
-                  class="product-card group bg-white rounded-2xl border border-zinc-200/90 hover:border-zinc-300 shadow-sm hover:shadow-md hover:-translate-y-0.5 fast-transition flex flex-col justify-between overflow-hidden cursor-pointer text-left theme-ring relative"
+                  class="product-card group bg-white rounded-2xl border border-slate-200/90 hover:border-slate-300 shadow-xs hover:shadow-lg hover:-translate-y-0.5 fast-transition flex flex-col justify-between overflow-hidden cursor-pointer text-left theme-ring relative"
                 >
                   <div>
                     <!-- 4:3 Studio Hardware Image Container -->
-                    <div class="relative bg-stone-100/90 p-4 border-b border-zinc-100 aspect-[4/3] flex items-center justify-center overflow-hidden">
+                    <div class="relative bg-slate-50/90 p-4 border-b border-slate-100 aspect-[4/3] flex items-center justify-center overflow-hidden">
                       <!-- 1-Click Wishlist Heart Button (Top-Left of Image) -->
                       <button
                         type="button"
                         data-wishlist-toggle="${rawProduct.id}"
-                        class="wishlist-toggle-btn absolute top-3 left-3 z-10 w-9 h-9 rounded-xl ${
+                        class="wishlist-toggle-btn absolute top-3 left-3 z-10 w-9 h-9 rounded-full ${
                           isWishlisted
-                            ? 'bg-white text-rose-600 shadow-md ring-2 ring-rose-500/50'
-                            : 'bg-white/90 hover:bg-white text-zinc-600 hover:text-rose-600 shadow-sm'
+                            ? 'bg-white text-rose-600 shadow-md ring-2 ring-rose-500/40'
+                            : 'bg-white/90 hover:bg-white text-slate-600 hover:text-rose-600 shadow-xs'
                         } flex items-center justify-center fast-transition cursor-pointer active:scale-90"
                         title="${isWishlisted ? strings.wishlistRemoveTip : strings.wishlistAddTip}"
                         aria-label="${isWishlisted ? strings.wishlistRemoveTip : strings.wishlistAddTip}"
                       >
-                        <svg class="w-5 h-5 pointer-events-none ${isWishlisted ? 'fill-rose-600 text-rose-600' : 'fill-none stroke-current'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                        <svg class="w-4.5 h-4.5 pointer-events-none ${isWishlisted ? 'fill-rose-600 text-rose-600' : 'fill-none stroke-current'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
                       </button>
+
+                      ${
+                        showOldPrice && discountPct > 0
+                          ? `<span class="absolute bottom-2.5 left-3 z-10 px-2 py-0.5 rounded-md bg-rose-600 text-white text-[11px] font-extrabold font-mono-num shadow-xs">-${discountPct}%</span>`
+                          : ''
+                      }
+
+                      <span class=" absolute bottom-2.5 right-3 z-10 px-2 py-0.5 rounded-md bg-slate-900/70 backdrop-blur-xs text-white text-[10px] font-semibold font-mono-num">
+                        📷 ${customCount > 0 ? customCount : 5} ფოტო
+                      </span>
 
                       <img
                         src="${imgSrc}"
                         alt="${product.name}"
                         referrerPolicy="no-referrer"
                         loading="lazy"
-                        class="card-img-el w-full h-full object-contain group-hover:scale-[1.02] fast-transition"
+                        class="card-img-el w-full h-full object-contain group-hover:scale-[1.03] fast-transition"
                       />
-                      <!-- Direct 1-Click 5-Photos Multi-Upload + Quick Edit Buttons -->
-                      <div class="absolute top-3 right-3 flex items-center gap-1.5">
+
+                      <!-- Owner-Only Direct 1-Click 5-Photos Multi-Upload + Quick Edit Buttons -->
+                      <div class="absolute top-3 right-3 flex items-center gap-1.5 z-10">
                         <label
                           data-direct-card-upload-label="true"
                           title="${currentLang === 'en' ? 'Select up to 5 photos to upload at once' : currentLang === 'ru' ? 'Выберите до 5 фото для одновременной загрузки' : 'ერთი გახსნით მონიშნეთ 5 ფოტო და ატვირთეთ ერთდროულად'}"
-                          class="min-h-[36px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-bold flex items-center gap-1 shadow-sm cursor-pointer active:scale-95 fast-transition relative"
+                          class="min-h-[34px] px-2.5 py-1 rounded-lg theme-bg text-white text-[11px] font-bold flex items-center gap-1 shadow-xs cursor-pointer active:scale-95 fast-transition relative"
                         >
                           <svg class="w-3.5 h-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -15284,7 +15256,7 @@
                           type="button"
                           data-quick-edit-id="${rawProduct.id}"
                           title="${currentLang === 'en' ? 'Edit product details' : currentLang === 'ru' ? 'Редактировать данные товара' : 'პროდუქტის მონაცემების ჩასწორება'}"
-                          class="min-h-[36px] px-2.5 py-1 rounded-lg bg-white/95 hover:bg-zinc-900 text-zinc-800 hover:text-white border border-zinc-200 text-[11px] font-semibold flex items-center gap-1 shadow-sm fast-transition"
+                          class="min-h-[34px] px-2.5 py-1 rounded-lg bg-white/95 hover:bg-slate-900 text-slate-800 hover:text-white border border-slate-200 text-[11px] font-semibold flex items-center gap-1 shadow-xs fast-transition"
                         >
                           <span>${strings.cardEditBtn}</span>
                         </button>
@@ -15292,255 +15264,90 @@
                     </div>
 
                     <!-- Card Body -->
-                    <div class="p-5 space-y-2.5">
-                      <div class="flex flex-wrap items-center gap-1.5 text-xs text-zinc-500">
-                        ${(() => {
-                          if (!showCat) return '';
-                          const catCols = getCategoryColorsById(product.category);
-                          const hasCustom = Boolean(catCols.bgColor || catCols.textColor);
-                          const cTxt = catCols.textColor || (catCols.bgColor ? getAutoContrastTextColor(catCols.bgColor) : '');
-                          const cStyle = [
-                            catCols.bgColor ? `background-color:${catCols.bgColor};padding:2px 8px;border-radius:6px;` : '',
-                            cTxt ? `color:${cTxt};` : ''
-                          ].filter(Boolean).join('');
-                          return `<span class="card-cat-el ${hasCustom ? 'font-bold shadow-2xs' : 'font-medium text-zinc-700'}" ${cStyle ? `style="${cStyle}"` : ''}>${product.categoryLabel}</span><span aria-hidden="true">•</span>`;
-                        })()}
-                        ${showBadge ? `<span class="card-badge-el theme-text font-semibold">${product.badgeText}</span><span aria-hidden="true">•</span>` : ''}
-                        <span class="font-mono-num">${strings.cardFivePhotosBadge}</span>
+                    <div class="p-4 sm:p-5 space-y-2">
+                      <div class="flex flex-wrap items-center gap-1.5 text-[11px] text-slate-500">
+                        ${
+                          showCat
+                            ? `<span class="card-cat-el px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 font-semibold">${product.categoryLabel}</span>`
+                            : ''
+                        }
+                        ${
+                          showBadge
+                            ? `<span class="card-badge-el px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 font-semibold">${product.badgeText}</span>`
+                            : ''
+                        }
                       </div>
 
                       ${
                         showTitle
-                          ? `<h3 class="card-title-el text-base font-semibold text-zinc-950 leading-snug line-clamp-2 group-hover:underline decoration-zinc-400 underline-offset-2">${product.name}</h3>`
+                          ? `<h3 class="card-title-el text-sm sm:text-base font-bold text-slate-900 leading-snug line-clamp-2 group-hover:text-emerald-700 fast-transition">${product.name}</h3>`
                           : ''
                       }
 
                       ${
                         showShortMeta
-                          ? `<p class="card-meta-el text-xs text-zinc-500 font-mono-num truncate">${product.shortMeta}</p>`
+                          ? `<p class="card-meta-el text-xs text-slate-500 font-mono-num truncate">${product.shortMeta}</p>`
                           : ''
                       }
                     </div>
                   </div>
 
-                  <!-- Dual Pricing ("ძველი ფასი" above crossed-out price & green "ფასდაკლება" right next to it), Phone & Screenshot/Share -->
-                  <div class="px-5 pb-5 pt-3 border-t border-zinc-100 space-y-2.5">
-                    <div class="flex items-end justify-between gap-2">
-                      <div class="flex flex-wrap items-end gap-3">
+                  <!-- Clean Professional E-Commerce Footer: Price + 1-Line Installment Badge + Action Bar -->
+                  <div class="px-4 sm:px-5 pb-4 sm:pb-5 pt-3 border-t border-slate-100 space-y-3">
+                    <div class="space-y-1.5">
+                      <div class="flex items-baseline flex-wrap gap-2">
                         ${
                           showNewPrice
-                            ? `<div>
-                          <div class="text-[10px] font-semibold text-zinc-500 leading-tight mb-0.5">${strings.cardSalePrice}</div>
-                          <span class="card-new-price-el font-mono-num text-xl font-bold theme-text leading-none">
-                            ${formatGel(rawProduct.newPrice)}
-                          </span>
-                        </div>`
+                            ? `<span class="card-new-price-el font-mono-num text-xl sm:text-2xl font-extrabold text-emerald-600 leading-none">
+                                ${formatGel(rawProduct.newPrice)}
+                              </span>`
                             : ''
                         }
-
                         ${
                           showOldPrice
-                            ? `<div>
-                          <div class="text-[10px] font-bold text-zinc-500 leading-tight mb-0.5">${strings.cardOldPrice}</div>
-                          <span class="card-old-price-el font-mono-num text-xs sm:text-sm font-semibold text-zinc-600 line-through decoration-red-600 decoration-2 leading-none" style="text-decoration-color: #dc2626; text-decoration-thickness: 2px;">
-                            ${formatGel(rawProduct.oldPrice)}
-                          </span>
-                        </div>
-
-                        <div>
-                          <div class="text-[10px] font-bold text-emerald-600 leading-tight mb-0.5">${strings.cardDiscount}</div>
-                          <span class="card-savings-el text-xs sm:text-sm font-extrabold text-emerald-600 font-mono-num leading-none">
-                            -${formatGel(savings)}
-                          </span>
-                        </div>`
+                            ? `<span class="card-old-price-el font-mono-num text-xs sm:text-sm font-semibold text-slate-400 line-through decoration-rose-500 leading-none">
+                                ${formatGel(rawProduct.oldPrice)}
+                              </span>
+                              <span class="card-savings-el text-[11px] font-bold text-rose-600 bg-rose-50 px-1.5 py-0.5 rounded font-mono-num leading-none">
+                                -${formatGel(savings)}
+                              </span>`
                             : ''
                         }
                       </div>
 
-                      <div class="flex items-center gap-1.5 shrink-0">
-                        <button
-                          type="button"
-                          data-quick-order-id="${rawProduct.id}"
-                          class="theme-bg min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-extrabold inline-flex items-center gap-1 shrink-0 whitespace-nowrap shadow-sm active:scale-95 fast-transition cursor-pointer"
-                          title="სწრაფი შეკვეთა 1 დაჭერით"
-                        >
-                          <span>⚡</span>
-                          <span>${strings.cardOrderBtn}</span>
-                        </button>
+                      <!-- Single-Line Installment & Delivery Preview (Click opens Product Detail Modal) -->
+                      <div class="flex items-center justify-between gap-2 text-[11px] text-slate-600 bg-slate-50 border border-slate-200/80 rounded-lg px-2.5 py-1.5">
+                        <span class="font-semibold truncate">🏦 განვადება: <strong class="font-mono-num text-slate-900">თვეში ${monthlyFrom} ₾-დან</strong></span>
+                        <span class="text-[10px] font-bold text-emerald-700 shrink-0">BOG • TBC • კრედო</span>
                       </div>
                     </div>
 
-                    <!-- 3-Bank Card Payment & 3-Bank Installment Box right on the Product Card -->
-                    <div class="p-2.5 rounded-xl bg-stone-50 border border-zinc-200/90 space-y-2">
-                      <!-- Row 1: Card Payment for All 3 Banks -->
-                      <div class="space-y-1">
-                        <div class="text-[10px] font-extrabold text-zinc-600 flex items-center justify-between">
-                          <span>💳 ბარათით გადახდა:</span>
-                          <span class="text-[9px] text-zinc-400 font-semibold">Visa / Mastercard / Apple &amp; Google Pay</span>
-                        </div>
-                        <div class="grid grid-cols-3 gap-1.5">
-                          <button
-                            type="button"
-                            data-card-bog-buy="${rawProduct.id}"
-                            class="min-h-[34px] px-2 py-1 rounded-lg bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-black flex items-center justify-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
-                            title="საქართველოს ბანკის ბარათით გადახდა"
-                          >
-                            <span class="px-1 rounded bg-white text-orange-600 text-[9px] font-black">BOG</span>
-                            <span>ბარათი</span>
-                          </button>
-                          <button
-                            type="button"
-                            data-card-tbc-buy="${rawProduct.id}"
-                            class="min-h-[34px] px-2 py-1 rounded-lg bg-[#00A3E0] hover:bg-[#0284c7] text-white text-[11px] font-black flex items-center justify-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
-                            title="თიბისი ბანკის ბარათით გადახდა"
-                          >
-                            <span class="px-1 rounded bg-white text-[#00A3E0] text-[9px] font-black">TBC</span>
-                            <span>ბარათი</span>
-                          </button>
-                          <button
-                            type="button"
-                            data-card-credo-card="${rawProduct.id}"
-                            class="min-h-[34px] px-2 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-black flex items-center justify-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
-                            title="კრედო ბანკის ბარათით გადახდა"
-                          >
-                            <span class="px-1 rounded bg-white text-rose-600 text-[9px] font-black">კრედო</span>
-                            <span>ბარათი</span>
-                          </button>
-                        </div>
-                      </div>
-
-                      <!-- Row 2: Installment for BOG & Credo -->
-                      <div class="space-y-1 pt-1.5 border-t border-zinc-200/70">
-                        <div class="text-[10px] font-extrabold text-zinc-700 flex items-center justify-between">
-                          <span>🏦 ონლაინ განვადება:</span>
-                          <span class="font-mono-num font-black text-amber-800">თვეში ${Math.max(1, Math.ceil((Number(rawProduct.newPrice) || 100) / 12))} ₾-დან</span>
-                        </div>
-                        <div class="grid grid-cols-2 gap-1.5">
-                          <button
-                            type="button"
-                            data-card-bog-inst="${rawProduct.id}"
-                            class="min-h-[34px] px-2 py-1 rounded-lg bg-orange-50 hover:bg-orange-100 text-orange-950 border border-orange-300 text-[11px] font-black flex items-center justify-center gap-1 active:scale-95 fast-transition cursor-pointer"
-                            title="საქართველოს ბანკის ონლაინ განვადება"
-                          >
-                            <span>🟧</span>
-                            <span>საქართველოს ბანკი — განვადება</span>
-                          </button>
-                          <button
-                            type="button"
-                            data-card-credo-inst="${rawProduct.id}"
-                            class="min-h-[34px] px-2 py-1 rounded-lg bg-rose-600 hover:bg-rose-700 text-white border border-rose-700 text-[11px] font-black flex items-center justify-center gap-1 shadow-2xs active:scale-95 fast-transition cursor-pointer"
-                            title="კრედო ბანკის ონლაინ განვადება (პირდაპირი გადასვლა)"
-                          >
-                            <span>🟥</span>
-                            <span>კრედო ბანკი — განვადება</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Compact Full-Visibility Contact Person "გოჩა" + Phone Number Directly Under Price -->
-                    <a
-                      href="tel:+${cleanDigits}"
-                      data-card-phone-call="true"
-                      class="pt-2 border-t border-zinc-100 flex items-center justify-between gap-1.5 group/phone"
-                      title="${currentLang === 'en' ? 'Call' : 'დარეკვა'} (${contactName}): ${displayPhone}"
-                    >
-                      <span class="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-700 whitespace-nowrap">
-                        <span class="w-5 h-5 rounded-md theme-bg flex items-center justify-center text-white shrink-0">
-                          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                          </svg>
-                        </span>
-                        <span>${strings.cardContactLabel} <strong class="card-contact-name-el theme-text font-extrabold">${contactName}</strong></span>
+                    <!-- Primary Action Row: Details/Buy + 1-Click Order + Add to Cart -->
+                    <div class="flex items-center gap-2">
+                      <span
+                        class="flex-1 min-h-[40px] px-3 py-2 rounded-xl bg-slate-900 group-hover:bg-slate-800 text-white text-xs font-bold inline-flex items-center justify-center gap-1.5 shadow-xs fast-transition"
+                      >
+                        <span>შეძენა / დეტალურად</span>
                       </span>
-                      <span class="card-phone-digits-el font-mono-num text-xs sm:text-sm font-extrabold theme-text tracking-tight whitespace-nowrap group-hover/phone:underline">
-                        ${displayPhone}
-                      </span>
-                    </a>
 
-                    <!-- 1-Click Message Seller, Screenshot & Share Buttons on Product Card -->
-                    <div class="pt-2 border-t border-zinc-100 space-y-2">
                       <button
                         type="button"
-                        data-card-chat="${rawProduct.id}"
-                        class="w-full min-h-[38px] px-3 py-1.5 rounded-xl bg-zinc-950 hover:bg-zinc-800 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 active:scale-95 fast-transition whitespace-nowrap shadow-sm cursor-pointer"
-                        title="${currentLang === 'en' ? 'Message the Seller directly on site' : 'მისწერე გამყიდველს პირდაპირ საიტზე'}"
+                        data-quick-order-id="${rawProduct.id}"
+                        class="min-h-[40px] px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold inline-flex items-center justify-center gap-1 shrink-0 whitespace-nowrap shadow-xs active:scale-95 fast-transition cursor-pointer"
+                        title="სწრაფი შეკვეთა 1 კლიკით"
                       >
-                        <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.3">
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                        </svg>
-                        <span>${strings.chatTitle || 'მისწერე გამყიდველს'}</span>
+                        <span>⚡ 1 კლიკით</span>
                       </button>
 
-                      <div class="grid grid-cols-2 gap-2">
-                        <button
-                          type="button"
-                          data-card-screenshot="${rawProduct.id}"
-                          class="min-h-[36px] px-2.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 fast-transition whitespace-nowrap"
-                          title="${currentLang === 'en' ? 'Take product screenshot with 5 photos and phone number' : 'პროდუქტის სქრინშოტის გადაღება ფოტოებით და ნომრით'}"
-                        >
-                          <svg class="w-3.5 h-3.5 text-emerald-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          <span>${strings.cardScreenshotBtn}</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          data-card-share="${rawProduct.id}"
-                          class="min-h-[36px] px-2.5 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 fast-transition whitespace-nowrap"
-                          title="${currentLang === 'en' ? 'Share product' : 'პროდუქტის გაზიარება'}"
-                        >
-                          <svg class="w-3.5 h-3.5 text-blue-700 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                          </svg>
-                          <span>${strings.cardShareBtn}</span>
-                        </button>
-                      </div>
-
-                      <!-- 1-Click Add to Shopping Price Calculator Button -->
                       <button
                         type="button"
                         data-calc-add-id="${rawProduct.id}"
-                        class="w-full min-h-[36px] px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300 text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 fast-transition shadow-2xs cursor-pointer"
-                        title="დაამატეთ ფასის გამომთვლელში (კალკულატორში) 2 ან მეტი ნივთის დასაჯამებლად"
+                        class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 border border-slate-200/90 text-sm font-bold inline-flex items-center justify-center shrink-0 active:scale-95 fast-transition cursor-pointer"
+                        title="კალათაში დამატება"
+                        aria-label="კალათაში დამატება"
                       >
-                        <span class="text-sm">🧮</span>
-                        <span>+ კალკულატორში დამატება</span>
+                        🛒
                       </button>
-
-                      <!-- Dilo Delivery Official Courier Banner at the Very Bottom of Product Card -->
-                      <div class="p-2.5 rounded-xl bg-gradient-to-r from-orange-50 via-amber-50 to-orange-100/70 border border-orange-200/90 flex items-center justify-between gap-2 shadow-2xs">
-                        <div class="flex items-center gap-2 min-w-0 cursor-pointer" data-card-dilo-send="${rawProduct.id}">
-                          <span class="w-7 h-7 rounded-lg bg-[#F6AA02] text-zinc-950 flex items-center justify-center text-sm shrink-0 shadow-2xs font-black">🚚</span>
-                          <div class="min-w-0 leading-tight">
-                            <div class="text-[11px] font-black text-zinc-950 flex items-center gap-1">
-                              <span>იყიდე და მოგიტანთ</span>
-                              <span class="text-[9px] bg-orange-600 text-white px-1.5 py-0.2 rounded font-black">dilo.ge/send</span>
-                            </div>
-                            <div class="text-[10px] text-orange-900 font-semibold truncate">თბილისი 2-4 სთ • რეგიონები 1-3 დღე</div>
-                          </div>
-                        </div>
-                        <div class="flex items-center gap-1 shrink-0">
-                          <button
-                            type="button"
-                            data-card-dilo-send="${rawProduct.id}"
-                            class="px-2.5 py-1 rounded-lg bg-[#F6AA02] hover:bg-amber-500 text-zinc-950 border border-amber-400 text-[10px] font-black shrink-0 cursor-pointer shadow-2xs active:scale-95 fast-transition"
-                            title="იყიდე და მოგიტანთ — შეკვეთა Dilo.ge/send ფორმით"
-                          >
-                            🚚 იყიდე და მოგიტანთ
-                          </button>
-                          <button
-                            type="button"
-                            data-card-dilo-track="${rawProduct.id}"
-                            class="px-2 py-1 rounded-lg bg-white hover:bg-orange-100 text-orange-900 border border-orange-300 text-[10px] font-black shrink-0 cursor-pointer shadow-2xs active:scale-95 fast-transition"
-                            title="ამანათის თვალთვალი (Tracking)"
-                          >
-                            🔍
-                          </button>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </article>
@@ -17543,7 +17350,7 @@
           return {
             bogEnabled: raw.bogEnabled !== false,
             bogClientId: raw.bogClientId || '10000576',
-            bogSecret: raw.bogSecret || '0RAMGYvStUiE',
+            bogSecret: raw.bogSecret || '',
             bogIban: raw.bogIban || 'GE84BG0000000345895672GEL',
             bogUrl: raw.bogUrl || '',
             bogScript: raw.bogScript || '',
@@ -19743,7 +19550,7 @@
           }
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
           const clientId = bankCfg.bogClientId || '10000576';
-          const clientSecret = bankCfg.bogSecret || '0RAMGYvStUiE';
+          const clientSecret = bankCfg.bogSecret || '';
           const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
           const origText = statusEl ? statusEl.textContent : '';
           try {
@@ -20030,6 +19837,9 @@
         }
 
         async function fetchSalesNotifications(playAlertOnNew = true) {
+          if (document.body && document.body.classList.contains('customer-view-mode')) {
+            return;
+          }
           try {
             const res = await fetch('/api/bog-pay', {
               method: 'POST',
@@ -22528,7 +22338,7 @@
             const origText = lblEl ? lblEl.textContent : 'გაგრძელება';
             const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
             const clientId = bankCfg.bogClientId || '10000576';
-            const clientSecret = bankCfg.bogSecret || '0RAMGYvStUiE';
+            const clientSecret = bankCfg.bogSecret || '';
             const rawPrice = Math.max(1, Number(activeBogInstProduct.newPrice) || 1);
             const m = Math.min(48, Math.max(3, Number(activeBogInstMonth) || 3));
             const foundDisc = activeBogInstDiscounts.find((d) => Number(d.month) === m);
@@ -22582,7 +22392,7 @@
             return true;
           }
           const merchantId = bankCfg.credoClientId || '125694';
-          const password = bankCfg.credoSecret || '6NL7UJ0jM)3]';
+          const password = bankCfg.credoSecret || '';
           const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
           const origText = statusEl ? statusEl.textContent : '';
           try {
@@ -27584,7 +27394,7 @@
           }
 
           if (opts.toast !== false && typeof showCpToast === 'function') {
-            showCpToast(`🧮 ${product.name} დაემატა კალკულატორში!`);
+            showCpToast(`🛒 ${product.name} დაემატა კალათაში!`);
           }
           if (opts.scroll !== false) {
             scrollToCalculator();
@@ -27598,7 +27408,7 @@
           if (nextQty <= 0) {
             calculatorItems = calculatorItems.filter((it) => it.productId !== productId);
             if (typeof showCpToast === 'function') {
-              showCpToast('🗑️ ნივთი წაიშალა კალკულატორიდან');
+              showCpToast('🗑️ ნივთი წაიშალა კალათიდან');
             }
           } else {
             item.qty = nextQty;
@@ -27612,7 +27422,7 @@
           saveCalculatorState();
           renderCalculatorUI();
           if (typeof showCpToast === 'function') {
-            showCpToast('🗑️ ნივთი წაიშალა კალკულატორიდან');
+            showCpToast('🗑️ ნივთი წაიშალა კალათიდან');
           }
         }
 
@@ -27621,7 +27431,7 @@
           saveCalculatorState();
           renderCalculatorUI();
           if (typeof showCpToast === 'function') {
-            showCpToast('🗑️ კალკულატორი გასუფთავდა');
+            showCpToast('🗑️ კალათა გასუფთავდა');
           }
         }
 
@@ -27652,8 +27462,8 @@
             listEl.innerHTML = `
               <div class="rounded-xl border border-dashed border-amber-200 bg-amber-50/40 px-3 py-2 flex flex-wrap items-center justify-between gap-2 text-xs">
                 <div class="flex items-center gap-2 text-zinc-600">
-                  <span class="text-base">🧮</span>
-                  <span><strong class="text-amber-950">კალკულატორი ცარიელია</strong> — აირჩიეთ ნივთები სიიდან ან ბარათზე დააჭირეთ „+ კალკულატორში“</span>
+                  <span class="text-base">🛒</span>
+                  <span><strong class="text-amber-950">კალათა ცარიელია</strong> — აირჩიეთ ნივთები სიიდან ან პროდუქტის ბარათზე დააჭირეთ 🛒 ღილაკს</span>
                 </div>
                 <button
                   type="button"
@@ -27956,6 +27766,7 @@
           weatherParticles = [];
           weatherSplashes = [];
           if (!weatherCanvas || activeWeatherMode === 'off') return;
+          if (document.body && document.body.classList.contains('customer-view-mode')) return;
 
           const w = weatherCanvas.width || window.innerWidth;
           const h = weatherCanvas.height || window.innerHeight;
@@ -30209,6 +30020,21 @@
         async function fetchCloudStoreData() {
           const ts = Date.now();
           const token = getGithubCloudToken();
+          const isLocalHost =
+            window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1';
+
+          if (isLocalHost) {
+            try {
+              const rLocalFirst = await fetch(`/store-data.json?t=${ts}`, { cache: 'no-store' });
+              if (rLocalFirst.ok) {
+                const data = await rLocalFirst.json();
+                if (data && (data.hasSavedState || Array.isArray(data.productsList))) {
+                  return data;
+                }
+              }
+            } catch (e) {}
+          }
 
           // 1. Real-time GitHub API Raw endpoint (0-second cache delay across all devices)
           try {
@@ -30284,6 +30110,26 @@
               }
               if (serverData.themeColor) {
                 activeThemeColor = serverData.themeColor;
+              }
+              if (!storeSettings._proGeorgianStoreV1) {
+                storeSettings._proGeorgianStoreV1 = true;
+                storeSettings.weatherMode = 'off';
+                storeSettings.weatherAutoSync = false;
+                storeSettings.pageBgColor = '#f8fafc';
+                storeSettings.cardBgColor = '#ffffff';
+                storeSettings.headerBgColor = '#ffffff';
+                storeSettings.priceTextColor = '#059669';
+                storeSettings.titleTextColor = '#0f172a';
+                storeSettings.cardFrameStyle = 'default';
+                storeSettings.liveBannerBgColor = '#0f172a';
+                activeThemeColor = '#0f172a';
+                if (Array.isArray(storeSettings.customCategories)) {
+                  storeSettings.customCategories = storeSettings.customCategories.map((c) => ({
+                    ...c,
+                    bgColor: '',
+                    textColor: ''
+                  }));
+                }
               }
 
               let localHadUnsyncedBase64 = false;

@@ -1563,6 +1563,18 @@ async function startServer() {
     }
   });
 
+  function stripClientBankSecrets(parsed: any): any {
+    if (parsed && parsed.storeSettings && parsed.storeSettings.bankConfig) {
+      parsed.storeSettings.bankConfig = {
+        ...parsed.storeSettings.bankConfig,
+        bogSecret: '',
+        tbcSecret: '',
+        credoSecret: '',
+      };
+    }
+    return parsed;
+  }
+
   // Load persisted store state (products, settings, themeColor) + imagesMap
   app.get('/api/store', (_req, res) => {
     try {
@@ -1570,7 +1582,7 @@ async function startServer() {
       const map = loadImagesMap();
       if (fs.existsSync(DATA_FILE)) {
         const raw = fs.readFileSync(DATA_FILE, 'utf-8');
-        const parsed = JSON.parse(raw);
+        const parsed = stripClientBankSecrets(JSON.parse(raw));
         if (parsed && Array.isArray(parsed.productsList)) {
           parsed.productsList = applyImagesMapToProducts(parsed.productsList, map);
         }
@@ -2645,12 +2657,12 @@ async function startServer() {
       const map = loadImagesMap();
       if (fs.existsSync(DATA_FILE)) {
         const storeJson = fs.readFileSync(DATA_FILE, 'utf-8');
-        const parsed = JSON.parse(storeJson);
+        const parsed = stripClientBankSecrets(JSON.parse(storeJson));
         if (parsed && parsed.hasSavedState) {
           if (Array.isArray(parsed.productsList)) {
             parsed.productsList = applyImagesMapToProducts(parsed.productsList, map);
           }
-          parsed.imagesMap = map;
+          delete parsed.imagesMap;
           return rawHtml.replace(
             /<script id="baked-store-state" type="application\/json">[\s\S]*?<\/script>/,
             `<script id="baked-store-state" type="application/json">${JSON.stringify(parsed)}</script>`
