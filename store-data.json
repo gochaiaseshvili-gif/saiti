@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794761223268,
+  "updatedAt": 1794761310718,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -50,15 +50,15 @@
     "cardFrameStyle": "gold-glow",
     "liveBannerBgColor": "#0f172a",
     "liveBannerHidden": false,
-    "liveBannerCustomized": true,
+    "liveBannerCustomized": false,
     "_proGeorgianStoreV1": true,
     "liveBannerItems": [
       {
         "id": "delivery",
         "type": "text",
-        "badgeTitle": "🚚 მიწოდების ტექსტი",
-        "text": "🚚 მიწოდება მთელ საქართველოში",
-        "textColor": "#ffffff",
+        "badgeTitle": "🚚 მიწოდების წარწერა",
+        "text": "🚚 სწრაფი მიწოდება მთელ საქართველოში",
+        "textColor": "#34d399",
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
@@ -70,8 +70,8 @@
       {
         "id": "installment",
         "type": "text",
-        "badgeTitle": "💳 განვადების ტექსტი",
-        "text": "💳 განვადება / ადგილზე გადახდა",
+        "badgeTitle": "💳 განვადების წარწერა",
+        "text": "💳 ონლაინ განვადება (BOG • TBC • კრედო)",
         "textColor": "#ffffff",
         "bgColor": "",
         "offsetX": 0,
@@ -84,9 +84,9 @@
       {
         "id": "warranty",
         "type": "text",
-        "badgeTitle": "🛡️ გარანტიის ტექსტი",
-        "text": "🛡️ 24 თვე გარანტია",
-        "textColor": "#ffffff",
+        "badgeTitle": "🛡️ გარანტიის წარწერა",
+        "text": "🛡️ 12-თვიანი ოფიციალური გარანტია",
+        "textColor": "#fde047",
         "bgColor": "",
         "offsetX": 0,
         "offsetY": 0,
