@@ -151,6 +151,8 @@ async function recordOrUpdateSaleEvent(saleObj) {
     monthly: saleObj.monthly || "",
     customerPhone: saleObj.customerPhone || "",
     customerName: saleObj.customerName || "",
+    recipientAddress: saleObj.recipientAddress || "",
+    notes: saleObj.notes || "",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     unread: true,

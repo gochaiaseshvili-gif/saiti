@@ -97,7 +97,7 @@ async function syncIndexHtmlToGithub(reason = 'Auto-sync index.html from AI Stud
           remoteSha = meta.sha;
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     if (remoteSha && remoteSha === localBlobSha) {
       lastPushedIndexBlobSha = localBlobSha;
@@ -475,12 +475,12 @@ function saveAiBotConfig(cfg: AiBotConfig): AiBotConfig {
     customInstructions: String(cfg.customInstructions ?? DEFAULT_AI_BOT_CONFIG.customInstructions).trim(),
     qaPairs: Array.isArray(cfg.qaPairs)
       ? cfg.qaPairs
-          .map((item, idx) => ({
-            id: String(item?.id || `qa_${Date.now()}_${idx}`),
-            question: String(item?.question || '').trim(),
-            answer: String(item?.answer || '').trim(),
-          }))
-          .filter((item) => item.question || item.answer)
+        .map((item, idx) => ({
+          id: String(item?.id || `qa_${Date.now()}_${idx}`),
+          question: String(item?.question || '').trim(),
+          answer: String(item?.answer || '').trim(),
+        }))
+        .filter((item) => item.question || item.answer)
       : DEFAULT_AI_BOT_CONFIG.qaPairs,
     updatedAt: new Date().toISOString(),
   };
@@ -529,7 +529,7 @@ function loadStoreProductsSummaryForAi(): {
         contactName = String(parsed.storeSettings.contactName);
       }
     }
-  } catch (e) {}
+  } catch (e) { }
 
   const lines = products.slice(0, 80).map((p, idx) => {
     const name = p?.ka?.name || p?.name || p?.id || `პროდუქტი #${idx + 1}`;
@@ -541,8 +541,8 @@ function loadStoreProductsSummaryForAi(): {
     const specsStr =
       specsObj && typeof specsObj === 'object'
         ? Object.entries(specsObj)
-            .map(([k, v]) => `${k}: ${v}`)
-            .join(', ')
+          .map(([k, v]) => `${k}: ${v}`)
+          .join(', ')
         : '';
     const shortDesc = String(p?.ka?.description || p?.description || '')
       .replace(/<[^>]+>/g, ' ')
@@ -675,9 +675,9 @@ async function generateAiBotReply(
   const recentHistory =
     conv && Array.isArray(conv.messages)
       ? conv.messages
-          .slice(-8)
-          .map((m) => `${m.sender === 'customer' ? 'კლიენტი' : 'მაღაზია'}: ${m.text || '[ფოტო/ვიდეო]'}`)
-          .join('\n')
+        .slice(-8)
+        .map((m) => `${m.sender === 'customer' ? 'კლიენტი' : 'მაღაზია'}: ${m.text || '[ფოტო/ვიდეო]'}`)
+        .join('\n')
       : '';
 
   const isUniversalMode = cfg.universalGeminiMode !== false;
@@ -686,9 +686,8 @@ async function generateAiBotReply(
 შენი სახელია: ${cfg.botName}.
 მაღაზიის მფლობელი: ${contactName} (ტელეფონი / WhatsApp / Viber: ${contactPhone}).
 
-${
-  isUniversalMode
-    ? `=== უნივერსალური GEMINI-ს აზროვნება და შესაძლებლობები ===
+${isUniversalMode
+      ? `=== უნივერსალური GEMINI-ს აზროვნება და შესაძლებლობები ===
 - შენ გაქვს სრული უფლება და უნარი იფიქრო, გააანალიზო, გამოთვალო, ურჩიო და ისაუბრო აბსოლუტურად ნებისმიერ თემაზე მსოფლიოში (ზუსტად ისე, როგორც Google Gemini):
   * მეცნიერება, ტექნოლოგია, ფიზიკა, ასტრონომია, მათემატიკა, გამოთვლები
   * აკუსტიკა, დინამიკები, ბასები, ვატები (RMS/Peak), ხმის ინჟინერია, კარაოკე სისტემები
@@ -696,9 +695,9 @@ ${
   * ყოველდღიური ცხოვრებისეული რჩევები, ისტორია, ლიტერატურა, მოგზაურობა, ენები, ჯანმრთელობა, იუმორი და ა.შ.
 - არასოდეს თქვა: „მე მხოლოდ მაღაზიის ბოტი ვარ და სხვა თემებზე არ ვპასუხობ“. პირიქით — უპასუხე სიღრმისეულად, ჭკვიანურად, ერუდირებულად და მაქსიმალურად სასარგებლოდ ნებისმიერ შეკითხვაზე!
 - თუ მომხმარებელი გეკითხება ზოგად თემაზე (მაგ. როგორ მუშაობს მზის პანელი, რა განსხვავებაა RMS და PMPO ვატებს შორის, როგორ ავირჩიოთ დინამიკი, ან რჩევა ცხოვრებისეულ/სამეცნიერო საკითხზე), გაეცი ამომწურავი, პროფესიონალური და საინტერესო პასუხი.`
-    : `=== შეზღუდული რეჟიმი ===
+      : `=== შეზღუდული რეჟიმი ===
 - უპასუხე ძირითადად მაღაზიასთან და პროდუქციასთან დაკავშირებულ კითხვებზე.`
-}
+    }
 
 === მაღაზიის ექსპერტობა და კონსულტაცია ===
 - როდესაც კლიენტი გეკითხება მაღაზიის პროდუქციაზე, ფასებზე, შეკვეთაზე, მიწოდებაზე ან გარანტიაზე:
@@ -733,9 +732,8 @@ ${summaryText}
       httpOptions: { headers: { 'User-Agent': 'aistudio-build' } },
     });
 
-    const userPrompt = `${recentHistory ? `მიმოწერის ისტორია:\n${recentHistory}\n\n` : ''}${
-      productName ? `კლიენტი ამჟამად ათვალიერებს პროდუქტს: ${productName}\n` : ''
-    }კლიენტის ახალი შეტყობინება: ${questionText || 'გამარჯობა, მაინტერესებს პროდუქცია'}`;
+    const userPrompt = `${recentHistory ? `მიმოწერის ისტორია:\n${recentHistory}\n\n` : ''}${productName ? `კლიენტი ამჟამად ათვალიერებს პროდუქტს: ${productName}\n` : ''
+      }კლიენტის ახალი შეტყობინება: ${questionText || 'გამარჯობა, მაინტერესებს პროდუქცია'}`;
 
     const candidateModels = ['gemini-3.8-flash', 'gemini-flash-latest', 'gemini-3.1-flash-lite'];
     for (const modelName of candidateModels) {
@@ -838,7 +836,7 @@ async function startServer() {
       if (client.readyState === WebSocket.OPEN) {
         try {
           client.send(serialized);
-        } catch (e) {}
+        } catch (e) { }
       }
     }
   }
@@ -874,7 +872,7 @@ async function startServer() {
               parsed.updatedAt = new Date().toISOString();
               fs.writeFileSync(DATA_FILE, JSON.stringify(parsed, null, 2), 'utf-8');
             }
-          } catch (e) {}
+          } catch (e) { }
         }
       }
 
@@ -930,8 +928,8 @@ async function startServer() {
         cleanProvider === 'google'
           ? 'https://www.gstatic.com/images/branding/product/2x/googleg_48dp.png'
           : cleanProvider === 'facebook'
-          ? 'https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg'
-          : `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(cleanName)}&backgroundColor=7c3aed`;
+            ? 'https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg'
+            : `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(cleanName)}&backgroundColor=7c3aed`;
 
       const cleanAvatar = String(avatar || '').trim() || defaultAvatar;
 
@@ -1626,7 +1624,7 @@ async function startServer() {
               if (ep && ep.id) existingProductsMap[ep.id] = ep;
             }
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       const incomingProducts = Array.isArray(req.body.productsList) ? req.body.productsList : [];
@@ -1705,7 +1703,7 @@ async function startServer() {
         res.send(fs.readFileSync(DATA_FILE, 'utf-8'));
         return;
       }
-    } catch (e) {}
+    } catch (e) { }
     res.json({ hasSavedState: false });
   });
 
@@ -1725,13 +1723,13 @@ async function startServer() {
         const parsed = JSON.parse(fs.readFileSync(VISITORS_FILE, 'utf-8'));
         if (parsed && Array.isArray(parsed.visitors)) return parsed;
       }
-    } catch (e) {}
+    } catch (e) { }
     return { totalPageViews: 0, visitors: [] };
   }
   function saveLocalVisitorsStats(stats: any) {
     try {
       fs.writeFileSync(VISITORS_FILE, JSON.stringify(stats, null, 2), 'utf-8');
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function loadLocalProductStats(): any {
@@ -1740,14 +1738,14 @@ async function startServer() {
         const parsed = JSON.parse(fs.readFileSync(PRODUCT_STATS_FILE, 'utf-8'));
         if (parsed && typeof parsed === 'object' && parsed.products) return parsed;
       }
-    } catch (e) {}
+    } catch (e) { }
     return { products: {}, updatedAt: new Date().toISOString() };
   }
   function saveLocalProductStats(stats: any) {
     try {
       stats.updatedAt = new Date().toISOString();
       fs.writeFileSync(PRODUCT_STATS_FILE, JSON.stringify(stats, null, 2), 'utf-8');
-    } catch (e) {}
+    } catch (e) { }
   }
 
   function recordProductViewInStats(productId: string, productName = '') {
@@ -1839,13 +1837,13 @@ async function startServer() {
         const parsed = JSON.parse(fs.readFileSync(SALES_FILE, 'utf-8'));
         if (Array.isArray(parsed.sales)) return parsed.sales;
       }
-    } catch (e) {}
+    } catch (e) { }
     return [];
   }
   function saveLocalSalesList(sales: any[]) {
     try {
       fs.writeFileSync(SALES_FILE, JSON.stringify({ updatedAt: new Date().toISOString(), sales: sales.slice(0, 100) }, null, 2), 'utf-8');
-    } catch (e) {}
+    } catch (e) { }
   }
 
   async function recordServerApprovedSale(saleObj: any) {
@@ -1884,6 +1882,8 @@ async function startServer() {
         monthly: saleObj.monthly || '',
         customerPhone: saleObj.customerPhone || '',
         customerName: saleObj.customerName || '',
+        recipientAddress: saleObj.recipientAddress || '',
+        notes: saleObj.notes || '',
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         unread: true,
@@ -1901,7 +1901,7 @@ async function startServer() {
           targetEntry.amount || 0,
           targetEntry.productName || ''
         );
-      } catch (e) {}
+      } catch (e) { }
     }
 
     // Post approved or rejected event directly into Seller Chat Inbox so Gocha gets a chat alert
@@ -1928,22 +1928,29 @@ async function startServer() {
         conv.lastProductName = targetEntry.productName;
         conv.updatedAt = nowIso;
         conv.unreadForSeller = (conv.unreadForSeller || 0) + 1;
-        const bankLabel = targetEntry.bank === 'credo' ? 'კრედო ბანკი' : 'საქართველოს ბანკი';
+        const bankLabel =
+          targetEntry.bank === 'dilo'
+            ? 'Dilo.ge შეკვეთა'
+            : targetEntry.bank === 'credo'
+              ? 'კრედო ბანკი'
+              : 'საქართველოს ბანკი';
         const statusHeadline =
           incomingStatus === 'rejected'
             ? '❌ განვადებაზე უარი მოვიდა ბანკისგან'
-            : targetEntry.mode === 'installment'
-            ? '🎉 განვადება დამტკიცდა'
-            : '💳 ბარათით გადახდა შესრულდა';
+            : targetEntry.mode === 'cod' || targetEntry.bank === 'dilo'
+              ? '🚚 ახალი შეკვეთა (Dilo.ge მიტანით)'
+              : targetEntry.mode === 'installment'
+                ? '🎉 განვადება დამტკიცდა'
+                : '💳 ბარათით გადახდა შესრულდა';
         conv.messages.push({
           id: `msg_${Date.now()}`,
           sender: 'customer',
-          senderName: `🏦 ${bankLabel}`,
-          text: `${statusHeadline}!\n📦 ნივთი: ${targetEntry.productName}\n💰 თანხა: ${targetEntry.amount} ₾${targetEntry.months ? ` (${targetEntry.months} თვე)` : ''}${targetEntry.customerPhone ? `\n📞 მყიდველის ტელეფონი: ${targetEntry.customerPhone}` : ''}`,
+          senderName: targetEntry.bank === 'dilo' ? '🛒 შეკვეთა საიტიდან' : `🏦 ${bankLabel}`,
+          text: `${statusHeadline}!\n📦 ნივთი: ${targetEntry.productName}\n💰 თანხა: ${targetEntry.amount} ₾${targetEntry.months ? ` (${targetEntry.months} თვე)` : ''}${targetEntry.customerName ? `\n👤 მყიდველი: ${targetEntry.customerName}` : ''}${targetEntry.customerPhone ? `\n📞 ტელეფონი: ${targetEntry.customerPhone}` : ''}${targetEntry.recipientAddress ? `\n📍 მისამართი: ${targetEntry.recipientAddress}` : ''}${targetEntry.notes ? `\n📝 კომენტარი: ${targetEntry.notes}` : ''}`,
           createdAt: nowIso,
         });
         saveChatData(chatData);
-      } catch (e) {}
+      } catch (e) { }
     }
 
     return list;
@@ -2230,7 +2237,7 @@ async function startServer() {
                   { headers: { Accept: 'application/json', 'X-Api-Key': apiKey } }
                 );
                 if (detRes.ok) detailedFirst = await detRes.json();
-              } catch (e) {}
+              } catch (e) { }
               res.json({ ok: true, order: detailedFirst, items });
               return;
             }
@@ -2568,14 +2575,14 @@ async function startServer() {
         external_order_id: extOrderId,
         ...(isInstallmentMode
           ? {
-              payment_method: ['bog_loan'],
-              config: {
-                loan: {
-                  type: String(body.discountCode || 'STANDARD').trim() || 'STANDARD',
-                  month: chosenMonths,
-                },
+            payment_method: ['bog_loan'],
+            config: {
+              loan: {
+                type: String(body.discountCode || 'STANDARD').trim() || 'STANDARD',
+                month: chosenMonths,
               },
-            }
+            },
+          }
           : {}),
         purchase_units: {
           currency: 'GEL',
