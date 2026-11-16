@@ -2662,6 +2662,24 @@ async function startServer() {
     }
   });
 
+  app.post('/api/generate-lyrics', async (req, res) => {
+    try {
+      const mod = await import('./api/generate-lyrics.js');
+      await mod.default(req, res);
+    } catch (err: any) {
+      res.status(500).json({ ok: false, error: err?.message || 'Lyrics generation error' });
+    }
+  });
+
+  app.all('/api/generate-song', async (req, res) => {
+    try {
+      const mod = await import('./api/generate-song.js');
+      await mod.default(req, res);
+    } catch (err: any) {
+      res.status(500).json({ ok: false, error: err?.message || 'Song generation error' });
+    }
+  });
+
   function getHtmlWithBakedState(rawHtml: string): string {
     try {
       recoverOrphanUploadedPhotos();

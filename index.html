@@ -2335,6 +2335,152 @@
             </div>
           </div>
 
+          <!-- MOVABLE BLOCK 4B: AI SONG GENERATOR WIDGET (შექმენი შენი სიმღერა წამებში — 2 ₾) -->
+          <div
+            id="ai-song-generator-box"
+            data-home-block="ai-song-generator"
+            data-block-label="🎵 შექმენი შენი სიმღერა წამებში (2 ₾)"
+            class="movable-page-block max-w-4xl mx-auto rounded-2xl bg-gradient-to-br from-zinc-950 via-slate-900 to-fuchsia-950/90 text-white border border-fuchsia-500/40 shadow-md p-3 sm:p-4 space-y-3 relative overflow-hidden"
+          >
+            <div class="absolute -right-10 -top-10 w-36 h-36 rounded-full bg-fuchsia-500/15 blur-2xl pointer-events-none"></div>
+            <div class="absolute -left-10 -bottom-10 w-36 h-36 rounded-full bg-indigo-500/15 blur-2xl pointer-events-none"></div>
+
+            <!-- Header -->
+            <div class="relative z-10 flex items-center justify-between gap-2 pb-2 border-b border-white/10">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="flex items-center justify-center w-8 h-8 rounded-xl bg-gradient-to-tr from-fuchsia-600 to-violet-600 text-white shadow-xs text-base shrink-0">
+                  <span>🎵</span>
+                </div>
+                <div class="min-w-0">
+                  <h2 class="text-xs sm:text-sm font-black text-white tracking-tight truncate">
+                    შექმენი შენი სიმღერა წამებში
+                  </h2>
+                  <p class="text-[10px] sm:text-[11px] text-zinc-300/90 truncate">
+                    დაწერე ტექსტი AI-ით, აირჩიე ვოკალი და არანჟირება
+                  </p>
+                </div>
+              </div>
+              <span class="shrink-0 px-2.5 py-1 rounded-full bg-gradient-to-r from-fuchsia-500 to-amber-500 text-white font-mono-num text-xs font-black shadow-xs">
+                2 ₾
+              </span>
+            </div>
+
+            <!-- Topic + AI Lyrics Generator Row -->
+            <div class="relative z-10 flex flex-col sm:flex-row gap-2">
+              <input
+                id="ai-song-topic-input"
+                type="text"
+                maxlength="140"
+                placeholder="სიმღერის მოკლე თემა (მაგ: დაბადების დღე გიორგის, სიყვარული...)"
+                class="flex-1 min-h-[38px] px-3 py-1.5 rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-zinc-400 focus:outline-none focus:border-fuchsia-400 focus:bg-white/15 transition"
+              />
+              <button
+                type="button"
+                id="ai-song-generate-lyrics-btn"
+                class="min-h-[38px] px-3.5 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95 transition shrink-0"
+              >
+                <span>✨</span>
+                <span id="ai-song-lyrics-btn-label">დაწერე ტექსტი AI-ით</span>
+              </button>
+            </div>
+
+            <!-- Lyrics Textarea -->
+            <div class="relative z-10">
+              <textarea
+                id="ai-song-lyrics-textarea"
+                rows="4"
+                placeholder="აქ ჩაჯდება AI-ის დაწერილი ტექსტი ან თავად ჩაწერეთ სიმღერის სიტყვები..."
+                class="w-full rounded-xl bg-black/40 border border-white/15 p-2.5 text-xs text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-fuchsia-400 resize-y leading-relaxed"
+              ></textarea>
+            </div>
+
+            <!-- Vocal & Genre Controls -->
+            <div class="relative z-10 grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
+              <div class="sm:col-span-7 space-y-1">
+                <span class="block text-[11px] font-bold text-zinc-300">ვოკალი:</span>
+                <div id="ai-song-vocal-group" class="grid grid-cols-3 gap-1.5">
+                  <button
+                    type="button"
+                    data-vocal="ქალი"
+                    class="ai-song-vocal-btn min-h-[34px] px-2 py-1 rounded-xl text-[11px] font-extrabold border border-fuchsia-400 bg-fuchsia-600/80 text-white cursor-pointer transition"
+                  >
+                    👩 ქალი
+                  </button>
+                  <button
+                    type="button"
+                    data-vocal="კაცი"
+                    class="ai-song-vocal-btn min-h-[34px] px-2 py-1 rounded-xl text-[11px] font-bold border border-white/15 bg-white/10 hover:bg-white/15 text-zinc-200 cursor-pointer transition"
+                  >
+                    👨 კაცი
+                  </button>
+                  <button
+                    type="button"
+                    data-vocal="ორივე ერთად (დუეტი)"
+                    class="ai-song-vocal-btn min-h-[34px] px-2 py-1 rounded-xl text-[11px] font-bold border border-white/15 bg-white/10 hover:bg-white/15 text-zinc-200 cursor-pointer transition truncate"
+                  >
+                    🎤 დუეტი
+                  </button>
+                </div>
+              </div>
+
+              <div class="sm:col-span-5 space-y-1">
+                <label for="ai-song-genre-select" class="block text-[11px] font-bold text-zinc-300">
+                  არანჟირება (ჟანრი):
+                </label>
+                <select
+                  id="ai-song-genre-select"
+                  class="w-full min-h-[34px] px-2.5 py-1 rounded-xl bg-zinc-900 border border-white/20 text-xs font-bold text-white focus:outline-none focus:border-fuchsia-400 cursor-pointer"
+                >
+                  <option value="პოპი">პოპი</option>
+                  <option value="ლირიკული / აკუსტიკური">ლირიკული / აკუსტიკური</option>
+                  <option value="ჰიპ-ჰოპი / რეპი">ჰიპ-ჰოპი / რეპი</option>
+                  <option value="როკი">როკი</option>
+                  <option value="სადღესასწაულო">სადღესასწაულო</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Status / Error Message -->
+            <div id="ai-song-status-box" class="relative z-10 hidden rounded-xl px-3 py-2 text-xs font-bold"></div>
+
+            <!-- Audio Result Box (Shown after generation) -->
+            <div
+              id="ai-song-result-box"
+              class="relative z-10 hidden rounded-xl bg-black/50 border border-emerald-400/40 p-3 space-y-2.5"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="text-xs font-extrabold text-emerald-300 flex items-center gap-1.5">
+                  <span>🎧</span>
+                  <span>თქვენი სიმღერა მზად არის!</span>
+                </span>
+                <a
+                  id="ai-song-download-link"
+                  href="#"
+                  download="iyidebaa-song.mp3"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-extrabold flex items-center gap-1 shadow-xs transition"
+                >
+                  <span>⬇️</span>
+                  <span>MP3 ჩამოტვირთვა</span>
+                </a>
+              </div>
+              <audio id="ai-song-audio-player" controls class="w-full h-10"></audio>
+            </div>
+
+            <!-- Primary CTA: Pay 2 GEL & Generate Song -->
+            <div class="relative z-10 pt-0.5">
+              <button
+                type="button"
+                id="ai-song-create-btn"
+                class="w-full min-h-[42px] px-4 py-2 rounded-xl bg-gradient-to-r from-fuchsia-600 via-violet-600 to-indigo-600 hover:from-fuchsia-500 hover:via-violet-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer shadow-md active:scale-[0.99] transition"
+              >
+                <span>🎶</span>
+                <span id="ai-song-create-btn-label">შექმენი სიმღერა — 2 ₾</span>
+              </button>
+            </div>
+          </div>
+
           <!-- MOVABLE BLOCK 5: SHOPPING CART & MULTI-ITEM CALCULATOR -->
           <div
             id="shopping-calculator-box"
@@ -10819,7 +10965,7 @@
             { id: 'installment', type: 'text', badgeTitle: '💳 განვადების ტექსტი', text: '💳 ონლაინ განვადება (BOG • TBC • კრედო)', textColor: '#ffffff', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' },
             { id: 'warranty', type: 'text', badgeTitle: '🛡️ გარანტიის ტექსტი', text: '🛡️ 12-თვიანი ოფიციალური გარანტია', textColor: '#fde047', bgColor: '', offsetX: 0, offsetY: 0, align: 'left' }
           ],
-          homeBlocksOrder: ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'price-calculator'],
+          homeBlocksOrder: ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'ai-song-generator', 'price-calculator'],
           modalBlocksOrder: ['modal-pricing', 'modal-tech-specs', 'modal-gallery', 'modal-specs', 'modal-video', 'modal-card-payment', 'modal-chat', 'modal-order', 'modal-dilo-delivery'],
           serviceCardsOrder: ['serv-1', 'serv-2', 'serv-3'],
           blockOffsets: {},
@@ -24716,6 +24862,19 @@
               }).catch(() => {});
             }
             if (paymentStatus === 'success' || paymentStatus === 'fail') {
+              const isAiSongPayment = params.get('prodId') === 'ai-song-2gel';
+              if (isAiSongPayment && paymentStatus === 'success' && typeof window.__handleAiSongPaymentSuccess === 'function') {
+                const paidOrderId = params.get('orderId') || ('song_' + Date.now());
+                const cleanUrl = new URL(window.location.href);
+                ['payment', 'mode', 'bank', 'orderId', 'prodId', 'prodName', 'amount', 'months', 'phone'].forEach((k) => cleanUrl.searchParams.delete(k));
+                window.history.replaceState({}, '', cleanUrl.toString());
+                setTimeout(() => window.__handleAiSongPaymentSuccess(paidOrderId), 150);
+              } else if (isAiSongPayment && paymentStatus === 'fail' && typeof window.__handleAiSongPaymentFail === 'function') {
+                const cleanUrl = new URL(window.location.href);
+                ['payment', 'mode', 'bank', 'orderId', 'prodId', 'prodName', 'amount', 'months', 'phone'].forEach((k) => cleanUrl.searchParams.delete(k));
+                window.history.replaceState({}, '', cleanUrl.toString());
+                setTimeout(() => window.__handleAiSongPaymentFail(), 150);
+              } else {
               setTimeout(() => {
                 const banner = document.createElement('div');
                 banner.className = 'fixed inset-0 z-[120] bg-black/70 backdrop-blur-sm flex items-center justify-center p-4';
@@ -24754,6 +24913,7 @@
                   });
                 }
               }, 200);
+              }
             }
 
             // Restore open About Us, Warranties, or Privacy Policy page across page refresh (?page=about / ?page=warranty / ?page=privacy)
@@ -29162,6 +29322,7 @@
 
         const HOME_BLOCK_TITLES = {
           'hero-ai-chat': '1. ხელოვნური ინტელექტის (AI) კონსულტანტი',
+          'ai-song-generator': '1B. 🎵 შექმენი შენი სიმღერა წამებში (2 ₾)',
           'price-calculator': '2. 🧮 ფასის გამომთვლელი (კალკულატორი • 2+ ნივთის დაჯამება)',
           'fb-banner': '3. Facebook გვერდის გრაფა',
           'catalog-header': '4. კატალოგის სათაურის გრაფა',
@@ -29177,6 +29338,9 @@
           if (!storeSettings.homeBlocksOrder.includes('hero-ai-chat')) {
             storeSettings.homeBlocksOrder.push('hero-ai-chat');
           }
+          if (!storeSettings.homeBlocksOrder.includes('ai-song-generator')) {
+            storeSettings.homeBlocksOrder.push('ai-song-generator');
+          }
           if (!storeSettings.homeBlocksOrder.includes('price-calculator')) {
             storeSettings.homeBlocksOrder.push('price-calculator');
           }
@@ -29187,7 +29351,7 @@
           });
           // Ensure catalog-header and product-grid appear immediately under the category bar, and AI/Calculator sit at the bottom
           if (!storeSettings._productsFirstAiCalcBottomV1) {
-            storeSettings.homeBlocksOrder = ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'price-calculator'];
+            storeSettings.homeBlocksOrder = ['catalog-header', 'product-grid', 'service-standards', 'hero-ai-chat', 'ai-song-generator', 'price-calculator'];
             storeSettings._productsFirstAiCalcBottomV1 = true;
           }
 
@@ -30639,6 +30803,231 @@
               runServerAutoSyncFromFacebook(true);
             }
           }, 120000);
+        })();
+
+        // =========================================================================
+        // AI SONG GENERATOR WIDGET (შექმენი შენი სიმღერა წამებში — 2 ₾)
+        // =========================================================================
+        (function initAiSongGeneratorWidget() {
+          const STORAGE_KEY = 'iyidebaa_pending_ai_song';
+          const boxEl = document.getElementById('ai-song-generator-box');
+          if (!boxEl) return;
+
+          const topicInput = document.getElementById('ai-song-topic-input');
+          const lyricsBtn = document.getElementById('ai-song-generate-lyrics-btn');
+          const lyricsBtnLabel = document.getElementById('ai-song-lyrics-btn-label');
+          const lyricsTextarea = document.getElementById('ai-song-lyrics-textarea');
+          const vocalBtns = Array.from(document.querySelectorAll('.ai-song-vocal-btn'));
+          const genreSelect = document.getElementById('ai-song-genre-select');
+          const statusBox = document.getElementById('ai-song-status-box');
+          const resultBox = document.getElementById('ai-song-result-box');
+          const audioPlayer = document.getElementById('ai-song-audio-player');
+          const downloadLink = document.getElementById('ai-song-download-link');
+          const createBtn = document.getElementById('ai-song-create-btn');
+          const createBtnLabel = document.getElementById('ai-song-create-btn-label');
+
+          let selectedVocal = 'ქალი';
+
+          function setStatus(type, text) {
+            if (!statusBox) return;
+            if (!text) {
+              statusBox.classList.add('hidden');
+              statusBox.textContent = '';
+              return;
+            }
+            statusBox.className = 'relative z-10 rounded-xl px-3 py-2 text-xs font-bold ';
+            if (type === 'error') {
+              statusBox.className += 'bg-red-500/20 border border-red-400/50 text-red-200';
+            } else if (type === 'success') {
+              statusBox.className += 'bg-emerald-500/20 border border-emerald-400/50 text-emerald-200';
+            } else {
+              statusBox.className += 'bg-fuchsia-500/20 border border-fuchsia-400/40 text-fuchsia-100';
+            }
+            statusBox.textContent = text;
+            statusBox.classList.remove('hidden');
+          }
+
+          function applyVocalSelection(vocalVal) {
+            selectedVocal = vocalVal || 'ქალი';
+            vocalBtns.forEach((btn) => {
+              const isSelected = btn.getAttribute('data-vocal') === selectedVocal;
+              if (isSelected) {
+                btn.classList.add('border-fuchsia-400', 'bg-fuchsia-600/80', 'text-white', 'font-extrabold');
+                btn.classList.remove('border-white/15', 'bg-white/10', 'text-zinc-200', 'font-bold');
+              } else {
+                btn.classList.remove('border-fuchsia-400', 'bg-fuchsia-600/80', 'text-white', 'font-extrabold');
+                btn.classList.add('border-white/15', 'bg-white/10', 'text-zinc-200', 'font-bold');
+              }
+            });
+          }
+
+          vocalBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+              applyVocalSelection(btn.getAttribute('data-vocal'));
+            });
+          });
+
+          if (lyricsBtn) {
+            lyricsBtn.addEventListener('click', async () => {
+              const topic = (topicInput?.value || '').trim();
+              if (!topic) {
+                setStatus('error', 'გთხოვთ, ჯერ ჩაწეროთ სიმღერის მოკლე თემა.');
+                topicInput?.focus();
+                return;
+              }
+              setStatus('info', '✨ AI წერს სიმღერის ტექსტს...');
+              lyricsBtn.disabled = true;
+              if (lyricsBtnLabel) lyricsBtnLabel.textContent = 'იწერება...';
+              try {
+                const res = await fetch('/api/generate-lyrics', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    topic,
+                    vocal: selectedVocal,
+                    genre: genreSelect?.value || 'პოპი',
+                  }),
+                });
+                const data = await res.json();
+                if (!res.ok || !data.ok || !data.lyrics) {
+                  throw new Error(data.error || 'ტექსტის გენერირება ვერ მოხერხდა.');
+                }
+                if (lyricsTextarea) lyricsTextarea.value = data.lyrics;
+                setStatus('success', '✅ ტექსტი მზადაა! შეგიძლიათ ჩაასწოროთ ან დააჭიროთ „შექმენი სიმღერა — 2 ₾“.');
+              } catch (err) {
+                setStatus('error', err?.message || 'ტექსტის გენერირების შეცდომა.');
+              } finally {
+                lyricsBtn.disabled = false;
+                if (lyricsBtnLabel) lyricsBtnLabel.textContent = 'დაწერე ტექსტი AI-ით';
+              }
+            });
+          }
+
+          if (createBtn) {
+            createBtn.addEventListener('click', async () => {
+              const lyrics = (lyricsTextarea?.value || '').trim();
+              if (!lyrics) {
+                setStatus('error', 'გთხოვთ, შეიყვანოთ ან დააგენერიროთ სიმღერის ტექსტი.');
+                lyricsTextarea?.focus();
+                return;
+              }
+              const draft = {
+                topic: (topicInput?.value || '').trim(),
+                lyrics,
+                vocal: selectedVocal,
+                genre: genreSelect?.value || 'პოპი',
+                savedAt: Date.now(),
+              };
+              try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(draft));
+              } catch (e) {}
+
+              setStatus('info', '💳 იხსნება 2 ₾ საბანკო გადახდის გვერდი...');
+              if (typeof window.launchBogCheckoutForProduct === 'function') {
+                await window.launchBogCheckoutForProduct(
+                  {
+                    id: 'ai-song-2gel',
+                    name: 'AI სიმღერის შექმნა',
+                    newPrice: 2,
+                  },
+                  createBtnLabel
+                );
+              } else {
+                setStatus('error', 'გადახდის სისტემა დროებით მიუწვდომელია.');
+              }
+            });
+          }
+
+          async function pollSongTask(taskId) {
+            for (let attempt = 0; attempt < 45; attempt++) {
+              await new Promise((r) => setTimeout(r, 4000));
+              const pollRes = await fetch(`/api/generate-song?taskId=${encodeURIComponent(taskId)}`);
+              const pollData = await pollRes.json();
+              if (!pollRes.ok || !pollData.ok) {
+                throw new Error(pollData.error || 'სიმღერის გენერირება ვერ დასრულდა.');
+              }
+              if (pollData.audioUrl) {
+                return pollData.audioUrl;
+              }
+            }
+            throw new Error('სიმღერის გენერირებას ჩვეულებრივზე მეტი დრო დასჭირდა. გთხოვთ, დაგვიკავშირდეთ.');
+          }
+
+          window.__handleAiSongPaymentSuccess = async function (orderId) {
+            boxEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            let draft = null;
+            try {
+              const raw = localStorage.getItem(STORAGE_KEY);
+              if (raw) draft = JSON.parse(raw);
+            } catch (e) {}
+
+            if (!draft || !draft.lyrics) {
+              setStatus('error', 'გადახდა დადასტურდა, მაგრამ სიმღერის ტექსტი ვერ მოიძებნა.');
+              return;
+            }
+
+            if (topicInput && draft.topic) topicInput.value = draft.topic;
+            if (lyricsTextarea) lyricsTextarea.value = draft.lyrics;
+            if (draft.vocal) applyVocalSelection(draft.vocal);
+            if (genreSelect && draft.genre) genreSelect.value = draft.genre;
+
+            if (createBtn) createBtn.disabled = true;
+            if (createBtnLabel) createBtnLabel.textContent = 'იქმნება სიმღერა...';
+            setStatus('info', '✅ 2 ₾ გადახდა წარმატებულია! სიმღერა იქმნება, გთხოვთ დაელოდოთ...');
+
+            try {
+              const res = await fetch('/api/generate-song', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  lyrics: draft.lyrics,
+                  vocal: draft.vocal || 'ქალი',
+                  genre: draft.genre || 'პოპი',
+                  orderId: orderId || ('song_' + Date.now()),
+                }),
+              });
+              const data = await res.json();
+              if (!res.ok || !data.ok) {
+                throw new Error(data.error || 'სიმღერის შექმნა ვერ მოხერხდა.');
+              }
+
+              let audioUrl = data.audioUrl || '';
+              if (!audioUrl && data.pending && data.taskId) {
+                audioUrl = await pollSongTask(data.taskId);
+              }
+              if (!audioUrl) {
+                throw new Error('აუდიო ფაილი ვერ მოიძებნა.');
+              }
+
+              if (audioPlayer) audioPlayer.src = audioUrl;
+              if (downloadLink) downloadLink.href = audioUrl;
+              if (resultBox) resultBox.classList.remove('hidden');
+              setStatus('success', '🎉 თქვენი სიმღერა მზად არის! მოუსმინეთ ან ჩამოტვირთეთ MP3 ფორმატში.');
+              try {
+                localStorage.removeItem(STORAGE_KEY);
+              } catch (e) {}
+            } catch (err) {
+              setStatus('error', err?.message || 'სიმღერის შექმნისას დაფიქსირდა შეცდომა.');
+            } finally {
+              if (createBtn) createBtn.disabled = false;
+              if (createBtnLabel) createBtnLabel.textContent = 'შექმენი სიმღერა — 2 ₾';
+            }
+          };
+
+          window.__handleAiSongPaymentFail = function () {
+            boxEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            try {
+              const raw = localStorage.getItem(STORAGE_KEY);
+              if (raw) {
+                const draft = JSON.parse(raw);
+                if (topicInput && draft.topic) topicInput.value = draft.topic;
+                if (lyricsTextarea && draft.lyrics) lyricsTextarea.value = draft.lyrics;
+                if (draft.vocal) applyVocalSelection(draft.vocal);
+                if (genreSelect && draft.genre) genreSelect.value = draft.genre;
+              }
+            } catch (e) {}
+            setStatus('error', '⚠️ 2 ₾ გადახდა არ დასრულდა. შეგიძლიათ სცადოთ თავიდან.');
+          };
         })();
 
         syncInitialStateFromServer();
