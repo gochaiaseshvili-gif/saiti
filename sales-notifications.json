@@ -1,6 +1,24 @@
 {
-  "updatedAt": "2026-11-16T08:18:00.690Z",
+  "updatedAt": "2026-11-16T08:19:00.659Z",
   "sales": [
+    {
+      "id": "sale_1794817140659_yynj",
+      "orderId": "iyidebaa_1794816225233",
+      "bank": "bog",
+      "mode": "card",
+      "status": "rejected",
+      "rejectReason": "expiration",
+      "productName": "AI%20%E1%83%A1%E1%83%98%E1%83%9B%E1%83%A6%E1%83%94%E1%83%A0%E1%83%98%E1%83%A1%20%E1%83%A8%E1%83%94%E1%83%A5%E1%83%9B%E1%83%9C%E1%83%90",
+      "productId": "ai-song-2gel",
+      "amount": 2,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "createdAt": "2026-11-16T08:19:00.659Z",
+      "updatedAt": "2026-11-16T08:19:00.659Z",
+      "unread": true
+    },
     {
       "id": "sale_1794817080690_h5cb",
       "orderId": "iyidebaa_1794816111251",
