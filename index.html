@@ -2105,6 +2105,12 @@
 
               <!-- Col 3: 1-Click Order Buttons for Selected Items -->
               <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5">
+                <button type="button" id="calc-easy-buy-btn"
+                  class="flex-1 sm:flex-initial min-h-[34px] px-3.5 py-1.5 rounded-lg bg-zinc-950 hover:bg-zinc-900 text-emerald-400 border border-emerald-400/50 text-xs font-black flex items-center justify-center gap-1.5 shadow-sm active:scale-95 fast-transition cursor-pointer whitespace-nowrap">
+                  <span>🛒</span>
+                  <span>იყიდე მარტივად</span>
+                </button>
+
                 <button type="button" id="calc-order-whatsapp-btn"
                   class="flex-1 sm:flex-initial min-h-[32px] px-3 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-white text-[11px] font-black flex items-center justify-center gap-1.5 shadow-xs active:scale-95 fast-transition cursor-pointer whitespace-nowrap">
                   <svg class="w-3.5 h-3.5 shrink-0 fill-current" viewBox="0 0 24 24">
@@ -4602,7 +4608,7 @@
 
       <form id="quick-order-form" class="p-4 sm:p-5 space-y-3.5 overflow-y-auto flex-1" novalidate>
         <!-- Selected Product Preview -->
-        <div class="p-3 rounded-2xl bg-stone-50 border border-zinc-200/90 flex items-center gap-3">
+        <div id="qo-single-preview" class="p-3 rounded-2xl bg-stone-50 border border-zinc-200/90 flex items-center gap-3">
           <img id="qo-product-img" src="" alt=""
             class="w-16 h-16 rounded-xl bg-white border border-zinc-200 object-contain p-1 shrink-0" />
           <div class="min-w-0 flex-1">
@@ -4613,6 +4619,15 @@
               <span id="qo-product-old-price" class="font-mono-num text-xs text-zinc-400 line-through"></span>
             </div>
           </div>
+        </div>
+
+        <!-- Cart Items Checklist (shown when opened from Cart; user can uncheck items) -->
+        <div id="qo-cart-items-box" class="hidden rounded-2xl bg-stone-50 border border-zinc-200/90 p-3 space-y-2">
+          <div class="flex items-center justify-between gap-2 text-xs">
+            <span class="font-black text-zinc-900">🛒 კალათის ნივთები (მოხსენით პტიჩკა, თუ რომელიმე არ გინდათ):</span>
+            <span id="qo-cart-total-badge" class="font-mono-num font-black text-emerald-700 shrink-0">0 ₾</span>
+          </div>
+          <div id="qo-cart-items-list" class="space-y-1.5 max-h-[180px] overflow-y-auto pr-0.5"></div>
         </div>
 
         <div class="space-y-2.5">
@@ -18125,9 +18140,131 @@
         });
       });
 
+      let qoCartSelections = [];
+
+      function syncQoCartTargetProduct() {
+        const checked = qoCartSelections.filter((c) => c.checked);
+        const total = checked.reduce((acc, c) => acc + (Number(c.product.newPrice) || 0) * c.qty, 0);
+        const oldTotal = checked.reduce((acc, c) => acc + (Number(c.product.oldPrice) || Number(c.product.newPrice) || 0) * c.qty, 0);
+        quickOrderTargetProduct = {
+          id: checked.map((c) => c.product.id).join(',') || 'cart',
+          name: checked.map((c) => (c.qty > 1 ? `${c.product.name} (×${c.qty})` : c.product.name)).join(', ') || 'კალათის ნივთები',
+          newPrice: total,
+          oldPrice: oldTotal,
+        };
+        const badgeEl = document.getElementById('qo-cart-total-badge');
+        if (badgeEl) badgeEl.textContent = `${total} ₾ (${checked.length} ნივთი)`;
+        updateQoInstallmentCalculator();
+      }
+
+      function renderQoCartItemsBox() {
+        const listEl = document.getElementById('qo-cart-items-list');
+        if (!listEl) return;
+        listEl.replaceChildren();
+        qoCartSelections.forEach((entry, idx) => {
+          const unitPrice = Number(entry.product.newPrice) || 0;
+          const subtotal = unitPrice * entry.qty;
+          const row = document.createElement('label');
+          row.className = `flex items-center gap-2.5 p-2 rounded-xl border cursor-pointer fast-transition ${
+            entry.checked ? 'bg-white border-emerald-300 shadow-2xs' : 'bg-zinc-100/70 border-zinc-200 opacity-60'
+          }`;
+
+          const cb = document.createElement('input');
+          cb.type = 'checkbox';
+          cb.checked = entry.checked;
+          cb.className = 'w-4 h-4 accent-emerald-600 rounded cursor-pointer shrink-0';
+          cb.addEventListener('change', () => {
+            qoCartSelections[idx].checked = cb.checked;
+            row.className = `flex items-center gap-2.5 p-2 rounded-xl border cursor-pointer fast-transition ${
+              cb.checked ? 'bg-white border-emerald-300 shadow-2xs' : 'bg-zinc-100/70 border-zinc-200 opacity-60'
+            }`;
+            syncQoCartTargetProduct();
+          });
+
+          const img = document.createElement('img');
+          img.src = getProductImageSrc(entry.product, activeThemeColor);
+          img.alt = '';
+          img.className = 'w-10 h-10 rounded-lg object-contain bg-white border border-zinc-200 p-0.5 shrink-0';
+
+          const info = document.createElement('div');
+          info.className = 'min-w-0 flex-1';
+          const title = document.createElement('div');
+          title.className = 'text-xs font-bold text-zinc-900 truncate';
+          title.textContent = entry.product.name;
+          const meta = document.createElement('div');
+          meta.className = 'text-[11px] font-mono-num text-zinc-600';
+          meta.textContent = `${unitPrice} ₾ × ${entry.qty} ც. = ${subtotal} ₾`;
+          info.appendChild(title);
+          info.appendChild(meta);
+
+          row.appendChild(cb);
+          row.appendChild(img);
+          row.appendChild(info);
+          listEl.appendChild(row);
+        });
+        syncQoCartTargetProduct();
+      }
+
+      function openQuickOrderCartModal() {
+        if (!quickOrderBackdrop) return;
+        const validCart = [];
+        for (const it of calculatorItems || []) {
+          const p = productsList.find((prod) => prod.id === it.productId);
+          if (p) validCart.push({ product: p, qty: Number(it.qty) || 1, checked: true });
+        }
+        if (validCart.length === 0) {
+          if (typeof showCpToast === 'function') {
+            showCpToast('🛒 კალათა ცარიელია — ჯერ დაამატეთ ნივთი!');
+          }
+          return;
+        }
+        qoCartSelections = validCart;
+
+        const singlePreview = document.getElementById('qo-single-preview');
+        const cartBox = document.getElementById('qo-cart-items-box');
+        const errEl = document.getElementById('qo-error-msg');
+        const successView = document.getElementById('qo-success-view');
+        if (singlePreview) singlePreview.classList.add('hidden');
+        if (cartBox) cartBox.classList.remove('hidden');
+        if (errEl) errEl.classList.add('hidden');
+        if (successView) successView.classList.add('hidden');
+        if (quickOrderForm) quickOrderForm.classList.remove('hidden');
+
+        renderQoCartItemsBox();
+        syncPaymentDropdownWithBankConfig();
+
+        try {
+          const savedName = localStorage.getItem('vv_qo_name') || '';
+          const savedPhone = localStorage.getItem('vv_qo_phone') || '';
+          const savedAddr = localStorage.getItem('vv_qo_addr') || '';
+          const nInp = document.getElementById('qo-customer-name');
+          const pInp = document.getElementById('qo-customer-phone');
+          const aInp = document.getElementById('qo-customer-address');
+          if (nInp && !nInp.value && savedName) nInp.value = savedName;
+          if (pInp && !pInp.value && savedPhone) pInp.value = savedPhone;
+          if (aInp && !aInp.value && savedAddr) aInp.value = savedAddr;
+        } catch (e) { }
+
+        quickOrderBackdrop.classList.remove('hidden');
+        setTimeout(() => {
+          const nInp = document.getElementById('qo-customer-name');
+          const pInp = document.getElementById('qo-customer-phone');
+          if (nInp && !nInp.value.trim()) {
+            nInp.focus();
+          } else if (pInp) {
+            pInp.focus();
+          }
+        }, 80);
+      }
+
       function openQuickOrderModal(productId) {
         const prod = productsList.find((p) => p.id === productId) || activeModalProduct;
         if (!prod || !quickOrderBackdrop) return;
+        qoCartSelections = [];
+        const singlePreview = document.getElementById('qo-single-preview');
+        const cartBox = document.getElementById('qo-cart-items-box');
+        if (singlePreview) singlePreview.classList.remove('hidden');
+        if (cartBox) cartBox.classList.add('hidden');
         quickOrderTargetProduct = prod;
         const loc = getLocalizedProduct(prod, currentLang);
 
@@ -21353,6 +21490,13 @@
         });
       }
 
+      const calcEasyBuyBtn = document.getElementById('calc-easy-buy-btn');
+      if (calcEasyBuyBtn) {
+        calcEasyBuyBtn.addEventListener('click', () => {
+          openQuickOrderCartModal();
+        });
+      }
+
       if (closeQuickOrderBtn) {
         closeQuickOrderBtn.addEventListener('click', closeQuickOrderModal);
       }
@@ -21366,13 +21510,20 @@
         quickOrderForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           if (!quickOrderTargetProduct) return;
+          const errEl = document.getElementById('qo-error-msg');
+          if (qoCartSelections.length > 0 && !qoCartSelections.some((c) => c.checked)) {
+            if (errEl) {
+              errEl.textContent = 'გთხოვთ მონიშნოთ მინიმუმ 1 ნივთი კალათიდან.';
+              errEl.classList.remove('hidden');
+            }
+            return;
+          }
           const nInp = document.getElementById('qo-customer-name');
           const pInp = document.getElementById('qo-customer-phone');
           const aInp = document.getElementById('qo-customer-address');
           const notesInp = document.getElementById('qo-courier-notes');
           const mInp = document.getElementById('qo-payment-method');
           const pidInp = document.getElementById('qo-customer-pid');
-          const errEl = document.getElementById('qo-error-msg');
           const submitBtn = document.getElementById('qo-submit-btn');
           const submitBtnLabel = document.getElementById('qo-submit-btn-label');
 
