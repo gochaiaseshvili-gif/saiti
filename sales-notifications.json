@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T04:32:01.389Z",
+  "updatedAt": "2026-11-16T07:37:19.001Z",
   "sales": [
     {
       "id": "sale_1794803521389_1oal",
@@ -17,7 +17,7 @@
       "customerName": "",
       "createdAt": "2026-11-16T04:32:01.389Z",
       "updatedAt": "2026-11-16T04:32:01.389Z",
-      "unread": true
+      "unread": false
     },
     {
       "id": "sale_1794802633886_yduq",
@@ -35,7 +35,7 @@
       "customerName": "",
       "createdAt": "2026-11-16T04:17:13.886Z",
       "updatedAt": "2026-11-16T04:17:13.886Z",
-      "unread": true
+      "unread": false
     },
     {
       "id": "sale_1794737532237_9in4",
