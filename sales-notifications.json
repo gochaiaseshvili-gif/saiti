@@ -1,6 +1,26 @@
 {
-  "updatedAt": "2026-11-16T08:19:00.659Z",
+  "updatedAt": "2026-11-16T21:50:00.765Z",
   "sales": [
+    {
+      "id": "sale_1794865800765_pi1t",
+      "orderId": "order_1794865799610",
+      "bank": "dilo",
+      "mode": "cod",
+      "status": "approved",
+      "rejectReason": "",
+      "productName": "NDR-15",
+      "productId": "prod-1794065879123",
+      "amount": 550,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "574579696",
+      "customerName": "ვალერი",
+      "recipientAddress": "დაზუსტდება ზარით",
+      "notes": "",
+      "createdAt": "2026-11-16T21:50:00.765Z",
+      "updatedAt": "2026-11-16T21:50:00.765Z",
+      "unread": true
+    },
     {
       "id": "sale_1794817140659_yynj",
       "orderId": "iyidebaa_1794816225233",
