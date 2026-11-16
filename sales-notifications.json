@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T07:37:40.163Z",
+  "updatedAt": "2026-11-16T07:37:41.998Z",
   "sales": [
     {
       "id": "sale_1794803521389_1oal",
@@ -17,24 +17,6 @@
       "customerName": "",
       "createdAt": "2026-11-16T04:32:01.389Z",
       "updatedAt": "2026-11-16T04:32:01.389Z",
-      "unread": false
-    },
-    {
-      "id": "sale_1794802633886_yduq",
-      "orderId": "4381046",
-      "bank": "credo",
-      "mode": "installment",
-      "status": "started",
-      "rejectReason": "",
-      "productName": "კარაოკე დინამიკი 2 მიკროფონით",
-      "productId": "streetbeat-500w",
-      "amount": 650,
-      "months": 12,
-      "monthly": "",
-      "customerPhone": "",
-      "customerName": "",
-      "createdAt": "2026-11-16T04:17:13.886Z",
-      "updatedAt": "2026-11-16T04:17:13.886Z",
       "unread": false
     },
     {
