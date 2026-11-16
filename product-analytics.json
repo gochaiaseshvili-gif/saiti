@@ -67,14 +67,14 @@
         "total": 7
       },
       "sales": {
-        "card": 0,
+        "card": 1,
         "installment": 0,
-        "total": 0,
-        "revenue": 0
+        "total": 1,
+        "revenue": 550
       },
       "lastViewedAt": "2026-11-11T20:52:56.514Z",
-      "lastSoldAt": null
+      "lastSoldAt": "2026-11-16T21:50:02.036Z"
     }
   },
-  "updatedAt": "2026-11-12T09:45:28.329Z"
+  "updatedAt": "2026-11-16T21:50:02.036Z"
 }
