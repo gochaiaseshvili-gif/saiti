@@ -1,6 +1,27 @@
 {
-  "updatedAt": "2026-11-16T21:50:00.765Z",
+  "updatedAt": "2026-11-18T15:12:00.925Z",
   "sales": [
+    {
+      "id": "sale_1795014720925_6mss",
+      "orderId": "iyidebaa_1795013817342",
+      "sessionId": "",
+      "bank": "bog",
+      "mode": "card",
+      "status": "rejected",
+      "rejectReason": "expiration",
+      "productName": "%E1%83%99%E1%83%90%E1%83%A0%E1%83%90%E1%83%9D%E1%83%99%E1%83%94%20%E1%83%93%E1%83%98%E1%83%9C%E1%83%90%E1%83%9B%E1%83%98%E1%83%99%E1%83%98%202%20%E1%83%9B%E1%83%98%E1%83%99%E1%83%A0%E1%83%9D%E1%83%A4%E1%83%9D%E1%83%9C%E1%83%98%E1%83%97",
+      "productId": "streetbeat-500w",
+      "amount": 650,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "recipientAddress": "",
+      "notes": "",
+      "createdAt": "2026-11-18T15:12:00.925Z",
+      "updatedAt": "2026-11-18T15:12:00.925Z",
+      "unread": true
+    },
     {
       "id": "sale_1794865800765_pi1t",
       "orderId": "order_1794865799610",
