@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1795013088589,
+  "updatedAt": 1795013090181,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -219,7 +219,7 @@
       "bogIban": "GE84BG0000000345895672GEL",
       "bogUrl": "",
       "bogScript": "",
-      "tbcEnabled": false,
+      "tbcEnabled": true,
       "tbcTestMode": true,
       "tbcApiKey": "",
       "tbcApiSecret": "",
