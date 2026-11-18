@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794988141643,
+  "updatedAt": 1794988146046,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -248,7 +248,7 @@
       "badgeText": "აქცია",
       "name": "MKF-02",
       "shortMeta": "",
-      "oldPrice": 0,
+      "oldPrice": 150,
       "newPrice": 135,
       "images": [
         "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/prod_slot_1_1794065963431_2rbv.jpg",
