@@ -39,7 +39,7 @@ let cachedDiloWeightTiers = null;
 let cachedDiloWeightTiersAt = 0;
 
 
-async function loadJsonFromGithub(fileName, defaultObj) {
+export async function loadJsonFromGithub(fileName, defaultObj) {
   const token = getGithubCloudToken();
   if (!token) return { data: defaultObj, sha: "" };
   try {
@@ -115,7 +115,7 @@ async function saveSalesToGithub(salesList, existingSha = "") {
   );
 }
 
-async function recordOrUpdateSaleEvent(saleObj) {
+export async function recordOrUpdateSaleEvent(saleObj) {
   const loaded = await loadSalesFromGithub();
   const list = Array.isArray(loaded.sales) ? loaded.sales : [];
   const cleanOrderId = String(saleObj.orderId || "").trim();
@@ -130,6 +130,7 @@ async function recordOrUpdateSaleEvent(saleObj) {
     existing.status = incomingStatus;
     existing.updatedAt = new Date().toISOString();
     existing.unread = true;
+    if (saleObj.sessionId) existing.sessionId = saleObj.sessionId;
     if (saleObj.customerPhone) existing.customerPhone = saleObj.customerPhone;
     if (saleObj.customerName) existing.customerName = saleObj.customerName;
     if (saleObj.rejectReason) existing.rejectReason = saleObj.rejectReason;
@@ -140,6 +141,7 @@ async function recordOrUpdateSaleEvent(saleObj) {
   const newEntry = {
     id: saleObj.id || "sale_" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
     orderId: cleanOrderId,
+    sessionId: saleObj.sessionId || "",
     bank: saleObj.bank || "bog",
     mode: saleObj.mode || "installment",
     status: incomingStatus,

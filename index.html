@@ -3453,17 +3453,29 @@
               </button>
             </div>
 
-            <!-- Online Installment (ONLY Bank of Georgia & Credo) right underneath Screenshot & Share -->
+            <!-- Online Installment (Bank of Georgia, TBC Bank & Credo) right underneath Screenshot & Share -->
             <div class="pt-3 border-t border-zinc-200/90 space-y-2">
               <div class="text-xs font-black text-zinc-900 flex items-center justify-between">
                 <span>🏦 ონლაინ განვადება:</span>
-                <span class="text-[11px] font-bold text-amber-800">საქართველოს ბანკი &bull; კრედო ბანკი</span>
+                <span class="text-[11px] font-bold text-amber-800">საქართველოს ბანკი &bull; თიბისი ბანკი &bull; კრედო ბანკი</span>
               </div>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <button type="button" id="modal-installment-btn" data-modal-bank-action="bog-inst"
                   class="cursor-pointer min-h-[44px] px-3 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition">
                   <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
                   <span id="modal-installment-btn-text">საქართველოს ბანკი — განვადება</span>
+                </button>
+                <button type="button" id="modal-tbc-installment-btn" data-modal-bank-action="tbc-inst"
+                  class="cursor-pointer min-h-[44px] px-3 py-2.5 rounded-xl bg-[#00A3E0] hover:bg-[#0088CC] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition">
+                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white text-[#0077B6] shrink-0">
+                    <svg class="h-3.5 w-auto" viewBox="0 0 92 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TBC">
+                      <path d="M14 2L26 24H2L14 2Z" fill="#00A3E0"/>
+                      <path d="M14 2L26 24H14V2Z" fill="#0082BA"/>
+                      <path d="M14 14L18.2 21.5H9.8L14 14Z" fill="#FFFFFF"/>
+                      <text x="32" y="21" fill="currentColor" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="19" letter-spacing="0.5">TBC</text>
+                    </svg>
+                  </span>
+                  <span id="modal-tbc-inst-btn-text">თიბისი ბანკი • ონლაინ განვადება</span>
                 </button>
                 <button type="button" id="modal-credo-installment-btn" data-modal-bank-action="credo-inst"
                   class="cursor-pointer min-h-[44px] px-3 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition">
@@ -4664,15 +4676,49 @@
           </div>
 
           <div>
-            <label for="qo-payment-method" class="block text-xs font-bold text-zinc-800 mb-1">
+            <label for="qo-payment-method" class="block text-xs font-bold text-zinc-800 mb-1.5">
               გადახდის ან განვადების მეთოდი (აირჩიეთ ბანკი)
             </label>
+            <div id="qo-payment-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+              <button type="button" data-qo-pay-card="კურიერთან ნაღდი ანგარიშსწორებით (ადგილზე შემოწმებით)"
+                class="qo-pay-card-btn flex items-center gap-2.5 p-2.5 rounded-xl border-2 border-amber-500 bg-amber-50/80 text-left text-xs font-extrabold text-zinc-900 cursor-pointer fast-transition">
+                <span class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-base shrink-0">💵</span>
+                <span class="leading-tight">კურიერთან გადახდა <span class="block text-[10px] font-semibold text-zinc-500">ადგილზე შემოწმებით</span></span>
+              </button>
+              <button type="button" data-qo-pay-card="საქართველოს ბანკი — განვადება"
+                class="qo-pay-card-btn flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-orange-400 text-left text-xs font-extrabold text-zinc-900 cursor-pointer fast-transition">
+                <span class="px-2 py-1 rounded-lg bg-orange-600 text-white font-black text-[10px] shrink-0">BOG</span>
+                <span class="leading-tight">საქართველოს ბანკი <span class="block text-[10px] font-semibold text-zinc-500">ონლაინ განვადება</span></span>
+              </button>
+              <button type="button" data-qo-pay-card="თიბისი ბანკი — განვადება"
+                class="qo-pay-card-btn flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-[#00A3E0] text-left text-xs font-extrabold text-zinc-900 cursor-pointer fast-transition">
+                <span class="inline-flex items-center justify-center px-1.5 py-1 rounded-lg bg-sky-50 border border-sky-200 text-[#0077B6] shrink-0">
+                  <svg class="h-4 w-auto" viewBox="0 0 92 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TBC">
+                    <path d="M14 2L26 24H2L14 2Z" fill="#00A3E0"/>
+                    <path d="M14 2L26 24H14V2Z" fill="#0082BA"/>
+                    <path d="M14 14L18.2 21.5H9.8L14 14Z" fill="#FFFFFF"/>
+                    <text x="32" y="21" fill="currentColor" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="19" letter-spacing="0.5">TBC</text>
+                  </svg>
+                </span>
+                <span class="leading-tight">თიბისი ბანკი • ონლაინ განვადება</span>
+              </button>
+              <button type="button" data-qo-pay-card="კრედო ბანკი — განვადება"
+                class="qo-pay-card-btn flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-rose-400 text-left text-xs font-extrabold text-zinc-900 cursor-pointer fast-transition">
+                <span class="px-2 py-1 rounded-lg bg-rose-600 text-white font-black text-[10px] shrink-0">კრედო</span>
+                <span class="leading-tight">კრედო ბანკი <span class="block text-[10px] font-semibold text-zinc-500">ონლაინ განვადება</span></span>
+              </button>
+              <button type="button" data-qo-pay-card="ბარათით გადახდა (Visa / Mastercard / Apple Pay / Google Pay)"
+                class="qo-pay-card-btn sm:col-span-2 flex items-center gap-2.5 p-2.5 rounded-xl border border-zinc-200 bg-white hover:border-zinc-400 text-left text-xs font-extrabold text-zinc-900 cursor-pointer fast-transition">
+                <span class="w-8 h-8 rounded-lg bg-zinc-900 text-white flex items-center justify-center text-sm shrink-0">💳</span>
+                <span class="leading-tight">ბარათით გადახდა <span class="block text-[10px] font-semibold text-zinc-500">Visa / Mastercard / Apple Pay / Google Pay</span></span>
+              </button>
+            </div>
             <select id="qo-payment-method"
-              class="w-full min-h-[42px] px-3.5 py-2 rounded-xl border border-zinc-300 bg-white text-xs sm:text-sm font-extrabold text-zinc-900 focus:outline-none focus:border-amber-500 cursor-pointer">
+              class="sr-only" aria-hidden="true" tabindex="-1">
               <option value="კურიერთან ნაღდი ანგარიშსწორებით (ადგილზე შემოწმებით)">💵 კურიერთან გადახდა (ჩაბარებისა და
                 შემოწმების შემდეგ)</option>
               <option value="საქართველოს ბანკი — განვადება">🟧 საქართველოს ბანკი — განვადება</option>
-              <option value="თიბისი ბანკი — განვადება">🟦 თიბისი ბანკი — განვადება</option>
+              <option value="თიბისი ბანკი — განვადება">🟦 თიბისი ბანკი • ონლაინ განვადება</option>
               <option value="კრედო ბანკი — განვადება">🟥 კრედო ბანკი — განვადება</option>
               <option value="ბარათით გადახდა (Visa / Mastercard / Apple Pay / Google Pay)">💳 ბარათით გადახდა / Apple
                 Pay / Google Pay</option>
@@ -4760,6 +4806,21 @@
               class="hidden w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-orange-600 hover:bg-orange-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition cursor-pointer">
               <span class="px-1.5 py-0.5 rounded bg-white text-orange-600 font-black text-[10px]">BOG</span>
               <span id="qo-bog-instant-checkout-label">პირდაპირ საქართველოს ბანკით გადახდა (payment.bog.ge)</span>
+              <span>↗</span>
+            </button>
+
+            <!-- Instant TBC Bank Online Installments API Checkout Button -->
+            <button type="button" id="qo-tbc-instant-checkout-btn"
+              class="hidden w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[#00A3E0] hover:bg-[#0088CC] text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] fast-transition cursor-pointer">
+              <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white text-[#0077B6] shrink-0">
+                <svg class="h-3.5 w-auto" viewBox="0 0 92 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="TBC">
+                  <path d="M14 2L26 24H2L14 2Z" fill="#00A3E0"/>
+                  <path d="M14 2L26 24H14V2Z" fill="#0082BA"/>
+                  <path d="M14 14L18.2 21.5H9.8L14 14Z" fill="#FFFFFF"/>
+                  <text x="32" y="21" fill="currentColor" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="19" letter-spacing="0.5">TBC</text>
+                </svg>
+              </span>
+              <span id="qo-tbc-instant-checkout-label">თიბისი ბანკი • ონლაინ განვადება</span>
               <span>↗</span>
             </button>
 
@@ -9061,39 +9122,74 @@
               </div>
             </div>
 
-            <!-- 2. TBC BANK (თიბისი ბანკი — TBC eCommerce / განაწილება / განვადება) -->
+            <!-- 2. TBC BANK (თიბისი ბანკი — Online Installments Merchant API) -->
             <div class="p-4 sm:p-5 rounded-2xl bg-sky-50/60 border-2 border-sky-300 space-y-3.5 shadow-2xs">
-              <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-sky-200">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-sky-200">
                 <div class="flex items-center gap-2.5">
                   <span
-                    class="w-9 h-9 rounded-xl bg-sky-600 text-white font-black text-xs flex items-center justify-center shadow-xs">TBC</span>
+                    class="w-9 h-9 rounded-xl bg-[#00A3E0] text-white font-black text-xs flex items-center justify-center shadow-xs">TBC</span>
                   <div>
                     <h5 class="text-sm font-black text-zinc-950">🟦 თიბისი ბანკი (TBC Bank)</h5>
-                    <p class="text-[11px] text-zinc-600">თიბისი ბანკი • განვადება</p>
+                    <p class="text-[11px] text-zinc-600">თიბისი ბანკი • განვადება (Online Installments API)</p>
                   </div>
                 </div>
-                <label
-                  class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-3 py-1.5 rounded-xl border border-sky-300 text-xs font-extrabold text-zinc-900">
-                  <input id="cp-bank-tbc-enabled" type="checkbox" checked
-                    class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
-                  <span>ჩართულია</span>
-                </label>
+                <div class="flex items-center gap-2">
+                  <label
+                    class="inline-flex items-center gap-2 cursor-pointer select-none bg-amber-50 px-3 py-1.5 rounded-xl border border-amber-300 text-xs font-extrabold text-amber-950"
+                    title="ჩართულზე: https://test-api.tbcbank.ge | გამორთულზე (Production): https://api.tbcbank.ge">
+                    <input id="cp-bank-tbc-test-mode" type="checkbox"
+                      class="w-4 h-4 accent-amber-600 rounded cursor-pointer" />
+                    <span>სატესტო რეჟიმი (Test Mode)</span>
+                  </label>
+                  <label
+                    class="inline-flex items-center gap-2 cursor-pointer select-none bg-white px-3 py-1.5 rounded-xl border border-sky-300 text-xs font-extrabold text-zinc-900">
+                    <input id="cp-bank-tbc-enabled" type="checkbox" checked
+                      class="w-4 h-4 accent-sky-600 rounded cursor-pointer" />
+                    <span>ჩართულია</span>
+                  </label>
+                </div>
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label for="cp-bank-tbc-client-id" class="block text-xs font-bold text-zinc-800 mb-1">
-                    Client ID / Merchant Code (თიბისის კოდი)
+                  <label for="cp-bank-tbc-api-key" class="block text-xs font-bold text-zinc-800 mb-1">
+                    API Key (apiKey)
                   </label>
-                  <input id="cp-bank-tbc-client-id" type="text" placeholder="მაგ: tbc_merchant_700..."
+                  <input id="cp-bank-tbc-api-key" type="text" autocomplete="off" placeholder="თიბისის API Key..."
                     class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900" />
                 </div>
                 <div>
-                  <label for="cp-bank-tbc-secret" class="block text-xs font-bold text-zinc-800 mb-1">
-                    API Key / Secret Key (საიდუმლო გასაღები)
+                  <label for="cp-bank-tbc-api-secret" class="block text-xs font-bold text-zinc-800 mb-1">
+                    API Secret (apiSecret)
                   </label>
-                  <input id="cp-bank-tbc-secret" type="password" autocomplete="off"
-                    placeholder="თიბისის საიდუმლო კოდი..."
+                  <div class="relative flex items-center">
+                    <input id="cp-bank-tbc-api-secret" type="password" autocomplete="off"
+                      placeholder="თიბისის API Secret..."
+                      class="w-full min-h-[40px] pl-3 pr-10 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900" />
+                    <button type="button" id="cp-bank-tbc-secret-eye-btn"
+                      aria-label="API Secret-ის ჩვენება/დამალვა"
+                      title="API Secret-ის ჩვენება / დამალვა"
+                      class="absolute right-1.5 w-7 h-7 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-700 flex items-center justify-center cursor-pointer transition-colors">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label for="cp-bank-tbc-merchant-key" class="block text-xs font-bold text-zinc-800 mb-1">
+                    Merchant Key (merchantKey)
+                  </label>
+                  <input id="cp-bank-tbc-merchant-key" type="text" autocomplete="off" placeholder="თიბისის Merchant Key..."
+                    class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900" />
+                </div>
+                <div>
+                  <label for="cp-bank-tbc-campaign-id" class="block text-xs font-bold text-zinc-800 mb-1">
+                    Campaign ID (campaignId)
+                  </label>
+                  <input id="cp-bank-tbc-campaign-id" type="text" autocomplete="off" placeholder="თიბისის Campaign ID..."
                     class="w-full min-h-[40px] px-3 py-1.5 rounded-xl border border-zinc-300 bg-white text-xs font-mono-num font-bold text-zinc-900" />
                 </div>
               </div>
@@ -15990,8 +16086,11 @@
           bogScript: raw.bogScript || '',
 
           tbcEnabled: raw.tbcEnabled !== false,
-          tbcClientId: raw.tbcClientId || '',
-          tbcSecret: raw.tbcSecret || '',
+          tbcApiKey: raw.tbcApiKey || raw.tbcClientId || '',
+          tbcApiSecret: raw.tbcApiSecret || raw.tbcSecret || '',
+          tbcMerchantKey: raw.tbcMerchantKey || '',
+          tbcCampaignId: raw.tbcCampaignId || '',
+          tbcTestMode: Boolean(raw.tbcTestMode),
           tbcIban: raw.tbcIban || '',
           tbcUrl: raw.tbcUrl || '',
           tbcScript: raw.tbcScript || '',
@@ -16027,8 +16126,11 @@
         setVal('cp-bank-bog-script', cfg.bogScript);
 
         setChk('cp-bank-tbc-enabled', cfg.tbcEnabled);
-        setVal('cp-bank-tbc-client-id', cfg.tbcClientId);
-        setVal('cp-bank-tbc-secret', cfg.tbcSecret);
+        setChk('cp-bank-tbc-test-mode', cfg.tbcTestMode);
+        setVal('cp-bank-tbc-api-key', cfg.tbcApiKey);
+        setVal('cp-bank-tbc-api-secret', cfg.tbcApiSecret);
+        setVal('cp-bank-tbc-merchant-key', cfg.tbcMerchantKey);
+        setVal('cp-bank-tbc-campaign-id', cfg.tbcCampaignId);
         setVal('cp-bank-tbc-iban', cfg.tbcIban);
         setVal('cp-bank-tbc-url', cfg.tbcUrl);
         setVal('cp-bank-tbc-script', cfg.tbcScript);
@@ -16063,8 +16165,11 @@
           bogScript: getVal('cp-bank-bog-script'),
 
           tbcEnabled: getChk('cp-bank-tbc-enabled', true),
-          tbcClientId: getVal('cp-bank-tbc-client-id'),
-          tbcSecret: getVal('cp-bank-tbc-secret'),
+          tbcTestMode: getChk('cp-bank-tbc-test-mode', false),
+          tbcApiKey: getVal('cp-bank-tbc-api-key'),
+          tbcApiSecret: getVal('cp-bank-tbc-api-secret'),
+          tbcMerchantKey: getVal('cp-bank-tbc-merchant-key'),
+          tbcCampaignId: getVal('cp-bank-tbc-campaign-id'),
           tbcIban: getVal('cp-bank-tbc-iban').toUpperCase(),
           tbcUrl: getVal('cp-bank-tbc-url'),
           tbcScript: getVal('cp-bank-tbc-script'),
@@ -16111,12 +16216,22 @@
       const showSecretsToggleBtn = document.getElementById('cp-show-secrets-toggle-btn');
       if (showSecretsToggleBtn) {
         showSecretsToggleBtn.addEventListener('click', () => {
-          ['cp-bank-bog-secret', 'cp-bank-tbc-secret', 'cp-bank-credo-secret'].forEach((secId) => {
+          ['cp-bank-bog-secret', 'cp-bank-tbc-api-secret', 'cp-bank-credo-secret'].forEach((secId) => {
             const inp = document.getElementById(secId);
             if (inp) {
               inp.type = inp.type === 'password' ? 'text' : 'password';
             }
           });
+        });
+      }
+
+      const tbcSecretEyeBtn = document.getElementById('cp-bank-tbc-secret-eye-btn');
+      if (tbcSecretEyeBtn) {
+        tbcSecretEyeBtn.addEventListener('click', () => {
+          const inp = document.getElementById('cp-bank-tbc-api-secret');
+          if (inp) {
+            inp.type = inp.type === 'password' ? 'text' : 'password';
+          }
         });
       }
 
@@ -17852,7 +17967,9 @@
           e.stopPropagation();
           const prodId = cardTbcInstBtn.getAttribute('data-card-tbc-inst');
           const targetProd = productsList.find((p) => p.id === prodId);
-          if (targetProd && typeof launchTbcCardCheckoutForProduct === 'function') {
+          if (targetProd && typeof launchTbcInstallmentForProduct === 'function') {
+            launchTbcInstallmentForProduct(targetProd, cardTbcInstBtn.querySelector('span:last-child'));
+          } else if (targetProd && typeof launchTbcCardCheckoutForProduct === 'function') {
             launchTbcCardCheckoutForProduct(targetProd, cardTbcInstBtn.querySelector('span:last-child'));
           }
           return;
@@ -17921,7 +18038,7 @@
           if (v.includes('BOG')) {
             opt.hidden = cfg.bogEnabled === false;
             opt.disabled = cfg.bogEnabled === false;
-          } else if (v.includes('TBC')) {
+          } else if (v.includes('TBC') || v.includes('თიბისი')) {
             opt.hidden = cfg.tbcEnabled === false;
             opt.disabled = cfg.tbcEnabled === false;
           } else if (v.includes('Credo')) {
@@ -17929,7 +18046,25 @@
             opt.disabled = cfg.credoEnabled === false;
           }
         });
+        document.querySelectorAll('.qo-pay-card-btn').forEach((cardBtn) => {
+          const v = cardBtn.getAttribute('data-qo-pay-card') || '';
+          let hidden = false;
+          if (v.includes('BOG') || v.includes('საქართველოს')) hidden = cfg.bogEnabled === false;
+          else if (v.includes('TBC') || v.includes('თიბისი')) hidden = cfg.tbcEnabled === false;
+          else if (v.includes('Credo') || v.includes('კრედო')) hidden = cfg.credoEnabled === false;
+          cardBtn.classList.toggle('hidden', hidden);
+        });
       }
+
+      document.querySelectorAll('.qo-pay-card-btn').forEach((cardBtn) => {
+        cardBtn.addEventListener('click', () => {
+          const v = cardBtn.getAttribute('data-qo-pay-card') || '';
+          if (qoPaymentMethodSelect && v) {
+            qoPaymentMethodSelect.value = v;
+            qoPaymentMethodSelect.dispatchEvent(new Event('change'));
+          }
+        });
+      });
 
       function resolveSelectedBankDetails(val) {
         const cfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
@@ -17947,7 +18082,7 @@
         if (val.includes('TBC')) {
           return {
             bankName: '🟦 თიბისი ბანკი (TBC)',
-            clientId: cfg.tbcClientId,
+            clientId: '',
             iban: cfg.tbcIban,
             url: cfg.tbcUrl,
             script: cfg.tbcScript,
@@ -18015,6 +18150,17 @@
           }
         });
 
+        document.querySelectorAll('.qo-pay-card-btn').forEach((cardBtn) => {
+          const v = cardBtn.getAttribute('data-qo-pay-card') || '';
+          const isActive = v === val;
+          cardBtn.classList.toggle('border-2', isActive);
+          cardBtn.classList.toggle('border-amber-500', isActive);
+          cardBtn.classList.toggle('bg-amber-50/80', isActive);
+          cardBtn.classList.toggle('border', !isActive);
+          cardBtn.classList.toggle('border-zinc-200', !isActive);
+          cardBtn.classList.toggle('bg-white', !isActive);
+        });
+
         // Update Live Bank Portal / IBAN / Custom Widget Box
         const portalBox = document.getElementById('qo-bank-live-portal-box');
         const portalTitle = document.getElementById('qo-bank-portal-title');
@@ -18053,19 +18199,24 @@
           }
 
           const bogInstantBtn = document.getElementById('qo-bog-instant-checkout-btn');
+          const tbcInstantBtn = document.getElementById('qo-tbc-instant-checkout-btn');
           const submitBtnLbl = document.getElementById('qo-submit-btn-label');
-          const isBogSelected = val.includes('BOG') || val.includes('Visa') || val.includes('ბარათით');
+          const isBogSelected = val.includes('BOG') || val.includes('საქართველოს') || val.includes('Visa') || val.includes('ბარათით');
+          const isTbcSelected = val.includes('TBC') || val.includes('თიბისი');
           if (bogInstantBtn) {
-            if (isBogSelected) {
-              bogInstantBtn.classList.remove('hidden');
-            } else {
-              bogInstantBtn.classList.add('hidden');
-            }
+            bogInstantBtn.classList.toggle('hidden', !isBogSelected);
+          }
+          if (tbcInstantBtn) {
+            tbcInstantBtn.classList.toggle('hidden', !isTbcSelected);
           }
           if (submitBtnLbl) {
-            submitBtnLbl.textContent = isBogSelected
-              ? '🟧 საქართველოს ბანკით გადახდაზე გადასვლა'
-              : 'შეკვეთის / განვადების გაგზავნა';
+            if (isBogSelected) {
+              submitBtnLbl.textContent = '🟧 საქართველოს ბანკით გადახდაზე გადასვლა';
+            } else if (isTbcSelected) {
+              submitBtnLbl.textContent = '🟦 თიბისი ბანკის განვადებაზე გადასვლა';
+            } else {
+              submitBtnLbl.textContent = 'შეკვეთის / განვადების გაგზავნა';
+            }
           }
 
           if (directUrlBtn) {
@@ -21187,6 +21338,65 @@
       }
       window.launchCredoCheckoutForProduct = launchCredoCheckoutForProduct;
 
+      async function launchTbcInstallmentForProduct(prod, statusEl) {
+        if (!prod) return false;
+        if (typeof fbq === 'function') {
+          fbq('track', 'InitiateCheckout', {
+            value: Number(prod.newPrice ?? prod.price ?? 0) || 0,
+            currency: 'GEL'
+          });
+        }
+        const checkedCart = Array.isArray(qoCartSelections) ? qoCartSelections.filter((c) => c.checked) : [];
+        const isCartPayload = checkedCart.length > 0 && String(prod.id || '').includes(',');
+        const productsPayload = isCartPayload
+          ? checkedCart.map((c) => ({
+              name: c.product.name,
+              unitPrice: Math.max(0.01, Number(c.product.newPrice) || 0),
+              quantity: Math.max(1, parseInt(c.qty, 10) || 1),
+            }))
+          : [
+              {
+                name: prod.name || 'პროდუქტი — iyidebaa.ge',
+                unitPrice: Math.max(0.01, Number(prod.newPrice) || 0),
+                quantity: 1,
+              },
+            ];
+        const phoneInp = document.getElementById('qo-customer-phone');
+        const nameInp = document.getElementById('qo-customer-name');
+        const origText = statusEl ? statusEl.textContent : '';
+        try {
+          if (statusEl) statusEl.textContent = '🟦 იხსნება თიბისის განვადება...';
+          const tbcRes = await fetch('/api/tbc-pay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              productName: prod.name,
+              productId: prod.id,
+              amount: Number(prod.newPrice) || 0,
+              products: productsPayload,
+              customerPhone: phoneInp ? phoneInp.value.trim() : '',
+              customerName: nameInp ? nameInp.value.trim() : '',
+              originUrl: window.location.origin,
+            }),
+          });
+          const tbcJson = await tbcRes.json();
+          if (statusEl) statusEl.textContent = origText;
+          if (tbcJson && tbcJson.ok && tbcJson.redirectUrl) {
+            closeQuickOrderModal();
+            window.location.href = tbcJson.redirectUrl;
+            return true;
+          } else {
+            alert((tbcJson && tbcJson.error) || 'თიბისი ბანკის განვადების გვერდთან დაკავშირება ვერ მოხერხდა.');
+            return true;
+          }
+        } catch (err) {
+          if (statusEl) statusEl.textContent = origText;
+          alert('თიბისი ბანკის განვადების სერვერთან კავშირის შეცდომა.');
+          return true;
+        }
+      }
+      window.launchTbcInstallmentForProduct = launchTbcInstallmentForProduct;
+
       function openBankAppOrWebByDevice(bankType) {
         const ua = navigator.userAgent || '';
         const isAndroid = /Android/i.test(ua);
@@ -21384,8 +21594,10 @@
           await launchCredoCheckoutForProduct(activeModalProduct, spanEl);
         } else if (act === 'credo-card') {
           launchCredoCardCheckoutForProduct(activeModalProduct);
-        } else if (act === 'tbc-card' || act === 'tbc-inst') {
+        } else if (act === 'tbc-card') {
           launchTbcCardCheckoutForProduct(activeModalProduct);
+        } else if (act === 'tbc-inst') {
+          await launchTbcInstallmentForProduct(activeModalProduct, spanEl);
         } else if (act === 'bog-inst') {
           await openBogInstallmentCalculatorModal(activeModalProduct);
         } else if (act === 'bog-card') {
@@ -21469,6 +21681,16 @@
         });
       }
 
+      const qoTbcInstantBtn = document.getElementById('qo-tbc-instant-checkout-btn');
+      if (qoTbcInstantBtn) {
+        qoTbcInstantBtn.addEventListener('click', async () => {
+          if (quickOrderTargetProduct) {
+            const lblEl = document.getElementById('qo-tbc-instant-checkout-label');
+            await launchTbcInstallmentForProduct(quickOrderTargetProduct, lblEl);
+          }
+        });
+      }
+
       const calcEasyBuyBtn = document.getElementById('calc-easy-buy-btn');
       if (calcEasyBuyBtn) {
         calcEasyBuyBtn.addEventListener('click', () => {
@@ -21515,7 +21737,7 @@
           const paymentMethod = (mInp ? mInp.value : '').trim() || 'კურიერთან გადახდა';
           const customerPid = (pidInp ? pidInp.value : '').trim();
 
-          const isBogOrCardMethod = paymentMethod.includes('BOG') || paymentMethod.includes('Visa') || paymentMethod.includes('ბარათით') || paymentMethod.includes('კრედო') || paymentMethod.includes('Credo');
+          const isBogOrCardMethod = paymentMethod.includes('BOG') || paymentMethod.includes('Visa') || paymentMethod.includes('ბარათით') || paymentMethod.includes('კრედო') || paymentMethod.includes('Credo') || paymentMethod.includes('TBC') || paymentMethod.includes('თიბისი');
           if (!isBogOrCardMethod) {
             if (!rawName || rawName.length < 2) {
               if (errEl) {
@@ -21552,6 +21774,10 @@
           const bankDetails = resolveSelectedBankDetails(paymentMethod);
           const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
 
+          if (paymentMethod.includes('TBC') || paymentMethod.includes('თიბისი')) {
+            await launchTbcInstallmentForProduct(quickOrderTargetProduct, submitBtnLabel);
+            return;
+          }
           if (paymentMethod.includes('კრედო') || paymentMethod.includes('Credo')) {
             await launchCredoCheckoutForProduct(quickOrderTargetProduct, submitBtnLabel);
             return;

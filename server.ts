@@ -1567,6 +1567,8 @@ async function startServer() {
         ...parsed.storeSettings.bankConfig,
         bogSecret: '',
         tbcSecret: '',
+        tbcApiSecret: '',
+        tbcMerchantKey: '',
         credoSecret: '',
       };
     }
@@ -2657,6 +2659,14 @@ async function startServer() {
   app.get('/api/bog-pay', (req, res) => handleBankGateway(req, res, 'bog'));
   app.post('/api/bog-pay', (req, res) => handleBankGateway(req, res, 'bog'));
   app.post('/api/credo-pay', (req, res) => handleBankGateway(req, res, 'credo'));
+  app.post('/api/tbc-pay', async (req, res) => {
+    try {
+      const tbcMod = await import('./api/tbc-pay.js');
+      return tbcMod.default(req, res);
+    } catch (err: any) {
+      res.status(500).json({ ok: false, error: err?.message || 'Server error' });
+    }
+  });
 
   app.get(['/api/fb-catalog', '/fb-catalog.xml', '/fb-catalog.csv'], async (req, res) => {
     try {
