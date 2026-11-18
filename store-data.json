@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1794991330352,
+  "updatedAt": 1794994951232,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -4950,6 +4950,10 @@
     "prod-1793210379573": {
       "price": 595,
       "title": "ახალი პროდუქტი"
+    },
+    "prod-1794065968994": {
+      "price": 135,
+      "title": "MKF-02"
     }
   }
 }
