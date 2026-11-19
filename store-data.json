@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1795087423969,
+  "updatedAt": 1795087432487,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -223,7 +223,7 @@
       "tbcTestMode": false,
       "tbcApiKey": "40001009236-78ffccd3-d3e8-489e-9b9e-fde4d8dcb836",
       "tbcApiSecret": "vVyJpIPws5cTDGczpfArKRCnXsjkola1",
-      "tbcMerchantKey": "",
+      "tbcMerchantKey": "40001009236-78ffccd3-d3e8-489e-9b9e-fde4d8dcb836",
       "tbcCampaignId": "",
       "tbcIban": "GE39TB7324845064300170",
       "tbcUrl": "",
