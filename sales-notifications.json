@@ -1,6 +1,27 @@
 {
-  "updatedAt": "2026-11-19T12:38:48.279Z",
+  "updatedAt": "2026-11-19T12:44:00.891Z",
   "sales": [
+    {
+      "id": "sale_1795092240891_99as",
+      "orderId": "iyidebaa_1795091337884",
+      "sessionId": "",
+      "bank": "bog",
+      "mode": "card",
+      "status": "rejected",
+      "rejectReason": "expiration",
+      "productName": "RX12",
+      "productId": "prod-1794065812913",
+      "amount": 140,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "recipientAddress": "",
+      "notes": "",
+      "createdAt": "2026-11-19T12:44:00.891Z",
+      "updatedAt": "2026-11-19T12:44:00.891Z",
+      "unread": true
+    },
     {
       "id": "sale_1795091928279_ns04",
       "orderId": "iyidebaa_tbc_1795091927103_e6s9",
