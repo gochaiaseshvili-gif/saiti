@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1795087360979,
+  "updatedAt": 1795087368473,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -221,7 +221,7 @@
       "bogScript": "",
       "tbcEnabled": false,
       "tbcTestMode": false,
-      "tbcApiKey": "",
+      "tbcApiKey": "40001009236-78ffccd3-d3e8-489e-9b9e-fde4d8dcb836",
       "tbcApiSecret": "ctQQx08bp11yI4Yj",
       "tbcMerchantKey": "",
       "tbcCampaignId": "",
