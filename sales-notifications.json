@@ -1,6 +1,27 @@
 {
-  "updatedAt": "2026-11-19T12:03:51.896Z",
+  "updatedAt": "2026-11-19T12:18:32.609Z",
   "sales": [
+    {
+      "id": "sale_1795090712609_pebm",
+      "orderId": "iyidebaa_tbc_1795090711678_pt6t",
+      "sessionId": "a417c635-49b5-4f9d-9f1c-92994bc8704e",
+      "bank": "tbc",
+      "mode": "installment",
+      "status": "started",
+      "rejectReason": "",
+      "productName": "RX12",
+      "productId": "prod-1794065812913",
+      "amount": 140,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "recipientAddress": "",
+      "notes": "",
+      "createdAt": "2026-11-19T12:18:32.609Z",
+      "updatedAt": "2026-11-19T12:18:32.609Z",
+      "unread": true
+    },
     {
       "id": "sale_1795089831896_kkoo",
       "orderId": "iyidebaa_tbc_1795089830845_lhm1",
