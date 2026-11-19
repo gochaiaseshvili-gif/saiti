@@ -11555,11 +11555,18 @@
       async function pushStoreStateToGithubNow() {
         const nowTs = Date.now();
         const currentImagesMap = buildCurrentImagesMap();
+        const sanitizedSettings = JSON.parse(JSON.stringify(storeSettings || {}));
+        if (sanitizedSettings.bankConfig && typeof sanitizedSettings.bankConfig === 'object') {
+          sanitizedSettings.bankConfig.tbcApiKey = '';
+          sanitizedSettings.bankConfig.tbcApiSecret = '';
+          sanitizedSettings.bankConfig.tbcMerchantKey = '';
+          sanitizedSettings.bankConfig.tbcSecret = '';
+        }
         const payload = {
           hasSavedState: true,
           updatedAt: nowTs,
           themeColor: activeThemeColor,
-          storeSettings,
+          storeSettings: sanitizedSettings,
           productsList,
           imagesMap: currentImagesMap
         };
