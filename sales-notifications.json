@@ -1,6 +1,27 @@
 {
-  "updatedAt": "2026-11-19T12:02:57.293Z",
+  "updatedAt": "2026-11-19T12:03:51.896Z",
   "sales": [
+    {
+      "id": "sale_1795089831896_kkoo",
+      "orderId": "iyidebaa_tbc_1795089830845_lhm1",
+      "sessionId": "24554bb4-097b-4255-b0f4-de1f47e1e669",
+      "bank": "tbc",
+      "mode": "installment",
+      "status": "started",
+      "rejectReason": "",
+      "productName": "MKF-02",
+      "productId": "prod-1794065968994",
+      "amount": 135,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "recipientAddress": "",
+      "notes": "",
+      "createdAt": "2026-11-19T12:03:51.896Z",
+      "updatedAt": "2026-11-19T12:03:51.896Z",
+      "unread": true
+    },
     {
       "id": "sale_1795089777292_8i0y",
       "orderId": "iyidebaa_tbc_1795089776260_5h65",
