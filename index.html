@@ -18452,6 +18452,48 @@
         }
       }
 
+      function openBankLoadingTab(bankTitle) {
+        try {
+          const tab = window.open('', '_blank');
+          if (tab && tab.document) {
+            tab.document.open();
+            tab.document.write(
+              '<!DOCTYPE html><html lang="ka"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+              '<title>' + (bankTitle || 'ბანკის გვერდი') + '</title>' +
+              '<style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,sans-serif;background:#f8fafc;color:#0f172a;text-align:center;padding:24px;}' +
+              '.box{max-width:340px;padding:28px 24px;background:#fff;border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.08);border:1px solid #e2e8f0;}' +
+              '.spin{width:34px;height:34px;border:3px solid #e2e8f0;border-top-color:#00A3E0;border-radius:50%;margin:0 auto 14px;animation:s .8s linear infinite;}' +
+              '@keyframes s{to{transform:rotate(360deg)}}</style></head>' +
+              '<body><div class="box"><div class="spin"></div><div style="font-weight:800;font-size:15px;">' +
+              (bankTitle || 'იხსნება ბანკის გვერდი...') +
+              '</div><div style="font-size:12px;color:#64748b;margin-top:6px;">გთხოვთ დაელოდოთ რამდენიმე წამი</div></div></body></html>'
+            );
+            tab.document.close();
+          }
+          return tab;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function navigateBankTab(tab, url) {
+        if (tab && !tab.closed) {
+          try { tab.opener = null; } catch (e) { }
+          tab.location.href = url;
+          return;
+        }
+        const opened = window.open(url, '_blank', 'noopener,noreferrer');
+        if (!opened) {
+          window.location.href = url;
+        }
+      }
+
+      function closeBankTab(tab) {
+        if (tab && !tab.closed) {
+          try { tab.close(); } catch (e) { }
+        }
+      }
+
       async function launchBogCheckoutForProduct(prod, statusEl) {
         if (!prod) return false;
         if (typeof fbq === 'function') {
@@ -18465,6 +18507,7 @@
         const clientSecret = bankCfg.bogSecret || '';
         const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
         const origText = statusEl ? statusEl.textContent : '';
+        const bankTab = openBankLoadingTab('იხსნება საქართველოს ბანკის გვერდი...');
         try {
           if (statusEl) statusEl.textContent = '🏦 იხსნება საქართველოს ბანკის გვერდი...';
           const bogRes = await fetch('/api/bog-pay', {
@@ -18484,13 +18527,15 @@
           if (statusEl) statusEl.textContent = origText;
           if (bogJson && bogJson.ok && bogJson.redirectUrl) {
             closeQuickOrderModal();
-            window.location.href = bogJson.redirectUrl;
+            navigateBankTab(bankTab, bogJson.redirectUrl);
             return true;
           } else {
+            closeBankTab(bankTab);
             alert((bogJson && bogJson.error) || 'საქართველოს ბანკთან დაკავშირება ვერ მოხერხდა.');
             return true;
           }
         } catch (err) {
+          closeBankTab(bankTab);
           if (statusEl) statusEl.textContent = origText;
           alert('საქართველოს ბანკის გვერდთან კავშირის შეცდომა.');
           return true;
@@ -21253,6 +21298,7 @@
           const m = Math.min(48, Math.max(3, Number(activeBogInstMonth) || 3));
           const foundDisc = activeBogInstDiscounts.find((d) => Number(d.month) === m);
           const discountCode = (foundDisc && foundDisc.discount_code) || 'STANDARD';
+          const bankTab = openBankLoadingTab('იხსნება საქართველოს ბანკის განვადება...');
           try {
             if (lblEl) lblEl.textContent = 'იხსნება განვადება...';
             const bogRes = await fetch('/api/bog-pay', {
@@ -21277,11 +21323,13 @@
             if (bogJson && bogJson.ok && bogJson.redirectUrl) {
               if (bogInstCalcModalEl) bogInstCalcModalEl.classList.add('hidden');
               closeQuickOrderModal();
-              window.location.href = bogJson.redirectUrl;
+              navigateBankTab(bankTab, bogJson.redirectUrl);
             } else {
+              closeBankTab(bankTab);
               alert((bogJson && bogJson.error) || 'საქართველოს ბანკის განვადების გახსნა ვერ მოხერხდა.');
             }
           } catch (err) {
+            closeBankTab(bankTab);
             if (lblEl) lblEl.textContent = origText;
             alert('საქართველოს ბანკთან კავშირის შეცდომა.');
           }
@@ -21298,13 +21346,14 @@
         }
         const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
         if (bankCfg.credoUrl && String(bankCfg.credoUrl).trim().startsWith('http')) {
-          window.location.href = String(bankCfg.credoUrl).trim();
+          window.open(String(bankCfg.credoUrl).trim(), '_blank', 'noopener,noreferrer');
           return true;
         }
         const merchantId = bankCfg.credoClientId || '125694';
         const password = bankCfg.credoSecret || '';
         const rawPrice = Math.max(1, Number(prod.newPrice) || 1);
         const origText = statusEl ? statusEl.textContent : '';
+        const bankTab = openBankLoadingTab('იხსნება კრედო ბანკის განვადება...');
         try {
           if (statusEl) statusEl.textContent = '🟥 იხსნება კრედო...';
           const credoRes = await fetch('/api/bog-pay', {
@@ -21324,13 +21373,15 @@
           if (statusEl) statusEl.textContent = origText;
           if (credoJson && credoJson.ok && credoJson.redirectUrl) {
             closeQuickOrderModal();
-            window.location.href = credoJson.redirectUrl;
+            navigateBankTab(bankTab, credoJson.redirectUrl);
             return true;
           } else {
+            closeBankTab(bankTab);
             alert((credoJson && credoJson.error) || 'კრედო ბანკთან დაკავშირება ვერ მოხერხდა.');
             return true;
           }
         } catch (err) {
+          closeBankTab(bankTab);
           if (statusEl) statusEl.textContent = origText;
           alert('კრედო ბანკის გვერდთან კავშირის შეცდომა.');
           return true;
@@ -21364,6 +21415,7 @@
         const phoneInp = document.getElementById('qo-customer-phone');
         const nameInp = document.getElementById('qo-customer-name');
         const origText = statusEl ? statusEl.textContent : '';
+        const bankTab = openBankLoadingTab('იხსნება თიბისი ბანკის განვადება...');
         try {
           if (statusEl) statusEl.textContent = '🟦 იხსნება თიბისის განვადება...';
           const tbcRes = await fetch('/api/tbc-pay', {
@@ -21383,13 +21435,15 @@
           if (statusEl) statusEl.textContent = origText;
           if (tbcJson && tbcJson.ok && tbcJson.redirectUrl) {
             closeQuickOrderModal();
-            window.location.href = tbcJson.redirectUrl;
+            navigateBankTab(bankTab, tbcJson.redirectUrl);
             return true;
           } else {
+            closeBankTab(bankTab);
             alert((tbcJson && tbcJson.error) || 'თიბისი ბანკის განვადების გვერდთან დაკავშირება ვერ მოხერხდა.');
             return true;
           }
         } catch (err) {
+          closeBankTab(bankTab);
           if (statusEl) statusEl.textContent = origText;
           alert('თიბისი ბანკის განვადების სერვერთან კავშირის შეცდომა.');
           return true;
@@ -21433,7 +21487,7 @@
         }
         const bankCfg = typeof getBankConfig === 'function' ? getBankConfig() : {};
         if (bankCfg.tbcUrl && String(bankCfg.tbcUrl).trim().startsWith('http')) {
-          window.location.href = String(bankCfg.tbcUrl).trim();
+          window.open(String(bankCfg.tbcUrl).trim(), '_blank', 'noopener,noreferrer');
           return true;
         }
         activeTbcCheckoutProduct = prod;
