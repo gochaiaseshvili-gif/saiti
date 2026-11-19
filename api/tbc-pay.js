@@ -6,12 +6,19 @@ import { loadJsonFromGithub, recordOrUpdateSaleEvent } from "./bog-pay.js";
  * Load TBC Online Installments configuration from Admin Panel store-data.json
  * (GitHub cloud or local file) with Vercel Environment Variables fallback.
  */
+// Remove ALL whitespace (spaces, tabs, newlines, NBSP, zero-width chars, BOM) and wrapping quotes
+const cleanCred = (v) =>
+  String(v === undefined || v === null ? "" : v)
+    .replace(/[\s\u00A0\u200B-\u200D\u2060\uFEFF]+/g, "")
+    .replace(/^["']+|["']+$/g, "")
+    .trim();
+
 async function resolveTbcConfig() {
   const pick = (cfg) => ({
-    apiKey: String((cfg && (cfg.tbcApiKey || cfg.tbcClientId)) || "").trim(),
-    apiSecret: String((cfg && (cfg.tbcApiSecret || cfg.tbcSecret)) || "").trim(),
-    merchantKey: String((cfg && cfg.tbcMerchantKey) || "").trim(),
-    campaignId: String((cfg && cfg.tbcCampaignId) || "").trim(),
+    apiKey: cleanCred(cfg && (cfg.tbcApiKey || cfg.tbcClientId)),
+    apiSecret: cleanCred(cfg && (cfg.tbcApiSecret || cfg.tbcSecret)),
+    merchantKey: cleanCred(cfg && cfg.tbcMerchantKey),
+    campaignId: cleanCred(cfg && cfg.tbcCampaignId),
     testMode: cfg && typeof cfg.tbcTestMode === "boolean" ? cfg.tbcTestMode : undefined,
   });
 
@@ -36,10 +43,10 @@ async function resolveTbcConfig() {
 
   // 3. Vercel Environment Variables (fallback for every missing field)
   sources.push({
-    apiKey: String(process.env.TBC_API_KEY || "").trim(),
-    apiSecret: String(process.env.TBC_API_SECRET || "").trim(),
-    merchantKey: String(process.env.TBC_MERCHANT_KEY || "").trim(),
-    campaignId: String(process.env.TBC_CAMPAIGN_ID || "").trim(),
+    apiKey: cleanCred(process.env.TBC_API_KEY),
+    apiSecret: cleanCred(process.env.TBC_API_SECRET),
+    merchantKey: cleanCred(process.env.TBC_MERCHANT_KEY),
+    campaignId: cleanCred(process.env.TBC_CAMPAIGN_ID),
     testMode:
       process.env.TBC_TEST_MODE !== undefined
         ? String(process.env.TBC_TEST_MODE).toLowerCase() === "true"
@@ -170,20 +177,37 @@ export default async function handler(req, res) {
       scope: "online_installments",
     });
 
-    const tokenRes = await fetch(`${cfg.baseUrl}/oauth/token`, {
+    const tokenUrl = `${cfg.baseUrl}/oauth/token`;
+    const tokenRes = await fetch(tokenUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
+        Accept: "application/json",
         Authorization: `Basic ${basicAuth}`,
       },
       body: tokenParams.toString(),
     });
 
-    const tokenData = await tokenRes.json().catch(() => ({}));
+    const tokenText = await tokenRes.text().catch(() => "");
+    let tokenData = {};
+    try {
+      tokenData = tokenText ? JSON.parse(tokenText) : {};
+    } catch (e) {
+      tokenData = { raw: tokenText };
+    }
     if (!tokenRes.ok || !tokenData.access_token) {
+      const bankReply = (tokenText || "").replace(/\s+/g, " ").trim().slice(0, 500) || "(ცარიელი პასუხი)";
       return res.status(502).json({
         ok: false,
-        error: "თიბისი ბანკთან ავტორიზაცია (OAuth Token) ვერ მოხერხდა.",
+        error:
+          `თიბისი ბანკთან ავტორიზაცია (OAuth Token) ვერ მოხერხდა. ` +
+          `სტატუსი: ${tokenRes.status} ${tokenRes.statusText || ""} | ` +
+          `რეჟიმი: ${cfg.testMode ? "TEST" : "PRODUCTION"} (${tokenUrl}) | ` +
+          `ბანკის პასუხი: ${bankReply}`,
+        status: tokenRes.status,
+        statusText: tokenRes.statusText || "",
+        url: tokenUrl,
+        testMode: cfg.testMode,
         details: tokenData,
       });
     }
@@ -218,9 +242,12 @@ export default async function handler(req, res) {
     }
 
     if ((appRes.status !== 201 && !appRes.ok) || !locationUrl) {
+      const appReply = (appText || "").replace(/\s+/g, " ").trim().slice(0, 500) || "(ცარიელი პასუხი)";
       return res.status(400).json({
         ok: false,
-        error: "თიბისი ბანკის განვადების განაცხადის შექმნა ვერ მოხერხდა.",
+        error:
+          `თიბისი ბანკის განვადების განაცხადის შექმნა ვერ მოხერხდა. ` +
+          `სტატუსი: ${appRes.status} ${appRes.statusText || ""} | ბანკის პასუხი: ${appReply}`,
         status: appRes.status,
         details: appData,
       });
