@@ -1,6 +1,27 @@
 {
-  "updatedAt": "2026-11-19T12:18:32.609Z",
+  "updatedAt": "2026-11-19T12:24:44.750Z",
   "sales": [
+    {
+      "id": "sale_1795091084749_fik8",
+      "orderId": "iyidebaa_tbc_1795091083825_zgdo",
+      "sessionId": "1ee46bfd-4054-444a-b698-dcd34678539e",
+      "bank": "tbc",
+      "mode": "installment",
+      "status": "started",
+      "rejectReason": "",
+      "productName": "ახალი პროდუქტი",
+      "productId": "prod-1794065587032",
+      "amount": 170,
+      "months": 0,
+      "monthly": "",
+      "customerPhone": "",
+      "customerName": "",
+      "recipientAddress": "",
+      "notes": "",
+      "createdAt": "2026-11-19T12:24:44.749Z",
+      "updatedAt": "2026-11-19T12:24:44.749Z",
+      "unread": true
+    },
     {
       "id": "sale_1795090712609_pebm",
       "orderId": "iyidebaa_tbc_1795090711678_pt6t",
