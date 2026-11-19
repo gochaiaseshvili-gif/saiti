@@ -58,6 +58,21 @@ export async function loadJsonFromGithub(fileName, defaultObj) {
       const parsed = JSON.parse(jsonStr);
       return { data: parsed || defaultObj, sha: meta.sha || "" };
     }
+    // Files larger than 1MB (e.g. store-data.json) come back with empty `content`
+    // from the Contents API — re-fetch the raw file body instead.
+    if (meta && meta.sha) {
+      const rawRes = await fetch(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github.raw+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+        },
+      });
+      if (rawRes.ok) {
+        const parsedRaw = JSON.parse(await rawRes.text());
+        return { data: parsedRaw || defaultObj, sha: meta.sha };
+      }
+    }
   } catch (e) {}
   return { data: defaultObj, sha: "" };
 }

@@ -7,47 +7,62 @@ import { loadJsonFromGithub, recordOrUpdateSaleEvent } from "./bog-pay.js";
  * (GitHub cloud or local file) with Vercel Environment Variables fallback.
  */
 async function resolveTbcConfig() {
-  let bankCfg = {};
+  const pick = (cfg) => ({
+    apiKey: String((cfg && (cfg.tbcApiKey || cfg.tbcClientId)) || "").trim(),
+    apiSecret: String((cfg && (cfg.tbcApiSecret || cfg.tbcSecret)) || "").trim(),
+    merchantKey: String((cfg && cfg.tbcMerchantKey) || "").trim(),
+    campaignId: String((cfg && cfg.tbcCampaignId) || "").trim(),
+    testMode: cfg && typeof cfg.tbcTestMode === "boolean" ? cfg.tbcTestMode : undefined,
+  });
 
-  // 1. Try local store-data.json first when not on Vercel (for local dev), or GitHub cloud
-  if (!process.env.VERCEL) {
-    try {
-      const localPath = path.join(process.cwd(), "store-data.json");
-      if (fs.existsSync(localPath)) {
-        const parsed = JSON.parse(fs.readFileSync(localPath, "utf8"));
-        bankCfg = (parsed && parsed.storeSettings && parsed.storeSettings.bankConfig) || {};
-      }
-    } catch (e) {}
-  }
+  const sources = [];
 
-  if (!bankCfg || (!bankCfg.tbcApiKey && !bankCfg.tbcApiSecret && !bankCfg.tbcMerchantKey)) {
-    try {
-      const loaded = await loadJsonFromGithub("store-data.json", {});
-      const ghCfg = loaded && loaded.data && loaded.data.storeSettings && loaded.data.storeSettings.bankConfig;
-      if (ghCfg && typeof ghCfg === "object") {
-        bankCfg = ghCfg;
-      }
-    } catch (e) {}
-  }
+  // 1. Admin Panel data saved in GitHub cloud (store-data.json; > 1MB handled via raw fetch)
+  try {
+    const loaded = await loadJsonFromGithub("store-data.json", {});
+    const ghCfg = loaded && loaded.data && loaded.data.storeSettings && loaded.data.storeSettings.bankConfig;
+    if (ghCfg && typeof ghCfg === "object") sources.push(pick(ghCfg));
+  } catch (e) {}
 
-  const apiKey = String(bankCfg.tbcApiKey || bankCfg.tbcClientId || process.env.TBC_API_KEY || "").trim();
-  const apiSecret = String(bankCfg.tbcApiSecret || bankCfg.tbcSecret || process.env.TBC_API_SECRET || "").trim();
-  const merchantKey = String(bankCfg.tbcMerchantKey || process.env.TBC_MERCHANT_KEY || "").trim();
-  const campaignId = String(bankCfg.tbcCampaignId || process.env.TBC_CAMPAIGN_ID || "").trim();
-  const testMode =
-    bankCfg.tbcTestMode === true ||
-    String(process.env.TBC_TEST_MODE || "").toLowerCase() === "true";
+  // 2. Local store-data.json bundled with the deployment / local dev server
+  try {
+    const localPath = path.join(process.cwd(), "store-data.json");
+    if (fs.existsSync(localPath)) {
+      const parsed = JSON.parse(fs.readFileSync(localPath, "utf8"));
+      const localCfg = parsed && parsed.storeSettings && parsed.storeSettings.bankConfig;
+      if (localCfg && typeof localCfg === "object") sources.push(pick(localCfg));
+    }
+  } catch (e) {}
 
+  // 3. Vercel Environment Variables (fallback for every missing field)
+  sources.push({
+    apiKey: String(process.env.TBC_API_KEY || "").trim(),
+    apiSecret: String(process.env.TBC_API_SECRET || "").trim(),
+    merchantKey: String(process.env.TBC_MERCHANT_KEY || "").trim(),
+    campaignId: String(process.env.TBC_CAMPAIGN_ID || "").trim(),
+    testMode:
+      process.env.TBC_TEST_MODE !== undefined
+        ? String(process.env.TBC_TEST_MODE).toLowerCase() === "true"
+        : undefined,
+  });
+
+  const firstNonEmpty = (field) => {
+    for (const s of sources) if (s[field]) return s[field];
+    return "";
+  };
+  const firstDefined = (field) => {
+    for (const s of sources) if (typeof s[field] === "boolean") return s[field];
+    return false;
+  };
+
+  const apiKey = firstNonEmpty("apiKey");
+  const apiSecret = firstNonEmpty("apiSecret");
+  const merchantKey = firstNonEmpty("merchantKey");
+  const campaignId = firstNonEmpty("campaignId");
+  const testMode = firstDefined("testMode");
   const baseUrl = testMode ? "https://test-api.tbcbank.ge" : "https://api.tbcbank.ge";
 
-  return {
-    apiKey,
-    apiSecret,
-    merchantKey,
-    campaignId,
-    testMode,
-    baseUrl,
-  };
+  return { apiKey, apiSecret, merchantKey, campaignId, testMode, baseUrl };
 }
 
 /**
