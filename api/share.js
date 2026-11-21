@@ -90,18 +90,6 @@ export default async function handler(req, res) {
   }
 
   const targetUrl = `${origin}/?product=${encodeURIComponent(productId)}`;
-  const ua = String((req.headers && req.headers["user-agent"]) || "");
-  const isCrawler =
-    /facebookexternalhit|Facebot|WhatsApp|TelegramBot|Viber|Twitterbot|LinkedInBot|Slackbot|Discordbot|Pinterest|Googlebot|bingbot|bot|crawler|spider/i.test(
-      ua
-    );
-
-  // Instant 302 redirect for normal users without even reading store-data.json
-  if (!isCrawler) {
-    res.setHeader("Location", targetUrl);
-    return res.status(302).end();
-  }
-
   const store = await loadStoreDataForProduct(productId);
   const list = Array.isArray(store.productsList) ? store.productsList : [];
   const prod = list.find((p) => p && String(p.id) === productId);
@@ -142,7 +130,7 @@ export default async function handler(req, res) {
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}" />
   <link rel="canonical" href="${escapeHtml(shareUrl)}" />
-  <meta property="og:type" content="product" />
+  <meta property="og:type" content="website" />
   <meta property="og:site_name" content="${escapeHtml(brandName)}" />
   <meta property="og:title" content="${escapeHtml(title)}" />
   <meta property="og:description" content="${escapeHtml(description)}" />
@@ -155,7 +143,8 @@ export default async function handler(req, res) {
   <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
 </head>
 <body>
-  <p><a href="${escapeHtml(targetUrl)}">${escapeHtml(title)}</a></p>
+  <script>window.location.replace(${JSON.stringify(targetUrl)});</script>
+  <noscript><a href="${escapeHtml(targetUrl)}">${escapeHtml(title)}</a></noscript>
 </body>
 </html>`;
 
