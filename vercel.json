@@ -3,6 +3,22 @@
   "cleanUrls": false,
   "rewrites": [
     {
+      "source": "/",
+      "has": [
+        { "type": "query", "key": "product" },
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|WhatsApp|TelegramBot|Viber|Twitterbot|LinkedInBot|Slackbot|Discordbot).*"
+        }
+      ],
+      "destination": "/api/share"
+    },
+    {
+      "source": "/p/:id",
+      "destination": "/api/share?product=:id"
+    },
+    {
       "source": "/fb-catalog.xml",
       "destination": "/api/fb-catalog?format=xml"
     },

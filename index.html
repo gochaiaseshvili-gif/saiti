@@ -22315,9 +22315,9 @@
       let currentShareTitle = '';
 
       function buildShareUrlForProduct(product) {
-        const base = window.location.origin + window.location.pathname;
-        if (!product) return base;
-        return `${base}?product=${encodeURIComponent(product.id)}`;
+        const origin = window.location.origin;
+        if (!product) return origin + window.location.pathname;
+        return `${origin}/p/${encodeURIComponent(product.id)}`;
       }
 
       function copyTextToClipboard(text) {
