@@ -105,7 +105,7 @@ export default async function handler(req, res) {
     );
 
   // If a human opens /p/<id> directly, redirect immediately to /?product=<id>
-  if (!isCrawler && req.url && req.url.startsWith("/p/")) {
+  if (!isCrawler) {
     res.setHeader("Location", targetUrl);
     return res.status(302).end();
   }
@@ -116,7 +116,7 @@ export default async function handler(req, res) {
   <meta charset="UTF-8" />
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(description)}" />
-  <link rel="canonical" href="${escapeHtml(targetUrl)}" />
+  <link rel="canonical" href="${escapeHtml(shareUrl)}" />
   <meta property="og:type" content="product" />
   <meta property="og:site_name" content="${escapeHtml(brandName)}" />
   <meta property="og:title" content="${escapeHtml(title)}" />
@@ -124,14 +124,14 @@ export default async function handler(req, res) {
   <meta property="og:url" content="${escapeHtml(shareUrl)}" />
   <meta property="og:image" content="${escapeHtml(imageUrl)}" />
   <meta property="og:image:secure_url" content="${escapeHtml(imageUrl)}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeHtml(title)}" />
   <meta name="twitter:description" content="${escapeHtml(description)}" />
   <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
-  <meta http-equiv="refresh" content="0;url=${escapeHtml(targetUrl)}" />
 </head>
 <body>
-  <script>window.location.replace(${JSON.stringify(targetUrl)});</script>
   <p><a href="${escapeHtml(targetUrl)}">${escapeHtml(title)}</a></p>
 </body>
 </html>`;

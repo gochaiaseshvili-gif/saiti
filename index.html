@@ -22317,7 +22317,7 @@
       function buildShareUrlForProduct(product) {
         const origin = window.location.origin;
         if (!product) return origin + window.location.pathname;
-        return `${origin}/p/${encodeURIComponent(product.id)}`;
+        return `${origin}/p/${encodeURIComponent(product.id)}?v=2`;
       }
 
       function copyTextToClipboard(text) {
