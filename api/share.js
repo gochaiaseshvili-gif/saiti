@@ -11,7 +11,31 @@ function escapeHtml(str) {
     .replace(/'/g, "&#39;");
 }
 
-async function loadStoreData() {
+let cachedLocalStore = null;
+
+function loadLocalStoreData() {
+  if (cachedLocalStore) return cachedLocalStore;
+  try {
+    const localPath = path.join(process.cwd(), "store-data.json");
+    if (fs.existsSync(localPath)) {
+      const parsed = JSON.parse(fs.readFileSync(localPath, "utf8"));
+      if (parsed && Array.isArray(parsed.productsList)) {
+        cachedLocalStore = parsed;
+        return parsed;
+      }
+    }
+  } catch (e) {}
+  return null;
+}
+
+async function loadStoreDataForProduct(productId) {
+  // 1. Fast local read (~10ms) so Facebook/social crawlers never time out
+  const local = loadLocalStoreData();
+  if (local && local.productsList.some((p) => p && String(p.id) === productId)) {
+    return local;
+  }
+
+  // 2. Fallback to GitHub only for brand-new products not yet in the deployed bundle
   try {
     const loaded = await loadJsonFromGithub("store-data.json", null);
     if (loaded && loaded.data && Array.isArray(loaded.data.productsList)) {
@@ -19,15 +43,7 @@ async function loadStoreData() {
     }
   } catch (e) {}
 
-  try {
-    const localPath = path.join(process.cwd(), "store-data.json");
-    if (fs.existsSync(localPath)) {
-      const parsed = JSON.parse(fs.readFileSync(localPath, "utf8"));
-      if (parsed && Array.isArray(parsed.productsList)) return parsed;
-    }
-  } catch (e) {}
-
-  return { storeSettings: {}, productsList: [] };
+  return local || { storeSettings: {}, productsList: [] };
 }
 
 function resolveProductImage(prod, origin) {
@@ -41,8 +57,17 @@ function resolveProductImage(prod, origin) {
     candidates.push(prod.image.trim());
   }
 
+  const ghPrefix = "https://raw.githubusercontent.com/gochaiaseshvili-gif/saiti/main/uploads/";
+
   for (const raw of candidates) {
     if (raw.startsWith("data:")) continue;
+    if (raw.startsWith(ghPrefix)) {
+      const fname = raw.slice(ghPrefix.length).split("?")[0];
+      if (fname && fs.existsSync(path.join(process.cwd(), "uploads", fname))) {
+        return `${origin}/uploads/${encodeURIComponent(fname)}`;
+      }
+      return raw;
+    }
     if (raw.startsWith("http://") || raw.startsWith("https://")) {
       return raw;
     }
@@ -64,11 +89,23 @@ export default async function handler(req, res) {
     return res.status(302).end();
   }
 
-  const store = await loadStoreData();
+  const targetUrl = `${origin}/?product=${encodeURIComponent(productId)}`;
+  const ua = String((req.headers && req.headers["user-agent"]) || "");
+  const isCrawler =
+    /facebookexternalhit|Facebot|WhatsApp|TelegramBot|Viber|Twitterbot|LinkedInBot|Slackbot|Discordbot|Pinterest|Googlebot|bingbot|bot|crawler|spider/i.test(
+      ua
+    );
+
+  // Instant 302 redirect for normal users without even reading store-data.json
+  if (!isCrawler) {
+    res.setHeader("Location", targetUrl);
+    return res.status(302).end();
+  }
+
+  const store = await loadStoreDataForProduct(productId);
   const list = Array.isArray(store.productsList) ? store.productsList : [];
   const prod = list.find((p) => p && String(p.id) === productId);
 
-  const targetUrl = `${origin}/?product=${encodeURIComponent(productId)}`;
   const shareUrl = `${origin}/p/${encodeURIComponent(productId)}`;
 
   const brandName =
@@ -98,18 +135,6 @@ export default async function handler(req, res) {
     imageUrl = resolveProductImage(prod, origin);
   }
 
-  const ua = String((req.headers && req.headers["user-agent"]) || "");
-  const isCrawler =
-    /facebookexternalhit|Facebot|WhatsApp|TelegramBot|Viber|Twitterbot|LinkedInBot|Slackbot|Discordbot|Pinterest|Googlebot|bingbot|bot|crawler|spider/i.test(
-      ua
-    );
-
-  // If a human opens /p/<id> directly, redirect immediately to /?product=<id>
-  if (!isCrawler) {
-    res.setHeader("Location", targetUrl);
-    return res.status(302).end();
-  }
-
   const html = `<!doctype html>
 <html lang="ka">
 <head>
@@ -124,8 +149,6 @@ export default async function handler(req, res) {
   <meta property="og:url" content="${escapeHtml(shareUrl)}" />
   <meta property="og:image" content="${escapeHtml(imageUrl)}" />
   <meta property="og:image:secure_url" content="${escapeHtml(imageUrl)}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeHtml(title)}" />
   <meta name="twitter:description" content="${escapeHtml(description)}" />
