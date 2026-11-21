@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1795283949132,
+  "updatedAt": 1795283952132,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -4316,9 +4316,7 @@
       "youtubeCaption": "Off-Grid Event კომბოს სრული დემონსტრაცია",
       "tiktokUrl": "",
       "tiktokCaption": "კარაოკე + მზის გენერატორის კომბო ტესტი",
-      "closedFields": {
-        "photo_0": true
-      },
+      "closedFields": {},
       "descHtml": "სრული ენერგო-დამოუკიდებელი აუდიო და ელექტრო კომპლექტი: StageMax 1200W კარაოკე სისტემა (2 UHF მიკროფონით) + SunCore 600W LiFePO4 გენერატორი + 100W დასაკეცი მზის პანელი. უზრუნველყოფს 36+ საათიან უწყვეტ მუსიკასა და განათებას.",
       "descStyle": {
         "fontSize": 15,
