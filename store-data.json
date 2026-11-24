@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1795548429680,
+  "updatedAt": 1795548464547,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -244,6 +244,71 @@
     "_diloAtVeryBottomV1": true
   },
   "productsList": [
+    {
+      "id": "prod-1795548464212",
+      "sku": "PRO-1000",
+      "category": "karaoke",
+      "categoryLabel": "კარაოკე დინამიკები",
+      "badgeText": "აქცია",
+      "name": "ახალი პროდუქტი",
+      "shortMeta": "",
+      "oldPrice": 0,
+      "newPrice": 0,
+      "images": [
+        "https://magazia-drive-media.netlify.app/api/media/1hYiEYmWR4IP8kyMd9ak6nTv-ysjKXY3J",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "description": "",
+      "descHtml": "",
+      "descStyle": {
+        "fontSize": 15,
+        "isBold": false,
+        "isItalic": false,
+        "isUnderline": false,
+        "textColor": "",
+        "bgColor": ""
+      },
+      "specs": [
+        {
+          "label": "სიმძლავრე ვატი",
+          "value": ""
+        },
+        {
+          "label": "ელემენტი / ტევადობა",
+          "value": ""
+        },
+        {
+          "label": "კომპლექტაცია",
+          "value": ""
+        },
+        {
+          "label": "ავტონომიური მუშაობა",
+          "value": ""
+        },
+        {
+          "label": "პორტები და კავშირი",
+          "value": ""
+        },
+        {
+          "label": "წონა და გარანტია",
+          "value": ""
+        }
+      ],
+      "closedFields": {},
+      "youtubeId": "",
+      "youtubeUrl": "",
+      "youtubeDuration": "08:45",
+      "youtubeCaption": "ახალი პროდუქტი",
+      "tiktokUrl": "",
+      "tiktokCaption": "ახალი პროდუქტი",
+      "facebookUrl": "",
+      "facebookCaption": "ახალი პროდუქტი",
+      "instagramUrl": "",
+      "instagramCaption": "ახალი პროდუქტი"
+    },
     {
       "id": "prod-1795284019810",
       "sku": "PRO-1000",
@@ -4397,6 +4462,13 @@
     }
   ],
   "imagesMap": {
+    "prod-1795548464212": [
+      "https://magazia-drive-media.netlify.app/api/media/1hYiEYmWR4IP8kyMd9ak6nTv-ysjKXY3J",
+      "",
+      "",
+      "",
+      ""
+    ],
     "prod-1795284019810": [
       "https://res.cloudinary.com/xtf4pat0/image/upload/v1795280958/Screenshot_2026-11-18_114159.jpg",
       "",
