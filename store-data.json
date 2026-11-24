@@ -1,6 +1,6 @@
 {
   "hasSavedState": true,
-  "updatedAt": 1795548469092,
+  "updatedAt": 1795548484142,
   "themeColor": "#ea580c",
   "storeSettings": {
     "wordElementStyles": {
@@ -256,7 +256,7 @@
       "newPrice": 0,
       "images": [
         "https://magazia-drive-media.netlify.app/api/media/1hYiEYmWR4IP8kyMd9ak6nTv-ysjKXY3J",
-        "",
+        "https://magazia-drive-media.netlify.app/api/media/1hYiEYmWR4IP8kyMd9ak6nTv-ysjKXY3J",
         "",
         "",
         ""
@@ -4464,7 +4464,7 @@
   "imagesMap": {
     "prod-1795548464212": [
       "https://magazia-drive-media.netlify.app/api/media/1hYiEYmWR4IP8kyMd9ak6nTv-ysjKXY3J",
-      "",
+      "https://magazia-drive-media.netlify.app/api/media/1hYiEYmWR4IP8kyMd9ak6nTv-ysjKXY3J",
       "",
       "",
       ""
